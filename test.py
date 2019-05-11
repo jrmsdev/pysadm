@@ -15,6 +15,8 @@ if __name__ == '__main__':
 	verbose = 1
 	if '-v' in sys.argv:
 		verbose = 2
+	if '-q' in sys.argv:
+		verbose = 0
 
 	rnr = TextTestRunner(verbosity = verbose)
 	rst = rnr.run(suite)
