@@ -22,7 +22,7 @@ setup(
 	name = 'sadm',
 	version = version,
 	description = desc,
-	long_description = desc,
+	long_description = long_desc,
 	long_description_content_type = 'text/markdown',
 	license = 'BSD',
 	url = 'https://github.com/jrmsdev/pysadm',
