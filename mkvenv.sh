@@ -9,4 +9,5 @@ PIP=${ENVDIR}/bin/pip
 python3 -m venv --prompt sadm --clear ${ENVDIR}
 
 ${PIP} install -r requirements-dev.txt --upgrade
+${PIP} install -e .
 ${PIP} list
