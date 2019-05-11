@@ -4,6 +4,8 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
+# https://packaging.python.org/guides/distributing-packages-using-setuptools/
+
 import sys
 from os import path
 from setuptools import setup, find_packages
@@ -32,6 +34,7 @@ setup(
 		'Development Status :: 4 - Beta',
 		'Intended Audience :: Developers',
 		'Intended Audience :: System Administrators',
+		'Topic :: Software Development :: Build Tools',
 		'License :: OSI Approved :: BSD License',
 		'Programming Language :: Python :: 3',
 		'Operating System :: POSIX :: Linux',
