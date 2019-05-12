@@ -6,4 +6,4 @@
 from sadm import log
 
 def test_log():
-	assert True
+	assert log._getCaller(1) == 't/log_test.py:9'
