@@ -1,6 +1,8 @@
 sudo: false
-os: linux
 language: python
+
+os: linux
+dist: xenial
 
 git:
   depth: 3
@@ -9,10 +11,14 @@ git:
 branches:
   only: master
 
+matrix:
+  fast_finish: true
+
 python:
   - 3.4
   - 3.5
   - 3.6
+  - 3.7
 
 install:
   - pip install -r dev-requirements.txt --upgrade
