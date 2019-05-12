@@ -4,3 +4,7 @@ include *.py
 include *.txt
 include LICENSE
 include VERSION
+
+prune t
+prune t/*.py
+prune pytest.ini
