@@ -5,14 +5,20 @@ import sys
 
 # colors
 
-if sys.stdout.isatty() and sys.stderr.isatty():
+_colored = sys.stdout.isatty() and sys.stderr.isatty()
+
+cyan = lambda text: text
+red = lambda text: text
+yellow = lambda text: text
+blue = lambda text: text
+green = lambda text: text
+
+if _colored:
 	cyan = lambda text: '\033[0;36m' + text + '\033[0m'
 	red = lambda text: '\033[0;31m' + text + '\033[0m'
 	yellow = lambda text: '\033[0;33m' + text + '\033[0m'
-else:
-	cyan = lambda text: text
-	red = lambda text: text
-	yellow = lambda text: text
+	blue = lambda text: '\033[0;34m' + text + '\033[0m'
+	green = lambda text: '\033[0;32m' + text + '\033[0m'
 
 # debug file prefix
 
@@ -30,14 +36,14 @@ def _getCaller(depth = 2):
 
 # public methods
 
-def debug(msg, *args):
-	print(cyan('D:'), _getCaller(), msg, *args, file = sys.stderr)
+def debug(msg):
+	print(cyan(_getCaller()), cyan(msg), file = sys.stderr)
 
-def error(msg, *args):
-	print(red('E:'), msg, *args, file = sys.stderr)
+def error(msg):
+	print(red(msg), file = sys.stderr)
 
-def warn(msg, *args):
-	print(yellow('W:'), msg, *args, file = sys.stderr)
+def warn(msg):
+	print(yellow(msg), file = sys.stderr)
 
-def msg(msg, *args):
-	print(msg, *args, file = sys.stdout)
+def msg(msg):
+	print(blue(msg), file = sys.stdout)
