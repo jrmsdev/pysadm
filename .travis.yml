@@ -22,15 +22,9 @@ python:
 
 cache: pip
 
-before_install:
-  - pip install -r dev-requirements.txt --upgrade
-
 install:
+  - pip install -r dev-requirements.txt --upgrade
   - python3 setup.py sdist bdist_wheel
   - pip install -e .
 
-before_script:
-  - check-manifest
-  - python3 setup.py check -m -s
-
-script: pytest
+script: ./check.sh
