@@ -20,14 +20,15 @@ python:
   - 3.6
   - 3.7
 
-install:
+before_install:
   - pip install -r dev-requirements.txt --upgrade
 
-build:
+install:
   - python3 setup.py sdist bdist_wheel
+  - pip install -e .
 
-script:
+before_script:
   - check-manifest
   - python3 setup.py check -m -s
-  - pip install -e .
-  - pytest
+
+script: pytest
