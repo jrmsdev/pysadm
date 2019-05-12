@@ -20,6 +20,8 @@ python:
   - 3.6
   - 3.7
 
+cache: pip
+
 before_install:
   - pip install -r dev-requirements.txt --upgrade
 
