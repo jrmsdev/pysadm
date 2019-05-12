@@ -22,8 +22,8 @@ def debug(msg, *args):
 def error(msg, *args):
 	print('E:', msg, *args, file = sys.stderr)
 
-def info(msg, *args):
-	print('I:', msg, *args, file = sys.stderr)
+def warn(msg, *args):
+	print('W:', msg, *args, file = sys.stderr)
 
 def msg(msg, *args):
 	print(msg, *args, file = sys.stdout)
