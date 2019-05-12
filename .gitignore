@@ -1,8 +1,8 @@
 build/
+.coverage
 dist/
+.eggs/
+htmlcov/
 __pycache__
 sadm.egg-info/
-.coverage
-htmlcov/
-.eggs/
-sadm/_version.py
+_sadm/_version.py
