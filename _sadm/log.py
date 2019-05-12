@@ -34,19 +34,40 @@ def _getCaller(depth = 2):
 	inf = sys._getframe(depth)
 	return "%s:%d" % (inf.f_code.co_filename[_idx:], inf.f_lineno)
 
+# setup logger
+
+class dummyLogger(object):
+	def debug(self, msg):
+		pass
+	def error(self, msg):
+		pass
+	def warn(self, msg):
+		pass
+	def info(self, msg):
+		pass
+	def msg(self, msg):
+		pass
+
+_logger = dummyLogger()
+
 # public methods
 
 def debug(msg):
-	print(cyan(_getCaller()), cyan(msg), file = sys.stderr)
+	# ~ print(cyan(_getCaller()), cyan(msg), file = sys.stderr)
+	_logger.debug(msg)
 
 def error(msg):
-	print(red(msg), file = sys.stderr)
+	# ~ print(red(msg), file = sys.stderr)
+	_logger.error(msg)
 
 def warn(msg):
-	print(yellow(msg), file = sys.stderr)
+	# ~ print(yellow(msg), file = sys.stderr)
+	_logger.warn(msg)
 
 def info(msg):
-	print(blue(msg), file = sys.stdout)
+	# ~ print(blue(msg), file = sys.stdout)
+	_logger.info(msg)
 
 def msg(msg):
-	print(green(msg), file = sys.stdout)
+	# ~ print(green(msg), file = sys.stdout)
+	_logger.msg(msg)
