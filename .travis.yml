@@ -23,7 +23,7 @@ python:
 cache: pip
 
 install:
-  - pip install -r dev-requirements.txt --upgrade
+  - pip install -r requirements-test.txt --upgrade
   - ./build.sh
   - pip install -e .
 

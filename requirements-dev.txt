@@ -2,6 +2,4 @@ setuptools>=41.0
 setuptools_scm>=3.3
 wheel>=0.33
 twine>=1.13
-pytest>=4.5
-check-manifest>=0.37
 coverage>=4.5
