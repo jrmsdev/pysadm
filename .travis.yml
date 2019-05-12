@@ -24,7 +24,7 @@ cache: pip
 
 install:
   - pip install -r dev-requirements.txt --upgrade
-  - python3 setup.py sdist bdist_wheel
+  - ./build.sh
   - pip install -e .
 
 script: ./check.sh
