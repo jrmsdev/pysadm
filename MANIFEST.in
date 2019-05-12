@@ -11,5 +11,3 @@ include VERSION
 include pytest.ini
 
 recursive-include t *.py
-
-prune tox.ini

@@ -4,4 +4,3 @@ __pycache__
 sadm.egg-info/
 .coverage
 htmlcov/
-.tox/
