@@ -45,5 +45,8 @@ def error(msg):
 def warn(msg):
 	print(yellow(msg), file = sys.stderr)
 
-def msg(msg):
+def info(msg):
 	print(blue(msg), file = sys.stdout)
+
+def msg(msg):
+	print(green(msg), file = sys.stdout)

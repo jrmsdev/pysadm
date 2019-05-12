@@ -7,4 +7,5 @@ def main():
 	log.debug('main')
 	log.warn('warning...')
 	log.error('error...')
+	log.info('info...')
 	log.msg('done!')
