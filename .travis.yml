@@ -1,7 +1,18 @@
+sudo: false
+os: linux
 language: python
+
+git:
+  depth: 3
+  submodules: false
+
+branches:
+  only: master
 
 matrix:
   include:
+    - python: 3.4
+      env: TOXENV=py34
     - python: 3.5
       env: TOXENV=py35
     - python: 3.6
