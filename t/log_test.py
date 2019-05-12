@@ -5,6 +5,5 @@
 
 from sadm import log
 
-def build(srcdir):
-	log.debug('build')
-	return 0
+def test_log():
+	assert True
