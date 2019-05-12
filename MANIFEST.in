@@ -1,10 +1,9 @@
 # https://docs.python.org/3/distutils/sourcedist.html#specifying-the-files-to-distribute
 
+# added by check_manifest.py
 include *.py
 include *.txt
 include LICENSE
 include VERSION
-
-prune t
-prune t/*.py
-prune pytest.ini
+include pytest.ini
+recursive-include t *.py
