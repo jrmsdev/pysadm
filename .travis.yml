@@ -23,4 +23,5 @@ build:
 script:
   - check-manifest
   - python3 setup.py check -m -s
+  - pip install -e .
   - pytest
