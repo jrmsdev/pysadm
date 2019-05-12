@@ -7,7 +7,6 @@ include *.txt
 include .coveragerc
 
 include LICENSE
-include VERSION
 include pytest.ini
 
 recursive-include t *.py

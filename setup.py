@@ -16,16 +16,16 @@ def cat(fpath):
 
 desc = 'sysadmin/devops/deploy tools'
 long_desc = cat('README.md')
-version = cat('VERSION').strip()
 
 install_requires = []
 
 setup(
 	name = 'sadm',
-	version = version,
 	description = desc,
 	long_description = long_desc,
 	long_description_content_type = 'text/markdown',
+	setup_requires = ['setuptools_scm>=3.3'],
+	use_scm_version = {'write_to': 'sadm/_version.py'},
 	license = 'BSD',
 	url = 'https://github.com/jrmsdev/pysadm',
 	author = 'Jeremías Casteglione',

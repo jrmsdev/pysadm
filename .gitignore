@@ -4,3 +4,5 @@ __pycache__
 sadm.egg-info/
 .coverage
 htmlcov/
+.eggs/
+sadm/_version.py
