@@ -13,6 +13,6 @@ def new(prog, desc = ''):
 
 def parse(p):
 	args = p.parse_args()
-	print('LOG:', args.log)
+	# ~ print('ARGS:', args)
 	log.init(args.log)
 	return args

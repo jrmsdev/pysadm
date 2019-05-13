@@ -7,18 +7,19 @@ import sys
 
 _colored = sys.stdout.isatty() and sys.stderr.isatty()
 
-cyan = lambda text: text
-red = lambda text: text
-yellow = lambda text: text
-blue = lambda text: text
-green = lambda text: text
+_colDebug = lambda msg: 'D: ' + msg
+_colWarn = lambda msg: 'W: ' + msg
+_colError = lambda msg: 'E: ' + msg
+_colInfo = lambda msg: 'I: ' + msg
+_colMsg = lambda msg: msg
 
+# ~ _colored = False
 if _colored:
-	cyan = lambda text: '\033[0;36m' + text + '\033[0m'
-	red = lambda text: '\033[0;31m' + text + '\033[0m'
-	yellow = lambda text: '\033[0;33m' + text + '\033[0m'
-	blue = lambda text: '\033[0;34m' + text + '\033[0m'
-	green = lambda text: '\033[0;32m' + text + '\033[0m'
+	_colDebug = lambda text: '\033[0;36m' + text + '\033[0m'
+	_colError = lambda text: '\033[0;31m' + text + '\033[0m'
+	_colWarn = lambda text: '\033[0;33m' + text + '\033[0m'
+	_colInfo = lambda text: '\033[0;34m' + text + '\033[0m'
+	_colMsg = lambda text: '\033[0;32m' + text + '\033[0m'
 
 # debug file prefix
 
@@ -30,7 +31,7 @@ def _getPrefixIdx():
 
 _idx = _getPrefixIdx()
 
-def _getCaller(depth = 2):
+def _getCaller(depth = 3):
 	inf = sys._getframe(depth)
 	return "%s:%d" % (inf.f_code.co_filename[_idx:], inf.f_lineno)
 
@@ -84,19 +85,19 @@ class sysLogger(object):
 		pass
 
 	def _debug(self, msg):
-		print(cyan(_getCaller()), cyan(msg), file = sys.stderr)
+		print(_colDebug(_getCaller()), _colDebug(msg), file = sys.stderr)
 
 	def _error(self, msg):
-		print(red(msg), file = sys.stderr)
+		print(_colError(msg), file = sys.stderr)
 
 	def _warn(self, msg):
-		print(yellow(msg), file = sys.stderr)
+		print(_colWarn(msg), file = sys.stderr)
 
 	def _info(self, msg):
-		print(blue(msg), file = sys.stdout)
+		print(_colInfo(msg), file = sys.stdout)
 
 	def _msg(self, msg):
-		print(green(msg), file = sys.stdout)
+		print(_colMsg(msg), file = sys.stdout)
 
 class dummyLogger(object):
 	def debug(self, msg):
