@@ -87,6 +87,9 @@ class _sysLogger(object):
 		else:
 			raise RuntimeError("invalid log level: %s" % level)
 
+	def close(self):
+		pass
+
 	def _off(self, msg):
 		pass
 
@@ -106,6 +109,9 @@ class _sysLogger(object):
 		print(_colMsg(msg), file = self._outs)
 
 class _dummyLogger(object):
+	def close(self):
+		pass
+
 	def debug(self, msg):
 		pass
 
@@ -124,6 +130,11 @@ class _dummyLogger(object):
 _logger = _dummyLogger()
 
 # public methods
+
+def setLogger(logger):
+	global _logger
+	_logger.close()
+	_logger = logger
 
 def init(level): # pragma: no cover
 	global _logger
