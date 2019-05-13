@@ -10,3 +10,9 @@ include LICENSE
 include pytest.ini
 
 recursive-include t *.py
+recursive-include _sadm *.css
+recursive-include _sadm *.html
+recursive-include _sadm *.ico
+recursive-include _sadm *.ttf
+recursive-include _sadm *.woff
+recursive-include _sadm *.woff2

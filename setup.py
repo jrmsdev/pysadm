@@ -17,8 +17,9 @@ def main():
 		setup_requires = ['setuptools_scm>=3.3'],
 		install_requires = deps,
 		use_scm_version = {'write_to': '_sadm/_version.py'},
-		packages = find_packages(),
 		py_modules = ['sadm'],
+		packages = find_packages(),
+		include_package_data = True,
 	)
 
 if __name__ == '__main__':
