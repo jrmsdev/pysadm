@@ -10,7 +10,7 @@ def new(prog, desc = ''):
 	p.add_argument('-V', '--version', help = 'show version and exit',
 		action = 'version', version = version.string())
 	p.add_argument('--debug', help = 'enable debug settings',
-		action = 'store_true')
+		action = 'store_true', default = False)
 	p.add_argument('--log', help = 'set log level (error)',
 		default = 'error', choices = log.levels())
 	p.add_argument('--env', help = 'env name (default)',
@@ -21,7 +21,7 @@ def new(prog, desc = ''):
 
 def parse(p):
 	args = p.parse_args()
-	if hasattr(args, 'debug') and args.debug:
+	if args.debug:
 		log.init('debug')
 	else:
 		log.init(args.log)

@@ -3,6 +3,11 @@
 
 from bottle import route
 
-@route('/')
-def index():
-	return 'hello world2!'
+from _sadm import log
+from _sadm.web.tpl import template
+
+@route('/<who>')
+@template('index.html')
+def index(who):
+	log.debug("index %s" % who)
+	return "hello %s" % who
