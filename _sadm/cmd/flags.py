@@ -9,6 +9,8 @@ def new(prog, desc = ''):
 	p = argparse.ArgumentParser(prog = prog, description = desc)
 	p.add_argument('-V', '--version', help = 'show version and exit',
 		action = 'version', version = version.string())
+	p.add_argument('--debug', help = 'enable debug settings',
+		action = 'store_true')
 	p.add_argument('--log', help = 'set log level (error)',
 		default = 'error', choices = log.levels())
 	p.add_argument('--env', help = 'env name (default)',
@@ -19,5 +21,8 @@ def new(prog, desc = ''):
 
 def parse(p):
 	args = p.parse_args()
-	log.init(args.log)
+	if hasattr(args, 'debug') and args.debug:
+		log.init('debug')
+	else:
+		log.init(args.log)
 	return args

@@ -1,11 +1,11 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
-from bottle import route, run
+from bottle import run
 
-@route('/')
-def index():
-	return '<p>hello world!</p>'
+# load views
+import _sadm.web.view.home
 
-def start(host, port):
-	run(host = host, port = port)
+def start(host, port, debug):
+	run(host = host, port = port, reloader = debug,
+		quiet = not debug, debug = False)
