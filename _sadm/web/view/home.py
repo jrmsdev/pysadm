@@ -1,13 +1,12 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
-from bottle import route
+from bottle import route, view
 
 from _sadm import log
-from _sadm.web.tpl import template
 
-@route('/<who>')
-@template('index.html')
-def index(who):
-	log.debug("index %s" % who)
-	return "hello %s" % who
+@route('/')
+@view('index.html')
+def index():
+	log.debug("index")
+	return {}
