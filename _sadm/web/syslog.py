@@ -2,12 +2,14 @@
 # See LICENSE file.
 
 import sys
+import sqlite3
+
 from _sadm import log
 
 class _webLogger(object):
 
-	def debug(self, msg, caller = None):
-		print("[SYSLOG] D: %s: %s" % (caller, msg), file = sys.stderr)
+	def __init__(self):
+		self.db = _dbInit()
 
 	def error(self, msg):
 		print("[SYSLOG] E:", msg, file = sys.stderr)
@@ -24,3 +26,7 @@ class _webLogger(object):
 def init():
 	log.info('init web syslog')
 	log._logger._child = _webLogger()
+
+def _dbInit():
+	log.debug('syslog db init')
+	return None

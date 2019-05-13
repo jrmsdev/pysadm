@@ -95,7 +95,7 @@ class _sysLogger(object):
 	def _debug(self, msg):
 		caller = _getCaller(self._depth)
 		print(_colDebug("%s: %s" % (caller, msg)), file = self._errs)
-		self._child.debug(msg, caller)
+		# no debug info for child logger
 
 	def _error(self, msg):
 		print(_colError(msg), file = self._errs)
@@ -118,7 +118,7 @@ class _dummyLogger(object):
 	def __init__(self):
 		self._child = None
 
-	def debug(self, msg, caller = None):
+	def debug(self, msg):
 		pass
 
 	def error(self, msg):
