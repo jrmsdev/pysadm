@@ -27,23 +27,24 @@ _LOG_INSERT = 'insert into syslog (level, msg) values (?, ?)'
 class _webLogger(object):
 	db = None
 
-	def close(self):
-		self.db.close()
-
 	def error(self, msg):
 		self.db.execute(_LOG_INSERT, (_LVLMAP['error'], msg))
+		self.db.commit()
 		print("[syslog] E:", msg, file = sys.stderr)
 
 	def warn(self, msg):
 		self.db.execute(_LOG_INSERT, (_LVLMAP['warn'], msg))
+		self.db.commit()
 		print("[syslog] W:", msg, file = sys.stderr)
 
 	def info(self, msg):
-		self.db.execute(_LOG_INSERT, (_LVLMAP['msg'], msg))
+		self.db.execute(_LOG_INSERT, (_LVLMAP['info'], msg))
+		self.db.commit()
 		print("[syslog] I:", msg, file = sys.stdout)
 
 	def msg(self, msg):
 		self.db.execute(_LOG_INSERT, (_LVLMAP['msg'], msg))
+		self.db.commit()
 		print("[syslog]", msg, file = sys.stdout)
 
 _logger = _webLogger()
@@ -63,7 +64,8 @@ def init():
 def close():
 	if _logger.db is not None:
 		log.info('syslog end')
-		_logger.close()
+		_logger.db.close()
+		log._logger._child = log._dummyLogger()
 
 _dbfile = path.expanduser('~/.local/sadm/syslog.db')
 
