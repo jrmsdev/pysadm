@@ -4,11 +4,14 @@
 from _sadm import log
 from _sadm.cmd import flags
 
-def main():
+def _getArgs():
 	parser = flags.new('sadm-build', desc = 'build sadm profile data')
 	parser.add_argument('--name', help = 'profile name', default = '')
 	parser.add_argument('cfgfile', help = 'path to config.json file')
-	args = flags.parse(parser)
+	return flags.parse(parser)
+
+def main():
+	args = _getArgs()
 	log.debug("cfgfile %s" % args.cfgfile)
 	log.msg('done!')
 
