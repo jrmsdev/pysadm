@@ -9,11 +9,11 @@ def new(prog, desc = ''):
 	p = argparse.ArgumentParser(prog = prog, description = desc)
 	p.add_argument('-V', '--version', help = 'show version and exit',
 		action = 'version', version = version.string())
-	p.add_argument('--log', help = 'set log level',
+	p.add_argument('--log', help = 'set log level (error)',
 		default = 'error', choices = log.levels())
-	p.add_argument('--env', help = 'env name',
+	p.add_argument('--env', help = 'env name (default)',
 		metavar = 'name', default = 'default')
-	p.add_argument('--profile', help = 'profile name',
+	p.add_argument('--profile', help = 'profile name (default)',
 		metavar = 'name', default = 'default')
 	return p
 
