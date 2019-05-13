@@ -4,23 +4,26 @@
 from _sadm import log
 
 class _webLogger(object):
-	def close(self):
-		pass
+	_log = None
+
+	def __init__(self):
+		self._log = log._logger
+		self._log._depth = 4
 
 	def debug(self, msg):
-		pass
+		self._log.debug(msg)
 
 	def error(self, msg):
-		pass
+		self._log.error(msg)
 
 	def warn(self, msg):
-		pass
+		self._log.warn(msg)
 
 	def info(self, msg):
-		pass
+		self._log.info(msg)
 
 	def msg(self, msg):
-		pass
+		self._log.msg(msg)
 
 def init():
 	log.info('init web syslog')

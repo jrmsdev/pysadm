@@ -32,7 +32,7 @@ if _colored: # pragma: no cover
 
 _idx = __file__.find('pysadm') + 7
 
-def _getCaller(depth = 3):
+def _getCaller(depth):
 	inf = sys._getframe(depth)
 	return "%s:%d" % (inf.f_code.co_filename[_idx:], inf.f_lineno)
 
@@ -41,6 +41,7 @@ def _getCaller(depth = 3):
 class _sysLogger(object):
 
 	def __init__(self, level, outs = None):
+		self._depth = 3
 		self._outs = sys.stdout
 		self._errs = sys.stderr
 		if outs is not None:
@@ -87,14 +88,11 @@ class _sysLogger(object):
 		else:
 			raise RuntimeError("invalid log level: %s" % level)
 
-	def close(self):
-		pass
-
 	def _off(self, msg):
 		pass
 
 	def _debug(self, msg):
-		print(_colDebug("%s: %s" % (_getCaller(), msg)), file = self._errs)
+		print(_colDebug("%s: %s" % (_getCaller(self._depth), msg)), file = self._errs)
 
 	def _error(self, msg):
 		print(_colError(msg), file = self._errs)
@@ -109,8 +107,6 @@ class _sysLogger(object):
 		print(_colMsg(msg), file = self._outs)
 
 class _dummyLogger(object):
-	def close(self):
-		pass
 
 	def debug(self, msg):
 		pass
@@ -133,7 +129,6 @@ _logger = _dummyLogger()
 
 def setLogger(logger):
 	global _logger
-	_logger.close()
 	_logger = logger
 
 def init(level): # pragma: no cover
