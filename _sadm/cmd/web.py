@@ -19,6 +19,7 @@ def main():
 	log.msg("http://%s:%d/" % ('localhost', args.port))
 	syslog.init()
 	web.start('localhost', args.port, args.debug)
+	syslog.close()
 	log.msg('done!')
 
 if __name__ == '__main__':

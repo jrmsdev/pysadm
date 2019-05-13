@@ -3,13 +3,17 @@
 
 import sys
 import sqlite3
+from os import path, makedirs
 
 from _sadm import log
 
 class _webLogger(object):
 
-	def __init__(self):
-		self.db = _dbInit()
+	def __init__(self, db):
+		self.db = db
+
+	def close(self):
+		self.db.close()
 
 	def error(self, msg):
 		print("[SYSLOG] E:", msg, file = sys.stderr)
@@ -24,9 +28,25 @@ class _webLogger(object):
 		print("[SYSLOG]", msg, file = sys.stdout)
 
 def init():
-	log.info('init web syslog')
-	log._logger._child = _webLogger()
+	log.debug('init web syslog')
+	try:
+		db = _dbInit()
+	except Exception as e:
+		log.error("could not init web syslog: %s" % e)
+	else:
+		log.debug('attach child logger')
+		log._logger._child = _webLogger(db)
+		log.info('syslog start')
+
+def close():
+	log.info('syslog end')
+	log._logger.close()
+
+_dbfile = path.expanduser('~/.local/sadm/syslog.db')
 
 def _dbInit():
-	log.debug('syslog db init')
-	return None
+	log.debug("syslog init %s" % _dbfile)
+	log.debug("sqlite version %s (lib %s)" % (sqlite3.version, sqlite3.sqlite_version))
+	dbdir = path.dirname(_dbfile)
+	makedirs(dbdir, mode = 0o700, exist_ok = True)
+	return sqlite3.connect(_dbfile)
