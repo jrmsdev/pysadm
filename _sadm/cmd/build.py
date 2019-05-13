@@ -4,6 +4,7 @@
 from _sadm import log
 
 def main():
+	log.init('debug')
 	log.debug('main')
 	log.warn('warning...')
 	log.error('error...')

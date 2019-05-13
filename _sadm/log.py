@@ -36,15 +36,75 @@ def _getCaller(depth = 2):
 
 # setup logger
 
+class sysLogger(object):
+
+	def __init__(self, level):
+		self.debug = self._off
+		self.warn = self._off
+		self.error = self._off
+		self.info = self._off
+		self.msg = self._off
+		self._initLevel(level)
+
+	def _initLevel(self, level):
+		if level == 'error':
+			self.debug = self._off
+			self.warn = self._off
+			self.error = self._error
+			self.info = self._info
+			self.msg = self._msg
+		elif level == 'warning':
+			self.debug = self._off
+			self.warn = self._warn
+			self.error = self._error
+			self.info = self._info
+			self.msg = self._msg
+		elif level == 'debug':
+			self.debug = self._debug
+			self.warn = self._warn
+			self.error = self._error
+			self.info = self._info
+			self.msg = self._msg
+		elif level == 'quiet':
+			self.debug = self._off
+			self.warn = self._off
+			self.error = self._error
+			self.info = self._off
+			self.msg = self._off
+		else:
+			raise RuntimeError(f"invalid log level: {level}")
+
+	def _off(self, msg):
+		pass
+
+	def _debug(self, msg):
+		print(cyan(_getCaller()), cyan(msg), file = sys.stderr)
+
+	def _error(self, msg):
+		print(red(msg), file = sys.stderr)
+
+	def _warn(self, msg):
+		print(yellow(msg), file = sys.stderr)
+
+	def _info(self, msg):
+		print(blue(msg), file = sys.stdout)
+
+	def _msg(self, msg):
+		print(green(msg), file = sys.stdout)
+
 class dummyLogger(object):
 	def debug(self, msg):
 		pass
+
 	def error(self, msg):
 		pass
+
 	def warn(self, msg):
 		pass
+
 	def info(self, msg):
 		pass
+
 	def msg(self, msg):
 		pass
 
@@ -52,22 +112,21 @@ _logger = dummyLogger()
 
 # public methods
 
+def init(level):
+	global _logger
+	_logger = sysLogger(level)
+
 def debug(msg):
-	# ~ print(cyan(_getCaller()), cyan(msg), file = sys.stderr)
 	_logger.debug(msg)
 
 def error(msg):
-	# ~ print(red(msg), file = sys.stderr)
 	_logger.error(msg)
 
 def warn(msg):
-	# ~ print(yellow(msg), file = sys.stderr)
 	_logger.warn(msg)
 
 def info(msg):
-	# ~ print(blue(msg), file = sys.stdout)
 	_logger.info(msg)
 
 def msg(msg):
-	# ~ print(green(msg), file = sys.stdout)
 	_logger.msg(msg)
