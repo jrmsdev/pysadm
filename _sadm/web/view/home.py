@@ -3,7 +3,7 @@
 
 from bottle import route, view
 
-from _sadm import log
+from _sadm import log, version
 
 @route('/')
 @view('index.html')
@@ -15,4 +15,4 @@ def index():
 @view('about.html')
 def about():
 	log.debug("about")
-	return {}
+	return {'version': version.get()}
