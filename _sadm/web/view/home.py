@@ -10,3 +10,9 @@ from _sadm import log
 def index():
 	log.debug("index")
 	return {}
+
+@route('/about')
+@view('about.html')
+def about():
+	log.debug("about")
+	return {}
