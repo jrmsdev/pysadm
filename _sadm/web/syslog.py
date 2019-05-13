@@ -11,10 +11,18 @@ _DB_CREATE = """
 create table syslog (
 	id integer primary key autoincrement,
 	time text default current_timestamp,
-	level text,
+	level integer,
 	msg text
 );
 """
+
+_LVLMAP = {
+	'error': 3,
+	'warn': 2,
+	'info': 1,
+	'msg': 0,
+}
+_LOG_INSERT = 'insert into syslog (level, msg) values (?, ?)'
 
 class _webLogger(object):
 	db = None
@@ -23,15 +31,19 @@ class _webLogger(object):
 		self.db.close()
 
 	def error(self, msg):
+		self.db.execute(_LOG_INSERT, (_LVLMAP['error'], msg))
 		print("[syslog] E:", msg, file = sys.stderr)
 
 	def warn(self, msg):
+		self.db.execute(_LOG_INSERT, (_LVLMAP['warn'], msg))
 		print("[syslog] W:", msg, file = sys.stderr)
 
 	def info(self, msg):
+		self.db.execute(_LOG_INSERT, (_LVLMAP['msg'], msg))
 		print("[syslog] I:", msg, file = sys.stdout)
 
 	def msg(self, msg):
+		self.db.execute(_LOG_INSERT, (_LVLMAP['msg'], msg))
 		print("[syslog]", msg, file = sys.stdout)
 
 _logger = _webLogger()
