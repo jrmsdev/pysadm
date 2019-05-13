@@ -6,7 +6,6 @@ from _sadm.cmd import flags
 
 def _getArgs():
 	parser = flags.new('sadm-build', desc = 'build sadm profile data')
-	parser.add_argument('--name', help = 'profile name', default = '')
 	parser.add_argument('cfgfile', help = 'path to config.json file')
 	return flags.parse(parser)
 

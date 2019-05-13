@@ -11,6 +11,10 @@ def new(prog, desc = ''):
 		action = 'version', version = version.string())
 	p.add_argument('--log', help = 'set log level',
 		default = 'error', choices = log.levels())
+	p.add_argument('--env', help = 'env name',
+		metavar = 'name', default = 'default')
+	p.add_argument('--profile', help = 'profile name',
+		metavar = 'name', default = 'default')
 	return p
 
 def parse(p):
