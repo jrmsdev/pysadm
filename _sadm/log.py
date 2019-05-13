@@ -21,22 +21,16 @@ _green = '\033[0;32m'
 _reset = '\033[0m'
 
 # ~ _colored = False
-if _colored:
-	_colDebug = lambda text: _cyan + text + _reset
-	_colError = lambda text: _red + text + _reset
-	_colWarn = lambda text: _yellow + text + _reset
-	_colInfo = lambda text: _blue + text + _reset
-	_colMsg = lambda text: _green + text + _reset
+if _colored: # pragma: no cover
+	_colDebug = lambda msg: _cyan + msg + _reset
+	_colError = lambda msg: _red + msg + _reset
+	_colWarn = lambda msg: _yellow + msg + _reset
+	_colInfo = lambda msg: _blue + msg + _reset
+	_colMsg = lambda msg: _green + msg + _reset
 
-# debug file prefix
+# debug file info
 
-def _getPrefixIdx():
-	idx = __file__.find('pysadm')
-	if idx <= 0:
-		return 0
-	return idx + 7
-
-_idx = _getPrefixIdx()
+_idx = __file__.find('pysadm') + 7
 
 def _getCaller(depth = 3):
 	inf = sys._getframe(depth)
@@ -46,7 +40,12 @@ def _getCaller(depth = 3):
 
 class _sysLogger(object):
 
-	def __init__(self, level):
+	def __init__(self, level, outs = None):
+		self._outs = sys.stdout
+		self._errs = sys.stderr
+		if outs is not None:
+			self._outs = outs
+			self._errs = outs
 		self.debug = self._off
 		self.warn = self._off
 		self.error = self._off
@@ -92,19 +91,19 @@ class _sysLogger(object):
 		pass
 
 	def _debug(self, msg):
-		print(_colDebug(_getCaller()), _colDebug(msg), file = sys.stderr)
+		print(_colDebug(f"{_getCaller()}: {msg}"), file = self._errs)
 
 	def _error(self, msg):
-		print(_colError(msg), file = sys.stderr)
+		print(_colError(msg), file = self._errs)
 
 	def _warn(self, msg):
-		print(_colWarn(msg), file = sys.stderr)
+		print(_colWarn(msg), file = self._errs)
 
 	def _info(self, msg):
-		print(_colInfo(msg), file = sys.stdout)
+		print(_colInfo(msg), file = self._outs)
 
 	def _msg(self, msg):
-		print(_colMsg(msg), file = sys.stdout)
+		print(_colMsg(msg), file = self._outs)
 
 class _dummyLogger(object):
 	def debug(self, msg):
@@ -126,7 +125,7 @@ _logger = _dummyLogger()
 
 # public methods
 
-def init(level):
+def init(level): # pragma: no cover
 	global _logger
 	_logger = _sysLogger(level)
 
