@@ -37,7 +37,7 @@ def _getCaller(depth = 3):
 
 # setup logger
 
-class sysLogger(object):
+class _sysLogger(object):
 
 	def __init__(self, level):
 		self.debug = self._off
@@ -99,7 +99,7 @@ class sysLogger(object):
 	def _msg(self, msg):
 		print(_colMsg(msg), file = sys.stdout)
 
-class dummyLogger(object):
+class _dummyLogger(object):
 	def debug(self, msg):
 		pass
 
@@ -115,13 +115,13 @@ class dummyLogger(object):
 	def msg(self, msg):
 		pass
 
-_logger = dummyLogger()
+_logger = _dummyLogger()
 
 # public methods
 
 def init(level):
 	global _logger
-	_logger = sysLogger(level)
+	_logger = _sysLogger(level)
 
 def levels():
 	return ['debug', 'error', 'warn', 'quiet', 'off']
