@@ -89,9 +89,6 @@ class _sysLogger(object):
 		else:
 			raise RuntimeError("invalid log level: %s" % level)
 
-	def close(self):
-		self._child.close()
-
 	def _off(self, msg):
 		pass
 
@@ -120,9 +117,6 @@ class _dummyLogger(object):
 
 	def __init__(self):
 		self._child = None
-
-	def close(self):
-		pass
 
 	def debug(self, msg):
 		pass
