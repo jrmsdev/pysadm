@@ -24,7 +24,7 @@ cache: pip
 
 install:
   - pip install -r requirements-test.txt --upgrade
-  - ./build.sh
+  - python3 setup.py build
   - pip install -e .
 
 script: ./check.sh
