@@ -53,7 +53,7 @@ class sysLogger(object):
 			self.error = self._error
 			self.info = self._info
 			self.msg = self._msg
-		elif level == 'warning':
+		elif level == 'warn':
 			self.debug = self._off
 			self.warn = self._warn
 			self.error = self._error
@@ -69,6 +69,12 @@ class sysLogger(object):
 			self.debug = self._off
 			self.warn = self._off
 			self.error = self._error
+			self.info = self._off
+			self.msg = self._off
+		elif level == 'off':
+			self.debug = self._off
+			self.warn = self._off
+			self.error = self._off
 			self.info = self._off
 			self.msg = self._off
 		else:
@@ -115,6 +121,9 @@ _logger = dummyLogger()
 def init(level):
 	global _logger
 	_logger = sysLogger(level)
+
+def levels():
+	return ['debug', 'error', 'warn', 'quiet', 'off']
 
 def debug(msg):
 	_logger.debug(msg)

@@ -2,9 +2,11 @@
 # See LICENSE file.
 
 from _sadm import log
+from _sadm.cmd import flags
 
 def main():
-	log.init('debug')
+	parser = flags.new('sadm-build', desc = 'build sadm profile data')
+	args = flags.parse(parser)
 	log.debug('main')
 	log.warn('warning...')
 	log.error('error...')
