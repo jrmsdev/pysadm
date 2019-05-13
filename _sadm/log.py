@@ -13,13 +13,20 @@ _colError = lambda msg: 'E: ' + msg
 _colInfo = lambda msg: 'I: ' + msg
 _colMsg = lambda msg: msg
 
+_cyan = '\033[0;36m'
+_red = '\033[0;31m'
+_yellow = '\033[0;33m'
+_blue = '\033[0;34m'
+_green = '\033[0;32m'
+_reset = '\033[0m'
+
 # ~ _colored = False
 if _colored:
-	_colDebug = lambda text: '\033[0;36m' + text + '\033[0m'
-	_colError = lambda text: '\033[0;31m' + text + '\033[0m'
-	_colWarn = lambda text: '\033[0;33m' + text + '\033[0m'
-	_colInfo = lambda text: '\033[0;34m' + text + '\033[0m'
-	_colMsg = lambda text: '\033[0;32m' + text + '\033[0m'
+	_colDebug = lambda text: _cyan + text + _reset
+	_colError = lambda text: _red + text + _reset
+	_colWarn = lambda text: _yellow + text + _reset
+	_colInfo = lambda text: _blue + text + _reset
+	_colMsg = lambda text: _green + text + _reset
 
 # debug file prefix
 
