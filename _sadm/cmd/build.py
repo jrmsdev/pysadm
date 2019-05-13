@@ -10,3 +10,6 @@ def main():
 	log.error('error...')
 	log.info('info...')
 	log.msg('done!')
+
+if __name__ == '__main__':
+	main()
