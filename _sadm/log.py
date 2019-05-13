@@ -85,13 +85,13 @@ class _sysLogger(object):
 			self.info = self._off
 			self.msg = self._off
 		else:
-			raise RuntimeError(f"invalid log level: {level}")
+			raise RuntimeError("invalid log level: %s" % level)
 
 	def _off(self, msg):
 		pass
 
 	def _debug(self, msg):
-		print(_colDebug(f"{_getCaller()}: {msg}"), file = self._errs)
+		print(_colDebug("%s: %s" % (_getCaller(), msg)), file = self._errs)
 
 	def _error(self, msg):
 		print(_colError(msg), file = self._errs)

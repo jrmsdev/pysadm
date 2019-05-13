@@ -9,7 +9,7 @@ def main():
 	parser.add_argument('--name', help = 'profile name', default = '')
 	parser.add_argument('cfgfile', help = 'path to config.json file')
 	args = flags.parse(parser)
-	log.debug(f"cfgfile {args.cfgfile}")
+	log.debug("cfgfile %s" % args.cfgfile)
 	log.msg('done!')
 
 if __name__ == '__main__':
