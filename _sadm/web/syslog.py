@@ -1,30 +1,26 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
+import sys
 from _sadm import log
 
 class _webLogger(object):
-	_log = None
 
-	def __init__(self):
-		self._log = log._logger
-		self._log._depth = 4
-
-	def debug(self, msg):
-		self._log.debug(msg)
+	def debug(self, msg, caller = None):
+		print("[SYSLOG] D: %s: %s" % (caller, msg), file = sys.stderr)
 
 	def error(self, msg):
-		self._log.error(msg)
+		print("[SYSLOG] E:", msg, file = sys.stderr)
 
 	def warn(self, msg):
-		self._log.warn(msg)
+		print("[SYSLOG] W:", msg, file = sys.stderr)
 
 	def info(self, msg):
-		self._log.info(msg)
+		print("[SYSLOG] I:", msg, file = sys.stdout)
 
 	def msg(self, msg):
-		self._log.msg(msg)
+		print("[SYSLOG]", msg, file = sys.stdout)
 
 def init():
 	log.info('init web syslog')
-	log.setLogger(_webLogger())
+	log._logger._child = _webLogger()

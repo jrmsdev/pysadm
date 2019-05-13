@@ -42,6 +42,7 @@ class _sysLogger(object):
 
 	def __init__(self, level, outs = None):
 		self._depth = 3
+		self._child = _dummyLogger()
 		self._outs = sys.stdout
 		self._errs = sys.stderr
 		if outs is not None:
@@ -92,23 +93,32 @@ class _sysLogger(object):
 		pass
 
 	def _debug(self, msg):
-		print(_colDebug("%s: %s" % (_getCaller(self._depth), msg)), file = self._errs)
+		caller = _getCaller(self._depth)
+		print(_colDebug("%s: %s" % (caller, msg)), file = self._errs)
+		self._child.debug(msg, caller)
 
 	def _error(self, msg):
 		print(_colError(msg), file = self._errs)
+		self._child.error(msg)
 
 	def _warn(self, msg):
 		print(_colWarn(msg), file = self._errs)
+		self._child.warn(msg)
 
 	def _info(self, msg):
 		print(_colInfo(msg), file = self._outs)
+		self._child.info(msg)
 
 	def _msg(self, msg):
 		print(_colMsg(msg), file = self._outs)
+		self._child.msg(msg)
 
 class _dummyLogger(object):
 
-	def debug(self, msg):
+	def __init__(self):
+		self._child = None
+
+	def debug(self, msg, caller = None):
 		pass
 
 	def error(self, msg):
@@ -126,10 +136,6 @@ class _dummyLogger(object):
 _logger = _dummyLogger()
 
 # public methods
-
-def setLogger(logger):
-	global _logger
-	_logger = logger
 
 def init(level): # pragma: no cover
 	global _logger
