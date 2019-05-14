@@ -48,3 +48,9 @@ def test_initClose():
 	assert isinstance(log._logger._child, log._dummyLogger), \
 		'wrong instance'
 	_cleanup()
+
+def test_initError():
+	assert not path.isfile(_dbfile), 'db exists'
+	syslog._dbfile = '/i/hope/this/is/invalid/enough/syslog.db'
+	syslog.init()
+	assert not path.isfile(_dbfile), 'db was created, so no error happen'
