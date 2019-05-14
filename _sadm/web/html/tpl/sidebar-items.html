@@ -1,8 +1,8 @@
 % setdefault('sidebar', [])
 % setdefault('title', '')
 % itemClass = 'w3-bar-item w3-button'
-% itemColorClass = 'w3-hover-black'
-% curColorClass = 'w3-black w3-text-grey'
+% itemColorClass = 'w3-hover-grey'
+% curColorClass = 'sadm-bgcolor w3-hover-grey'
 % for item in sidebar:
 <%
 	colorClass = itemColorClass
@@ -13,8 +13,7 @@
 		colorClass = curColorClass
 	end
 %>
-<a href="{{item['href']}}"
-	class="{{itemClass}} {{colorClass}}">
-	<p>{{item['desc']}}</p>
-</a>
+	<i class="fa {{item.get('icon', 'fa-home')}}fa-lg"></i>
+	<a href="{{item['href']}}"
+		class="{{itemClass}} {{colorClass}}">{{item['desc']}}</a>
 % end

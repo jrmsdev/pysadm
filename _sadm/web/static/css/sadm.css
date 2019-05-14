@@ -1,30 +1,37 @@
-body, h1, h2, h3, h4, h5, h6 {
+body {
 	margin: 0;
 	padding: 0;
+	background-color: #111;
+}
+body, h1, h2, h3, h4, h5, h6 {
 	font-family: monospace, sans-serif;
-	font-size: 14px;
+	font-size: 1em;
 }
 h6 {
-	font-size: 20px;
+	font-size: 1.15em;
 }
 h5 {
-	font-size: 23px;
+	font-size: 1.30em;
 }
 h4 {
-	font-size: 26px;
+	font-size: 1.45em;
 }
 h3 {
-	font-size: 29px;
+	font-size: 1.60em;
 }
 h2 {
-	font-size: 32px;
+	font-size: 1.75em;
 }
 h1 {
-	font-size: 35px;
+	font-size: 1.9em;
 }
-#main {
-	font-size: 17px;
+.sadm-color {
+	color: #ccc;
 }
-#sidebar {
+.sadm-bgcolor {
 	background-color: #111;
+}
+.sadm-header {
+	padding: 0;
+	margin: 0;
 }
