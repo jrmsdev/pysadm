@@ -16,6 +16,7 @@ def _cleanup():
 	assert not path.isfile(_dbfile), 'could not cleanup'
 
 def _dbInit():
+	assert syslog._dbfile == _dbfile, 'not using testing db file'
 	assert not path.isfile(_dbfile), 'dbfile already exists!'
 	return syslog._dbInit()
 
@@ -53,4 +54,33 @@ def test_initError():
 	assert not path.isfile(_dbfile), 'db exists'
 	syslog._dbfile = '/i/hope/this/is/invalid/enough/syslog.db'
 	syslog.init()
+	syslog._dbfile = _dbfile
 	assert not path.isfile(_dbfile), 'db was created, so no error happen'
+
+def test_logger():
+	l = syslog._logger
+	syslog.init()
+	assert isinstance(l, syslog._webLogger), 'wrong instance'
+	l.error('test.error')
+	l.warn('test.warn')
+	l.info('test.info')
+	l.msg('test.msg')
+	assert syslog._getMsgId(0) is None
+	msg = syslog._getMsgId(1)
+	assert msg[0] == 1
+	assert msg[2] == syslog._LVLMAP['error']
+	assert msg[3] == 'test.error'
+	msg = syslog._getMsgId(2)
+	assert msg[0] == 2
+	assert msg[2] == syslog._LVLMAP['warn']
+	assert msg[3] == 'test.warn'
+	msg = syslog._getMsgId(3)
+	assert msg[0] == 3
+	assert msg[2] == syslog._LVLMAP['info']
+	assert msg[3] == 'test.info'
+	msg = syslog._getMsgId(4)
+	assert msg[0] == 4
+	assert msg[2] == syslog._LVLMAP['msg']
+	assert msg[3] == 'test.msg'
+	syslog.close()
+	_cleanup()

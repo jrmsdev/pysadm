@@ -24,6 +24,7 @@ _LVLMAP = {
 	'msg': 0,
 }
 _LOG_INSERT = 'insert into syslog (level, msg) values (?, ?)'
+_GET_MSG_ID = 'select id, time, level, msg from syslog where id = ?'
 
 # underlying logger class
 
@@ -33,22 +34,22 @@ class _webLogger(object):
 	def error(self, msg):
 		self.db.execute(_LOG_INSERT, (_LVLMAP['error'], msg))
 		self.db.commit()
-		print("[syslog] E:", msg, file = sys.stderr)
+		# ~ print("[syslog] E:", msg, file = sys.stderr)
 
 	def warn(self, msg):
 		self.db.execute(_LOG_INSERT, (_LVLMAP['warn'], msg))
 		self.db.commit()
-		print("[syslog] W:", msg, file = sys.stderr)
+		# ~ print("[syslog] W:", msg, file = sys.stderr)
 
 	def info(self, msg):
 		self.db.execute(_LOG_INSERT, (_LVLMAP['info'], msg))
 		self.db.commit()
-		print("[syslog] I:", msg, file = sys.stdout)
+		# ~ print("[syslog] I:", msg, file = sys.stdout)
 
 	def msg(self, msg):
 		self.db.execute(_LOG_INSERT, (_LVLMAP['msg'], msg))
 		self.db.commit()
-		print("[syslog]", msg, file = sys.stdout)
+		# ~ print("[syslog]", msg, file = sys.stdout)
 
 def _dbInit():
 	log.debug("syslog init %s" % _dbfile)
@@ -70,6 +71,9 @@ def _dbCheck(db, create):
 
 _logger = _webLogger()
 _dbfile = path.expanduser('~/.local/sadm/syslog.db')
+
+def _getMsgId(msgid):
+	return _logger.db.execute(_GET_MSG_ID, str(msgid)).fetchone()
 
 # public methods
 
