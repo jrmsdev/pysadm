@@ -2,7 +2,7 @@
 # See LICENSE file.
 
 from os import unlink, path
-from sqlite3 import Connection
+from sqlite3 import Connection, Row
 
 from _sadm import log
 from _sadm.web import syslog
@@ -25,6 +25,7 @@ _cleanup()
 def test_dbInit():
 	db = _dbInit()
 	assert isinstance(db, Connection), 'wrong instance'
+	assert db.row_factory == Row, 'wrong db row_factory'
 	db.close()
 	assert path.isfile(_dbfile), 'db not created'
 	_cleanup()
@@ -84,3 +85,29 @@ def test_logger():
 	assert msg[3] == 'test.msg'
 	syslog.close()
 	_cleanup()
+
+def test_lastMsgs():
+	l = syslog._logger
+	syslog.init()
+	assert isinstance(l, syslog._webLogger), 'wrong instance'
+	l.error('test.error')
+	l.warn('test.warn')
+	l.info('test.info')
+	l.msg('test.msg')
+	assert syslog._getMsgId(0) is None
+	msgs = syslog.last()
+	assert isinstance(msgs, list)
+	assert isinstance(msgs[0], Row)
+	assert len(msgs) == 4
+	idx = 0
+	for m in msgs:
+		idx += 1
+		assert m['id'] == idx
+	assert msgs[0]['msg'] == 'test.error'
+	assert msgs[1]['msg'] == 'test.warn'
+	assert msgs[2]['msg'] == 'test.info'
+	assert msgs[3]['msg'] == 'test.msg'
+	msgs = syslog.last(2)
+	assert len(msgs) == 2
+	assert msgs[0]['msg'] == 'test.info'
+	assert msgs[1]['msg'] == 'test.msg'

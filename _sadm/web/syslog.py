@@ -10,11 +10,11 @@ from _sadm import log
 # SQL stuff
 
 _DB_CREATE = """
-create table syslog (
-	id integer primary key autoincrement,
-	time text default current_timestamp,
-	level integer,
-	msg text
+CREATE TABLE syslog (
+	id INTEGER PRIMARY KEY AUTOINCREMENT,
+	time TEXT DEFAULT CURRENT_TIMESTAMP,
+	level INTEGER,
+	msg TEXT
 );
 """
 _LVLMAP = {
@@ -23,8 +23,9 @@ _LVLMAP = {
 	'info': 1,
 	'msg': 0,
 }
-_LOG_INSERT = 'insert into syslog (level, msg) values (?, ?)'
-_GET_MSG_ID = 'select id, time, level, msg from syslog where id = ?'
+_LOG_INSERT = 'INSERT INTO syslog (level, msg) VALUES (?, ?)'
+_GET_MSG_ID = 'SELECT id, time, level, msg FROM syslog WHERE id = ?'
+_GET_LAST = 'SELECT id, time, level, msg FROM syslog ORDER BY id LIMIT ?'
 
 # underlying logger class
 
@@ -58,7 +59,9 @@ def _dbInit():
 	if mkdb:
 		dbdir = path.dirname(_dbfile)
 		makedirs(dbdir, mode = 0o700, exist_ok = True)
-	return _dbCheck(sqlite3.connect(_dbfile), mkdb)
+	db = sqlite3.connect(_dbfile)
+	db.row_factory = sqlite3.Row
+	return _dbCheck(db, mkdb)
 
 def _dbCheck(db, create):
 	if create:
@@ -73,7 +76,7 @@ _logger = _webLogger()
 _dbfile = path.expanduser('~/.local/sadm/syslog.db')
 
 def _getMsgId(msgid):
-	return _logger.db.execute(_GET_MSG_ID, str(msgid)).fetchone()
+	return _logger.db.execute(_GET_MSG_ID, [str(msgid)]).fetchone()
 
 # public methods
 
@@ -94,3 +97,6 @@ def close():
 		log.info('syslog end')
 		_logger.db.close()
 		log._logger._child = log._dummyLogger()
+
+def last(limit = 50):
+	return _logger.db.execute(_GET_LAST, [str(limit)]).fetchall()
