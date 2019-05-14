@@ -13,7 +13,7 @@
 	</head>
 	<body class="w3-black w3-text-grey">
 		<header class="w3-center w3-grey w3-text-black">
-			<h6 class="sadm-header">{{title}}</h6>
+			<p class="sadm-header w3-wide">sadm/{{title}}</p>
 		</header>
 		<!-- sidebar -->
 		<div class="w3-sidebar w3-bar-block w3-large w3-black w3-text-grey"
@@ -21,12 +21,21 @@
 			% include('tpl/sidebar.html', sidebar = sidebar)
 		</div>
 		<!-- end of sidebar -->
-		<!-- main content -->
+		<!-- main container -->
 		<div style="margin-left:{{sidebarWidth}}">
+			<!-- main content -->
 			<div class="w3-container sadm-bgcolor sadm-color">
 				{{!base}}
 			</div>
+			<!-- end of main content -->
+			<footer>
+				<p class="w3-small">
+					sadm v{{version}}<br>
+					took {{took}}s<br>
+					<small>{{now}}</small>
+				</p>
+			</footer>
 		</div>
-		<!-- end of main content -->
+		<!-- end of main container -->
 	</body>
 </html>

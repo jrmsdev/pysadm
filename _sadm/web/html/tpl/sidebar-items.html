@@ -9,9 +9,6 @@
 	if item['desc'] == title:
 		colorClass = curColorClass
 	end
-	if title == 'home' and item['desc'] == 'sadm':
-		colorClass = curColorClass
-	end
 %>
 	<i class="fa {{item.get('icon', 'fa-home')}}fa-lg"></i>
 	<a href="{{item['href']}}"
