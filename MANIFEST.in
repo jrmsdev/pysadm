@@ -8,6 +8,7 @@ include .coveragerc
 
 include LICENSE
 include pytest.ini
+include tdata/.gitignore
 
 recursive-include t *.py
 recursive-include _sadm *.css
