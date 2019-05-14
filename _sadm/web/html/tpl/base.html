@@ -1,24 +1,31 @@
 % setdefault('title', 'no title')
-% setdefault('navbar', {})
+% setdefault('sidebar', [])
+% sidebarWidth = '8%'
 <!DOCTYPE html>
-<!-- from https://www.w3schools.com/w3css/tryw3css_templates_dark_portfolio.htm -->
 <html>
-<head>
-	<title>sadm - {{title}}</title>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="/static/lib/w3.css">
-	<link rel="stylesheet" href="/static/css/fonts.css">
-	<link rel="stylesheet" href="/static/css/font-awesome.min.css">
-	<link rel="stylesheet" href="/static/css/sadm.css">
-	<link rel="shortcut icon" href="/static/favicon.ico" />
-</head>
-<body class="w3-black">
-% include('tpl/navbar.html', navbar = navbar)
-<!-- main content -->
-<div id="main" class="w3-padding-large">
-{{!base}}
-</div>
-<!-- end of main content -->
-</body>
+	<head>
+		<title>sadm/{{title}}</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="shortcut icon" href="/static/favicon.ico">
+		<link rel="stylesheet" href="/static/lib/w3.css">
+		<link rel="stylesheet" href="/static/css/sadm.css">
+	</head>
+	<body class="w3-black">
+		<!-- sidebar -->
+		<div id="sidebar" class="w3-sidebar w3-bar-block w3-text-grey"
+			style="width:{{sidebarWidth}}">
+			% include('tpl/sidebar.html', sidebar = sidebar)
+		</div>
+		<!-- end of sidebar -->
+		<!-- main content -->
+		<div id="main" class="w3-container"
+			style="margin-left:{{sidebarWidth}}">
+			<header class="w3-container w3-center w3-text-grey">
+				<h1>{{title}}</h1>
+			</header>
+			{{!base}}
+		</div>
+		<!-- end of main content -->
+	</body>
 </html>
