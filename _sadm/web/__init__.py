@@ -6,15 +6,16 @@ from os import path
 
 from _sadm import log
 
-# load views
-import _sadm.web.view.home
-
 _srcdir = path.abspath(path.dirname(__file__))
 _staticdir = path.join(_srcdir, 'static')
 
 @bottle.route('/static/<filename:path>')
-def static(filename):
+def _static(filename):
 	return bottle.static_file(filename, root = _staticdir, download = False)
+
+# load views
+import _sadm.web.view.home
+import _sadm.web.view.syslog
 
 def start(host, port, debug):
 	htmldir = path.join(_srcdir, 'html')

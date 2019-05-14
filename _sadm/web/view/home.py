@@ -2,7 +2,6 @@
 # See LICENSE file.
 
 from bottle import route, view
-
 from _sadm import log, version
 
 @route('/')

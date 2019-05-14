@@ -1,3 +1,4 @@
+% setdefault('navbar', {})
 <!-- Icon Bar (Sidebar - hidden on small screens) -->
 <nav class="w3-sidebar w3-bar-block w3-small w3-hide-small w3-center">
 	<!-- img src="/static/logo.png" style="width:100%" -->
@@ -11,6 +12,9 @@
 		<p>{{item['desc']}}</p>
 	</a>
 	% end
+	<a href="/syslog" class="w3-bar-item w3-button w3-padding-large w3-hover-black">
+		<p>syslog</p>
+	</a>
 	<a href="/about" class="w3-bar-item w3-button w3-padding-large w3-hover-black">
 		<!-- i class="fa fa-user w3-xxlarge"></i -->
 		<p>about</p>
@@ -24,6 +28,7 @@
 		% for item in navbar:
 		<a href="{{item['href']}}" class="w3-bar-item w3-button" style="width:25% !important">{{item['desc']}}</a>
 		% end
+		<a href="/syslog" class="w3-bar-item w3-button" style="width:25% !important">syslog</a>
 		<a href="/about" class="w3-bar-item w3-button" style="width:25% !important">about</a>
 	</div>
 </div>

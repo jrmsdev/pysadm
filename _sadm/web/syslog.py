@@ -7,6 +7,8 @@ from os import path, makedirs
 
 from _sadm import log
 
+# SQL stuff
+
 _DB_CREATE = """
 create table syslog (
 	id integer primary key autoincrement,
@@ -15,7 +17,6 @@ create table syslog (
 	msg text
 );
 """
-
 _LVLMAP = {
 	'error': 3,
 	'warn': 2,
@@ -23,6 +24,8 @@ _LVLMAP = {
 	'msg': 0,
 }
 _LOG_INSERT = 'insert into syslog (level, msg) values (?, ?)'
+
+# underlying logger class
 
 class _webLogger(object):
 	db = None
@@ -47,7 +50,28 @@ class _webLogger(object):
 		self.db.commit()
 		print("[syslog]", msg, file = sys.stdout)
 
+def _dbInit():
+	log.debug("syslog init %s" % _dbfile)
+	log.debug("sqlite version %s (lib %s)" % (sqlite3.version, sqlite3.sqlite_version))
+	mkdb = not path.isfile(_dbfile)
+	if mkdb:
+		dbdir = path.dirname(_dbfile)
+		makedirs(dbdir, mode = 0o700, exist_ok = True)
+	return _dbCheck(sqlite3.connect(_dbfile), mkdb)
+
+def _dbCheck(db, create):
+	if create:
+		log.debug('create syslog db')
+		db.executescript(_DB_CREATE)
+		db.commit()
+	return db
+
+# default logger
+
 _logger = _webLogger()
+_dbfile = path.expanduser('~/.local/sadm/syslog.db')
+
+# public methods
 
 def init():
 	log.debug('init web syslog')
@@ -66,21 +90,3 @@ def close():
 		log.info('syslog end')
 		_logger.db.close()
 		log._logger._child = log._dummyLogger()
-
-_dbfile = path.expanduser('~/.local/sadm/syslog.db')
-
-def _dbInit():
-	log.debug("syslog init %s" % _dbfile)
-	log.debug("sqlite version %s (lib %s)" % (sqlite3.version, sqlite3.sqlite_version))
-	mkdb = not path.isfile(_dbfile)
-	if mkdb:
-		dbdir = path.dirname(_dbfile)
-		makedirs(dbdir, mode = 0o700, exist_ok = True)
-	return _dbCheck(sqlite3.connect(_dbfile), mkdb)
-
-def _dbCheck(db, create):
-	if create:
-		log.debug('create syslog db')
-		db.executescript(_DB_CREATE)
-		db.commit()
-	return db
