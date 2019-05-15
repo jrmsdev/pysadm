@@ -4,7 +4,7 @@
 from io import StringIO
 from bottle import route, view
 
-from _sadm import log, config
+from _sadm import log
 from _sadm import _cfg as cfg
 from _sadm.web import tpl
 
@@ -20,6 +20,7 @@ def index():
 
 def _getCfg():
 	buf = StringIO()
+	config = cfg.new()
 	config.write(buf)
 	buf.seek(0, 0)
 	return buf.read()
