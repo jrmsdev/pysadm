@@ -3,7 +3,15 @@
 % setdefault('lvlmap', {})
 % rebase('tpl/base.html', title = 'syslog')
 <span id="start"></span>
-<p>show last {{limit}} messages</p>
+<form action="/syslog/last#end" method="GET">
+	<div class="w3-bar">
+		<span class="w3-bar-item">/syslog/last/</span>
+		<input class="w3-bar-item" style="width:5em"
+			name="limit" type="number" value="{{limit}}">
+		<button class="w3-bar-item w3-btn">show</button>
+	</div>
+</form>
+<hr>
 <a href="#end" class="w3-small">go to bottom</a>
 <ul class="w3-ul">
 % for m in msgs:
@@ -14,5 +22,5 @@
 	</li>
 % end
 </ul>
-<a href="#start" class="w3-small">go to top</a>
+<a href="#top" class="w3-small">go to top</a>
 <span id="end"></span>
