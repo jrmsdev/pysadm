@@ -6,6 +6,7 @@ from _sadm.web import tpl
 def test_loaded():
 	assert tpl._viewreg == {
 		'home': True,
+		'profile': True,
 		'syslog': True,
 		'about': True,
 	}, 'missing view'
