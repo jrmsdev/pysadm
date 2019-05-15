@@ -1,6 +1,6 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
-from _sadm import cfg
+from _sadm import _cfg
 
-config = cfg.new()
+config = _cfg.new()

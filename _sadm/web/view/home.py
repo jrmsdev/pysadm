@@ -4,7 +4,8 @@
 from io import StringIO
 from bottle import route, view
 
-from _sadm import log, cfg, config
+from _sadm import log, config
+from _sadm import _cfg as cfg
 from _sadm.web import tpl
 
 @route('/')

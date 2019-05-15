@@ -3,7 +3,7 @@
 
 import argparse
 
-from _sadm import log, version
+from _sadm import log, version, config
 
 def new(prog, desc = ''):
 	p = argparse.ArgumentParser(prog = prog, description = desc)
@@ -13,10 +13,12 @@ def new(prog, desc = ''):
 		action = 'store_true', default = False)
 	p.add_argument('--log', help = 'set log level (error)',
 		default = 'error', choices = log.levels())
-	p.add_argument('--env', help = 'env name (default)',
-		metavar = 'name', default = 'default')
-	p.add_argument('--profile', help = 'profile name (default)',
-		metavar = 'name', default = 'default')
+	defenv = config.get('default', 'env')
+	p.add_argument('--env', help = "env name (%s)" % defenv,
+		metavar = 'name', default = defenv)
+	defprof = config.get('default', 'profile')
+	p.add_argument('--profile', help = "profile name (%s)" % defprof,
+		metavar = 'name', default = defprof)
 	return p
 
 def parse(p):
