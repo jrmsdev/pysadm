@@ -134,12 +134,15 @@ class _dummyLogger(object):
 		pass
 
 _logger = _dummyLogger()
+_curlevel = None
 
 # public methods
 
 def init(level): # pragma: no cover
 	global _logger
+	global _curlevel
 	_logger = _sysLogger(level)
+	_curlevel = level
 
 def levels():
 	return ['debug', 'error', 'warn', 'quiet', 'off']

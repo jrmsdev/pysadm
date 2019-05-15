@@ -23,4 +23,4 @@ def start(host, port, debug):
 	log.debug("start %s" % htmldir)
 	bottle.TEMPLATE_PATH = [htmldir]
 	bottle.run(host = host, port = port, reloader = debug,
-		quiet = not debug, debug = debug)
+		quiet = log._curlevel != 'debug', debug = debug)
