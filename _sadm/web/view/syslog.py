@@ -21,7 +21,6 @@ def index(limit = '100'):
 	lvlmap = dict()
 	for lname, lid in syslog._LVLMAP.items():
 		lvlmap[lid] = lname
-	log.debug("lvlmap: %s" % lvlmap)
 	return {
 		'limit': limit,
 		'msgs': syslog.last(int(limit)),
