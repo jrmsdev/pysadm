@@ -8,4 +8,8 @@
 	Config file: {{cfgfile}}
 </p>
 <hr>
-<pre>{{cfg}}</pre>
+<p>
+% for line in cfg.splitlines():
+	{{line}}<br>
+% end
+</p>
