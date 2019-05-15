@@ -2,7 +2,9 @@
 % setdefault('msgs', [])
 % setdefault('lvlmap', {})
 % rebase('tpl/base.html', title = 'syslog')
+<span id="start"></span>
 <p>show last {{limit}} messages</p>
+<a href="#end" class="w3-small">go to bottom</a>
 <ul class="w3-ul">
 % for m in msgs:
 	% lvl = lvlmap.get(m['level'], 'default')
@@ -12,3 +14,5 @@
 	</li>
 % end
 </ul>
+<a href="#start" class="w3-small">go to top</a>
+<span id="end"></span>
