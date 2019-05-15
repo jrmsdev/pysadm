@@ -25,6 +25,9 @@ h2 {
 h1 {
 	font-size: 1.9em;
 }
+hr {
+	border: 0.5px solid #333;
+}
 .sadm-color {
 	color: #ccc;
 }
