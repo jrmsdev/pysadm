@@ -1,6 +1,7 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
+from os import getenv
 from io import StringIO
 from bottle import route, view
 
@@ -16,6 +17,7 @@ def index():
 	return {
 		'cfgfile': cfg._cfgFile,
 		'cfg': _getCfg(),
+		'user': getenv('USER', 'nouser'),
 	}
 
 def _getCfg():
