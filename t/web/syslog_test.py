@@ -95,19 +95,19 @@ def test_lastMsgs():
 	l.info('test.info')
 	l.msg('test.msg')
 	assert syslog._getMsgId(0) is None
-	msgs = syslog.last()
+	msgs = syslog.last(10)
 	assert isinstance(msgs, list)
 	assert isinstance(msgs[0], Row)
 	assert len(msgs) == 4
-	idx = 0
+	idx = 4
 	for m in msgs:
-		idx += 1
 		assert m['id'] == idx
-	assert msgs[0]['msg'] == 'test.error'
-	assert msgs[1]['msg'] == 'test.warn'
-	assert msgs[2]['msg'] == 'test.info'
-	assert msgs[3]['msg'] == 'test.msg'
+		idx -= 1
+	assert msgs[0]['msg'] == 'test.msg'
+	assert msgs[1]['msg'] == 'test.info'
+	assert msgs[2]['msg'] == 'test.warn'
+	assert msgs[3]['msg'] == 'test.error'
 	msgs = syslog.last(2)
 	assert len(msgs) == 2
-	assert msgs[0]['msg'] == 'test.info'
-	assert msgs[1]['msg'] == 'test.msg'
+	assert msgs[0]['msg'] == 'test.msg'
+	assert msgs[1]['msg'] == 'test.info'

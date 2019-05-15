@@ -25,7 +25,7 @@ _LVLMAP = {
 }
 _LOG_INSERT = 'INSERT INTO syslog (level, msg) VALUES (?, ?)'
 _GET_MSG_ID = 'SELECT id, time, level, msg FROM syslog WHERE id = ?'
-_GET_LAST = 'SELECT id, time, level, msg FROM syslog ORDER BY id LIMIT ?'
+_GET_LAST = 'SELECT id, time, level, msg FROM syslog ORDER BY id DESC LIMIT ?'
 
 # underlying logger class
 
@@ -98,5 +98,5 @@ def close():
 		_logger.db.close()
 		log._logger._child = log._dummyLogger()
 
-def last(limit = 50):
+def last(limit):
 	return _logger.db.execute(_GET_LAST, [str(limit)]).fetchall()
