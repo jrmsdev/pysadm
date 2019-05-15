@@ -13,12 +13,14 @@ def data(view):
 	def wrapper(func):
 		def decorator(*args, **kwargs):
 			_start = datetime.timestamp(datetime.now())
-			log.debug("view data %s" % view)
-			rst = func(*args, **kwargs)
-			rst['view'] = view
-			rst['version'] = version.get()
-			rst['now'] = datetime.strftime(datetime.now(), '%Y-%m-%d %H:%M:%S')
-			rst['took'] = "%.5f" % (datetime.timestamp(datetime.now()) - _start)
-			return rst
+			return _tplData(view, func(*args, **kwargs), _start)
 		return decorator
 	return wrapper
+
+def _tplData(view, d, _start):
+	log.debug("view data %s" % view)
+	d['view'] = view
+	d['version'] = version.get()
+	d['now'] = datetime.strftime(datetime.now(), '%Y-%m-%d %H:%M:%S')
+	d['took'] = "%.5f" % (datetime.timestamp(datetime.now()) - _start)
+	return d
