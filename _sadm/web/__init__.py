@@ -16,6 +16,7 @@ def _static(filename):
 # load views
 import _sadm.web.view.home
 import _sadm.web.view.syslog
+import _sadm.web.view.about
 
 def start(host, port, debug):
 	htmldir = path.join(_srcdir, 'html')

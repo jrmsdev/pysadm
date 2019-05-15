@@ -4,7 +4,12 @@
 from datetime import datetime
 from _sadm import log, version
 
+_viewreg = {}
+
 def data(view):
+	if _viewreg.get(view, False):
+		raise RuntimeError("%s view already registered" % view)
+	_viewreg[view] = True
 	def wrapper(func):
 		def decorator(*args, **kwargs):
 			_start = datetime.timestamp(datetime.now())

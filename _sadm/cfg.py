@@ -4,7 +4,8 @@
 from os import path
 from configparser import ConfigParser
 
-_readFiles = [path.expanduser('~/.config/sadm.cfg')]
+_cfgFile = path.expanduser('~/.config/sadm.cfg')
+_readFiles = [_cfgFile]
 
 def new():
 	config = ConfigParser()
