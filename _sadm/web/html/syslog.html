@@ -1,1 +1,14 @@
+% setdefault(limit, 0)
+% setdefault('msgs', [])
+% setdefault('lvlmap', {})
 % rebase('tpl/base.html', title = 'syslog')
+<p>show last {{limit}} messages</p>
+<ul class="w3-ul">
+% for m in msgs:
+	% lvl = lvlmap.get(m['level'], 'default')
+	<li style="border:0;padding:0">
+		<span class="w3-text-grey">{{m['time']}}</span>
+		<span class="syslog-{{lvl}}">{{m['msg']}}</span>
+	</li>
+% end
+</ul>

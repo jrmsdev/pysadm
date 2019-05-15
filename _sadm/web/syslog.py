@@ -99,4 +99,6 @@ def close():
 		log._logger._child = log._dummyLogger()
 
 def last(limit):
-	return _logger.db.execute(_GET_LAST, [str(limit)]).fetchall()
+	msgs = _logger.db.execute(_GET_LAST, [str(limit)]).fetchall()
+	msgs.reverse()
+	return msgs
