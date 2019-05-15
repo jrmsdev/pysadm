@@ -9,7 +9,7 @@
 % for m in msgs:
 	% lvl = lvlmap.get(m['level'], 'default')
 	<li style="border:0;padding:0">
-		<span class="w3-text-grey">{{m['time']}}</span>
+		<span class="w3-text-grey w3-small">{{m['time']}}</span>
 		<span class="syslog-{{lvl}}">{{m['msg']}}</span>
 	</li>
 % end
