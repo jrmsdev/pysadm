@@ -9,8 +9,8 @@ from _sadm.web import tpl
 @view('error.html')
 @tpl.data('err500')
 def err500(err):
-	log.debug("%s" % type(err))
-	log.error("%s - %s" % (err.status_line, err.exception))
+	log.debug("error type %s" % type(err))
+	log.debug("%s - %s" % (err.status_line, err.exception))
 	return {
 		'err': err,
 	}
@@ -19,7 +19,6 @@ def err500(err):
 @view('error.html')
 @tpl.data('err400')
 def err400(err):
-	log.debug("%s" % type(err))
 	log.debug(err.status_line)
 	return {
 		'err': err,

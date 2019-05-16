@@ -37,6 +37,9 @@ class Config(ConfigParser):
 						e[n] = True
 		return sorted(e.keys())
 
+	def getEnv(self, profile, name):
+		pass
+
 def new():
 	config = Config(
 		defaults = _DEFAULT,
