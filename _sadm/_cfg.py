@@ -4,6 +4,8 @@
 from os import path
 from configparser import ConfigParser
 
+from _sadm.errors import ProfileError
+
 _cfgFile = path.realpath('./sadm.cfg')
 
 _DEFAULT = {
@@ -18,23 +20,17 @@ class Config(ConfigParser):
 		self.read([self._fn], encoding = 'utf-8')
 
 	def listProfiles(self):
-		p = {}
-		for s in self.sections():
-			if s.startswith('profile.'):
-				n = '.'.join(s.split('.')[1:]).strip()
-				if n != '':
-					p[n] = True
-		return sorted(p.keys())
+		return sorted(self.sections())
 
 	def listEnvs(self, profile):
+		if not self.has_section(profile):
+			raise ProfileError("%s profile not found" % profile)
 		e = {}
-		section = "profile.%s" % profile
-		if self.has_section(section):
-			for opt in self.options(section):
-				if opt.startswith('env.'):
-					n = '.'.join(opt.split('.')[1:]).strip()
-					if n != '':
-						e[n] = True
+		for opt in self.options(profile):
+			if opt.startswith('env.'):
+				n = '.'.join(opt.split('.')[1:]).strip()
+				if n != '':
+					e[n] = True
 		return sorted(e.keys())
 
 def new():
