@@ -5,7 +5,6 @@ from os import path
 from configparser import ConfigParser
 
 _cfgFile = path.expanduser('~/.config/sadm.cfg')
-_readFiles = [_cfgFile]
 
 _DEFAULT = {
 	'profile': 'default',
@@ -13,6 +12,10 @@ _DEFAULT = {
 }
 
 class Config(ConfigParser):
+	_fn = None
+
+	def reload(self):
+		self.read([self._fn], encoding = 'utf-8')
 
 	def listProfiles(self):
 		p = {}
@@ -43,5 +46,6 @@ def new():
 		comment_prefixes = ('#', ),
 		delimiters = ('=', ),
 	)
-	config.read(_readFiles, encoding = 'utf-8')
+	config._fn = _cfgFile
+	config.reload()
 	return config

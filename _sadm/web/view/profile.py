@@ -3,8 +3,7 @@
 
 from bottle import route, view
 
-from _sadm import log
-from _sadm import _cfg as cfg
+from _sadm import log, config
 from _sadm.web import tpl
 
 @route('/profile')
@@ -12,18 +11,18 @@ from _sadm.web import tpl
 @tpl.data('profile')
 def index():
 	log.debug('index')
-	config = cfg.new()
 	return {
-		'profiles': _getallProfiles(config),
+		'profiles': _getallProfiles(),
 	}
 
-def _getallProfiles(config):
+def _getallProfiles():
+	config.reload()
 	l = []
 	for p in config.listProfiles():
-		l.append(_getProfile(config, p))
+		l.append(_getProfile(p))
 	return l
 
-def _getProfile(config, p):
+def _getProfile(p):
 	return {
 		'name': p,
 		'envs': config.listEnvs(p),

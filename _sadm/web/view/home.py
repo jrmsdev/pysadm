@@ -5,8 +5,7 @@ from os import getenv
 from io import StringIO
 from bottle import route, view
 
-from _sadm import log
-from _sadm import _cfg as cfg
+from _sadm import log, config
 from _sadm.web import tpl
 
 @route('/')
@@ -15,14 +14,14 @@ from _sadm.web import tpl
 def index():
 	log.debug("index")
 	return {
-		'cfgfile': cfg._cfgFile,
+		'cfgfile': config._fn,
 		'cfg': _getCfg(),
 		'user': getenv('USER', 'nouser'),
 	}
 
 def _getCfg():
 	buf = StringIO()
-	config = cfg.new()
+	config.reload()
 	config.write(buf)
 	buf.seek(0, 0)
 	return buf.read()
