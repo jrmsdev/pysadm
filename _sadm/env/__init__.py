@@ -9,24 +9,25 @@ class Env(object):
 	_name = None
 	_cfgfile = None
 	_profile = None
+	_profName = None
 
 	def __init__(self, profile, name):
 		self._name = name
 		self._profile = Profile(profile)
+		self._profName = self._profile.name()
 		self._load()
 
 	def _load(self):
-		prof = self._profile.name()
-		if not self._name in config.listEnvs(prof):
+		if not self._name in config.listEnvs(self._profName):
 			raise EnvError("%s env not found" % self._name)
 		opt = "env.%s" % self._name
-		self._cfgfile = config.get(prof, opt)
+		self._cfgfile = config.get(self._profName, opt)
 
 	def name(self):
 		return self._name
 
 	def _log(self, func, msg):
-		return func("%s/%s %s" % (self._profile._name, self._name, msg))
+		return func("%s/%s %s" % (self._profName, self._name, msg))
 
 	def log(self, msg):
 		self._log(log.msg, msg)
