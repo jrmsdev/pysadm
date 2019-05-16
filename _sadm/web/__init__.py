@@ -14,6 +14,7 @@ def _static(filename):
 	return bottle.static_file(filename, root = _staticdir, download = False)
 
 # load views
+import _sadm.web.errors
 import _sadm.web.view.home
 import _sadm.web.view.profile
 import _sadm.web.view.syslog

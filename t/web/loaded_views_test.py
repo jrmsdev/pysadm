@@ -9,4 +9,6 @@ def test_loaded():
 		'profile': True,
 		'syslog': True,
 		'about': True,
+		'err500': True,
+		'err400': True,
 	}, 'missing view'
