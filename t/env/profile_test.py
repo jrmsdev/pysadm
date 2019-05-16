@@ -7,7 +7,7 @@ from _sadm.env.profile import Profile
 
 def test_profile(testing_profile):
 	p = testing_profile
-	assert p.name == 'testing'
+	assert p.name() == 'testing'
 
 def test_profileError():
 	with raises(Error, match = 'ProfileError: noname profile not found'):

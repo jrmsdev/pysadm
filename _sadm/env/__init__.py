@@ -16,7 +16,8 @@ class Env(object):
 		self._load()
 
 	def _load(self):
-		if not self.name in config.listEnvs(self.profile.name):
+		prof = self.profile.name()
+		if not self.name in config.listEnvs(prof):
 			raise EnvError("%s env not found" % self.name)
 		opt = "env.%s" % self.name
-		self.cfgfile = config.get(self.profile.name, opt)
+		self.cfgfile = config.get(prof, opt)
