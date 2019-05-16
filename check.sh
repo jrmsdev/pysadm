@@ -1,4 +1,4 @@
-#!/bin/sh -eu
+#!/bin/bash -eu
 check-manifest
 python3 setup.py check
 pytest

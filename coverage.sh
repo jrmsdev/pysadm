@@ -1,4 +1,4 @@
-#!/bin/sh -eu
+#!/bin/bash -eu
 python3 setup.py clean
 python3 setup.py build
 coverage run -m pytest $@
