@@ -4,7 +4,7 @@
 from os import path
 from configparser import ConfigParser
 
-_cfgFile = path.expanduser('~/.config/sadm.cfg')
+_cfgFile = path.realpath('./sadm.cfg')
 
 _DEFAULT = {
 	'profile': 'default',

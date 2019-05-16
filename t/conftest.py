@@ -3,16 +3,17 @@
 
 import pytest
 
-from _sadm import log, _cfg, env
+import _sadm
+import _sadm.log
+import _sadm._cfg
+
+_sadm.log._colored = False
+_sadm._cfg._cfgFile = './tdata/sadm.cfg'
+del _sadm.config
+_sadm.config = _sadm._cfg.new()
+
+from _sadm import env
 from _sadm.env import profile
-
-log._colored = False
-
-_cfg._cfgFile = 'tdata/sadm.cfg'
-config = _cfg.new()
-
-profile.config = config
-env.config = config
 
 @pytest.fixture(scope = 'module')
 def testing_profile(request):
