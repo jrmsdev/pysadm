@@ -11,6 +11,7 @@ include pytest.ini
 include tdata/.gitignore
 
 recursive-include t *.py
+recursive-include tdata *.cfg
 recursive-include _sadm *.css
 recursive-include _sadm *.html
 recursive-include _sadm *.ico

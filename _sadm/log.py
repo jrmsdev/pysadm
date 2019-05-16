@@ -21,12 +21,18 @@ _green = '\033[0;32m'
 _reset = '\033[0m'
 
 # ~ _colored = False
-if _colored: # pragma: no cover
-	_colDebug = lambda msg: _cyan + msg + _reset
-	_colError = lambda msg: _red + msg + _reset
-	_colWarn = lambda msg: _yellow + msg + _reset
-	_colInfo = lambda msg: _blue + msg + _reset
-	_colMsg = lambda msg: _green + msg + _reset
+def _setColored():
+	global _colDebug
+	global _colWarn
+	global _colError
+	global _colInfo
+	global _colMsg
+	if _colored: # pragma: no cover
+		_colDebug = lambda msg: _cyan + msg + _reset
+		_colError = lambda msg: _red + msg + _reset
+		_colWarn = lambda msg: _yellow + msg + _reset
+		_colInfo = lambda msg: _blue + msg + _reset
+		_colMsg = lambda msg: _green + msg + _reset
 
 # debug file info
 
@@ -141,6 +147,7 @@ _curlevel = None
 def init(level): # pragma: no cover
 	global _logger
 	global _curlevel
+	_setColored()
 	_logger = _sysLogger(level)
 	_curlevel = level
 
