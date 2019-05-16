@@ -13,8 +13,9 @@ class Env(object):
 	def __init__(self, profile, name):
 		self.name = name
 		self.profile = Profile(profile)
+		self._load()
 
-	def load(self):
+	def _load(self):
 		if not self.name in config.listEnvs(self.profile.name):
 			raise EnvError("%s env not found" % self.name)
 		opt = "env.%s" % self.name
