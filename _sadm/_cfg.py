@@ -12,8 +12,30 @@ _DEFAULT = {
 	'env': 'default',
 }
 
+class Config(ConfigParser):
+
+	def listProfiles(self):
+		p = {}
+		for s in self.sections():
+			if s.startswith('profile.'):
+				n = '.'.join(s.split('.')[1:]).strip()
+				if n != '':
+					p[n] = True
+		return sorted(p.keys())
+
+	def listEnvs(self, profile):
+		e = {}
+		section = "profile.%s" % profile
+		if self.has_section(section):
+			for opt in self.options(section):
+				if opt.startswith('env.'):
+					n = '.'.join(opt.split('.')[1:]).strip()
+					if n != '':
+						e[n] = True
+		return sorted(e.keys())
+
 def new():
-	config = ConfigParser(
+	config = Config(
 		defaults = _DEFAULT,
 		strict = True,
 		default_section = 'default',

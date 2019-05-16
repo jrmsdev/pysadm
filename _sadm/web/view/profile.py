@@ -18,28 +18,13 @@ def index():
 	}
 
 def _getallProfiles(config):
-	d = {}
-	for s in config.sections():
-		log.debug("section %s" % s)
-		if s.startswith('profile.'):
-			p = '.'.join(s.split('.')[1:])
-			d[p] = _getProfile(config, p)
 	l = []
-	for n in sorted(d.keys()):
-		l.append(d[n])
+	for p in config.listProfiles():
+		l.append(_getProfile(config, p))
 	return l
 
 def _getProfile(config, p):
 	return {
 		'name': p,
-		'envs': _getProfileEnvs(config, p),
+		'envs': config.listEnvs(p),
 	}
-
-def _getProfileEnvs(config, p):
-	e = {}
-	for n in config.options("profile.%s" % p):
-		log.debug("option %s" % n)
-		if n.startswith('env.'):
-			env = '.'.join(n.split('.')[1:])
-			e[env] = True
-	return sorted(e.keys())
