@@ -1,4 +1,4 @@
-#!/bin/bash -eu
+#!/bin/sh -eu
 
 ENVDIR=${1:-'/opt/venv/pysadm'}
 PIP=${ENVDIR}/bin/pip
