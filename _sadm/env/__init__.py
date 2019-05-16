@@ -24,3 +24,19 @@ class Env(object):
 
 	def name(self):
 		return self._name
+
+	def _log(self, func, msg):
+		return func("%s/%s %s" % (self._profile._name, self._name, msg))
+
+	def log(self, msg):
+		self._log(log.msg, msg)
+
+	def warn(self, msg):
+		self._log(log.warn, msg)
+
+	def debug(self, msg):
+		self._log(log.debug, msg)
+
+	def error(self, msg):
+		self._log(log.error, msg)
+		raise EnvError(msg)
