@@ -2,12 +2,19 @@
 # See LICENSE file.
 
 from configparser import ConfigParser
-from _sadm import _cfg as cfg
+from _sadm import _cfg
 
 def test_cfg():
-	c = cfg.new()
+	assert _cfg._DEFAULT['name'] == ''
+	assert _cfg._DEFAULT['profile'] == 'default'
+	assert _cfg._DEFAULT['env'] == 'default'
+	c = _cfg.new()
 	assert isinstance(c, ConfigParser)
-	assert len(c.defaults()) == 2
+	assert c.name() == 'sadmtest'
+	assert len(c.defaults()) == 3
+	assert c.get('default', 'name') == 'sadmtest'
+	assert c.get('default', 'profile') == 'default'
+	assert c.get('default', 'env') == 'default'
 	assert len(c.sections()) == 1
 	assert c.has_section('testing')
 	assert c.get('testing', 'dir') == './tdata'

@@ -9,12 +9,27 @@ from _sadm.errors import ProfileError
 _cfgFile = path.realpath('./sadm.cfg')
 
 _DEFAULT = {
+	'name': '',
 	'profile': 'default',
 	'env': 'default',
 }
 
 class Config(ConfigParser):
 	_fn = None
+	_name = None
+
+	def _init(self):
+		self._fn = _cfgFile
+		self.reload()
+		self._name = self.get('default', 'name')
+		if self._name == '':
+			self._name = self._getName()
+
+	def _getName(self):
+		return path.basename(path.dirname(self._fn)).strip()
+
+	def name(self):
+		return self._name
 
 	def reload(self):
 		self.read([self._fn], encoding = 'utf-8')
@@ -42,6 +57,5 @@ def new():
 		comment_prefixes = ('#', ),
 		delimiters = ('=', ),
 	)
-	config._fn = _cfgFile
-	config.reload()
+	config._init()
 	return config
