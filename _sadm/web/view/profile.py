@@ -14,8 +14,7 @@ def index():
 	log.debug('index')
 	config = cfg.new()
 	return {
-		# ~ 'profiles': _getallProfiles(config),
-		'profiles': [],
+		'profiles': _getallProfiles(config),
 	}
 
 def _getallProfiles(config):
