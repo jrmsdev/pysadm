@@ -10,8 +10,6 @@ include LICENSE
 include pytest.ini
 include tdata/.gitignore
 
-recursive-include t *.py
-recursive-include tdata *.cfg
 recursive-include _sadm *.css
 recursive-include _sadm *.html
 recursive-include _sadm *.ico
@@ -19,3 +17,7 @@ recursive-include _sadm *.png
 recursive-include _sadm *.ttf
 recursive-include _sadm *.woff
 recursive-include _sadm *.woff2
+
+recursive-include t *.py
+recursive-include tdata *.cfg
+recursive-include tdata *.json

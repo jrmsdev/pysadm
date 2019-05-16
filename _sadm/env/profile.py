@@ -12,12 +12,5 @@ class Profile(object):
 		self._load()
 
 	def _load(self):
-		found = None
-		for s in config.sections():
-			if s.startswith('profile.'):
-				n = '.'.join(s.split('.')[1:])
-				if self.name == n:
-					found = n
-					break
-		if found is None:
+		if not config.has_section(self.name):
 			raise ProfileError("%s profile not found" % self.name)

@@ -3,14 +3,15 @@
 
 import pytest
 
-import _sadm
-import _sadm.log
-import _sadm._cfg
+from _sadm import log
+log._colored = False
 
-_sadm.log._colored = False
-_sadm._cfg._cfgFile = './tdata/sadm.cfg'
+from _sadm import _cfg
+_cfg._cfgFile = './tdata/sadm.cfg'
+
+import _sadm
 del _sadm.config
-_sadm.config = _sadm._cfg.new()
+_sadm.config = _cfg.new()
 
 from _sadm import env
 from _sadm.env import profile
