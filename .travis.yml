@@ -9,7 +9,9 @@ git:
   submodules: false
 
 branches:
-  only: master
+  only:
+    - master
+    - next
 
 matrix:
   fast_finish: true
