@@ -1,8 +1,10 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
+from pytest import raises
 from configparser import ConfigParser
 from _sadm import _cfg
+from _sadm.errors import Error
 
 def test_cfg():
 	assert _cfg._DEFAULT['name'] == ''
@@ -21,3 +23,8 @@ def test_cfg():
 	assert c.get('testing', 'env.testing') == 'testing/config.json'
 	assert c.listProfiles() == ['testing']
 	assert c.listEnvs('testing') == ['testing']
+
+def test_profile_error():
+	c = _cfg.new()
+	with raises(Error, match = 'ProfileError: noprofile profile not found'):
+		c.listEnvs('noprofile')
