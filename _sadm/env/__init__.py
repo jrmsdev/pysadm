@@ -6,18 +6,21 @@ from _sadm.errors import EnvError
 from _sadm.env.profile import Profile
 
 class Env(object):
-	name = None
-	profile = None
-	cfgfile = None
+	_name = None
+	_cfgfile = None
+	_profile = None
 
 	def __init__(self, profile, name):
-		self.name = name
-		self.profile = Profile(profile)
+		self._name = name
+		self._profile = Profile(profile)
 		self._load()
 
 	def _load(self):
-		prof = self.profile.name()
-		if not self.name in config.listEnvs(prof):
-			raise EnvError("%s env not found" % self.name)
-		opt = "env.%s" % self.name
-		self.cfgfile = config.get(prof, opt)
+		prof = self._profile.name()
+		if not self._name in config.listEnvs(prof):
+			raise EnvError("%s env not found" % self._name)
+		opt = "env.%s" % self._name
+		self._cfgfile = config.get(prof, opt)
+
+	def name(self):
+		return self._name

@@ -9,12 +9,13 @@ from _sadm.env.profile import Profile
 def test_env(testing_env):
 	e = testing_env
 	assert isinstance(e, Env)
-	assert e.name == 'testing'
-	assert e.cfgfile == 'testing/config.json'
-	assert isinstance(e.profile, Profile)
+	assert e._cfgfile == 'testing/config.json'
+	assert e.name() == 'testing'
+	assert isinstance(e._profile, Profile)
+	assert e._profile.name() == 'testing'
 
 def test_env_error(testing_env):
 	e = testing_env
-	e.name = 'noenv'
+	e._name = 'noenv'
 	with raises(Error, match = 'EnvError: noenv env not found'):
 		e._load()
