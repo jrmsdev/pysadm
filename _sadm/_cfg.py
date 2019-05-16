@@ -39,7 +39,7 @@ class Config(ConfigParser):
 
 	def listEnvs(self, profile):
 		if not self.has_section(profile):
-			raise ProfileError("%s profile not found" % profile)
+			raise ProfileError("config profile %s not found" % profile)
 		e = {}
 		for opt in self.options(profile):
 			if opt.startswith('env.'):

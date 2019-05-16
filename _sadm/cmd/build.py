@@ -1,24 +1,28 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
-from _sadm import log
+import sys
+from _sadm import log, build
+from _sadm.errors import EnvError
 from _sadm.env import Env
 from _sadm.cmd import flags
 
 def _getArgs():
 	parser = flags.new('sadm-build', desc = 'build sadm env')
-	parser.add_argument('cfgfile', help = 'path to config.json file')
 	return flags.parse(parser)
 
 def main():
 	args = _getArgs()
-	log.debug("cfgfile %s" % args.cfgfile)
+	log.debug("build %s/%s" % (args.profile, args.env))
 	try:
-		env = Env(args.profile, args.env, args.cfgfile)
+		env = Env(args.profile, args.env)
+		build.run(env)
+	except EnvError:
+		return 1
 	except Exception as err:
 		log.error("%s" % err)
-	else:
-		log.msg('done!')
+		return 2
+	return 0
 
 if __name__ == '__main__':
-	main()
+	sys.exit(main())

@@ -95,11 +95,13 @@ class _sysLogger(object):
 		else:
 			raise RuntimeError("invalid log level: %s" % level)
 
-	def _off(self, msg):
+	def _off(self, msg, depth = None):
 		pass
 
-	def _debug(self, msg):
-		caller = _getCaller(self._depth)
+	def _debug(self, msg, depth = None):
+		if depth is None:
+			depth = self._depth
+		caller = _getCaller(depth)
 		print(_colDebug("%s: %s" % (caller, msg)), file = self._errs)
 		# no debug info for child logger
 
@@ -124,7 +126,7 @@ class _dummyLogger(object):
 	def __init__(self):
 		self._child = None
 
-	def debug(self, msg):
+	def debug(self, msg, depth = None):
 		pass
 
 	def error(self, msg):
@@ -154,8 +156,8 @@ def init(level): # pragma: no cover
 def levels():
 	return ['debug', 'error', 'warn', 'quiet', 'off']
 
-def debug(msg):
-	_logger.debug(msg)
+def debug(msg, depth = None):
+	_logger.debug(msg, depth)
 
 def error(msg):
 	_logger.error(msg)

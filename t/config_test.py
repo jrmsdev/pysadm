@@ -15,8 +15,8 @@ def test_cfg():
 	assert c.name() == 'sadmtest'
 	assert len(c.defaults()) == 3
 	assert c.get('default', 'name') == 'sadmtest'
-	assert c.get('default', 'profile') == 'default'
-	assert c.get('default', 'env') == 'default'
+	assert c.get('default', 'profile') == 'testing'
+	assert c.get('default', 'env') == 'testing'
 	assert len(c.sections()) == 1
 	assert c.has_section('testing')
 	assert c.get('testing', 'dir') == './tdata'
@@ -26,5 +26,5 @@ def test_cfg():
 
 def test_profile_error():
 	c = _cfg.new()
-	with raises(Error, match = 'ProfileError: noprofile profile not found'):
+	with raises(Error, match = 'ProfileError: config profile noprofile not found'):
 		c.listEnvs('noprofile')

@@ -18,6 +18,7 @@ class Env(object):
 		self._load()
 
 	def _load(self):
+		log.debug("env load %s" % self._name)
 		if not self._name in config.listEnvs(self._profName):
 			raise EnvError("%s env not found" % self._name)
 		opt = "env.%s" % self._name
@@ -27,7 +28,7 @@ class Env(object):
 		return self._name
 
 	def _log(self, func, msg):
-		return func("%s/%s %s" % (self._profName, self._name, msg))
+		func("%s/%s %s" % (self._profName, self._name, msg))
 
 	def log(self, msg):
 		self._log(log.msg, msg)
@@ -36,7 +37,7 @@ class Env(object):
 		self._log(log.warn, msg)
 
 	def debug(self, msg):
-		self._log(log.debug, msg)
+		log.debug("%s/%s %s" % (self._profName, self._name, msg), depth = 4)
 
 	def error(self, msg):
 		self._log(log.error, msg)
