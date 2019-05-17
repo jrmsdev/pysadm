@@ -5,8 +5,7 @@ class Error(Exception):
 	typ = None
 	msg = None
 
-	def __init__(self, typ, msg):
-		self.typ = typ
+	def __init__(self, msg):
 		self.msg = msg
 
 	def __str__(self):
@@ -16,7 +15,10 @@ class Error(Exception):
 		return "<sadm.%s: %s>" % (self.typ, self.msg)
 
 	def __eq__(self, err):
-		return self.typ == err.typ and self.msg == err.msg
+		return self.typ == err.typ
 
-ProfileError = lambda msg: Error('ProfileError', msg)
-EnvError = lambda msg: Error('EnvError', msg)
+class ProfileError(Error):
+	typ = 'ProfileError'
+
+class EnvError(Error):
+	typ = 'EnvError'

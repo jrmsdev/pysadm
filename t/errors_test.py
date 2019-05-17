@@ -4,7 +4,12 @@
 from _sadm.errors import Error
 
 def test_error():
-	err = Error('errType', 'errMsg')
-	assert err == Error('errType', 'errMsg')
+	err = Error('errMsg')
+	err.typ = 'errType'
 	assert str(err) == 'errType: errMsg'
 	assert repr(err) == '<sadm.errType: errMsg>'
+	err2 = Error('errMsg')
+	err2.typ = 'errType'
+	assert err == err2
+	err2.typ = 'errType2'
+	assert err != err2
