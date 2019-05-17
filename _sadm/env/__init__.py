@@ -12,6 +12,7 @@ class Env(object):
 	_profile = None
 	_profName = None
 	_logtag = None
+	_run = None
 	settings = None
 
 	def __init__(self, profile, name):
@@ -19,6 +20,7 @@ class Env(object):
 		self._profile = Profile(profile)
 		self._profName = self._profile.name()
 		self._logtag = ''
+		self._run = {}
 		self._load()
 
 	def _load(self):
@@ -37,22 +39,13 @@ class Env(object):
 		self.debug("cfgfile %s" % self._cfgfile)
 
 	def _loadSettings(self):
-		self.setLogtag('configure')
-		self.log('start')
 		self.settings = plugins.configure(self, self._cfgfile)
-		self.log('done')
-		self.setLogtag('')
 
 	def name(self):
 		return self._name
 
 	def profile(self):
 		return self._profName
-
-	def setLogtag(self, tag):
-		prev = self._logtag
-		self._logtag = "[%s]" % tag
-		return prev
 
 	def _log(self, func, msg):
 		func("%s/%s%s %s" % (self._profName, self._name, self._logtag, msg))
@@ -70,3 +63,17 @@ class Env(object):
 	def error(self, msg):
 		self._log(log.error, msg)
 		return EnvError(msg)
+
+	def start(self, action):
+		if self._run.get(action, None) is not None:
+			raise self.error("%s action already started" % action)
+		self._logtag = "[%s]" % action
+		self.log('start')
+		self._run[action] = True
+
+	def end(self, action):
+		if self._run.get(action, None) is None:
+			raise self.error("%s action was not started" % action)
+		del self._run[action]
+		self.log('end')
+		self._logtag = ''

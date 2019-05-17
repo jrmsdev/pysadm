@@ -12,8 +12,10 @@ from _sadm.configure import pluginsList
 import _sadm.plugin
 
 def configure(env, cfgfile):
+	env.start('configure')
 	fn = _getFilename(env, cfgfile)
 	data = _load(env, fn)
+	env.end('configure')
 	return Settings(data)
 
 def _getFilename(env, cfgfile):
@@ -31,5 +33,5 @@ def _load(env, fn):
 	if n != env.name():
 		raise env.error("invalid config name '%s'" % n)
 	for p in pluginsList():
-		env.debug("init %s" % p)
+		env.log("plugin %s" % p)
 	return data
