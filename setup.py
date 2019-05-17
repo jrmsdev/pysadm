@@ -5,9 +5,15 @@
 
 # https://packaging.python.org/guides/distributing-packages-using-setuptools/
 
+from os import makedirs, path
 from setuptools import setup, find_packages
 
 def main():
+
+	if not path.isfile('./build/.gitignore'):
+		makedirs('./build', exist_ok = True)
+		with open('./build/.gitignore', 'w') as fh:
+			fh.write('*\n')
 
 	with open('requirements.txt', 'r') as fh:
 		deps = fh.read().splitlines()
