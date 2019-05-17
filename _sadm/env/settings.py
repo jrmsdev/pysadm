@@ -31,5 +31,9 @@ class Settings(object):
 	def _load(self):
 		log.debug("load %s" % self._filename)
 		with open(self._filename, 'r') as fh:
-			return json.load(fh)
-		return {}
+			self._data = json.load(fh)
+		n = self._data.get('name', '')
+		if n != self._env:
+			err = EnvError("invalid config name '%s'" % n)
+			log.error(str(err))
+			raise err

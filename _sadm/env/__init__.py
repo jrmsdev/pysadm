@@ -21,7 +21,6 @@ class Env(object):
 		self._profName = self._profile.name()
 		self._logtag = ''
 		self._load()
-		self.setLogtag('configure')
 		plugins.configure(self)
 
 	def _load(self):
