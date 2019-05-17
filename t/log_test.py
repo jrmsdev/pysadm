@@ -96,3 +96,8 @@ def test_lvlOff():
 def test_lvlInvalid():
 	with raises(RuntimeError, match = 'invalid log level: invalid'):
 		log._sysLogger('invalid')
+
+def test_debugTag():
+	l, s = _sysLogger('debug')
+	l.debug('test', tag = 'tag')
+	assert s.getvalue().startswith('D: tag ')
