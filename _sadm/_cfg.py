@@ -12,6 +12,7 @@ _DEFAULT = {
 	'name': '',
 	'profile': 'default',
 	'env': 'default',
+	'dir': '',
 }
 
 class Config(ConfigParser):

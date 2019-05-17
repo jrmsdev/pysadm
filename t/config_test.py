@@ -13,10 +13,11 @@ def test_cfg():
 	c = _cfg.new()
 	assert isinstance(c, ConfigParser)
 	assert c.name() == 'sadmtest'
-	assert len(c.defaults()) == 3
+	assert len(c.defaults()) == 4
 	assert c.get('default', 'name') == 'sadmtest'
 	assert c.get('default', 'profile') == 'testing'
 	assert c.get('default', 'env') == 'testing'
+	assert c.get('default', 'dir') == ''
 	assert len(c.sections()) == 1
 	assert c.has_section('testing')
 	assert c.get('testing', 'dir') == './tdata'

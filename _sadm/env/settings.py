@@ -29,6 +29,7 @@ class Settings(object):
 		return path.join(path.normpath(pdir), cfgfile)
 
 	def _load(self):
+		log.debug("load %s" % self._filename)
 		with open(self._filename, 'r') as fh:
 			return json.load(fh)
 		return {}
