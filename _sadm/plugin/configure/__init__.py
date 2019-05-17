@@ -4,6 +4,7 @@
 _reg = {}
 
 def register(name):
-	if _reg.get(name, None) is not None:
+	n = name.split('.')[-1]
+	if _reg.get(n, None) is not None:
 		raise RuntimeError("plugin %s already registered" % name)
-	_reg[name] = True
+	_reg[n] = name

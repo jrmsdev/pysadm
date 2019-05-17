@@ -6,8 +6,8 @@ from _sadm.plugin import configure
 
 def test_reg():
 	assert configure._reg == {}
-	configure.register('plugin')
-	assert configure._reg == {'plugin': True}
+	configure.register('_sadm.plugin.test')
+	assert configure._reg == {'test': '_sadm.plugin.test'}
 	with raises(RuntimeError):
-		configure.register('plugin')
-	assert configure._reg == {'plugin': True}
+		configure.register('_sadm.plugin.test')
+	assert configure._reg == {'test': '_sadm.plugin.test'}
