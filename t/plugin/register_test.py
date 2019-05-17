@@ -4,12 +4,21 @@
 from pytest import raises
 from _sadm.plugin import configure
 
+expectPlugins = {
+	'sadm': '_sadm.plugin.sadm',
+}
+
+def test_registered_plugins():
+	assert configure._reg == expectPlugins
+
 def test_reg():
 	configure.register(__name__)
 	assert configure._reg['register_test'] == 'register_test'
+	assert configure._reg.get('register_test', None) is not None
 	with raises(RuntimeError):
 		configure.register(__name__)
-	assert configure._reg == {
-		'register_test': 'register_test',
-		'sadm': '_sadm.plugin.sadm',
-	}
+	del configure._reg['register_test']
+	assert configure._reg.get('register_test', None) is None
+
+def test_pluginsList():
+	assert [p for p in configure.pluginsList()] == [n for n in expectPlugins.keys()]

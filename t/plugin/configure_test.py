@@ -2,6 +2,7 @@
 # See LICENSE file.
 
 from _sadm.env.settings import Settings
+from _sadm.plugin import configure
 
 def test_configure(testing_env):
 	# plugins.configure is run on Env.__init__

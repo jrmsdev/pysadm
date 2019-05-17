@@ -8,3 +8,7 @@ def register(name):
 	if _reg.get(n, None) is not None:
 		raise RuntimeError("plugin %s already registered" % name)
 	_reg[n] = name
+
+def pluginsList():
+	for n in sorted(_reg.keys()):
+		yield n
