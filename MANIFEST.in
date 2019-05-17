@@ -21,3 +21,6 @@ recursive-include _sadm *.woff2
 recursive-include t *.py
 recursive-include tdata *.cfg
 recursive-include tdata *.json
+
+recursive-include venv *.sh
+recursive-include venv *.txt
