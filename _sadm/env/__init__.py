@@ -4,12 +4,14 @@
 from _sadm import log, config
 from _sadm.errors import EnvError
 from _sadm.env.profile import Profile
+from _sadm.env.settings import Settings
 
 class Env(object):
 	_name = None
 	_cfgfile = None
 	_profile = None
 	_profName = None
+	settings = None
 
 	def __init__(self, profile, name):
 		self._name = name
@@ -25,11 +27,15 @@ class Env(object):
 		self._cfgfile = config.get(self._profName, opt)
 		self._cfgfile = self._cfgfile.strip()
 		self._loadcfg()
+		self._loadSettings()
 
 	def _loadcfg(self):
 		if self._cfgfile == '':
 			self.error('config file not set')
 		self.debug("cfgfile %s" % self._cfgfile)
+
+	def _loadSettings(self):
+		self.settings = Settings(self._profName, self._name)
 
 	def name(self):
 		return self._name
