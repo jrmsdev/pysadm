@@ -3,7 +3,7 @@
 
 import sys
 from _sadm import log, build
-from _sadm.errors import EnvError
+from _sadm.errors import Error, EnvError
 from _sadm.env import Env
 from _sadm.cmd import flags
 
@@ -19,7 +19,7 @@ def main():
 		build.run(env)
 	except EnvError:
 		return 1
-	except Exception as err:
+	except Error as err:
 		log.error("%s" % err)
 		return 2
 	return 0

@@ -6,3 +6,4 @@ def run(env):
 	env.debug('run')
 	env.log('start')
 	env.log('done')
+	env.setLogtag('')

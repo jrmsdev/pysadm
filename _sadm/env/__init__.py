@@ -4,7 +4,6 @@
 from _sadm import log, config
 from _sadm.errors import EnvError
 from _sadm.env.profile import Profile
-from _sadm.env.settings import Settings
 from _sadm.plugin.configure import plugins
 
 class Env(object):
@@ -21,12 +20,11 @@ class Env(object):
 		self._profName = self._profile.name()
 		self._logtag = ''
 		self._load()
-		plugins.configure(self)
 
 	def _load(self):
 		self.debug('load')
 		if not self._name in config.listEnvs(self._profName):
-			self.error('env not found')
+			raise self.error('env not found')
 		opt = "env.%s" % self._name
 		self._cfgfile = config.get(self._profName, opt)
 		self._cfgfile = self._cfgfile.strip()
@@ -35,14 +33,21 @@ class Env(object):
 
 	def _loadcfg(self):
 		if self._cfgfile == '':
-			self.error('config file not set')
+			raise self.error('config file not set')
 		self.debug("cfgfile %s" % self._cfgfile)
 
 	def _loadSettings(self):
-		self.settings = Settings(self._profName, self._name, self._cfgfile)
+		self.setLogtag('configure')
+		self.log('start')
+		self.settings = plugins.configure(self, self._cfgfile)
+		self.log('done')
+		self.setLogtag('')
 
 	def name(self):
 		return self._name
+
+	def profile(self):
+		return self._profName
 
 	def setLogtag(self, tag):
 		prev = self._logtag
@@ -64,4 +69,4 @@ class Env(object):
 
 	def error(self, msg):
 		self._log(log.error, msg)
-		raise EnvError(msg)
+		return EnvError(msg)
