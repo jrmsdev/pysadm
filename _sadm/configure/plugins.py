@@ -6,7 +6,10 @@ from os import path
 
 from _sadm import config
 from _sadm.env.settings import Settings
-from _sadm.plugin.configure import pluginsList
+from _sadm.configure import pluginsList
+
+# load plugins
+import _sadm.plugin
 
 def configure(env, cfgfile):
 	fn = _getFilename(env, cfgfile)

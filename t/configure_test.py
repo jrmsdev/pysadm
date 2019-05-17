@@ -2,9 +2,9 @@
 # See LICENSE file.
 
 from _sadm.env.settings import Settings
-from _sadm.plugin import configure
+from _sadm.configure import plugins
 
 def test_configure(testing_env):
-	# plugins.configure is run on Env.__init__
-	s = testing_env.settings
+	env = testing_env
+	s = plugins.configure(env, env._cfgfile)
 	assert isinstance(s, Settings)

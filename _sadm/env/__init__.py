@@ -4,7 +4,7 @@
 from _sadm import log, config
 from _sadm.errors import EnvError
 from _sadm.env.profile import Profile
-from _sadm.plugin.configure import plugins
+from _sadm.configure import plugins
 
 class Env(object):
 	_name = None

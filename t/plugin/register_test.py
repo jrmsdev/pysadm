@@ -2,14 +2,14 @@
 # See LICENSE file.
 
 from pytest import raises
-from _sadm.plugin import configure
+from _sadm import configure
 
 expectPlugins = {
 	'sadm': '_sadm.plugin.sadm',
 }
 
 def test_registered_plugins():
-	assert configure._reg == expectPlugins
+	assert configure._reg == expectPlugins, 'missing plugin'
 
 def test_reg():
 	configure.register(__name__)
@@ -21,4 +21,5 @@ def test_reg():
 	assert configure._reg.get('register_test', None) is None
 
 def test_pluginsList():
-	assert [p for p in configure.pluginsList()] == [n for n in expectPlugins.keys()]
+	assert [p for p in configure.pluginsList()] == [n for n in expectPlugins.keys()], \
+		'missing pluginList'
