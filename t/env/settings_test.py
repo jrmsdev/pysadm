@@ -8,4 +8,4 @@ def test_settings(testing_settings):
 	assert isinstance(s, Settings)
 	assert s._profile == 'testing'
 	assert s._env == 'testing'
-	assert s._filename == 'testing/config.json'
+	assert s._filename == 'tdata/testing/config.json'
