@@ -23,7 +23,6 @@ class Env(object):
 		self._load()
 		self.setLogtag('configure')
 		plugins.configure(self)
-		self.setLogtag('')
 
 	def _load(self):
 		self.debug('load')
@@ -47,13 +46,12 @@ class Env(object):
 		return self._name
 
 	def setLogtag(self, tag):
-		self._logtag = tag
+		prev = self._logtag
+		self._logtag = "[%s]" % tag
+		return prev
 
 	def _log(self, func, msg):
-		tag = ''
-		if self._logtag != '':
-			tag = " [%s]" % self._logtag
-		func("%s/%s%s %s" % (self._profName, self._name, tag, msg))
+		func("%s/%s%s %s" % (self._profName, self._name, self._logtag, msg))
 
 	def log(self, msg):
 		self._log(log.msg, msg)
@@ -62,7 +60,7 @@ class Env(object):
 		self._log(log.warn, msg)
 
 	def debug(self, msg):
-		tag = "%s/%s" % (self._profName, self._name)
+		tag = "%s/%s%s" % (self._profName, self._name, self._logtag)
 		log.debug("%s" % msg, depth = 4, tag = tag)
 
 	def error(self, msg):

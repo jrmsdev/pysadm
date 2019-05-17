@@ -2,4 +2,5 @@
 # See LICENSE file.
 
 def configure(env):
-	pass
+	env.log('start')
+	env.log('done')

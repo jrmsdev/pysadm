@@ -2,5 +2,7 @@
 # See LICENSE file.
 
 def run(env):
+	env.setLogtag('build')
 	env.debug('run')
-	env.log('build')
+	env.log('start')
+	env.log('done')
