@@ -37,15 +37,3 @@ def testing_env(request):
 	p = getattr(request.module, 'testingProfile', 'testing')
 	n = getattr(request.module, 'testingEnv', 'testing')
 	return env.Env(p, n)
-
-# testing settings
-
-from _sadm.plugin.configure import plugins
-
-@pytest.fixture(scope = 'module')
-def testing_settings(request):
-	p = getattr(request.module, 'testingProfile', 'testing')
-	n = getattr(request.module, 'testingEnv', 'testing')
-	e = env.Env(p, n)
-	f = getattr(request.module, 'testingSettings', 'testing/config.json')
-	return plugins.configure(e, f)
