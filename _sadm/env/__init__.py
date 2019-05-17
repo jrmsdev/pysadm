@@ -35,7 +35,7 @@ class Env(object):
 		self.debug("cfgfile %s" % self._cfgfile)
 
 	def _loadSettings(self):
-		self.settings = Settings(self._profName, self._name)
+		self.settings = Settings(self._profName, self._name, self._cfgfile)
 
 	def name(self):
 		return self._name

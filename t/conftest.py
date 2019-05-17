@@ -3,12 +3,12 @@
 
 import pytest
 
-# testing logger
+# logger
 
 from _sadm import log
 log._colored = False
 
-# testing config
+# config
 
 from _sadm import _cfg
 _cfg._cfgFile = './tdata/sadm.cfg'
@@ -37,3 +37,14 @@ def testing_env(request):
 	p = getattr(request.module, 'testingProfile', 'testing')
 	n = getattr(request.module, 'testingEnv', 'testing')
 	return env.Env(p, n)
+
+# testing settings
+
+from _sadm.env import Settings
+
+@pytest.fixture(scope = 'module')
+def testing_settings(request):
+	p = getattr(request.module, 'testingProfile', 'testing')
+	n = getattr(request.module, 'testingEnv', 'testing')
+	f = getattr(request.module, 'testingSettings', 'testing/config.json')
+	return Settings(p, n, f)
