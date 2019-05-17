@@ -5,7 +5,8 @@
 
 # https://packaging.python.org/guides/distributing-packages-using-setuptools/
 
-from os import makedirs, path
+from sys import argv
+from os import makedirs, path, unlink
 from setuptools import setup, find_packages
 
 def main():
@@ -14,6 +15,12 @@ def main():
 		makedirs('./build', exist_ok = True)
 		with open('./build/.gitignore', 'w') as fh:
 			fh.write('*\n')
+
+	try:
+		if argv[1] == 'clean':
+			unlink('./build/.gitignore')
+	except IndexError:
+		pass
 
 	with open('requirements.txt', 'r') as fh:
 		deps = fh.read().splitlines()
