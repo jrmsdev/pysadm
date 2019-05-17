@@ -44,7 +44,8 @@ class Env(object):
 		self._log(log.warn, msg)
 
 	def debug(self, msg):
-		log.debug("%s/%s %s" % (self._profName, self._name, msg), depth = 4)
+		tag = "%s/%s" % (self._profName, self._name)
+		log.debug("%s" % msg, depth = 4, tag = tag)
 
 	def error(self, msg):
 		self._log(log.error, msg)
