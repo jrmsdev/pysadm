@@ -19,3 +19,7 @@ def test_env_error(testing_env):
 	e._name = 'noenv'
 	with raises(EnvError, match = 'env not found'):
 		e._load()
+	e._name = 'testing'
+	e._cfgfile = ''
+	with raises(EnvError, match = 'config file not set'):
+		e._loadcfg()
