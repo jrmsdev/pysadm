@@ -18,11 +18,12 @@ class Env(object):
 		self._load()
 
 	def _load(self):
-		log.debug("env load %s" % self._name)
+		log.debug("load %s" % self._name)
 		if not self._name in config.listEnvs(self._profName):
-			raise EnvError("%s env not found" % self._name)
+			self.error("env not found")
 		opt = "env.%s" % self._name
 		self._cfgfile = config.get(self._profName, opt)
+		log.debug("cfgfile %s" % self._cfgfile)
 
 	def name(self):
 		return self._name
