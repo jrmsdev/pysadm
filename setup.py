@@ -11,16 +11,15 @@ from setuptools import setup, find_packages
 
 def main():
 
-	if not path.isfile('./build/.gitignore'):
-		makedirs('./build', exist_ok = True)
-		with open('./build/.gitignore', 'w') as fh:
-			fh.write('*\n')
-
 	try:
-		if argv[1] == 'clean':
-			unlink('./build/.gitignore')
+		cmd = argv[1]
 	except IndexError:
-		pass
+		cmd = 'none'
+
+	if cmd == 'build':
+		_build()
+	elif cmd == 'clean':
+		_clean()
 
 	with open('requirements.txt', 'r') as fh:
 		deps = fh.read().splitlines()
@@ -34,6 +33,16 @@ def main():
 		packages = find_packages(),
 		include_package_data = True,
 	)
+
+def _build():
+	if not path.isfile('./build/.gitignore'):
+		makedirs('./build', exist_ok = True)
+		with open('./build/.gitignore', 'w') as fh:
+			fh.write('*\n')
+
+def _clean():
+	if path.isfile('./build/.gitignore'):
+		unlink('./build/.gitignore')
 
 if __name__ == '__main__':
 	main()
