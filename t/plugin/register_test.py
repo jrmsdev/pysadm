@@ -5,9 +5,11 @@ from pytest import raises
 from _sadm.plugin import configure
 
 def test_reg():
-	assert configure._reg == {}
 	configure.register('_sadm.plugin.test')
-	assert configure._reg == {'test': '_sadm.plugin.test'}
+	assert configure._reg['test'] == '_sadm.plugin.test'
 	with raises(RuntimeError):
 		configure.register('_sadm.plugin.test')
-	assert configure._reg == {'test': '_sadm.plugin.test'}
+	assert configure._reg == {
+		'test': '_sadm.plugin.test',
+		'sadm': '_sadm.plugin.sadm',
+	}
