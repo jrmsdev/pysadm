@@ -2,7 +2,7 @@
 # See LICENSE file.
 
 from contextlib import contextmanager
-from os import path
+from os import path, unlink
 from time import time
 
 from _sadm import log, config, asset
@@ -32,7 +32,6 @@ class Env(object):
 		self._load()
 
 	def _load(self):
-		self.debug("load %s" % self._name)
 		opt = "env.%s" % self._name
 		fn = path.normpath(config.get(self._profName, opt).strip())
 		if fn == '':

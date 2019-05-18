@@ -16,7 +16,7 @@ def configure(env, cfgfile):
 	return Settings(data)
 
 def _load(env, fn):
-	with env.assets.open(fn, 'r') as fh:
+	with env.assets.open(fn) as fh:
 		data = json.load(fh)
 	n = data.get('name', '')
 	if n != env.name():

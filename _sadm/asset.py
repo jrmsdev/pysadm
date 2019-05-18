@@ -9,5 +9,5 @@ class Manager(object):
 	def __init__(self, rootdir):
 		self._dir = path.abspath(path.normpath(rootdir))
 
-	def open(self, relname, mode = 'r'):
-		return open(path.join(self._dir, path.normpath(relname)), mode)
+	def open(self, relname):
+		return open(path.join(self._dir, path.normpath(relname)), 'r')
