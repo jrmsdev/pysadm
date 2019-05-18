@@ -16,3 +16,5 @@ def test_settings():
 def test_plugins(testing_settings):
 	s = testing_settings()
 	assert isinstance(s, Settings)
+	assert s._plugins == {'sadm': True}
+	assert [p for p in s.plugins()] == ['sadm']
