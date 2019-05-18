@@ -2,6 +2,7 @@
 # See LICENSE file.
 
 from contextlib import contextmanager
+from os import path
 from time import time
 
 from _sadm import log, config, asset
@@ -26,19 +27,24 @@ class Env(object):
 		self._profName = self._profile.name()
 		self._logtag = ''
 		self._run = {}
-		profdir = config.get(self._profName, 'dir')
-		if profdir == '':
-			raise self.error("%s profile dir not set" % self._profName)
-		self.assets = asset.Manager(config.get(self._profName, 'dir'))
+		if not self._name in config.listEnvs(self._profName):
+			raise self.error('env not found')
 		self._load()
 
 	def _load(self):
-		self.debug('load')
-		if not self._name in config.listEnvs(self._profName):
-			raise self.error('env not found')
+		self.debug("load %s" % self._name)
 		opt = "env.%s" % self._name
-		self._cfgfile = config.get(self._profName, opt)
-		self._cfgfile = self._cfgfile.strip()
+		fn = path.normpath(config.get(self._profName, opt).strip())
+		if fn == '':
+			raise self.error('config file not set')
+		pdir = path.normpath(config.get(self._profName, 'dir'))
+		if pdir == '':
+			raise self.error("%s profile dir not set" % self._profName)
+		pdir = path.abspath(pdir)
+		rootdir = path.join(pdir, path.dirname(fn))
+		self.assets = asset.Manager(rootdir)
+		log.debug("assets %s" % rootdir)
+		self._cfgfile = path.basename(fn)
 		self._loadcfg()
 
 	def _loadcfg(self):
