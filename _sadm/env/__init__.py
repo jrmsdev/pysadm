@@ -54,9 +54,7 @@ class Env(object):
 		self.debug("cfgfile %s" % self._cfgfile)
 
 	def configure(self):
-		self.start('configure', self._cfgfile)
 		self.settings = plugins.configure(self, self._cfgfile)
-		self.end('configure')
 
 	def name(self):
 		return self._name

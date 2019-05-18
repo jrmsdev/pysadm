@@ -9,12 +9,5 @@ def test_settings():
 		'plugin1': [],
 		'plugin2': {},
 	}
-	cfg = {
-		'plugin0': 'v0',
-	}
-	rst = {}
-	rst.update(data)
-	rst.update(cfg)
-	s = Settings(data, cfg)
+	s = Settings(data)
 	assert isinstance(s._data, dict)
-	assert s._data == rst

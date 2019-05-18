@@ -4,9 +4,5 @@
 class Settings(object):
 	_data = None
 
-	def __init__(self, data, cfg):
-		self._data = _load(data, cfg)
-
-def _load(d, c):
-	d.update(c)
-	return d
+	def __init__(self, data):
+		self._data = data
