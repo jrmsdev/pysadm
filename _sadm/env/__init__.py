@@ -55,6 +55,9 @@ class Env(object):
 	def log(self, msg):
 		self._log(log.msg, msg)
 
+	def info(self, msg):
+		self._log(log.info, msg)
+
 	def warn(self, msg):
 		self._log(log.warn, msg)
 
@@ -71,12 +74,12 @@ class Env(object):
 			raise self.error("%s action already started" % action)
 		prev = self._logtag
 		self._logtag = "[%s]" % action
-		self.log('start')
+		self.info('start')
 		self._run[action] = {'tag.prev': prev, 'start': time()}
 
 	def end(self, action):
 		if self._run.get(action, None) is None:
 			raise self.error("%s action was not started" % action)
 		self._run[action]['end'] = time()
-		self.log("end (%fs)" % (self._run[action]['end'] - self._run[action]['start']))
+		self.info("end (%fs)" % (self._run[action]['end'] - self._run[action]['start']))
 		self._logtag = self._run[action]['tag.prev']
