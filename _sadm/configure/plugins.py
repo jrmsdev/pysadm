@@ -6,7 +6,7 @@ from os import path
 
 from _sadm import config
 from _sadm.env.settings import Settings
-from _sadm.configure import pluginsList, pluginInit
+from _sadm.configure import pluginsList, pluginInit, getPlugin
 
 # load plugins
 import _sadm.plugin
@@ -43,5 +43,6 @@ def _load(env, cfg, enabledPlugins = None):
 			data.update(pluginInit(env, p))
 			if cfgdata is not None:
 				data.update({p: cfgdata})
-		# TODO: run pmod.configure(data)
+		mod = getPlugin(p, 'configure')
+		mod.configure(env, data)
 	return data
