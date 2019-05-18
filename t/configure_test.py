@@ -4,10 +4,10 @@
 from pytest import raises
 from os import path
 
-from _sadm.configure import plugins, pluginInit, register, jsonError
+from _sadm.configure import plugins, pluginInit, register, jsonError, getPlugin
 from _sadm.env import Env
 from _sadm.env.settings import Settings
-from _sadm.errors import EnvError
+from _sadm.errors import EnvError, PluginError
 
 def test_configure():
 	env = Env('testing', 'testing')
@@ -62,6 +62,12 @@ def test_register_error():
 	with raises(RuntimeError, match = 'plugin sadm already registered'):
 		register('sadm', 'filename')
 
-# TODO: test_getPlugin
+def test_getPluginError():
+	with raises(PluginError, match = 'noname plugin not found'):
+		getPlugin('noname', 'configure')
+	with raises(PluginError, match = 'testing plugin nomod not implemented'):
+		getPlugin('testing', 'nomod')
+
 def test_getPlugin():
-	pass
+	mod = getPlugin('testing', 'configure')
+	assert str(mod).startswith('<module \'_sadm.plugin.testing.configure\' from')

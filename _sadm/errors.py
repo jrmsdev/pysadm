@@ -22,3 +22,6 @@ class ProfileError(Error):
 
 class EnvError(Error):
 	typ = 'EnvError'
+
+class PluginError(Error):
+	typ = 'PluginError'

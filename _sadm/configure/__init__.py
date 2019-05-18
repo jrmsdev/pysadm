@@ -3,6 +3,7 @@
 
 import json
 from os import path
+from importlib import import_module
 
 try:
 	# python >=3.5
@@ -10,6 +11,8 @@ try:
 except ImportError: # pragma: no cover
 	# python 3.4
 	jsonError = ValueError
+
+from _sadm.errors import PluginError
 
 _reg = {}
 _order = {}
@@ -44,3 +47,13 @@ def pluginInit(env, name, cfg = None):
 		raise env.error("%s file not found" % cfg)
 	except jsonError as err:
 		raise env.error("%s %s" % (cfg, str(err)))
+
+def getPlugin(name, mod):
+	p = _reg.get(name, None)
+	if p is None:
+		raise PluginError("%s plugin not found" % name)
+	try:
+		mod = import_module("%s.%s" % (p['name'], mod))
+	except ModuleNotFoundError:
+		raise PluginError("%s plugin %s not implemented!" % (name, mod))
+	return mod
