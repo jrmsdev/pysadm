@@ -61,3 +61,7 @@ def test_plugin_data(testing_env):
 def test_register_error():
 	with raises(RuntimeError, match = 'plugin sadm already registered'):
 		register('sadm', 'filename')
+
+# TODO: test_getPlugin
+def test_getPlugin():
+	pass
