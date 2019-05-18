@@ -27,10 +27,15 @@ def _getcfg(env, fn):
 	return cfg
 
 def _load(env, cfg):
+	enabledPlugins = {}
+	for p in config.listPlugins(env.profile()):
+		enabledPlugins[p] = True
+	env.debug("config enabled plugins: %s" % str(sorted(enabledPlugins.keys())))
 	data = {}
 	for p in pluginsList():
+		enabled = enabledPlugins[p]
 		cfgdata = cfg.get(p, None)
-		if cfgdata is None:
+		if cfgdata is None and not enabled:
 			env.debug("%s plugin not enabled" % p)
 		else:
 			env.log("plugin %s" % p)
