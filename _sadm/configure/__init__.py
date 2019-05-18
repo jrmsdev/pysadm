@@ -5,8 +5,10 @@ import json
 from os import path
 
 try:
+	# python >=3.5
 	from json.decoder import JSONDecodeError as jsonError
-except ImportError:
+except ImportError: # pragma: no cover
+	# python 3.4
 	jsonError = ValueError
 
 _reg = {}
@@ -30,14 +32,15 @@ def pluginsList():
 	for idx in sorted(_order.keys()):
 		yield _order[idx]
 
-def pluginInit(env, name):
+def pluginInit(env, name, cfg = None):
 	env.debug("plugin %s" % name)
-	cfg = _reg[name]['config']
+	if cfg is None:
+		cfg = _reg[name]['config']
 	env.debug(cfg)
 	try:
 		with open(cfg, 'r') as fh:
 			return {name: json.load(fh)}
 	except FileNotFoundError as err:
-		raise env.error(str(err))
+		raise env.error("%s file not found" % cfg)
 	except jsonError as err:
-		raise env.error("config.json %s" % str(err))
+		raise env.error("%s %s" % (cfg, str(err)))

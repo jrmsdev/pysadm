@@ -2,8 +2,9 @@
 # See LICENSE file.
 
 from pytest import raises
+from os import path
 
-from _sadm.configure import plugins, pluginInit
+from _sadm.configure import plugins, pluginInit, register, jsonError
 from _sadm.env import Env
 from _sadm.env.settings import Settings
 from _sadm.errors import EnvError
@@ -15,7 +16,14 @@ def test_configure():
 
 def test_pluginInit(testing_env):
 	env = testing_env
-	pluginInit(env, 'sadm')
+	data = pluginInit(env, 'sadm')
+	assert isinstance(data, dict)
+	assert data == {'sadm': {}}
+	with raises(EnvError, match = 'config.nofile file not found'):
+		pluginInit(env, 'sadm', cfg = 'config.nofile')
+	cfg = path.join('tdata', 'testing', 'config-invalid.json')
+	with raises(EnvError, match = "%s Expecting value:" % cfg):
+		pluginInit(env, 'sadm', cfg = cfg)
 
 def test_getcfg(testing_env):
 	env = testing_env
@@ -49,3 +57,7 @@ def test_plugin_data(testing_env):
 	cfg = plugins._getcfg(env, 'config-plugin-data.json')
 	data = plugins._load(env, cfg)
 	assert data == {'sadm': {}, 'testing': 'testing_data'}
+
+def test_register_error():
+	with raises(RuntimeError, match = 'plugin sadm already registered'):
+		register('sadm', 'filename')
