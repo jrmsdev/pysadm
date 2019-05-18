@@ -27,4 +27,5 @@ def parse(p):
 		log.init('debug')
 	else:
 		log.init(args.log)
+	log.debug("sadm version %s" % version.get())
 	return args
