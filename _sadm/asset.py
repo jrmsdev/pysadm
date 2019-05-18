@@ -1,0 +1,13 @@
+# Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
+# See LICENSE file.
+
+from os import path
+
+class Manager(object):
+	_dir = None
+
+	def __init__(self, rootdir):
+		self._dir = path.abspath(path.normpath(rootdir))
+
+	def open(self, relname, mode = 'r'):
+		return open(path.join(self._dir, path.normpath(relname)), mode)

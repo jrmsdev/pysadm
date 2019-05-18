@@ -2,10 +2,12 @@
 # See LICENSE file.
 
 from pytest import raises
-from _sadm.errors import EnvError
+
+from _sadm import asset
 from _sadm.env import Env
 from _sadm.env.profile import Profile
 from _sadm.env.settings import Settings
+from _sadm.errors import EnvError
 
 def test_env(testing_env):
 	e = testing_env
@@ -14,6 +16,7 @@ def test_env(testing_env):
 	assert e.name() == 'testing'
 	assert isinstance(e._profile, Profile)
 	assert e._profile.name() == 'testing'
+	assert isinstance(e.assets, asset.Manager)
 	e.configure()
 	assert isinstance(e.settings, Settings)
 

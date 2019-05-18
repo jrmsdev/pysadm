@@ -3,7 +3,7 @@
 
 from time import time
 
-from _sadm import log, config
+from _sadm import log, config, asset
 from _sadm.configure import plugins
 from _sadm.env import cmd
 from _sadm.env.profile import Profile
@@ -16,6 +16,7 @@ class Env(object):
 	_profName = None
 	_logtag = None
 	_run = None
+	assets = None
 	settings = None
 
 	def __init__(self, profile, name):
@@ -24,6 +25,10 @@ class Env(object):
 		self._profName = self._profile.name()
 		self._logtag = ''
 		self._run = {}
+		profdir = config.get(self._profName, 'dir')
+		if profdir == '':
+			raise self.error("%s profile dir not set" % self._profName)
+		self.assets = asset.Manager(config.get(self._profName, 'dir'))
 		self._load()
 
 	def _load(self):
