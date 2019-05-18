@@ -2,6 +2,7 @@
 # See LICENSE file.
 
 from pytest import raises
+from time import time
 
 from _sadm import asset
 from _sadm.env import Env
@@ -57,3 +58,14 @@ def test_start_end_error(testing_env):
 	assert [n for n in e._run.keys()] == ['testing_error']
 	with raises(EnvError, match = 'testing_end_error action was not started'):
 		e.end('testing_end_error')
+
+def test_report(testing_env):
+	e = testing_env
+	e._run = {}
+	e.start('action1')
+	e.end('action1')
+	e.report('testing_report')
+	e.report('testing_report', startTime = time() - 10)
+	e.start('action2')
+	with raises(EnvError, match = 'not finished action\(s\): action2'):
+		e.report('testing_report')

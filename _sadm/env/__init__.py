@@ -114,7 +114,7 @@ class Env(object):
 			took = " in %f seconds" % (time() - startTime)
 		self.info("%s %d/%d actions%s" % (action, (actno - len(noend)), actno, took))
 		if len(noend) > 0:
-			raise self.error("not finished action(s): %s" % str(noend))
+			raise self.error("not finished action(s): %s" % ','.join(noend))
 
 	@contextmanager
 	def lock(self):
