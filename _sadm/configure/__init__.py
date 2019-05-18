@@ -2,8 +2,12 @@
 # See LICENSE file.
 
 import json
-from json.decoder import JSONDecodeError
 from os import path
+
+try:
+	from json.decoder import JSONDecodeError as jsonError
+except ImportError:
+	jsonError = ValueError
 
 _reg = {}
 _order = {}
@@ -35,5 +39,5 @@ def pluginInit(env, name):
 			return json.load(fh)
 	except FileNotFoundError as err:
 		raise env.error(str(err))
-	except JSONDecodeError as err:
+	except jsonError as err:
 		raise env.error("config.json %s" % str(err))
