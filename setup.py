@@ -16,7 +16,7 @@ def main():
 	except IndexError:
 		cmd = 'none'
 
-	if cmd == 'build':
+	if cmd in ['build', 'dist']:
 		_build()
 	elif cmd == 'clean':
 		_clean()
