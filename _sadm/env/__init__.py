@@ -41,7 +41,9 @@ class Env(object):
 		self.debug("cfgfile %s" % self._cfgfile)
 
 	def configure(self):
+		self.start('configure')
 		self.settings = plugins.configure(self, self._cfgfile)
+		self.end('configure')
 
 	def name(self):
 		return self._name
@@ -83,6 +85,17 @@ class Env(object):
 		self._run[action]['end'] = time()
 		self.info("end (%fs)" % (self._run[action]['end'] - self._run[action]['start']))
 		self._logtag = self._run[action]['tag.prev']
+
+	def report(self):
+		actno = 0
+		noend = []
+		for action, d in self._run.items():
+			actno += 1
+			if d.get('end', None) is None:
+				noend.append(action)
+		self.info("done: %d/%d actions" % ((actno - len(noend)),actno))
+		if len(noend) > 0:
+			raise self.error("not finished action(s): %s" % str(noend))
 
 def run(profile, env, action):
 	try:
