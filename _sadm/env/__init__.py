@@ -100,17 +100,17 @@ class Env(object):
 		self.info("end (%fs)" % (self._run[action]['end'] - self._run[action]['start']))
 		self._logtag = self._run[action]['tag.prev']
 
-	def report(self, msg = 'done', startTime = None):
+	def report(self, action, startTime = None):
 		actno = 0
 		noend = []
-		for action, d in self._run.items():
+		for n, d in self._run.items():
 			actno += 1
 			if d.get('end', None) is None:
-				noend.append(action)
+				noend.append(n)
 		took = ''
 		if startTime is not None:
-			took = " (%fs)" % (time() - startTime)
-		self.info("%s %d/%d actions%s" % (msg, (actno - len(noend)), actno, took))
+			took = " in %f seconds" % (time() - startTime)
+		self.info("%s %d/%d actions%s" % (action, (actno - len(noend)), actno, took))
 		if len(noend) > 0:
 			raise self.error("not finished action(s): %s" % str(noend))
 
@@ -147,7 +147,7 @@ def _lock(env):
 
 def _unlock(env):
 	if env._lockfn is None:
-		env.debug('env was not locked')
+		env.debug('unlock env: not locked')
 	else:
 		env.debug("unlock %s" % env._lockfn)
 		try:
