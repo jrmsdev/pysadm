@@ -2,11 +2,16 @@
 # See LICENSE file.
 
 from os import getcwd
-from time import strftime
+from time import strftime, time
+
+from _sadm.errors import EnvError
 
 def run(env, action):
-	env.start('run', "%s %s" % (action, strftime('%c %z')))
-	env.log(getcwd())
+	_start = time()
+	env.info("%s start %s" % (action, strftime('%c %z')))
+	env.log("%s from %s" % (action, getcwd()))
 	env.configure()
-	env.end('run')
-	env.report()
+	try:
+		env.report(action, startTime = _start)
+	finally:
+		env.info("%s end %s" % (action, strftime('%c %z')))

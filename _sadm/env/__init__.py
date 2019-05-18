@@ -80,7 +80,7 @@ class Env(object):
 		if self._run.get(action, None) is not None:
 			raise self.error("%s action already started" % action)
 		prev = self._logtag
-		self._logtag = "[%s]" % action
+		self._logtag = " %s" % action
 		sep = ''
 		if msg != '':
 			sep = ' '
@@ -94,14 +94,17 @@ class Env(object):
 		self.info("end (%fs)" % (self._run[action]['end'] - self._run[action]['start']))
 		self._logtag = self._run[action]['tag.prev']
 
-	def report(self):
+	def report(self, msg = 'done', startTime = None):
 		actno = 0
 		noend = []
 		for action, d in self._run.items():
 			actno += 1
 			if d.get('end', None) is None:
 				noend.append(action)
-		self.info("done: %d/%d actions" % ((actno - len(noend)),actno))
+		took = ''
+		if startTime is not None:
+			took = " (%fs)" % (time() - startTime)
+		self.info("%s %d/%d actions%s" % (msg, (actno - len(noend)), actno, took))
 		if len(noend) > 0:
 			raise self.error("not finished action(s): %s" % str(noend))
 
