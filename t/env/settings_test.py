@@ -3,8 +3,18 @@
 
 from _sadm.env.settings import Settings
 
-def test_settings(testing_env):
-	testing_env.configure()
-	s = testing_env.settings
-	assert isinstance(s, Settings)
+def test_settings():
+	data = {
+		'plugin0': '',
+		'plugin1': [],
+		'plugin2': {},
+	}
+	cfg = {
+		'plugin0': 'v0',
+	}
+	rst = {}
+	rst.update(data)
+	rst.update(cfg)
+	s = Settings(data, cfg)
 	assert isinstance(s._data, dict)
+	assert s._data == rst
