@@ -46,7 +46,7 @@ class Env(object):
 		self.debug("cfgfile %s" % self._cfgfile)
 
 	def configure(self):
-		self.start('configure')
+		self.start('configure', self._cfgfile)
 		self.settings = plugins.configure(self, self._cfgfile)
 		self.end('configure')
 
@@ -76,12 +76,15 @@ class Env(object):
 		self._log(log.error, msg)
 		return EnvError(msg)
 
-	def start(self, action):
+	def start(self, action, msg = ''):
 		if self._run.get(action, None) is not None:
 			raise self.error("%s action already started" % action)
 		prev = self._logtag
 		self._logtag = "[%s]" % action
-		self.info('start')
+		sep = ''
+		if msg != '':
+			sep = ' '
+		self.info("start%s%s" % (sep, msg))
 		self._run[action] = {'tag.prev': prev, 'start': time()}
 
 	def end(self, action):
