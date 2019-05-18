@@ -17,6 +17,7 @@ recursive-include _sadm *.png
 recursive-include _sadm *.ttf
 recursive-include _sadm *.woff
 recursive-include _sadm *.woff2
+recursive-include _sadm *.json
 
 recursive-include t *.py
 recursive-include tdata *.cfg

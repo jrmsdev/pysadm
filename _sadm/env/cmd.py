@@ -8,11 +8,12 @@ from _sadm.errors import EnvError
 
 def run(env, action):
 	_start = time()
-	with env.lock() as env:
-		env.info("%s start %s" % (action, strftime('%c %z')))
-		env.log("%s from %s" % (action, getcwd()))
-		env.configure()
-		try:
+	env.info("%s start %s" % (action, strftime('%c %z')))
+	env.log("%s from %s" % (action, getcwd()))
+	try:
+		with env.lock() as env:
+			env.configure()
+			# TODO: run env action
 			env.report(action, startTime = _start)
-		finally:
-			env.info("%s end %s" % (action, strftime('%c %z')))
+	finally:
+		env.info("%s end %s" % (action, strftime('%c %z')))

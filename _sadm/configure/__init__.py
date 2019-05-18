@@ -12,6 +12,7 @@ def register(name, filename):
 	n = name.split('.')[-1]
 	if _reg.get(n, None) is not None:
 		raise RuntimeError("plugin %s already registered" % name)
+	filename = path.abspath(path.normpath(filename))
 	_reg[n] = {
 		'name': name,
 		'config': path.join(path.dirname(filename), 'config.json'),
@@ -26,3 +27,10 @@ def pluginsList():
 # TODO: init plugin
 def pluginInit(env, name):
 	env.debug("plugin %s" % name)
+	cfg = _reg[name]['config']
+	env.debug(cfg)
+	try:
+		with open(cfg, 'r') as fh:
+			pass
+	except FileNotFoundError as err:
+		raise env.error(str(err))
