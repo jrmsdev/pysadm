@@ -4,4 +4,6 @@
 def run(env):
 	env.debug('run')
 	env.start('build')
+	for p in env.settings.plugins('build'):
+		p.build(env)
 	env.end('build')
