@@ -27,3 +27,33 @@ def test_env_error(testing_env):
 	e._cfgfile = ''
 	with raises(EnvError, match = 'config file not set'):
 		e._loadcfg()
+
+def test_load_error(testing_env):
+	e = testing_env
+	with raises(EnvError, match = 'config file not set'):
+		e._load(fn = '')
+	with raises(EnvError, match = 'testing profile dir not set'):
+		e._load(pdir = '')
+
+def test_start_end_action(testing_env):
+	e = testing_env
+	e._run = {}
+	assert [n for n in e._run.keys()] == []
+	e.start('testing_action')
+	assert [n for n in e._run.keys()] == ['testing_action']
+	assert e._run['testing_action'].get('start', '') != ''
+	assert e._run['testing_action'].get('tag.prev', None) is not None
+	assert e._run['testing_action'].get('end', None) is None
+	e.end('testing_action')
+	assert e._run['testing_action'].get('end', '') != ''
+
+def test_start_end_error(testing_env):
+	e = testing_env
+	e._run = {}
+	assert [n for n in e._run.keys()] == []
+	e.start('testing_error')
+	with raises(EnvError, match = 'testing_error action already started'):
+		e.start('testing_error')
+	assert [n for n in e._run.keys()] == ['testing_error']
+	with raises(EnvError, match = 'testing_end_error action was not started'):
+		e.end('testing_end_error')

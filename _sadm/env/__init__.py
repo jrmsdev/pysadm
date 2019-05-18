@@ -33,12 +33,14 @@ class Env(object):
 			raise self.error('env not found')
 		self._load()
 
-	def _load(self):
+	def _load(self, fn = None, pdir = None):
 		opt = "env.%s" % self._name
-		fn = path.normpath(config.get(self._profName, opt).strip())
+		if fn is None:
+			fn = path.normpath(config.get(self._profName, opt).strip())
 		if fn == '':
 			raise self.error('config file not set')
-		pdir = path.normpath(config.get(self._profName, 'dir'))
+		if pdir is None:
+			pdir = path.normpath(config.get(self._profName, 'dir'))
 		if pdir == '':
 			raise self.error("%s profile dir not set" % self._profName)
 		pdir = path.abspath(pdir)
