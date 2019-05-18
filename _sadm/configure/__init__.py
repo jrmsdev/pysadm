@@ -1,6 +1,8 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
+import json
+from json.decoder import JSONDecodeError
 from os import path
 
 _reg = {}
@@ -24,13 +26,14 @@ def pluginsList():
 	for idx in sorted(_order.keys()):
 		yield _order[idx]
 
-# TODO: init plugin
 def pluginInit(env, name):
 	env.debug("plugin %s" % name)
 	cfg = _reg[name]['config']
 	env.debug(cfg)
 	try:
 		with open(cfg, 'r') as fh:
-			pass
+			return json.load(fh)
 	except FileNotFoundError as err:
 		raise env.error(str(err))
+	except JSONDecodeError as err:
+		raise env.error("config.json %s" % str(err))
