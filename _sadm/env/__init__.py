@@ -67,13 +67,14 @@ class Env(object):
 	def start(self, action):
 		if self._run.get(action, None) is not None:
 			raise self.error("%s action already started" % action)
+		prev = self._logtag
 		self._logtag = "[%s]" % action
 		self.log('start')
-		self._run[action] = True
+		self._run[action] = {'tag.prev': prev}
 
 	def end(self, action):
 		if self._run.get(action, None) is None:
 			raise self.error("%s action was not started" % action)
-		del self._run[action]
 		self.log('end')
-		self._logtag = ''
+		self._logtag = self._run[action]['tag.prev']
+		del self._run[action]

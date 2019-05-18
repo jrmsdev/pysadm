@@ -33,5 +33,6 @@ def _load(env, fn):
 	if n != env.name():
 		raise env.error("invalid config name '%s'" % n)
 	for p in pluginsList():
-		env.log("plugin %s" % p)
+		env.start("configure.%s" % p)
+		env.end("configure.%s" % p)
 	return data
