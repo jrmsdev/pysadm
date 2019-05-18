@@ -12,7 +12,7 @@ from _sadm.env.settings import Settings
 from _sadm.errors import EnvError
 
 def test_env(testing_env):
-	e = testing_env
+	e = testing_env()
 	assert isinstance(e, Env)
 	assert e._cfgfile == 'config.json'
 	assert e.name() == 'testing'
@@ -25,21 +25,20 @@ def test_env(testing_env):
 def test_env_error(testing_env):
 	with raises(EnvError, match = 'env not found'):
 		Env('testing', 'noenv')
-	e = testing_env
+	e = testing_env()
 	e._cfgfile = ''
 	with raises(EnvError, match = 'config file not set'):
 		e._loadcfg()
 
 def test_load_error(testing_env):
-	e = testing_env
+	e = testing_env()
 	with raises(EnvError, match = 'config file not set'):
 		e._load(fn = '')
 	with raises(EnvError, match = 'testing profile dir not set'):
 		e._load(pdir = '')
 
 def test_start_end_action(testing_env):
-	e = testing_env
-	e._run = {}
+	e = testing_env()
 	assert [n for n in e._run.keys()] == []
 	e.start('testing_action')
 	assert [n for n in e._run.keys()] == ['testing_action']
@@ -50,8 +49,7 @@ def test_start_end_action(testing_env):
 	assert e._run['testing_action'].get('end', '') != ''
 
 def test_start_end_error(testing_env):
-	e = testing_env
-	e._run = {}
+	e = testing_env()
 	assert [n for n in e._run.keys()] == []
 	e.start('testing_error')
 	with raises(EnvError, match = 'testing_error action already started'):
@@ -61,8 +59,7 @@ def test_start_end_error(testing_env):
 		e.end('testing_end_error')
 
 def test_report(testing_env):
-	e = testing_env
-	e._run = {}
+	e = testing_env()
 	e.start('action1')
 	e.end('action1')
 	e.report('testing_report')
@@ -73,7 +70,7 @@ def test_report(testing_env):
 
 def test_lock(testing_env):
 	fn = path.join('tdata', 'testing', 'sadm.lock')
-	e = testing_env
+	e = testing_env()
 	with e.lock():
 		assert e._lockfn.endswith(fn)
 		assert path.isfile(fn)
@@ -82,7 +79,7 @@ def test_lock(testing_env):
 
 def test_lock_error(testing_env):
 	fn = path.join('tdata', 'testing', 'sadm.lock')
-	e = testing_env
+	e = testing_env()
 	_lock(e)
 	assert path.isfile(fn)
 	with raises(EnvError, match = 'lock file exists:'):
@@ -92,7 +89,7 @@ def test_lock_error(testing_env):
 
 def test_unlock_error(testing_env):
 	fn = path.join('tdata', 'testing', 'sadm.lock')
-	e = testing_env
+	e = testing_env()
 	_lock(e)
 	assert path.isfile(fn)
 	assert e._lockfn is not None

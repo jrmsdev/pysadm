@@ -15,7 +15,7 @@ def test_configure():
 	assert isinstance(s, Settings)
 
 def test_pluginInit(testing_env):
-	env = testing_env
+	env = testing_env()
 	data = pluginInit(env, 'sadm')
 	assert isinstance(data, dict)
 	assert data == {'sadm': {}}
@@ -26,14 +26,14 @@ def test_pluginInit(testing_env):
 		pluginInit(env, 'sadm', cfg = cfg)
 
 def test_getcfg(testing_env):
-	env = testing_env
+	env = testing_env()
 	cfg = plugins._getcfg(env, 'config.json')
 	assert isinstance(cfg, dict)
 	with raises(EnvError, match = 'invalid config name \'fake\''):
 		plugins._getcfg(env, 'config-name-error.json')
 
 def test_load(testing_env):
-	env = testing_env
+	env = testing_env()
 	cfg = plugins._getcfg(env, 'config.json')
 	assert isinstance(cfg, dict)
 	data = plugins._load(env, cfg, enabledPlugins = {'sadm': True})
@@ -41,19 +41,19 @@ def test_load(testing_env):
 	assert data == {'sadm': {}}
 
 def test_default_plugins(testing_env):
-	env = testing_env
+	env = testing_env()
 	cfg = plugins._getcfg(env, 'config.json')
 	data = plugins._load(env, cfg)
 	assert [p for p in data.keys()] == ['sadm']
 
 def test_disabled_plugin(testing_env):
-	env = testing_env
+	env = testing_env()
 	cfg = plugins._getcfg(env, 'config.json')
 	data = plugins._load(env, cfg, enabledPlugins = {})
 	assert data == {}
 
 def test_plugin_data(testing_env):
-	env = testing_env
+	env = testing_env()
 	cfg = plugins._getcfg(env, 'config-plugin-data.json')
 	data = plugins._load(env, cfg)
 	assert data == {'sadm': {}, 'testing': 'testing_data'}

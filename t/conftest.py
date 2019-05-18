@@ -38,6 +38,6 @@ from _sadm import env
 
 @pytest.fixture(scope = 'module')
 def testing_env(request):
-	p = getattr(request.module, 'testingProfile', 'testing')
-	n = getattr(request.module, 'testingEnv', 'testing')
-	return env.Env(p, n)
+	def wrapper(name = 'testing', profile = 'testing'):
+		return env.Env(profile, name)
+	return wrapper
