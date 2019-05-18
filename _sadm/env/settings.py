@@ -1,13 +1,15 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
-from _sadm.configure import pluginsList
+from _sadm.configure import pluginsList, getPlugin
+from _sadm.errors import EnvError
 
 __all__ = ['Settings']
 
 class Settings(object):
 	_data = None
 	_plugins = None
+	_done = {'configure': True}
 
 	def __init__(self, data):
 		self._data = data
@@ -15,7 +17,10 @@ class Settings(object):
 		for p in self._data.keys():
 			self._plugins[p] = True
 
-	def plugins(self):
+	def plugins(self, action):
+		if self._done.get(action, False):
+			raise EnvError("env action %s already done" % action)
+		self._done[action] = True
 		for p in pluginsList():
 			if self._plugins.get(p, False):
-				yield p
+				yield getPlugin(p, action)
