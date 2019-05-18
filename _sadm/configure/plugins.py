@@ -27,8 +27,12 @@ def _getcfg(env, fn):
 	return cfg
 
 def _load(env, cfg):
-	d = {}
+	data = {}
 	for p in pluginsList():
-		env.log("plugin %s" % p)
-		d.update(pluginInit(env, p))
-	return d
+		cfgdata = cfg.get(p, None)
+		if cfgdata is None:
+			env.debug("%s plugin not enabled" % p)
+		else:
+			env.log("plugin %s" % p)
+			data.update(pluginInit(env, p))
+	return data

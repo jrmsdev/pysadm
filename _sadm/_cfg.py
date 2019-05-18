@@ -8,11 +8,14 @@ from _sadm.errors import ProfileError
 
 _cfgFile = path.realpath('./sadm.cfg')
 
+_enablePlugins = ['sadm']
+
 _DEFAULT = {
 	'name': '',
 	'profile': 'default',
 	'env': 'default',
 	'dir': '',
+	'plugins': '\n'.join(_enablePlugins),
 }
 
 class Config(ConfigParser):
@@ -48,6 +51,9 @@ class Config(ConfigParser):
 				if n != '':
 					e[n] = True
 		return sorted(e.keys())
+
+	def listPlugins(self, profile):
+		return [p.strip() for p in self.get(profile, 'plugins').split()]
 
 def new():
 	config = Config(
