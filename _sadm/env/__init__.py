@@ -1,6 +1,7 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
+from contextlib import contextmanager
 from time import time
 
 from _sadm import log, config, asset
@@ -108,6 +109,13 @@ class Env(object):
 		if len(noend) > 0:
 			raise self.error("not finished action(s): %s" % str(noend))
 
+	@contextmanager
+	def lock(self):
+		try:
+			yield _lock(self)
+		finally:
+			_unlock(self)
+
 def run(profile, env, action):
 	try:
 		env = Env(profile, env)
@@ -118,3 +126,10 @@ def run(profile, env, action):
 		log.error("%s" % err)
 		return 2
 	return 0
+
+def _lock(env):
+	env.debug('lock')
+	return env
+
+def _unlock(env):
+	env.debug('unlock')

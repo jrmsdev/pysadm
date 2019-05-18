@@ -23,5 +23,6 @@ def pluginsList():
 	for idx in sorted(_order.keys()):
 		yield _order[idx]
 
+# TODO: init plugin
 def pluginInit(env, name):
 	env.debug("plugin %s" % name)
