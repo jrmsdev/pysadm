@@ -30,7 +30,7 @@ def _load(env, cfg):
 	enabledPlugins = {}
 	for p in config.listPlugins(env.profile()):
 		enabledPlugins[p] = True
-	env.debug("config enabled plugins: %s" % str(sorted(enabledPlugins.keys())))
+	env.debug("config enabled plugins: %s" % ','.join([p for p in enabledPlugins.keys()]))
 	data = {}
 	for p in pluginsList():
 		enabled = enabledPlugins[p]
@@ -40,4 +40,6 @@ def _load(env, cfg):
 		else:
 			env.log("plugin %s" % p)
 			data.update(pluginInit(env, p))
+			if cfgdata is not None:
+				data.update(cfgdata)
 	return data
