@@ -2,10 +2,11 @@
 # See LICENSE file.
 
 from pytest import raises
+from os import path
 from time import time
 
 from _sadm import asset
-from _sadm.env import Env
+from _sadm.env import Env, _lock, _unlock
 from _sadm.env.profile import Profile
 from _sadm.env.settings import Settings
 from _sadm.errors import EnvError
@@ -69,3 +70,38 @@ def test_report(testing_env):
 	e.start('action2')
 	with raises(EnvError, match = 'not finished action\(s\): action2'):
 		e.report('testing_report')
+
+def test_lock(testing_env):
+	fn = path.join('tdata', 'testing', 'sadm.lock')
+	e = testing_env
+	with e.lock():
+		assert e._lockfn.endswith(fn)
+		assert path.isfile(fn)
+	assert not path.isfile(fn)
+	assert e._lockfn is None
+
+def test_lock_error(testing_env):
+	fn = path.join('tdata', 'testing', 'sadm.lock')
+	e = testing_env
+	_lock(e)
+	assert path.isfile(fn)
+	with raises(EnvError, match = 'lock file exists:'):
+		_lock(e)
+	_unlock(e)
+	assert not path.isfile(fn)
+
+def test_unlock_error(testing_env):
+	fn = path.join('tdata', 'testing', 'sadm.lock')
+	e = testing_env
+	_lock(e)
+	assert path.isfile(fn)
+	assert e._lockfn is not None
+	_unlock(e)
+	assert not path.isfile(fn)
+	assert e._lockfn is None
+	_unlock(e)
+	assert e._lockfn is None
+	e._lockfn = fn
+	with raises(EnvError, match = 'unlock file not found:'):
+		_unlock(e)
+	assert not path.isfile(fn)

@@ -156,3 +156,5 @@ def _unlock(env):
 			unlink(env._lockfn)
 		except FileNotFoundError:
 			raise env.error("unlock file not found: %s" % env._lockfn)
+		finally:
+			env._lockfn = None
