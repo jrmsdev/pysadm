@@ -2,27 +2,29 @@
 # See LICENSE file.
 
 from pytest import raises
+from os import path
+
 from _sadm import configure
 
 expectPlugins = {
-	0: ('sadm', '_sadm.plugin.sadm'),
+	0: 'sadm',
 }
 
 def test_registered_plugins():
-	reg = {}
-	for p in expectPlugins.values():
-		reg[p[0]] = p[1]
-	assert configure._reg == reg, 'missing plugin'
+	for n in expectPlugins.values():
+		p = configure._reg.get(n, None)
+		assert p is not None, "%s plugin not registered" % n
+		assert p['name'] == "_sadm.plugin.%s" % n
+		assert p['filename'].endswith(path.join('_sadm', 'plugin', n, '__init__.py'))
 
 def test_pluginsList():
-	l = []
-	for p in expectPlugins.values():
-		l.append(p[0])
-	assert [p for p in configure.pluginsList()] == l, 'missing pluginList'
+	idx = 0
+	for p in configure.pluginsList():
+		n = expectPlugins[idx]
+		assert p == n, 'wrong plugin list order'
 
 def test_plugins_order():
 	order = {}
 	for idx in expectPlugins.keys():
-		p = expectPlugins[idx]
-		order[idx] = p[0]
-	assert configure._order == order, 'missing plugin'
+		order[idx] = expectPlugins[idx]
+	assert configure._order == order, 'wrong plugin order'

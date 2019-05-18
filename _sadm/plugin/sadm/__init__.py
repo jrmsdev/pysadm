@@ -2,4 +2,4 @@
 # See LICENSE file.
 
 from _sadm.configure import register
-register(__name__)
+register(__name__, __file__)

@@ -5,15 +5,18 @@ _reg = {}
 _order = {}
 _next = 0
 
-def register(name):
+def register(name, filename):
 	global _next
 	n = name.split('.')[-1]
 	if _reg.get(n, None) is not None:
 		raise RuntimeError("plugin %s already registered" % name)
-	_reg[n] = name
+	_reg[n] = {'name': name, 'filename': filename}
 	_order[_next] = n
 	_next += 1
 
 def pluginsList():
 	for idx in sorted(_order.keys()):
 		yield _order[idx]
+
+def pluginInit(env, name):
+	env.debug("plugin %s" % name)

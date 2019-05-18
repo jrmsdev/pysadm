@@ -6,7 +6,7 @@ from os import path
 
 from _sadm import config
 from _sadm.env.settings import Settings
-from _sadm.configure import pluginsList
+from _sadm.configure import pluginsList, pluginInit
 
 # load plugins
 import _sadm.plugin
@@ -32,4 +32,5 @@ def _load(env, fn):
 		raise env.error("invalid config name '%s'" % n)
 	for p in pluginsList():
 		env.log("%s" % p)
+		pluginInit(env, p)
 	return data
