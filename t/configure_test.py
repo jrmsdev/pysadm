@@ -1,9 +1,12 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
+from pytest import raises
+
+from _sadm.configure import plugins, pluginInit
 from _sadm.env import Env
 from _sadm.env.settings import Settings
-from _sadm.configure import plugins, pluginInit
+from _sadm.errors import EnvError
 
 def test_configure():
 	env = Env('testing', 'testing')
@@ -13,3 +16,36 @@ def test_configure():
 def test_pluginInit(testing_env):
 	env = testing_env
 	pluginInit(env, 'sadm')
+
+def test_getcfg(testing_env):
+	env = testing_env
+	cfg = plugins._getcfg(env, 'config.json')
+	assert isinstance(cfg, dict)
+	with raises(EnvError, match = 'invalid config name \'fake\''):
+		plugins._getcfg(env, 'config-name-error.json')
+
+def test_load(testing_env):
+	env = testing_env
+	cfg = plugins._getcfg(env, 'config.json')
+	assert isinstance(cfg, dict)
+	data = plugins._load(env, cfg, enabledPlugins = {'sadm': True})
+	assert isinstance(data, dict)
+	assert data == {'sadm': {}}
+
+def test_default_plugins(testing_env):
+	env = testing_env
+	cfg = plugins._getcfg(env, 'config.json')
+	data = plugins._load(env, cfg)
+	assert [p for p in data.keys()] == ['sadm']
+
+def test_disabled_plugin(testing_env):
+	env = testing_env
+	cfg = plugins._getcfg(env, 'config.json')
+	data = plugins._load(env, cfg, enabledPlugins = {})
+	assert data == {}
+
+def test_plugin_data(testing_env):
+	env = testing_env
+	cfg = plugins._getcfg(env, 'config-plugin-data.json')
+	data = plugins._load(env, cfg)
+	assert data == {'sadm': {}, 'testing': 'testing_data'}

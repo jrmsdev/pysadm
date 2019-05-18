@@ -8,6 +8,7 @@ from _sadm import configure
 
 expectPlugins = {
 	0: 'sadm',
+	1: 'testing',
 }
 
 def test_registered_plugins():
@@ -22,9 +23,7 @@ def test_pluginsList():
 	for p in configure.pluginsList():
 		n = expectPlugins[idx]
 		assert p == n, 'wrong plugin list order'
+		idx += 1
 
 def test_plugins_order():
-	order = {}
-	for idx in expectPlugins.keys():
-		order[idx] = expectPlugins[idx]
-	assert configure._order == order, 'wrong plugin order'
+	assert configure._order == expectPlugins, 'wrong plugins order'

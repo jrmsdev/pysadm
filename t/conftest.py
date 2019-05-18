@@ -8,6 +8,10 @@ import pytest
 from _sadm import log
 log._colored = False
 
+# register testing plugin
+
+import _sadm.plugin.testing
+
 # config
 
 from _sadm import _cfg

@@ -26,20 +26,22 @@ def _getcfg(env, fn):
 		raise env.error("invalid config name '%s'" % n)
 	return cfg
 
-def _load(env, cfg):
-	enabledPlugins = {}
-	for p in config.listPlugins(env.profile()):
-		enabledPlugins[p] = True
+def _load(env, cfg, enabledPlugins = None):
+	if enabledPlugins is None:
+		enabledPlugins = {}
+		for p in config.listPlugins(env.profile()):
+			enabledPlugins[p] = True
 	env.debug("config enabled plugins: %s" % ','.join([p for p in enabledPlugins.keys()]))
 	data = {}
 	for p in pluginsList():
-		enabled = enabledPlugins[p]
+		cfgena = enabledPlugins.get(p, False)
 		cfgdata = cfg.get(p, None)
-		if cfgdata is None and not enabled:
+		if cfgdata is None and not cfgena:
 			env.debug("%s plugin not enabled" % p)
 		else:
 			env.log("plugin %s" % p)
 			data.update(pluginInit(env, p))
 			if cfgdata is not None:
-				data.update(cfgdata)
+				data.update({p: cfgdata})
+		# TODO: run pmod.configure(data)
 	return data
