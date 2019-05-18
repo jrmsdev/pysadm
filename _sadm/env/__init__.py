@@ -18,6 +18,8 @@ class Env(object):
 	_profName = None
 	_logtag = None
 	_run = None
+	_rootdir = None
+	_lockfn = None
 	assets = None
 	settings = None
 
@@ -40,9 +42,9 @@ class Env(object):
 		if pdir == '':
 			raise self.error("%s profile dir not set" % self._profName)
 		pdir = path.abspath(pdir)
-		rootdir = path.join(pdir, path.dirname(fn))
-		self.assets = asset.Manager(rootdir)
-		log.debug("assets %s" % rootdir)
+		self._rootdir = path.join(pdir, path.dirname(fn))
+		self.assets = asset.Manager(self._rootdir)
+		log.debug("assets %s" % self._rootdir)
 		self._cfgfile = path.basename(fn)
 		self._loadcfg()
 
@@ -133,8 +135,24 @@ def run(profile, env, action):
 	return 0
 
 def _lock(env):
-	env.debug('lock')
+	fn = path.join(env._rootdir, 'sadm.lock')
+	env.debug("lock %s" % fn)
+	try:
+		fh = open(fn, 'x')
+	except FileExistsError:
+		raise env.error("lock file exists: %s" % fn)
+	fh.write('1')
+	fh.flush()
+	fh.close()
+	env._lockfn = fn
 	return env
 
 def _unlock(env):
-	env.debug('unlock')
+	if env._lockfn is None:
+		env.debug('env was not locked')
+	else:
+		env.debug("unlock %s" % env._lockfn)
+		try:
+			unlink(env._lockfn)
+		except FileNotFoundError:
+			raise env.error("unlock file not found: %s" % env._lockfn)
