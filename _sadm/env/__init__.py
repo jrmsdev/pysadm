@@ -1,6 +1,8 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
+from time import time
+
 from _sadm import log, config
 from _sadm.errors import EnvError
 from _sadm.env.profile import Profile
@@ -70,11 +72,11 @@ class Env(object):
 		prev = self._logtag
 		self._logtag = "[%s]" % action
 		self.log('start')
-		self._run[action] = {'tag.prev': prev}
+		self._run[action] = {'tag.prev': prev, 'start': time()}
 
 	def end(self, action):
 		if self._run.get(action, None) is None:
 			raise self.error("%s action was not started" % action)
-		self.log('end')
+		self._run[action]['end'] = time()
+		self.log("end (%fs)" % (self._run[action]['end'] - self._run[action]['start']))
 		self._logtag = self._run[action]['tag.prev']
-		del self._run[action]
