@@ -15,7 +15,7 @@ def test_registered_plugins():
 		p = configure._reg.get(n, None)
 		assert p is not None, "%s plugin not registered" % n
 		assert p['name'] == "_sadm.plugin.%s" % n
-		assert p['filename'].endswith(path.join('_sadm', 'plugin', n, '__init__.py'))
+		assert p['config'].endswith(path.join('_sadm', 'plugin', n, 'config.json'))
 
 def test_pluginsList():
 	idx = 0
