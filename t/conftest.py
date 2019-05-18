@@ -27,8 +27,8 @@ _sadm.config = _cfg.new()
 
 from _sadm.env import profile
 
-@pytest.fixture(scope = 'module')
-def testing_profile(request):
+@pytest.fixture
+def testing_profile():
 	def wrapper(name = 'testing'):
 		return profile.Profile(name)
 	return wrapper
@@ -37,8 +37,19 @@ def testing_profile(request):
 
 from _sadm import env
 
-@pytest.fixture(scope = 'module')
-def testing_env(request):
+@pytest.fixture
+def testing_env():
 	def wrapper(name = 'testing', profile = 'testing'):
 		return env.Env(profile, name)
+	return wrapper
+
+# testing settings
+
+@pytest.fixture
+def testing_settings():
+	envmod = env
+	def wrapper(profile = 'testing', env = 'testing'):
+		e = envmod.Env(profile, env)
+		e.configure()
+		return e.settings
 	return wrapper

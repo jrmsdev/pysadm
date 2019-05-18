@@ -11,3 +11,8 @@ def test_settings():
 	}
 	s = Settings(data)
 	assert isinstance(s._data, dict)
+	assert s._data == data
+
+def test_plugins(testing_settings):
+	s = testing_settings()
+	assert isinstance(s, Settings)
