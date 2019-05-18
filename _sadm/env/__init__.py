@@ -34,14 +34,13 @@ class Env(object):
 		self._cfgfile = config.get(self._profName, opt)
 		self._cfgfile = self._cfgfile.strip()
 		self._loadcfg()
-		self._loadSettings()
 
 	def _loadcfg(self):
 		if self._cfgfile == '':
 			raise self.error('config file not set')
 		self.debug("cfgfile %s" % self._cfgfile)
 
-	def _loadSettings(self):
+	def configure(self):
 		self.settings = plugins.configure(self, self._cfgfile)
 
 	def name(self):

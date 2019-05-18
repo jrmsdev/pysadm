@@ -14,6 +14,7 @@ def test_env(testing_env):
 	assert e.name() == 'testing'
 	assert isinstance(e._profile, Profile)
 	assert e._profile.name() == 'testing'
+	e.configure()
 	assert isinstance(e.settings, Settings)
 
 def test_env_error(testing_env):
