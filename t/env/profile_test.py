@@ -6,7 +6,7 @@ from _sadm.errors import Error
 from _sadm.env.profile import Profile
 
 def test_profile(testing_profile):
-	p = testing_profile
+	p = testing_profile()
 	assert p.name() == 'testing'
 
 def test_profileError():

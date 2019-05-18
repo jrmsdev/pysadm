@@ -29,8 +29,9 @@ from _sadm.env import profile
 
 @pytest.fixture(scope = 'module')
 def testing_profile(request):
-	n = getattr(request.module, 'testingProfile', 'testing')
-	return profile.Profile(n)
+	def wrapper(name = 'testing'):
+		return profile.Profile(name)
+	return wrapper
 
 # testing env
 
