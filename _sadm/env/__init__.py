@@ -4,9 +4,10 @@
 from time import time
 
 from _sadm import log, config
-from _sadm.errors import EnvError
-from _sadm.env.profile import Profile
 from _sadm.configure import plugins
+from _sadm.env import cmd
+from _sadm.env.profile import Profile
+from _sadm.errors import Error, EnvError
 
 class Env(object):
 	_name = None
@@ -83,3 +84,14 @@ class Env(object):
 		self._run[action]['end'] = time()
 		self.info("end (%fs)" % (self._run[action]['end'] - self._run[action]['start']))
 		self._logtag = self._run[action]['tag.prev']
+
+def run(profile, env, action):
+	try:
+		env = Env(profile, env)
+		cmd.run(env, action)
+	except EnvError:
+		return 1
+	except Error as err:
+		log.error("%s" % err)
+		return 2
+	return 0
