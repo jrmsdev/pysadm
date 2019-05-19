@@ -60,7 +60,10 @@ class Env(object):
 		self.debug("cfgfile %s" % self._cfgfile)
 
 	def configure(self):
-		plugins.configure(self)
+		try:
+			plugins.configure(self)
+		except FileNotFoundError as err:
+			raise env.error("%s" % err)
 
 	def name(self):
 		return self._name

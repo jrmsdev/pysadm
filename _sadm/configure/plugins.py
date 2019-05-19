@@ -20,18 +20,12 @@ def configure(env, cfgfile = None):
 	cfg = _getcfg(env, fn)
 	_load(env, cfg)
 	with env.assets.open(fn) as fh:
-		_cfgread(env, env.settings, fh)
-
-def _cfgread(env, cfg, fh):
-	try:
-		cfg.read_file(fh)
-	except FileNotFoundError as err:
-		raise env.error("%s" % err)
+		env.settings.read_file(fh)
 
 def _getcfg(env, fn):
 	cfg = Settings(env.profile(), env.name())
 	with env.assets.open(fn) as fh:
-		_cfgread(env, cfg, fh)
+		cfg.read_file(fh)
 	n = cfg.get('default', 'name', fallback = None)
 	if n != env.name():
 		raise env.error("invalid config name '%s'" % n)
@@ -57,7 +51,7 @@ def _load(env, cfg, forcePlugins = None):
 def _initPlugin(env, fn):
 	env.debug("init %s" % fn)
 	with open(fn, 'r') as fh:
-		_cfgread(env, env.settings, fh)
+		env.settings.read_file(fh)
 
 def _pluginConfigure(env, cfg, p):
 	mod = getPlugin(p, 'configure')
