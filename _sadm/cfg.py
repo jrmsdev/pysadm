@@ -12,14 +12,15 @@ _cfgFile = path.realpath('./sadm.cfg')
 
 _enablePlugins = [
 	'sadm',
+	'os',
 ]
 
 _DEFAULT = {
 	'name': '',
 	'profile': 'default',
 	'env': 'default',
-	'dir': '',
-	'plugins': '\n'.join(_enablePlugins),
+	'dir': '.',
+	'plugins': ','.join(_enablePlugins),
 }
 
 class Config(ConfigParser):
@@ -60,7 +61,7 @@ class Config(ConfigParser):
 		return sorted(e.keys())
 
 	def listPlugins(self, profile):
-		return [p.strip() for p in self.get(profile, 'plugins').split()]
+		return [p.strip() for p in self.get(profile, 'plugins').split(',')]
 
 def new():
 	config = Config(

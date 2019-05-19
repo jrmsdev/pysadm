@@ -23,7 +23,7 @@ class Settings(object):
 		sk = False
 		i = None
 		if indent:
-			sk = True
+			# ~ sk = True
 			i = '\t'
 		json.dump(self._data, fh, allow_nan = False, sort_keys = sk, indent = i)
 

@@ -30,6 +30,7 @@ def _getcfg(env, fn):
 	return cfg
 
 def _load(env, cfg, enabledPlugins = None):
+	env.debug("registered plugins %s" % ','.join([p for p in pluginsList()]))
 	if enabledPlugins is None:
 		enabledPlugins = {}
 		for p in config.listPlugins(env.profile()):
@@ -37,12 +38,14 @@ def _load(env, cfg, enabledPlugins = None):
 	env.debug("config enabled plugins: %s" % ','.join([p for p in enabledPlugins.keys()]))
 	data = {}
 	for p in pluginsList():
+		env.debug("plugin %s" % p)
 		cfgena = enabledPlugins.get(p, False)
 		cfgdata = cfg.get(p, None)
 		if cfgdata is None and not cfgena:
 			env.debug("%s plugin not enabled" % p)
 		else:
 			# plugin enabled
+			env.debug("plugin %s enabled" % p)
 			data.update(pluginInit(env, p))
 			if cfgdata is not None:
 				data.update({p: cfgdata})
