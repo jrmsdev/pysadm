@@ -12,10 +12,9 @@ from _sadm.configure import pluginsList, pluginInit, getPlugin
 import _sadm.plugin
 
 def configure(env, cfgfile):
-	env.start('configure', cfgfile)
+	env.debug("config file %s" % cfgfile)
 	cfg = _getcfg(env, cfgfile)
 	data = _load(env, cfg)
-	env.end('configure')
 	return Settings(data)
 
 def _getcfg(env, fn):
@@ -39,10 +38,12 @@ def _load(env, cfg, enabledPlugins = None):
 		if cfgdata is None and not cfgena:
 			env.debug("%s plugin not enabled" % p)
 		else:
-			env.log("%s" % p)
 			data.update(pluginInit(env, p))
 			if cfgdata is not None:
 				data.update({p: cfgdata})
 		mod = getPlugin(p, 'configure')
+		tag = "configure.%s" % p
+		env.start(tag)
 		mod.configure(env, data)
+		env.end(tag)
 	return data
