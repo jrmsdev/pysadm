@@ -11,6 +11,8 @@ from _sadm.configure import pluginsList, pluginInit, getPlugin
 # load plugins
 import _sadm.plugin
 
+__all__ = ['configure']
+
 def configure(env, cfgfile):
 	env.debug("config file %s" % cfgfile)
 	cfg = _getcfg(env, cfgfile)

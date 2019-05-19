@@ -4,6 +4,8 @@
 from _sadm import log, config
 from _sadm.errors import ProfileError
 
+__all__ = ['Profile']
+
 class Profile(object):
 	_name = None
 

@@ -5,6 +5,8 @@ import argparse
 
 from _sadm import log, version, config
 
+__all__ = ['new', 'parse']
+
 def new(prog, desc = ''):
 	p = argparse.ArgumentParser(prog = prog, description = desc)
 	p.add_argument('-V', '--version', help = 'show version and exit',

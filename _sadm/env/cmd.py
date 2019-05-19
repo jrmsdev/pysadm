@@ -7,6 +7,8 @@ from time import strftime, time
 from _sadm import build
 from _sadm.errors import EnvError
 
+__all__ = ['run']
+
 def run(env, action):
 	_start = time()
 	env.info("%s start %s" % (action, strftime('%c %z')))

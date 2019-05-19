@@ -11,6 +11,8 @@ from _sadm.env import cmd
 from _sadm.env.profile import Profile
 from _sadm.errors import Error, EnvError
 
+__all__ = ['Env', 'run']
+
 class Env(object):
 	_name = None
 	_cfgfile = None

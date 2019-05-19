@@ -14,6 +14,8 @@ except ImportError: # pragma: no cover
 
 from _sadm.errors import PluginError
 
+__all__ = ['register', 'getPlugin', 'pluginInit', 'pluginList']
+
 _reg = {}
 _order = {}
 _next = 0
