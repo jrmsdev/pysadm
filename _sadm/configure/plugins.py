@@ -39,7 +39,7 @@ def _load(env, cfg, enabledPlugins = None):
 		if cfgdata is None and not cfgena:
 			env.debug("%s plugin not enabled" % p)
 		else:
-			env.log("plugin %s" % p)
+			env.log("%s" % p)
 			data.update(pluginInit(env, p))
 			if cfgdata is not None:
 				data.update({p: cfgdata})

@@ -23,4 +23,4 @@ class Settings(object):
 		self._done[action] = True
 		for p in pluginsList():
 			if self._plugins.get(p, False):
-				yield getPlugin(p, action)
+				yield (p, getPlugin(p, action))
