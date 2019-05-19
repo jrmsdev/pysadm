@@ -161,6 +161,9 @@ def init(level): # pragma: no cover
 def levels():
 	return ['debug', 'error', 'warn', 'quiet', 'off']
 
+def defaultLevel():
+	return 'warn'
+
 def debug(msg, depth = None, tag = None):
 	_logger.debug(msg, depth = depth, tag = tag)
 

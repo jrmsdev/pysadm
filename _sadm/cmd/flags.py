@@ -13,8 +13,8 @@ def new(prog, desc = ''):
 		action = 'version', version = version.string())
 	p.add_argument('--debug', help = 'enable debug settings',
 		action = 'store_true', default = False)
-	p.add_argument('--log', help = 'set log level (error)',
-		default = 'error', choices = log.levels())
+	p.add_argument('--log', help = "set log level (%s)" % log.defaultLevel(),
+		default = log.defaultLevel(), choices = log.levels())
 	defenv = config.get('default', 'env')
 	p.add_argument('--env', help = "env name (%s)" % defenv,
 		metavar = 'name', default = defenv)

@@ -12,6 +12,7 @@ def test_getCaller():
 
 def test_levels():
 	assert ['debug', 'error', 'warn', 'quiet', 'off'] == log.levels()
+	assert log.defaultLevel() == 'warn'
 
 def test_dummyLogger():
 	log._logger = log._dummyLogger()
