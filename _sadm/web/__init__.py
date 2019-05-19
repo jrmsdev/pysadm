@@ -6,7 +6,7 @@ from os import path
 
 from _sadm import log
 
-_srcdir = path.abspath(path.dirname(__file__))
+_srcdir = path.realpath(path.dirname(__file__))
 _staticdir = path.join(_srcdir, 'static')
 
 @bottle.route('/static/<filename:path>')

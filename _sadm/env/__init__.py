@@ -45,7 +45,7 @@ class Env(object):
 			pdir = path.normpath(config.get(self._profName, 'dir'))
 		if pdir == '':
 			raise self.error("%s profile dir not set" % self._profName)
-		pdir = path.abspath(pdir)
+		pdir = path.realpath(pdir)
 		self._rootdir = path.join(pdir, path.dirname(fn))
 		self.assets = asset.Manager(self._rootdir)
 		log.debug("assets %s" % self._rootdir)

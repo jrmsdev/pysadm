@@ -33,7 +33,7 @@ def register(name, filename):
 	n = name.split('.')[-1]
 	if _reg.get(n, None) is not None:
 		raise RuntimeError("plugin %s already registered" % name)
-	filename = path.abspath(path.normpath(filename))
+	filename = path.realpath(path.normpath(filename))
 	_reg[n] = {
 		'name': name,
 		'config': path.join(path.dirname(filename), 'config.json'),
