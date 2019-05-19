@@ -42,12 +42,13 @@ def _load(env, cfg, enabledPlugins = None):
 		if cfgdata is None and not cfgena:
 			env.debug("%s plugin not enabled" % p)
 		else:
+			# plugin enabled
 			data.update(pluginInit(env, p))
 			if cfgdata is not None:
 				data.update({p: cfgdata})
-		mod = getPlugin(p, 'configure')
-		tag = "configure.%s" % p
-		env.start(tag)
-		mod.configure(env, data)
-		env.end(tag)
+			mod = getPlugin(p, 'configure')
+			tag = "configure.%s" % p
+			env.start(tag)
+			mod.configure(env, data)
+			env.end(tag)
 	return data

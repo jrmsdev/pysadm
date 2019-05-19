@@ -10,7 +10,9 @@ __all__ = ['Config', 'new']
 
 _cfgFile = path.realpath('./sadm.cfg')
 
-_enablePlugins = ['sadm']
+_enablePlugins = [
+	'sadm',
+]
 
 _DEFAULT = {
 	'name': '',
