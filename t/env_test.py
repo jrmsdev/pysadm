@@ -14,7 +14,7 @@ from _sadm.errors import EnvError
 def test_env(testing_env):
 	e = testing_env()
 	assert isinstance(e, Env)
-	assert e._cfgfile == 'config.json'
+	assert e._cfgfile == 'config.ini'
 	assert e.name() == 'testing'
 	assert isinstance(e._profile, Profile)
 	assert e._profile.name() == 'testing'

@@ -25,7 +25,7 @@ def test_cfg():
 	assert len(c.sections()) == 1
 	assert c.has_section('testing')
 	assert c.get('testing', 'dir') == './tdata'
-	assert c.get('testing', 'env.testing') == 'testing/config.json'
+	assert c.get('testing', 'env.testing') == 'testing/config.ini'
 	assert c.listProfiles() == ['testing']
 	assert c.listEnvs('testing') == ['testing']
 
