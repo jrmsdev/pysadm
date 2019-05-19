@@ -11,11 +11,12 @@ __all__ = ['Settings']
 class Settings(object):
 	_data = None
 	_plugins = None
-	_done = {'configure': True}
+	_done = None
 
-	def __init__(self, data):
-		self._data = data
+	def __init__(self):
+		self._data = {}
 		self._plugins = {}
+		self._done = {}
 		for p in self._data.keys():
 			self._plugins[p] = True
 
@@ -28,9 +29,14 @@ class Settings(object):
 		json.dump(self._data, fh, allow_nan = False, sort_keys = sk, indent = i)
 
 	def plugins(self, action):
+		if action == 'configure':
+			raise EnvError('invalid settings plugin action: configure')
 		if self._done.get(action, False):
 			raise EnvError("env action %s already done" % action)
 		self._done[action] = True
 		for p in pluginsList():
 			if self._plugins.get(p, False):
 				yield (p, getPlugin(p, action))
+
+	def init(self, plugin, data):
+		self._data[plugin] = data

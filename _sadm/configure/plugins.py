@@ -5,7 +5,6 @@ import json
 from os import path
 
 from _sadm import config
-from _sadm.env.settings import Settings
 from _sadm.configure import pluginsList, pluginInit, getPlugin
 
 # load plugins
@@ -19,7 +18,7 @@ def configure(env, cfgfile = None):
 	env.log("%s" % path.join(env.rootdir(), cfgfile))
 	cfg = _getcfg(env, cfgfile)
 	data = _load(env, cfg)
-	return Settings(data)
+	env.settings._data = data # FIXME: remove
 
 def _getcfg(env, fn):
 	with env.assets.open(fn) as fh:
@@ -42,21 +41,22 @@ def _load(env, cfg, enabledPlugins = None):
 		env.debug("plugin %s" % p)
 		cfgena = enabledPlugins.get(p, False)
 		cfgdata = cfg.get(p, None)
-		env.debug("cfgena %s" % cfgena)
-		env.debug("cfgdata %s" % cfgdata)
+		# ~ env.debug("cfgena %s" % cfgena)
+		# ~ env.debug("cfgdata %s" % cfgdata)
 		if cfgdata is None and not cfgena:
 			env.debug("%s plugin not enabled" % p)
 		else:
 			# plugin enabled
 			env.debug("plugin %s enabled" % p)
 			pdata = pluginInit(env, p)
-			env.debug("pdata %s" % pdata)
-			data.update(pdata)
-			env.debug("data %s" % data)
+			# ~ env.debug("pdata %s" % pdata)
+			# ~ data.update(pdata)
+			env.settings.init(p, pdata)
+			# ~ env.debug("data %s" % data)
 			if cfgdata is not None:
 				env.debug('update cfgdata')
 				data.update({p: cfgdata})
-				env.debug("data %s" % data)
+				# ~ env.debug("data %s" % data)
 			mod = getPlugin(p, 'configure')
 			tag = "configure.%s" % p
 			env.start(tag)

@@ -11,8 +11,7 @@ from _sadm.errors import EnvError, PluginError
 
 def test_configure():
 	env = Env('testing', 'testing')
-	s = plugins.configure(env, env._cfgfile)
-	assert isinstance(s, Settings)
+	plugins.configure(env, env._cfgfile)
 
 def test_pluginInit(testing_env):
 	env = testing_env()

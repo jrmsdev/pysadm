@@ -52,7 +52,7 @@ def pluginInit(env, name, cfg = None):
 	env.debug(cfg)
 	try:
 		with open(cfg, 'r') as fh:
-			return {name: json.load(fh)}
+			return json.load(fh)
 	except FileNotFoundError as err:
 		raise env.error("%s file not found" % cfg)
 	except jsonError as err:
