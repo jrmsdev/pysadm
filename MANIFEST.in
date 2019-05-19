@@ -18,6 +18,7 @@ recursive-include _sadm *.ttf
 recursive-include _sadm *.woff
 recursive-include _sadm *.woff2
 recursive-include _sadm *.json
+recursive-include _sadm *.ini
 
 recursive-include t *.py
 recursive-include tdata *.cfg
