@@ -44,7 +44,7 @@ def test_default_plugins(testing_env):
 	env = testing_env()
 	cfg = plugins._getcfg(env, 'config.json')
 	data = plugins._load(env, cfg)
-	assert [p for p in data.keys()] == ['sadm', 'os', 'testing']
+	assert sorted([p for p in data.keys()]) == ['os', 'sadm', 'testing']
 
 def test_disabled_plugin(testing_env):
 	env = testing_env()
@@ -56,7 +56,7 @@ def test_plugin_data(testing_env):
 	env = testing_env()
 	cfg = plugins._getcfg(env, 'config-plugin-data.json')
 	data = plugins._load(env, cfg)
-	assert [p for p in data.keys()] == ['sadm', 'os', 'testing']
+	assert sorted([p for p in data.keys()]) == ['os', 'sadm', 'testing']
 	# ~ assert data['testing'] == 'testing_data'
 
 def test_register_error():
