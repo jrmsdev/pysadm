@@ -3,7 +3,7 @@
 
 import sys
 
-def configure(env, data):
+def configure(env):
 	env.debug(env.name())
 	return {
 		'platform': sys.platform,

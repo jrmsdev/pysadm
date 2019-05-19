@@ -52,6 +52,6 @@ def _load(env, cfg, enabledPlugins = None):
 			mod = getPlugin(p, 'configure')
 			tag = "configure.%s" % p
 			env.start(tag)
-			data.update({p: mod.configure(env, data)})
+			data.update({p: mod.configure(env)})
 			env.end(tag)
 	return data
