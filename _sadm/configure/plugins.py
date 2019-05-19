@@ -22,12 +22,20 @@ def configure(env, cfgfile = None):
 	env.log("%s" % fn)
 	cfg = _getcfg(env, fn)
 	_load(env, cfg)
-	cfg.write(sys.stdout) # FIXME: only for debug
+	with env.assets.open(fn) as fh:
+		_cfgread(env, env.settings2, fh)
+	env.settings2.write(sys.stdout) # FIXME: only for debug
+
+def _cfgread(env, cfg, fh):
+	try:
+		cfg.read_file(fh)
+	except FileNotFoundError as err:
+		raise env.error("%s" % err)
 
 def _getcfg(env, fn):
 	cfg = Settings2(env.profile(), env.name())
 	with env.assets.open(fn) as fh:
-		cfg.read_file(fh)
+		_cfgread(env, cfg, fh)
 	n = cfg.get('default', 'name', fallback = None)
 	if n != env.name():
 		raise env.error("invalid config name '%s'" % n)
@@ -45,17 +53,14 @@ def _load(env, cfg, forcePlugins = None):
 		forceEna = forcePlugins.get(p, False)
 		if ena or forceEna:
 			env.debug("%s plugin enabled" % p)
-			_initPlugin(env, cfg, pluginInit(p))
+			_initPlugin(env, pluginInit(p))
 		else:
 			env.debug("%s plugin disabled" % p)
 
-def _initPlugin(env, cfg, fn):
+def _initPlugin(env, fn):
 	env.debug("init %s" % fn)
-	try:
-		with open(fn, 'r') as fh:
-			cfg.read_file(fh)
-	except FileNotFoundError as err:
-		raise env.error("%s" % err)
+	with open(fn, 'r') as fh:
+		_cfgread(env, env.settings2, fh)
 
 
 
