@@ -6,12 +6,20 @@ from os import path
 from importlib import import_module
 
 try:
-	# python >=3.5
+	# python >= 3.5
 	from json.decoder import JSONDecodeError as jsonError
 except ImportError: # pragma: no cover
 	# python 3.4
 	jsonError = ValueError
 
+try:
+	# python >= 3.6
+	importError = ModuleNotFoundError
+except NameError:
+	# python 3.4 and 3.5
+	importError = Exception
+
+from _sadm import log
 from _sadm.errors import PluginError
 
 __all__ = ['register', 'getPlugin', 'pluginInit', 'pluginList']
@@ -56,6 +64,7 @@ def getPlugin(name, mod):
 		raise PluginError("%s plugin not found" % name)
 	try:
 		mod = import_module("%s.%s" % (p['name'], mod))
-	except ModuleNotFoundError:
+	except importError as err:
+		log.debug("%s" % err)
 		raise PluginError("%s plugin %s not implemented!" % (name, mod))
 	return mod
