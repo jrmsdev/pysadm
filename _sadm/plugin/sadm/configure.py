@@ -4,4 +4,6 @@
 from _sadm import version
 
 def configure(env, data):
-	data['version'] = version.get()
+	return {
+		'version': version.get(),
+	}
