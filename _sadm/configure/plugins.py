@@ -37,21 +37,36 @@ def _load(env, cfg, enabledPlugins = None):
 			enabledPlugins[p] = True
 	env.debug("config enabled plugins: %s" % ','.join([p for p in enabledPlugins.keys()]))
 	data = {}
+	env.debug("data %s" % data)
 	for p in pluginsList():
 		env.debug("plugin %s" % p)
 		cfgena = enabledPlugins.get(p, False)
 		cfgdata = cfg.get(p, None)
+		env.debug("cfgena %s" % cfgena)
+		env.debug("cfgdata %s" % cfgdata)
 		if cfgdata is None and not cfgena:
 			env.debug("%s plugin not enabled" % p)
 		else:
 			# plugin enabled
 			env.debug("plugin %s enabled" % p)
-			data.update(pluginInit(env, p))
+			pdata = pluginInit(env, p)
+			env.debug("pdata %s" % pdata)
+			data.update(pdata)
+			env.debug("data %s" % data)
 			if cfgdata is not None:
+				env.debug('update cfgdata')
 				data.update({p: cfgdata})
+				env.debug("data %s" % data)
 			mod = getPlugin(p, 'configure')
 			tag = "configure.%s" % p
 			env.start(tag)
-			data.update({p: mod.configure(env)})
+			moddata = {p: mod.configure(env)}
+			env.debug("moddata %s" % moddata)
+			data.update(moddata)
+			env.debug("data %s" % data)
 			env.end(tag)
+	env.debug("data %s" % data)
 	return data
+
+class _Data(object):
+	pass
