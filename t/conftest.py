@@ -14,14 +14,14 @@ import _sadm.plugin.testing
 
 # config
 
-from _sadm import _cfg
-_cfg._cfgFile = './tdata/sadm.cfg'
+from _sadm import cfg
+cfg._cfgFile = './tdata/sadm.cfg'
 
 # attach testing config
 
 import _sadm
 del _sadm.config
-_sadm.config = _cfg.new()
+_sadm.config = cfg.new()
 
 # testing profile
 

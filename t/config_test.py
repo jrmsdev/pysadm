@@ -3,14 +3,14 @@
 
 from pytest import raises
 from configparser import ConfigParser
-from _sadm import _cfg
+from _sadm import cfg
 from _sadm.errors import Error
 
 def test_cfg():
-	assert _cfg._DEFAULT['name'] == ''
-	assert _cfg._DEFAULT['profile'] == 'default'
-	assert _cfg._DEFAULT['env'] == 'default'
-	c = _cfg.new()
+	assert cfg._DEFAULT['name'] == ''
+	assert cfg._DEFAULT['profile'] == 'default'
+	assert cfg._DEFAULT['env'] == 'default'
+	c = cfg.new()
 	assert isinstance(c, ConfigParser)
 	assert c.name() == 'sadmtest'
 	assert len(c.defaults()) == 5
@@ -27,6 +27,6 @@ def test_cfg():
 	assert c.listEnvs('testing') == ['testing']
 
 def test_profile_error():
-	c = _cfg.new()
+	c = cfg.new()
 	with raises(Error, match = 'ProfileError: config profile noprofile not found'):
 		c.listEnvs('noprofile')
