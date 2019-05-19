@@ -54,6 +54,7 @@ def _load(env, cfg, forcePlugins = None):
 		if ena or forceEna:
 			env.debug("%s plugin enabled" % p)
 			_initPlugin(env, pluginInit(p))
+			_pluginConfigure(env, cfg, p)
 		else:
 			env.debug("%s plugin disabled" % p)
 
@@ -62,6 +63,12 @@ def _initPlugin(env, fn):
 	with open(fn, 'r') as fh:
 		_cfgread(env, env.settings2, fh)
 
+def _pluginConfigure(env, cfg, p):
+	mod = getPlugin(p, 'configure')
+	tag = "configure.%s" % p
+	env.start(tag)
+	mod.configure(env, cfg)
+	env.end(tag)
 
 
 

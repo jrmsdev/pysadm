@@ -3,8 +3,7 @@
 
 import sys
 
-def configure(env):
+def configure(env, cfg):
 	env.debug(env.name())
-	return {
-		'platform': sys.platform,
-	}
+	s = env.settings2
+	s.set('os', 'platform', sys.platform)

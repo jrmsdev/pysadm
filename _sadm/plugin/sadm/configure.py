@@ -3,8 +3,7 @@
 
 from _sadm import version
 
-def configure(env):
+def configure(env, cfg):
 	env.debug(env.name())
-	return {
-		'version': version.get(),
-	}
+	s = env.settings2
+	s.set('sadm', 'version', version.get())
