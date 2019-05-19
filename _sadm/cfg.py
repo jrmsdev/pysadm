@@ -6,6 +6,8 @@ from configparser import ConfigParser
 
 from _sadm.errors import ProfileError
 
+__all__ = ['Config', 'new']
+
 _cfgFile = path.realpath('./sadm.cfg')
 
 _enablePlugins = ['sadm']
