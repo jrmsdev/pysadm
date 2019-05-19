@@ -18,7 +18,7 @@ def test_pluginInit(testing_env):
 	env = testing_env()
 	data = pluginInit(env, 'sadm')
 	assert isinstance(data, dict)
-	assert data == {'sadm': {}}
+	assert [p for p in data.keys()] == ['sadm']
 	with raises(EnvError, match = 'config.nofile file not found'):
 		pluginInit(env, 'sadm', cfg = 'config.nofile')
 	cfg = path.join('tdata', 'testing', 'config-invalid.json')
@@ -38,13 +38,13 @@ def test_load(testing_env):
 	assert isinstance(cfg, dict)
 	data = plugins._load(env, cfg, enabledPlugins = {'sadm': True})
 	assert isinstance(data, dict)
-	assert data == {'sadm': {}}
+	assert [p for p in data.keys()] == ['sadm']
 
 def test_default_plugins(testing_env):
 	env = testing_env()
 	cfg = plugins._getcfg(env, 'config.json')
 	data = plugins._load(env, cfg)
-	assert [p for p in data.keys()] == ['sadm']
+	assert [p for p in data.keys()] == ['sadm', 'os', 'testing']
 
 def test_disabled_plugin(testing_env):
 	env = testing_env()
@@ -56,7 +56,8 @@ def test_plugin_data(testing_env):
 	env = testing_env()
 	cfg = plugins._getcfg(env, 'config-plugin-data.json')
 	data = plugins._load(env, cfg)
-	assert data == {'sadm': {}, 'testing': 'testing_data'}
+	assert [p for p in data.keys()] == ['sadm', 'os', 'testing']
+	# ~ assert data['testing'] == 'testing_data'
 
 def test_register_error():
 	with raises(RuntimeError, match = 'plugin sadm already registered'):

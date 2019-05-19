@@ -13,9 +13,5 @@ def test_settings():
 	s = Settings(data)
 	assert isinstance(s._data, dict)
 	assert s._data == data
-
-def test_plugins(testing_settings):
-	s = testing_settings()
-	assert isinstance(s, Settings)
-	assert s._plugins == {'sadm': True}
-	assert [p for p in s.plugins('build')] == [('sadm', getPlugin('sadm', 'build'))]
+	assert len(s._plugins.keys()) == 3
+	assert s._plugins == {'plugin0': True, 'plugin1': True, 'plugin2': True,}

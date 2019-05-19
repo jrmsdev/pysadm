@@ -8,7 +8,8 @@ from _sadm import configure
 
 expectPlugins = {
 	0: 'sadm',
-	1: 'testing',
+	1: 'os',
+	2: 'testing',
 }
 
 def test_registered_plugins():

@@ -15,7 +15,7 @@ except ImportError: # pragma: no cover
 try:
 	# python >= 3.6
 	importError = ModuleNotFoundError
-except NameError:
+except NameError: # pragma: no cover
 	# python 3.4 and 3.5
 	importError = Exception
 
