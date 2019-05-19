@@ -11,12 +11,12 @@ def build(env):
 	_writeSettings(env)
 
 def _writeSettings(env):
-	fn = path.join(_builddir, env.profile(), env.name(), 'configure.json')
+	fn = path.join(_builddir, env.profile(), env.name(), 'configure.ini')
 	freal = path.realpath(fn)
 	dst = path.dirname(freal)
 	makedirs(dst, exist_ok = True)
 	if path.isfile(freal):
 		unlink(freal)
 	with open(freal, 'x') as fh:
-		env.settings.write(fh, indent = True)
+		env.settings2.write(fh)
 	env.log("%s done" % fn)

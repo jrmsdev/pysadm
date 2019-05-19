@@ -3,6 +3,9 @@
 
 from configparser import ConfigParser
 
+from _sadm.configure import pluginsList, getPlugin
+from _sadm.errors import EnvError
+
 __all__ = ['Settings2']
 
 class Settings2(ConfigParser):
@@ -14,3 +17,10 @@ class Settings2(ConfigParser):
 			comment_prefixes = ('#',), strict = True, default_section = 'default')
 		self._profile = profile
 		self._env = env
+
+	def plugins(self, action):
+		if action == 'configure':
+			raise EnvError('invalid settings plugin action: configure')
+		for p in pluginsList():
+			if self.has_section(p):
+				yield (p, getPlugin(p, action))
