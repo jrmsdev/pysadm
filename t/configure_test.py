@@ -13,16 +13,16 @@ def test_configure():
 	env = Env('testing', 'testing')
 	plugins.configure(env, env._cfgfile)
 
-def test_pluginInit(testing_env):
-	env = testing_env()
-	data = pluginInit(env, 'sadm')
-	assert isinstance(data, dict)
-	assert [p for p in data.keys()] == ['sadm']
-	with raises(EnvError, match = 'config.nofile file not found'):
-		pluginInit(env, 'sadm', cfg = 'config.nofile')
-	cfg = path.join('tdata', 'testing', 'config-invalid.json')
-	with raises(EnvError, match = "%s Expecting value:" % cfg):
-		pluginInit(env, 'sadm', cfg = cfg)
+# ~ def test_pluginInit(testing_env):
+	# ~ env = testing_env()
+	# ~ data = pluginInit(env, 'sadm')
+	# ~ assert isinstance(data, dict)
+	# ~ assert [p for p in data.keys()] == ['sadm']
+	# ~ with raises(EnvError, match = 'config.nofile file not found'):
+		# ~ pluginInit(env, 'sadm', cfg = 'config.nofile')
+	# ~ cfg = path.join('tdata', 'testing', 'config-invalid.json')
+	# ~ with raises(EnvError, match = "%s Expecting value:" % cfg):
+		# ~ pluginInit(env, 'sadm', cfg = cfg)
 
 def test_getcfg(testing_env):
 	env = testing_env()

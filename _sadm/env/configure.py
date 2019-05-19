@@ -1,0 +1,16 @@
+# Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
+# See LICENSE file.
+
+from configparser import ConfigParser
+
+__all__ = ['Settings2']
+
+class Settings2(ConfigParser):
+	_profile = None
+	_env = None
+
+	def __init__(self, profile, env):
+		super().__init__(defaults = {}, allow_no_value = False, delimiters = '=',
+			comment_prefixes = ('#',), strict = True, default_section = 'default')
+		self._profile = profile
+		self._env = env

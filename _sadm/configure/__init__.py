@@ -1,16 +1,8 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
-import json
 from os import path
 from importlib import import_module
-
-try:
-	# python >= 3.5
-	from json.decoder import JSONDecodeError as jsonError
-except ImportError: # pragma: no cover
-	# python 3.4
-	jsonError = ValueError
 
 try:
 	# python >= 3.6
@@ -36,7 +28,7 @@ def register(name, filename):
 	filename = path.realpath(path.normpath(filename))
 	_reg[n] = {
 		'name': name,
-		'config': path.join(path.dirname(filename), 'config.json'),
+		'config': path.join(path.dirname(filename), 'config.ini'),
 	}
 	_order[_next] = n
 	_next += 1
@@ -45,18 +37,10 @@ def pluginsList():
 	for idx in sorted(_order.keys()):
 		yield _order[idx]
 
-def pluginInit(env, name, cfg = None):
-	env.debug("plugin %s" % name)
-	if cfg is None:
-		cfg = _reg[name]['config']
-	env.debug(cfg)
-	try:
-		with open(cfg, 'r') as fh:
-			return json.load(fh)
-	except FileNotFoundError as err:
-		raise env.error("%s file not found" % cfg)
-	except jsonError as err:
-		raise env.error("%s %s" % (cfg, str(err)))
+def pluginInit(name, fn = None):
+	if fn is None:
+		fn = _reg[name]['config']
+	return fn
 
 def getPlugin(name, mod):
 	p = _reg.get(name, None)

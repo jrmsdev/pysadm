@@ -9,16 +9,9 @@ from _sadm.errors import EnvError
 __all__ = ['Settings']
 
 class Settings(object):
-	_data = None
-	_plugins = None
-	_done = None
-
-	def __init__(self):
-		self._data = {}
-		self._plugins = {}
-		self._done = {}
-		for p in self._data.keys():
-			self._plugins[p] = True
+	_data = {}
+	_plugins = {}
+	_done = {}
 
 	def write(self, fh, indent = False):
 		sk = False
