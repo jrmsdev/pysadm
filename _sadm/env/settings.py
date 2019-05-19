@@ -6,9 +6,9 @@ from configparser import ConfigParser
 from _sadm.configure import pluginsList, getPlugin
 from _sadm.errors import EnvError
 
-__all__ = ['Settings2']
+__all__ = ['Settings']
 
-class Settings2(ConfigParser):
+class Settings(ConfigParser):
 	_profile = None
 	_env = None
 

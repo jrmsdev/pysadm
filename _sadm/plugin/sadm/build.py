@@ -18,5 +18,5 @@ def _writeSettings(env):
 	if path.isfile(freal):
 		unlink(freal)
 	with open(freal, 'x') as fh:
-		env.settings2.write(fh)
+		env.settings.write(fh)
 	env.log("%s done" % fn)

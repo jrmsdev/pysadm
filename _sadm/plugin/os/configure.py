@@ -5,5 +5,5 @@ import sys
 
 def configure(env, cfg):
 	env.debug(env.name())
-	s = env.settings2
+	s = env.settings
 	s.set('os', 'platform', sys.platform)

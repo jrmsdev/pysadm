@@ -8,8 +8,8 @@ from time import time
 from _sadm import log, config, asset
 from _sadm.configure import plugins
 from _sadm.env import cmd
-from _sadm.env.configure import Settings2
 from _sadm.env.profile import Profile
+from _sadm.env.settings import Settings
 from _sadm.errors import Error, EnvError
 
 __all__ = ['Env', 'run']
@@ -24,7 +24,7 @@ class Env(object):
 	_rootdir = None
 	_lockfn = None
 	assets = None
-	settings2 = None
+	settings = None
 
 	def __init__(self, profile, name):
 		self._name = name
@@ -34,7 +34,7 @@ class Env(object):
 		self._run = {}
 		if not self._name in config.listEnvs(self._profName):
 			raise self.error('env not found')
-		self.settings2 = Settings2(profile, name)
+		self.settings = Settings(profile, name)
 		self._load()
 
 	def _load(self, fn = None, pdir = None):
