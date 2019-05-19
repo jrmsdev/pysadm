@@ -58,13 +58,19 @@ class Env(object):
 		self.debug("cfgfile %s" % self._cfgfile)
 
 	def configure(self):
-		self.settings = plugins.configure(self, self._cfgfile)
+		self.settings = plugins.configure(self)
 
 	def name(self):
 		return self._name
 
 	def profile(self):
 		return self._profName
+
+	def rootdir(self):
+		return self._rootdir
+
+	def cfgfile(self):
+		return self._cfgfile
 
 	def _log(self, func, msg):
 		func("%s/%s%s %s" % (self._profName, self._name, self._logtag, msg))

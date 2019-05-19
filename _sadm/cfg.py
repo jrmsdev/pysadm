@@ -35,6 +35,9 @@ class Config(ConfigParser):
 	def name(self):
 		return self._name
 
+	def filename(self):
+		return self._fn
+
 	def reload(self):
 		self.read([self._fn], encoding = 'utf-8')
 

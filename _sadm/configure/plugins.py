@@ -13,8 +13,10 @@ import _sadm.plugin
 
 __all__ = ['configure']
 
-def configure(env, cfgfile):
-	env.debug("config file %s" % cfgfile)
+def configure(env, cfgfile = None):
+	if cfgfile is None:
+		cfgfile = env.cfgfile()
+	env.log("%s" % path.join(env.rootdir(), cfgfile))
 	cfg = _getcfg(env, cfgfile)
 	data = _load(env, cfg)
 	return Settings(data)

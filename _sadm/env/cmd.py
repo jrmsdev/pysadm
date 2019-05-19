@@ -1,10 +1,9 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
-from os import getcwd
 from time import strftime, time
 
-from _sadm import build
+from _sadm import config, build
 from _sadm.errors import EnvError
 
 __all__ = ['run']
@@ -12,7 +11,7 @@ __all__ = ['run']
 def run(env, action):
 	_start = time()
 	env.info("%s start %s" % (action, strftime('%c %z')))
-	env.log("%s from %s" % (action, getcwd()))
+	env.log("%s %s" % (config.name(), config.filename()))
 	try:
 		with env.lock() as env:
 			env.configure()

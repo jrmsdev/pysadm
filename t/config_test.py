@@ -1,8 +1,10 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
-from pytest import raises
 from configparser import ConfigParser
+from os import path
+from pytest import raises
+
 from _sadm import cfg
 from _sadm.errors import Error
 
@@ -13,6 +15,7 @@ def test_cfg():
 	c = cfg.new()
 	assert isinstance(c, ConfigParser)
 	assert c.name() == 'sadmtest'
+	assert c.filename().endswith(path.join('tdata', 'sadm.cfg'))
 	assert len(c.defaults()) == 5
 	assert c.get('default', 'name') == 'sadmtest'
 	assert c.get('default', 'profile') == 'testing'
