@@ -18,6 +18,7 @@ _red = '\033[0;31m'
 _yellow = '\033[0;33m'
 _blue = '\033[0;34m'
 _green = '\033[0;32m'
+_grey = '\033[1;30m'
 _reset = '\033[0m'
 
 # ~ _colored = False
@@ -28,7 +29,7 @@ def _setColored():
 	global _colInfo
 	global _colMsg
 	if _colored: # pragma: no cover
-		_colDebug = lambda msg: _cyan + msg + _reset
+		_colDebug = lambda msg: _grey + msg + _reset
 		_colError = lambda msg: _red + msg + _reset
 		_colWarn = lambda msg: _yellow + msg + _reset
 		_colInfo = lambda msg: _blue + msg + _reset
