@@ -2,7 +2,7 @@
 # See LICENSE file.
 
 import pytest
-from os import path
+from os import path, makedirs
 
 # logger
 
@@ -27,7 +27,8 @@ _sadm.config = cfg.new()
 # configure testing plugin
 
 import _sadm.plugin.sadm.build as sadm_plugin_build
-sadm_plugin_build._builddir = path.join('tdata', 'build')
+sadm_plugin_build._builddir = path.join('tdata', 'builddir')
+makedirs(path.join(sadm_plugin_build._builddir, 'testing', 'testing'), exist_ok = True)
 
 # testing profile
 

@@ -9,8 +9,8 @@ from _sadm.errors import EnvError, PluginError
 
 def test_run(testing_env):
 	env = testing_env()
-	cfgfn = path.join('tdata', 'build', 'testing', 'testing', 'configure.ini')
-	sessfn = path.join('tdata', 'build', 'testing', 'testing', 'session.json')
+	cfgfn = path.join('tdata', 'builddir', 'testing', 'testing', 'configure.ini')
+	sessfn = path.join('tdata', 'builddir', 'testing', 'testing', 'session.json')
 	for fn in (cfgfn, sessfn):
 		if path.isfile(fn):
 			unlink(fn)
