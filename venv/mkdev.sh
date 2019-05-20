@@ -7,7 +7,7 @@ python3 -m venv --prompt sadmdev --clear ${ENVDIR}
 
 ${PIP} install -r venv/requirements-dev.txt --upgrade
 ${PIP} install -r venv/requirements-test.txt --upgrade
-${PIP} install -r requirements.txt --upgrade
+${PIP} install -r venv/requirements.txt --upgrade
 ${PIP} install -e .
 
 ${PIP} list
