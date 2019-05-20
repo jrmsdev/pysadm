@@ -4,7 +4,7 @@
 from time import strftime, time
 
 from _sadm import config
-from _sadm.errors import EnvError
+from _sadm.errors import PluginError
 
 __all__ = ['run']
 
@@ -16,18 +16,33 @@ def run(env, action):
 	env.log("%s %s" % (config.name(), config.filename()))
 	try:
 		if not _validAction.get(action, False):
-			raise EnvError("invalid action %s" % action)
+			raise env.error("invalid action %s" % action)
 		with env.lock() as env:
 			env.configure()
+			_runPreAction(env, action)
 			_runAction(env, action)
+			_runPostAction(env, action)
 			env.report(action, startTime = _start)
 	finally:
 		env.info("%s end %s" % (action, strftime('%c %z')))
 
-def _runAction(env, action):
+def _runAction(env, action, cmd = None, force = True):
+	if cmd is None:
+		cmd = action
 	for p, mod in env.settings.plugins(action):
-		tag = "%s.%s" % (action, p)
-		env.start(tag)
-		func = getattr(mod, action)
-		func(env)
-		env.end(tag)
+		if hasattr(mod, cmd):
+			func = getattr(mod, cmd)
+			tag = "%s.%s" % (cmd, p)
+			env.start(tag)
+			func(env)
+			env.end(tag)
+		else:
+			env.debug("%s plugin no action %s" % (p, action))
+			if force:
+				raise PluginError("%s plugin no action %s" % (p, action))
+
+def _runPreAction(env, action):
+	_runAction(env, action, cmd = "pre_%s" % action, force = False)
+
+def _runPostAction(env, action):
+	_runAction(env, action, cmd = "%s_post" % action, force = False)
