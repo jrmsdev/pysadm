@@ -2,6 +2,7 @@
 # See LICENSE file.
 
 import pytest
+from os import path
 
 # logger
 
@@ -15,13 +16,18 @@ import _sadm.plugin.testing
 # config
 
 from _sadm import cfg
-cfg._cfgFile = './tdata/sadm.cfg'
+cfg._cfgFile = path.join('tdata', 'sadm.cfg')
 
 # attach testing config
 
 import _sadm
 del _sadm.config
 _sadm.config = cfg.new()
+
+# configure testing plugin
+
+import _sadm.plugin.sadm.build as sadm_plugin_build
+sadm_plugin_build._builddir = path.join('tdata', 'build')
 
 # testing profile
 

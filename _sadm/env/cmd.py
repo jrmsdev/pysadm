@@ -37,9 +37,9 @@ def _runAction(env, action, cmd = None, force = True, revert = False):
 			func(env)
 			env.end(tag)
 		else:
-			env.debug("%s plugin no action %s" % (p, action))
+			env.debug("%s plugin no action %s" % (p, cmd))
 			if force:
-				raise PluginError("%s plugin no action %s" % (p, action))
+				raise PluginError("%s plugin no action %s" % (p, cmd))
 
 def _runPreAction(env, action):
 	_runAction(env, action, cmd = "pre_%s" % action, force = False)

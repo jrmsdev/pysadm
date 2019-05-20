@@ -8,7 +8,9 @@ include .coveragerc
 
 include LICENSE
 include pytest.ini
+
 include tdata/.gitignore
+include tdata/build/testing/testing/.gitignore
 
 recursive-include _sadm *.css
 recursive-include _sadm *.html
@@ -26,3 +28,5 @@ recursive-include tdata *.test
 
 recursive-include venv *.sh
 recursive-include venv *.txt
+
+prune tdata/build
