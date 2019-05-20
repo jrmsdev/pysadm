@@ -1,8 +1,9 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
-from os import path
+from collections import deque
 from importlib import import_module
+from os import path
 
 try:
 	# python >= 3.6
@@ -17,8 +18,7 @@ from _sadm.errors import PluginError
 __all__ = ['register', 'getPlugin', 'pluginInit', 'pluginList']
 
 _reg = {}
-_order = {}
-_next = 0
+_order = deque()
 
 def register(name, filename):
 	global _next
@@ -26,16 +26,16 @@ def register(name, filename):
 	if _reg.get(n, None) is not None:
 		raise RuntimeError("plugin %s already registered" % name)
 	filename = path.realpath(path.normpath(filename))
+	cfgfn = path.join(path.dirname(filename), 'config.ini')
 	_reg[n] = {
 		'name': name,
-		'config': path.join(path.dirname(filename), 'config.ini'),
+		'config': cfgfn,
 	}
-	_order[_next] = n
-	_next += 1
+	_order.append(n)
 
 def pluginsList():
-	for idx in sorted(_order.keys()):
-		yield _order[idx]
+	for p in _order:
+		yield p
 
 def pluginInit(name, fn = None):
 	if fn is None:

@@ -14,18 +14,15 @@ _expectPlugins = {
 	2: 'os',
 }
 
-def test_registered_plugins():
-	assert configure._order == _expectPlugins
-
-def test_register_error():
-	with raises(RuntimeError, match = 'plugin testing already registered'):
-		configure.register('testing', 'filename')
-
 def test_plugins_list():
 	idx = 0
 	for p in configure.pluginsList():
 		assert p == _expectPlugins[idx]
 		idx += 1
+
+def test_register_error():
+	with raises(RuntimeError, match = 'plugin testing already registered'):
+		configure.register('testing', 'filename')
 
 def test_plugin_init():
 	fn = configure.pluginInit('testing')
