@@ -45,4 +45,4 @@ def _runPreAction(env, action):
 	_runAction(env, action, cmd = "pre_%s" % action, force = False)
 
 def _runPostAction(env, action):
-	_runAction(env, action, cmd = "%s_post" % action, force = False, revert = True)
+	_runAction(env, action, cmd = "post_%s" % action, force = False, revert = True)

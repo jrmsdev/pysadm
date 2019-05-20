@@ -5,9 +5,16 @@ from os import path, makedirs, unlink
 
 _builddir = path.join('.', 'build')
 
-def build(env):
-	env.debug(env.name())
+def pre_build(env):
+	env.debug('pre_build')
+	makedirs(path.realpath(_builddir), exist_ok = True)
 	env.log("build dir %s" % _builddir)
+
+def build(env):
+	env.debug('build')
+
+def post_build(env):
+	env.debug('post_build')
 	_writeSettings(env)
 
 def _writeSettings(env):
