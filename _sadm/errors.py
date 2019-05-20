@@ -25,3 +25,6 @@ class EnvError(Error):
 
 class PluginError(Error):
 	typ = 'PluginError'
+
+class SessionError(Error):
+	typ = 'SessionError'
