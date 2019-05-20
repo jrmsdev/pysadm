@@ -2,11 +2,12 @@
 # See LICENSE file.
 
 from pytest import raises
-from os import path
+from os import path, unlink
 from time import time
 
 from _sadm import asset
 from _sadm.env import Env, _lock, _unlock
+from _sadm.env import run as envrun
 from _sadm.env.profile import Profile
 from _sadm.env.settings import Settings
 from _sadm.errors import EnvError
@@ -109,3 +110,22 @@ def test_unlock_error(testing_env):
 	with raises(EnvError, match = 'unlock file not found:'):
 		_unlock(e)
 	assert not path.isfile(fn)
+
+def test_run():
+	cfgfn = path.join('tdata', 'builddir', 'testing', 'testing', 'configure.ini')
+	if path.isfile(cfgfn):
+		unlink(cfgfn)
+	assert not path.isfile(cfgfn)
+	rc = envrun('testing', 'testing', 'build')
+	assert rc == 0
+	assert path.isfile(cfgfn)
+	unlink(cfgfn)
+
+def test_run_error():
+	cfgfn = path.join('tdata', 'builddir', 'testing', 'testing', 'configure.ini')
+	if path.isfile(cfgfn):
+		unlink(cfgfn)
+	assert not path.isfile(cfgfn)
+	rc = envrun('testing', 'testing', 'configure')
+	assert rc == 1
+	assert not path.isfile(cfgfn)

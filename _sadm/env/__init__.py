@@ -141,7 +141,7 @@ def run(profile, env, action):
 		cmd.run(env, action)
 	except EnvError:
 		return 1
-	except Error as err:
+	except Error as err: # pragma: no cover
 		log.error("%s" % err)
 		return 2
 	return 0
