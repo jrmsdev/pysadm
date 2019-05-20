@@ -63,7 +63,7 @@ class Env(object):
 		try:
 			plugins.configure(self)
 		except FileNotFoundError as err:
-			raise env.error("%s" % err)
+			raise self.error("%s" % err)
 
 	def name(self):
 		return self._name

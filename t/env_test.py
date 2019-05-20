@@ -14,13 +14,22 @@ from _sadm.errors import EnvError
 def test_env(testing_env):
 	e = testing_env()
 	assert isinstance(e, Env)
-	assert e._cfgfile == 'config.ini'
 	assert e.name() == 'testing'
+	assert e.profile() == 'testing'
+	assert e.cfgfile() == 'config.ini'
+	assert e.rootdir().endswith(path.join('tdata', 'testing'))
 	assert isinstance(e._profile, Profile)
 	assert e._profile.name() == 'testing'
 	assert isinstance(e.assets, asset.Manager)
-	# ~ e.configure()
 	assert isinstance(e.settings, Settings)
+
+def test_env_configure(testing_env):
+	e = testing_env()
+	e.configure()
+	assert isinstance(e.settings, Settings)
+	with raises(EnvError, match = 'No such file or directory'):
+		e._cfgfile = 'noconfig.ini'
+		e.configure()
 
 def test_env_error(testing_env):
 	with raises(EnvError, match = 'env not found'):
