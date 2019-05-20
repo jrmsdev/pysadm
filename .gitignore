@@ -2,7 +2,7 @@
 dist/
 .eggs/
 htmlcov/
+.lock
 __pycache__
 sadm.egg-info/
-sadm.lock
 _sadm/_version.py

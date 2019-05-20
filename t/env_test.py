@@ -75,7 +75,7 @@ def test_report(testing_env):
 		e.report('testing_report')
 
 def test_lock(testing_env):
-	fn = path.join('tdata', 'testing', 'sadm.lock')
+	fn = path.join('tdata', 'testing', '.lock')
 	e = testing_env()
 	with e.lock():
 		assert e._lockfn.endswith(fn)
@@ -84,7 +84,7 @@ def test_lock(testing_env):
 	assert e._lockfn is None
 
 def test_lock_error(testing_env):
-	fn = path.join('tdata', 'testing', 'sadm.lock')
+	fn = path.join('tdata', 'testing', '.lock')
 	e = testing_env()
 	_lock(e)
 	assert path.isfile(fn)
@@ -94,7 +94,7 @@ def test_lock_error(testing_env):
 	assert not path.isfile(fn)
 
 def test_unlock_error(testing_env):
-	fn = path.join('tdata', 'testing', 'sadm.lock')
+	fn = path.join('tdata', 'testing', '.lock')
 	e = testing_env()
 	_lock(e)
 	assert path.isfile(fn)

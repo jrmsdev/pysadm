@@ -147,7 +147,7 @@ def run(profile, env, action):
 	return 0
 
 def _lock(env):
-	fn = path.join(env.assets.rootdir(), path.dirname(env.cfgfile()), 'sadm.lock')
+	fn = path.join(env.assets.rootdir(), path.dirname(env.cfgfile()), '.lock')
 	env.debug("lock %s" % fn)
 	try:
 		fh = open(fn, 'x')
