@@ -4,7 +4,6 @@
 from configparser import ConfigParser
 
 from _sadm.configure import pluginsList, getPlugin
-from _sadm.errors import EnvError
 
 __all__ = ['Settings']
 
