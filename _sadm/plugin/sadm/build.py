@@ -49,7 +49,8 @@ def _saveSession(env):
 	fn = path.realpath(fn)
 	if path.isfile(fn):
 		unlink(fn)
-	env.session.dump(fn)
+	with open(fn, 'x') as fh:
+		env.session.dump(fh)
 
 def _unlock(env):
 	lockfn = env.session.get('lockfn')
