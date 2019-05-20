@@ -9,6 +9,7 @@ from _sadm import log, config, asset
 from _sadm.configure import plugins
 from _sadm.env import cmd
 from _sadm.env.profile import Profile
+from _sadm.env.session import Session
 from _sadm.env.settings import Settings
 from _sadm.errors import Error, EnvError
 
@@ -24,6 +25,7 @@ class Env(object):
 	_lockfn = None
 	assets = None
 	settings = None
+	session = None
 
 	def __init__(self, profile, name):
 		self._name = name
@@ -31,7 +33,8 @@ class Env(object):
 		self._profName = self._profile.name()
 		self._logtag = ''
 		self._run = {}
-		self.settings = Settings(profile, name)
+		self.settings = Settings()
+		self.session = Session()
 		self._load()
 
 	def _load(self, fn = None, pdir = None):

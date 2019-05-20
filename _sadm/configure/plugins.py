@@ -25,7 +25,7 @@ def configure(env, cfgfile = None):
 	env.end('configure')
 
 def _getcfg(env, fn):
-	cfg = Settings(env.profile(), env.name())
+	cfg = Settings()
 	with env.assets.open(fn) as fh:
 		cfg.read_file(fh)
 	n = cfg.get('default', 'name', fallback = None)

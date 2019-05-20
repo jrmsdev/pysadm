@@ -8,14 +8,10 @@ from _sadm.configure import pluginsList, getPlugin
 __all__ = ['Settings']
 
 class Settings(ConfigParser):
-	_profile = None
-	_env = None
 
-	def __init__(self, profile, env):
+	def __init__(self):
 		super().__init__(defaults = {}, allow_no_value = False, delimiters = ('=',),
 			comment_prefixes = ('#',), strict = True, default_section = 'default')
-		self._profile = profile
-		self._env = env
 
 	def plugins(self, action, revert = False):
 		for p in pluginsList(revert = revert):
