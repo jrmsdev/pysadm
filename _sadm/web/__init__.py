@@ -2,12 +2,10 @@
 # See LICENSE file.
 
 import bottle
-from os import path
 
-from _sadm import log
+from _sadm import log, libdir
 
-_srcdir = path.realpath(path.dirname(__file__))
-_staticdir = path.join(_srcdir, 'static')
+_staticdir = libdir.path('web', 'static')
 
 @bottle.route('/static/<filename:path>')
 def _static(filename):
@@ -21,7 +19,7 @@ import _sadm.web.view.syslog
 import _sadm.web.view.about
 
 def start(host, port, debug):
-	htmldir = path.join(_srcdir, 'html')
+	htmldir = libdir.path('web', 'html')
 	log.debug("start %s" % htmldir)
 	bottle.TEMPLATE_PATH = [htmldir]
 	bottle.run(host = host, port = port, reloader = debug,
