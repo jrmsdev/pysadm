@@ -15,6 +15,8 @@ def run(env, action):
 	env.info("%s start %s" % (action, strftime('%c %z')))
 	env.log("%s %s" % (config.name(), config.filename()))
 	try:
+		if not _validAction.get(action, False):
+			raise EnvError("invalid action %s" % action)
 		with env.lock() as env:
 			env.configure()
 			_runAction(env, action)
@@ -23,8 +25,6 @@ def run(env, action):
 		env.info("%s end %s" % (action, strftime('%c %z')))
 
 def _runAction(env, action):
-	if not _validAction.get(action, False):
-		raise EnvError("invalid action %s" % action)
 	for p, mod in env.settings.plugins(action):
 		tag = "%s.%s" % (action, p)
 		env.start(tag)
