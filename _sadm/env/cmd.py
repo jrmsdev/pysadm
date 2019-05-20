@@ -3,10 +3,12 @@
 
 from time import strftime, time
 
-from _sadm import config, build
+from _sadm import config
 from _sadm.errors import EnvError
 
 __all__ = ['run']
+
+_validAction = {'build': True}
 
 def run(env, action):
 	_start = time()
@@ -15,13 +17,17 @@ def run(env, action):
 	try:
 		with env.lock() as env:
 			env.configure()
-			_run(env, action)
+			_runAction(env, action)
 			env.report(action, startTime = _start)
 	finally:
 		env.info("%s end %s" % (action, strftime('%c %z')))
 
-def _run(env, action):
-	if action == 'build':
-		build.run(env)
-	else:
+def _runAction(env, action):
+	if not _validAction.get(action, False):
 		raise EnvError("invalid action %s" % action)
+	for p, mod in env.settings.plugins(action):
+		tag = "%s.%s" % (action, p)
+		env.start(tag)
+		func = getattr(mod, action)
+		func(env)
+		env.end(tag)
