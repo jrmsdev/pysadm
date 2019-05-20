@@ -18,7 +18,7 @@ class Settings(ConfigParser):
 		self._profile = profile
 		self._env = env
 
-	def plugins(self, action):
-		for p in pluginsList():
+	def plugins(self, action, revert = False):
+		for p in pluginsList(revert = revert):
 			if self.has_section(p):
 				yield (p, getPlugin(p, action))

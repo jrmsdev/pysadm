@@ -33,9 +33,13 @@ def register(name, filename):
 	}
 	_order.append(n)
 
-def pluginsList():
-	for p in _order:
-		yield p
+def pluginsList(revert = False):
+	if revert:
+		for p in reversed(_order):
+			yield p
+	else:
+		for p in _order:
+			yield p
 
 def pluginInit(name, fn = None):
 	if fn is None:

@@ -26,10 +26,10 @@ def run(env, action):
 	finally:
 		env.info("%s end %s" % (action, strftime('%c %z')))
 
-def _runAction(env, action, cmd = None, force = True):
+def _runAction(env, action, cmd = None, force = True, revert = False):
 	if cmd is None:
 		cmd = action
-	for p, mod in env.settings.plugins(action):
+	for p, mod in env.settings.plugins(action, revert = revert):
 		if hasattr(mod, cmd):
 			func = getattr(mod, cmd)
 			tag = "%s.%s" % (cmd, p)
@@ -45,4 +45,4 @@ def _runPreAction(env, action):
 	_runAction(env, action, cmd = "pre_%s" % action, force = False)
 
 def _runPostAction(env, action):
-	_runAction(env, action, cmd = "%s_post" % action, force = False)
+	_runAction(env, action, cmd = "%s_post" % action, force = False, revert = True)
