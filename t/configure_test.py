@@ -20,6 +20,12 @@ def test_plugins_list():
 		assert p == _expectPlugins[idx]
 		idx += 1
 
+def test_plugins_list_revert():
+	idx = max(_expectPlugins.keys())
+	for p in configure.pluginsList(revert = True):
+		assert p == _expectPlugins[idx]
+		idx -= 1
+
 def test_register_error():
 	with raises(RuntimeError, match = 'plugin testing already registered'):
 		configure.register('testing', 'filename')
