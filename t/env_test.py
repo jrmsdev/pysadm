@@ -38,8 +38,10 @@ def test_load_error(testing_env):
 	e = testing_env()
 	with raises(EnvError, match = 'config file not set'):
 		e._load(fn = '')
-	with raises(EnvError, match = 'profile-dir-isfile.error is not a directory'):
-		e._load(pdir = 'profile-dir-isfile.error')
+	with raises(EnvError, match = 'noprofile.dir directory not found'):
+		e._load(pdir = 'tdata/noprofile.dir')
+	with raises(EnvError, match = 'profile-dir-isfile.test is not a directory'):
+		e._load(pdir = 'tdata/profile-dir-isfile.test')
 
 def test_start_end_action(testing_env):
 	e = testing_env()

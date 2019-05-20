@@ -52,6 +52,8 @@ class Env(object):
 		if pdir is None:
 			pdir = config.get(self._profName, 'dir', fallback = '.')
 		pdir = path.normpath(pdir.strip())
+		if not path.exists(pdir):
+			raise self.error("%s directory not found" % pdir)
 		if not path.isdir(pdir):
 			raise self.error("%s is not a directory" % pdir)
 		# env assets
