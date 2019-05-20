@@ -155,12 +155,16 @@ def _lock(env):
 	fh.flush()
 	fh.close()
 	env._lockfn = fn
+	env.debug('session start')
+	env.session.start()
 	return env
 
 def _unlock(env):
 	if env._lockfn is None:
 		env.debug('unlock env: not locked')
 	else:
+		env.debug('session stop')
+		env.session.stop()
 		env.debug("unlock %s" % env._lockfn)
 		try:
 			unlink(env._lockfn)

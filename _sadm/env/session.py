@@ -15,12 +15,12 @@ class Session(object):
 		self._d = {}
 
 	def start(self):
-		if _start is not None:
+		if self._start is not None:
 			raise SessionError('session already started')
 		self._start = time()
 
 	def stop(self):
-		if _start is None:
+		if self._start is None:
 			raise SessionError('session not started')
 		took = time() - self._start
 		del self._start

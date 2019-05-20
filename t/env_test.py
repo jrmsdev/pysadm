@@ -101,6 +101,7 @@ def test_unlock_error(testing_env):
 	_unlock(e)
 	assert e._lockfn is None
 	e._lockfn = fn
+	e.session.start()
 	with raises(EnvError, match = 'unlock file not found:'):
 		_unlock(e)
 	assert not path.isfile(fn)
