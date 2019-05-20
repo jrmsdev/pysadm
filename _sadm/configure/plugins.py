@@ -18,9 +18,11 @@ def configure(env, cfgfile = None):
 	fn = path.join(env.rootdir(), cfgfile)
 	env.log("%s" % fn)
 	cfg = _getcfg(env, fn)
+	env.start('configure')
 	_load(env, cfg)
 	with env.assets.open(fn) as fh:
 		env.settings.read_file(fh)
+	env.end('configure')
 
 def _getcfg(env, fn):
 	cfg = Settings(env.profile(), env.name())
@@ -55,7 +57,5 @@ def _initPlugin(env, fn):
 
 def _pluginConfigure(env, cfg, p):
 	mod = getPlugin(p, 'configure')
-	tag = "configure.%s" % p
-	env.start(tag)
+	env.log(p)
 	mod.configure(env, cfg)
-	env.end(tag)
