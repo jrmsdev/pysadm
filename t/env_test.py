@@ -16,8 +16,7 @@ def test_env(testing_env):
 	assert isinstance(e, Env)
 	assert e.name() == 'testing'
 	assert e.profile() == 'testing'
-	assert e.cfgfile() == 'config.ini'
-	assert e.rootdir().endswith(path.join('tdata', 'testing'))
+	assert e.cfgfile() == path.join('testing', 'config.ini')
 	assert isinstance(e._profile, Profile)
 	assert e._profile.name() == 'testing'
 	assert isinstance(e.assets, asset.Manager)
@@ -34,17 +33,11 @@ def test_env_configure(testing_env):
 def test_env_error(testing_env):
 	with raises(EnvError, match = 'env not found'):
 		Env('testing', 'noenv')
-	e = testing_env()
-	e._cfgfile = ''
-	with raises(EnvError, match = 'config file not set'):
-		e._loadcfg()
 
 def test_load_error(testing_env):
 	e = testing_env()
 	with raises(EnvError, match = 'config file not set'):
 		e._load(fn = '')
-	with raises(EnvError, match = 'testing profile dir not set'):
-		e._load(pdir = '')
 
 def test_start_end_action(testing_env):
 	e = testing_env()

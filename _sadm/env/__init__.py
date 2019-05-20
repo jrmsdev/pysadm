@@ -21,7 +21,6 @@ class Env(object):
 	_profName = None
 	_logtag = None
 	_run = None
-	_rootdir = None
 	_lockfn = None
 	assets = None
 	settings = None
@@ -32,32 +31,30 @@ class Env(object):
 		self._profName = self._profile.name()
 		self._logtag = ''
 		self._run = {}
-		if not self._name in config.listEnvs(self._profName):
-			raise self.error('env not found')
 		self.settings = Settings(profile, name)
 		self._load()
 
 	def _load(self, fn = None, pdir = None):
+		# env config.ini
 		opt = "env.%s" % self._name
 		if fn is None:
-			fn = path.normpath(config.get(self._profName, opt).strip())
-		if fn == '':
+			fn = config.get(self._profName, opt, fallback = None)
+			if fn is None:
+				raise self.error('env not found')
+		fn = path.normpath(fn.strip())
+		if fn == '.':
 			raise self.error('config file not set')
+		self._cfgfile = fn
+		# profile dir
 		if pdir is None:
-			pdir = path.normpath(config.get(self._profName, 'dir'))
-		if pdir == '':
-			raise self.error("%s profile dir not set" % self._profName)
-		pdir = path.realpath(pdir)
-		self._rootdir = path.join(pdir, path.dirname(fn))
-		self.assets = asset.Manager(self._rootdir)
-		log.debug("assets %s" % self._rootdir)
-		self._cfgfile = path.basename(fn)
-		self._loadcfg()
-
-	def _loadcfg(self):
-		if self._cfgfile == '':
-			raise self.error('config file not set')
-		self.debug("cfgfile %s" % self._cfgfile)
+			pdir = config.get(self._profName, 'dir', fallback = '.')
+		pdir = path.normpath(pdir.strip())
+		if not path.isdir(pdir):
+			raise self.error("%s is not a directory" % pdir)
+		# env assets
+		_rootdir = path.realpath(pdir)
+		self.assets = asset.Manager(_rootdir)
+		self.debug("assets %s" % _rootdir)
 
 	def configure(self):
 		try:
@@ -70,9 +67,6 @@ class Env(object):
 
 	def profile(self):
 		return self._profName
-
-	def rootdir(self):
-		return self._rootdir
 
 	def cfgfile(self):
 		return self._cfgfile
@@ -148,7 +142,7 @@ def run(profile, env, action):
 	return 0
 
 def _lock(env):
-	fn = path.join(env._rootdir, 'sadm.lock')
+	fn = path.join(env.assets.rootdir(), path.dirname(env.cfgfile()), 'sadm.lock')
 	env.debug("lock %s" % fn)
 	try:
 		fh = open(fn, 'x')

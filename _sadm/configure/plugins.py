@@ -15,7 +15,7 @@ __all__ = ['configure']
 def configure(env, cfgfile = None):
 	if cfgfile is None:
 		cfgfile = env.cfgfile()
-	fn = path.join(env.rootdir(), cfgfile)
+	fn = path.join(env.assets.rootdir(), cfgfile)
 	env.log("%s" % fn)
 	cfg = _getcfg(env, fn)
 	env.start('configure')

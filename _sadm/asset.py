@@ -9,5 +9,8 @@ class Manager(object):
 	def __init__(self, rootdir):
 		self._dir = path.realpath(path.normpath(rootdir))
 
+	def rootdir(self):
+		return self._dir
+
 	def open(self, relname):
 		return open(path.join(self._dir, path.normpath(relname)), 'r')
