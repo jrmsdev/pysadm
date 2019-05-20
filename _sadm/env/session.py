@@ -1,6 +1,7 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
+import json
 from time import time
 
 from _sadm.errors import SessionError
@@ -38,3 +39,7 @@ class Session(object):
 			else:
 				return default
 		return self._d[opt]
+
+	def dump(self, filename):
+		with open(filename, 'x') as fh:
+			json.dump(self._d, fh, indent = '\t', sort_keys = True)
