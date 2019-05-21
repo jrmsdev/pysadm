@@ -3,26 +3,18 @@
 
 from os import path, makedirs
 
+from _sadm.plugin.utils import builddir
+
 def build(env):
 	env.debug('build')
 	_setHostname(env)
 
 def _setHostname(env):
-	builddir = env.session.get('builddir')
-	env.debug("builddir %s" % builddir)
 	hostname = env.settings.get('os', 'hostname')
-	hostfn = env.settings.get('os', 'hostname.file')
-	if hostfn.startswith(path.sep):
-		hostfn = hostfn.replace(path.sep, '', 1)
-	fn = path.join(builddir, hostfn)
-	env.debug("hostname file %s" % fn)
-	mode = 'w'
-	if not path.isfile(fn):
-		mode = 'x'
-	dstdir = path.dirname(fn)
-	makedirs(dstdir, exist_ok = True)
-	with open(fn, mode) as fh:
+	hfn = env.settings.get('os', 'hostname.file')
+	env.debug("hostname file %s" % hfn)
+	with builddir.create(env, hfn) as fh:
 		fh.write(hostname.strip())
 		fh.write('\n')
 		fh.flush()
-	env.log("%s %s" % (hostfn, hostname))
+	env.log("%s: %s" % (hfn, hostname))
