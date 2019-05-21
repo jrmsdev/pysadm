@@ -3,14 +3,14 @@
 
 from _sadm.plugin.utils import builddir
 
-__all__ = ['pre_build', 'build', 'post_build']
+__all__ = ['pre_build', 'post_build']
 
 def pre_build(env):
 	builddir.lock(env)
 	_writeSettings(env)
 
-def build(env):
-	env.log('build')
+#def build(env):
+#	env.log('build')
 
 def post_build(env):
 	_saveSession(env)

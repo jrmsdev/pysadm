@@ -26,7 +26,7 @@ def run(env, action):
 	finally:
 		env.info("%s end %s" % (action, strftime('%c %z')))
 
-def _runAction(env, action, cmd = None, force = True, revert = False):
+def _runAction(env, action, cmd = None, force = False, revert = False):
 	if cmd is None:
 		cmd = action
 	for p, mod in env.settings.plugins(action, revert = revert):
@@ -42,7 +42,7 @@ def _runAction(env, action, cmd = None, force = True, revert = False):
 				raise PluginError("%s plugin no action %s" % (p, cmd))
 
 def _runPreAction(env, action):
-	_runAction(env, action, cmd = "pre_%s" % action, force = False)
+	_runAction(env, action, cmd = "pre_%s" % action)
 
 def _runPostAction(env, action):
-	_runAction(env, action, cmd = "post_%s" % action, force = False, revert = True)
+	_runAction(env, action, cmd = "post_%s" % action, revert = True)

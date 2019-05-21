@@ -29,4 +29,4 @@ def test_plugin_no_action(testing_env):
 	env = testing_env()
 	env.configure()
 	with raises(PluginError, match = 'testing plugin no action nocmd'):
-		cmd._runAction(env, 'build', cmd = 'nocmd')
+		cmd._runAction(env, 'build', cmd = 'nocmd', force = True)
