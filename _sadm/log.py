@@ -63,36 +63,41 @@ class _sysLogger(object):
 		self._initLevel(level)
 
 	def _initLevel(self, level):
-		if level == 'error':
-			self.debug = self._off
-			self.warn = self._off
-			self.error = self._error
+		# debug: all messages
+		if level == 'debug':
+			self.debug = self._debug
+			self.warn = self._warn
 			self.info = self._info
 			self.msg = self._msg
+			self.error = self._error
+		# warn: warn + info + error messages
 		elif level == 'warn':
 			self.debug = self._off
 			self.warn = self._warn
-			self.error = self._error
 			self.info = self._info
 			self.msg = self._msg
-		elif level == 'debug':
-			self.debug = self._debug
-			self.warn = self._warn
 			self.error = self._error
+		# info: info + error messages
+		elif level == 'info':
+			self.debug = self._off
+			self.warn = self._off
 			self.info = self._info
 			self.msg = self._msg
+			self.error = self._error
+		# error: only errors
+		elif level == 'error':
+			self.debug = self._off
+			self.warn = self._off
+			self.info = self._off
+			self.msg = self._off
+			self.error = self._error
+		# quiet: no messages
 		elif level == 'quiet':
 			self.debug = self._off
 			self.warn = self._off
-			self.error = self._error
 			self.info = self._off
 			self.msg = self._off
-		elif level == 'off':
-			self.debug = self._off
-			self.warn = self._off
 			self.error = self._off
-			self.info = self._off
-			self.msg = self._off
 		else:
 			raise RuntimeError("invalid log level: %s" % level)
 
@@ -161,7 +166,7 @@ def init(level): # pragma: no cover
 	_curlevel = level
 
 def levels():
-	return ['debug', 'error', 'warn', 'quiet', 'off']
+	return ['debug', 'warn', 'info', 'error', 'quiet']
 
 def defaultLevel():
 	return 'warn'
