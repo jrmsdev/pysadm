@@ -4,6 +4,5 @@
 import sys
 
 def configure(env, cfg):
-	env.debug(env.name())
 	sess = env.session
 	sess.set('os.platform', sys.platform)

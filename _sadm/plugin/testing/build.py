@@ -2,4 +2,4 @@
 # See LICENSE file.
 
 def build(env):
-	pass
+	env.log('build')

@@ -2,4 +2,4 @@
 # See LICENSE file.
 
 def configure(env, cfg):
-	env.debug('configure')
+	pass

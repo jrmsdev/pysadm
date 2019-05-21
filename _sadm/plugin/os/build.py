@@ -6,7 +6,6 @@ from os import path, makedirs
 from _sadm.plugin.utils import builddir
 
 def build(env):
-	env.debug('build')
 	_setHostname(env)
 
 def _setHostname(env):
