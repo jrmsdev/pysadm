@@ -4,7 +4,7 @@
 from os import path, unlink, makedirs
 from shutil import rmtree
 
-__all__ = ['lock']
+__all__ = ['lock', 'unlock', 'fpath', 'create']
 
 _builddir = path.join('.', 'build')
 
@@ -27,15 +27,12 @@ def lock(env):
 	_cleandir(env, bdir)
 
 def unlock(env):
-	fn = env.session.get('lockfn', default = None)
-	if fn is None:
-		env.debug('builddir not locked')
-	else:
-		env.debug("unlock %s" % fn)
-		try:
-			unlink(fn)
-		except FileNotFoundError:
-			raise env.error("unlock file not found: %s" % fn)
+	fn = env.session.get('lockfn')
+	env.debug("unlock %s" % fn)
+	try:
+		unlink(fn)
+	except FileNotFoundError:
+		raise env.error("unlock file not found: %s" % fn)
 
 def _cleandir(env, bdir):
 	if path.exists(bdir):
@@ -43,8 +40,8 @@ def _cleandir(env, bdir):
 		rmtree(bdir)
 	makedirs(bdir)
 
-def _open(env, filename, mode = 'r'):
-	fn = fpath(env, filename)
+def _open(env, filename, mode = 'r', meta = False):
+	fn = fpath(env, filename, meta = meta)
 	if mode != 'r':
 		dstdir = path.dirname(fn)
 		env.debug("makedirs %s" % dstdir)
@@ -52,22 +49,24 @@ def _open(env, filename, mode = 'r'):
 	env.debug("open(%s) %s" % (mode, fn))
 	return open(fn, mode)
 
-def fpath(env, *parts):
+def fpath(env, *parts, meta = False):
 	builddir = env.session.get('builddir')
+	if meta:
+		builddir = path.normpath(builddir) + '.meta'
 	fn = path.join(*parts)
 	fn = path.normpath(fn)
 	if fn.startswith(path.sep):
 		fn = fn.replace(path.sep, '', 1)
 	return path.realpath(path.join(builddir, fn))
 
-def create(env, filename):
-	return _open(env, filename, mode = 'x')
+def create(env, filename, meta = False):
+	return _open(env, filename, mode = 'x', meta = meta)
 
-def read(env, filename):
-	return _open(env, filename, mode = 'r')
+# ~ def read(env, filename):
+	# ~ return _open(env, filename, mode = 'r')
 
-def write(env, filename, append = False):
-	m = 'w'
-	if append:
-		m = 'a'
-	return _open(env, filename, mode = m)
+# ~ def write(env, filename, append = False):
+	# ~ m = 'w'
+	# ~ if append:
+		# ~ m = 'a'
+	# ~ return _open(env, filename, mode = m)
