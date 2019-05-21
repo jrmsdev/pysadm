@@ -2,19 +2,19 @@
 # See LICENSE file.
 
 from os import path, unlink, makedirs
+from shutil import rmtree
 
 __all__ = ['lock']
 
 _builddir = path.join('.', 'build')
 
 def lock(env):
-	builddir = path.realpath(_builddir)
-	builddir = path.join(builddir, env.profile(), env.name())
-	makedirs(builddir, exist_ok = True)
-	env.log("build dir %s" % builddir)
-	env.session.set('builddir', builddir)
-	fn = path.join(builddir, '.lock')
-	env.debug("lockfn %s" % fn)
+	bdir = path.realpath(_builddir)
+	bdir = path.join(bdir, env.profile(), env.name())
+	env.log("build dir %s" % bdir)
+	env.session.set('builddir', bdir)
+	fn = path.normpath(bdir) + '.lock'
+	env.debug("lock %s" % fn)
 	env.session.set('lockfn', fn)
 	try:
 		fh = open(fn, 'x')
@@ -23,7 +23,7 @@ def lock(env):
 	fh.write('1')
 	fh.flush()
 	fh.close()
-	return env
+	_initdir(env, bdir)
 
 def unlock(env):
 	fn = env.session.get('lockfn', default = None)
@@ -35,6 +35,12 @@ def unlock(env):
 			unlink(fn)
 		except FileNotFoundError:
 			raise env.error("unlock file not found: %s" % fn)
+
+def _initdir(env, bdir):
+	if path.exists(bdir):
+		env.debug("rmtree %s" % bdir)
+		rmtree(bdir)
+	makedirs(bdir)
 
 def _open(env, filename, mode = 'r'):
 	builddir = env.session.get('builddir')

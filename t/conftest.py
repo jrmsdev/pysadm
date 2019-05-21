@@ -24,11 +24,11 @@ import _sadm
 del _sadm.config
 _sadm.config = cfg.new()
 
-# configure testing plugin
+# configure plugins testing
 
-import _sadm.plugin.sadm.build as sadm_plugin_build
-sadm_plugin_build._builddir = path.join('tdata', 'builddir')
-makedirs(path.join(sadm_plugin_build._builddir, 'testing', 'testing'), exist_ok = True)
+from _sadm.plugin.utils import builddir
+builddir._builddir = path.join('tdata', 'builddir')
+makedirs(path.join(builddir._builddir, 'testing', 'testing'), exist_ok = True)
 
 # testing profile
 

@@ -2,7 +2,7 @@
 # See LICENSE file.
 
 from pytest import raises
-from os import path, unlink
+from os import path, unlink, makedirs
 from time import time
 
 from _sadm import asset
