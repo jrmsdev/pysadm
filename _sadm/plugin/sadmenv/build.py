@@ -8,6 +8,7 @@ __all__ = ['post_build']
 
 def post_build(env):
 	typ = 'tar'
-	fn = builddir.fpath(env, '.')
+	rdir = builddir.fpath(env, '.')
+	fn = builddir.fpath(env, env.name(), meta = True)
 	env.log("post_build %s.%s" % (fn, typ))
-	make_archive(fn, typ, root_dir = fn, base_dir = '.', verbose = 1)
+	make_archive(fn, typ, root_dir = rdir, base_dir = '.', verbose = 1)
