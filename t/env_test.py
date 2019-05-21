@@ -113,7 +113,7 @@ def test_unlock_error(testing_env):
 	assert not path.isfile(fn)
 
 def test_run():
-	cfgfn = path.join('tdata', 'builddir', 'testing', 'testing', 'configure.ini')
+	cfgfn = path.join('tdata', 'builddir', 'testing', 'testing.meta', 'configure.ini')
 	if path.isfile(cfgfn):
 		unlink(cfgfn)
 	assert not path.isfile(cfgfn)
