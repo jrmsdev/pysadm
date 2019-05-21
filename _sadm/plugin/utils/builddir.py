@@ -44,17 +44,21 @@ def _cleandir(env, bdir):
 	makedirs(bdir)
 
 def _open(env, filename, mode = 'r'):
-	builddir = env.session.get('builddir')
-	fn = path.normpath(filename)
-	if fn.startswith(path.sep):
-		fn = fn.replace(path.sep, '', 1)
-	fn = path.join(builddir, fn)
+	fn = fpath(env, filename)
 	if mode != 'r':
 		dstdir = path.dirname(fn)
 		env.debug("makedirs %s" % dstdir)
 		makedirs(dstdir, exist_ok = True)
 	env.debug("open(%s) %s" % (mode, fn))
 	return open(fn, mode)
+
+def fpath(env, *parts):
+	builddir = env.session.get('builddir')
+	fn = path.join(*parts)
+	fn = path.normpath(fn)
+	if fn.startswith(path.sep):
+		fn = fn.replace(path.sep, '', 1)
+	return path.realpath(path.join(builddir, fn))
 
 def create(env, filename):
 	return _open(env, filename, mode = 'x')
