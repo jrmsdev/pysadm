@@ -9,8 +9,11 @@ _builddir = path.join('.', 'build')
 
 def pre_build(env):
 	env.debug('pre_build')
-	makedirs(path.realpath(_builddir), exist_ok = True)
-	env.log("build dir %s" % _builddir)
+	builddir = path.realpath(_builddir)
+	builddir = path.join(builddir, env.profile(), env.name())
+	makedirs(builddir, exist_ok = True)
+	env.log("build dir %s" % builddir)
+	env.session.set('builddir', builddir)
 	_lock(env)
 
 def build(env):
@@ -23,7 +26,7 @@ def post_build(env):
 	_unlock(env)
 
 def _lock(env):
-	lockfn = path.join(_builddir, env.profile(), env.name(), '.lock')
+	lockfn = path.join(env.session.get('builddir'), '.lock')
 	env.debug("lockfn %s" % lockfn)
 	env.session.set('lockfn', lockfn)
 	try:
@@ -43,7 +46,7 @@ def _unlock(env):
 		raise env.error("%s" % err)
 
 def _saveSession(env):
-	fn = path.join(_builddir, env.profile(), env.name(), 'session.json')
+	fn = path.join(env.session.get('builddir'), 'session.json')
 	env.log("save %s" % fn)
 	fn = path.realpath(fn)
 	if path.isfile(fn):
@@ -52,7 +55,7 @@ def _saveSession(env):
 		env.session.dump(fh)
 
 def _writeSettings(env):
-	fn = path.join(_builddir, env.profile(), env.name(), 'configure.ini')
+	fn = path.join(env.session.get('builddir'), 'configure.ini')
 	freal = path.realpath(fn)
 	dst = path.dirname(freal)
 	makedirs(dst, exist_ok = True)
