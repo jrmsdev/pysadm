@@ -11,7 +11,8 @@ from _sadm.errors import PluginError
 _expectPlugins = {
 	0: 'testing',
 	1: 'sadm',
-	2: 'os',
+	2: 'sadmenv',
+	3: 'os',
 }
 
 def test_plugins_list():

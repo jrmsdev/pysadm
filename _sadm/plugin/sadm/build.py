@@ -8,6 +8,7 @@ __all__ = ['pre_build', 'build', 'post_build']
 def pre_build(env):
 	env.debug('pre_build')
 	builddir.lock(env)
+	_writeSettings(env)
 
 def build(env):
 	env.debug('build')
@@ -15,7 +16,6 @@ def build(env):
 def post_build(env):
 	env.debug('post_build')
 	_saveSession(env)
-	_writeSettings(env)
 	builddir.unlock(env)
 
 def _saveSession(env):

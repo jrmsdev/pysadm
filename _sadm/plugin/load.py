@@ -4,4 +4,5 @@
 # register plugins
 
 import _sadm.plugin.sadm
+import _sadm.plugin.sadmenv
 import _sadm.plugin.os
