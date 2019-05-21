@@ -27,6 +27,7 @@ def test_stop_error():
 	sess = Session()
 	sess.start()
 	sess.stop()
+	sess._done = False
 	with raises(SessionError, match = 'session not started'):
 		sess.stop()
 

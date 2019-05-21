@@ -9,6 +9,7 @@ from _sadm.errors import EnvError
 
 def test_configure(testing_env):
 	e = testing_env()
+	e.session.start()
 	plugins.configure(e)
 	assert isinstance(e.settings, Settings)
 

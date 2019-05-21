@@ -39,8 +39,10 @@ def _lock(env):
 
 def _unlock(env):
 	lockfn = env.session.get('lockfn')
-	env.debug("lockfn %s" % lockfn)
+	env.debug('session stop')
+	env.session.stop()
 	try:
+		env.debug("lockfn %s" % lockfn)
 		unlink(lockfn)
 	except FileNotFoundError as err:
 		raise env.error("%s" % err)

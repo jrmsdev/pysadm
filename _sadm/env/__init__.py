@@ -62,6 +62,8 @@ class Env(object):
 		self.debug("assets %s" % _rootdir)
 
 	def configure(self):
+		self.debug('session start')
+		self.session.start()
 		try:
 			plugins.configure(self)
 		except FileNotFoundError as err:
@@ -157,16 +159,12 @@ def _lock(env):
 	fh.flush()
 	fh.close()
 	env._lockfn = fn
-	env.debug('session start')
-	env.session.start()
 	return env
 
 def _unlock(env):
 	if env._lockfn is None:
 		env.debug('unlock env: not locked')
 	else:
-		env.debug('session stop')
-		env.session.stop()
 		env.debug("unlock %s" % env._lockfn)
 		try:
 			unlink(env._lockfn)

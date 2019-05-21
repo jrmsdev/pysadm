@@ -10,6 +10,7 @@ __all__ = ['Session']
 
 class Session(object):
 	_start = None
+	_done = False
 	_d = None
 
 	def __init__(self):
@@ -19,8 +20,11 @@ class Session(object):
 		if self._start is not None:
 			raise SessionError('session already started')
 		self._start = time()
+		self._done = False
 
 	def _check(self):
+		if self._done:
+			raise SessionError('session stopped')
 		if self._start is None:
 			raise SessionError('session not started')
 
@@ -28,6 +32,7 @@ class Session(object):
 		self._check()
 		took = time() - self._start
 		del self._start
+		self._done = True
 		return took
 
 	def set(self, opt, val):
