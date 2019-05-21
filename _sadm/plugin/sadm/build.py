@@ -22,20 +22,18 @@ def post_build(env):
 
 def _saveSession(env):
 	fn = path.join(env.session.get('builddir'), 'session.json')
-	env.log("save %s" % fn)
 	fn = path.realpath(fn)
 	if path.isfile(fn):
 		unlink(fn)
-	with open(fn, 'x') as fh:
+	env.log('save session.json')
+	with builddir.create(env, 'session.json') as fh:
 		env.session.dump(fh)
 
 def _writeSettings(env):
 	fn = path.join(env.session.get('builddir'), 'configure.ini')
 	freal = path.realpath(fn)
-	dst = path.dirname(freal)
-	makedirs(dst, exist_ok = True)
 	if path.isfile(freal):
 		unlink(freal)
-	with open(freal, 'x') as fh:
+	with builddir.create(env, 'configure.ini') as fh:
 		env.settings.write(fh)
-	env.log("%s done" % fn)
+	env.log('configure.ini done')

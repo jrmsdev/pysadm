@@ -35,3 +35,25 @@ def unlock(env):
 			unlink(fn)
 		except FileNotFoundError:
 			raise env.error("unlock file not found: %s" % fn)
+
+def _open(env, filename, mode = 'r'):
+	builddir = env.session.get('builddir')
+	fn = path.normpath(filename)
+	if fn.startswith(path.sep):
+		fn.replace(path.sep, '', 1)
+	fn = path.join(builddir, fn)
+	if mode != 'r':
+		makedirs(path.dirname(fn), exist_ok = True)
+	return open(fn, mode)
+
+def create(env, filename):
+	return _open(env, filename, mode = 'x')
+
+def read(env, filename):
+	return _open(env, filename, mode = 'r')
+
+def write(env, filename, append = False):
+	m = 'w'
+	if append:
+		m = 'a'
+	return _open(env, filename, mode = m)
