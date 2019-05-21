@@ -46,10 +46,13 @@ def _open(env, filename, mode = 'r'):
 	builddir = env.session.get('builddir')
 	fn = path.normpath(filename)
 	if fn.startswith(path.sep):
-		fn.replace(path.sep, '', 1)
+		fn = fn.replace(path.sep, '', 1)
 	fn = path.join(builddir, fn)
 	if mode != 'r':
-		makedirs(path.dirname(fn), exist_ok = True)
+		dstdir = path.dirname(fn)
+		env.debug("makedirs %s" % dstdir)
+		makedirs(dstdir, exist_ok = True)
+	env.debug("open(%s) %s" % (mode, fn))
 	return open(fn, mode)
 
 def create(env, filename):
