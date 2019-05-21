@@ -17,11 +17,11 @@ def post_build(env):
 	builddir.unlock(env)
 
 def _saveSession(env):
-	env.log('save session.json')
+	env.log('session.json')
 	with builddir.create(env, 'session.json', meta = True) as fh:
 		env.session.dump(fh)
 
 def _writeSettings(env):
+	env.log('configure.ini')
 	with builddir.create(env, 'configure.ini', meta = True) as fh:
 		env.settings.write(fh)
-	env.log('configure.ini done')

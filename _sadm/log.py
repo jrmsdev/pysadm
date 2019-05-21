@@ -104,7 +104,6 @@ class _sysLogger(object):
 	def _off(self, msg, depth = None, tag = None):
 		pass
 
-	# TODO: grey color for caller info
 	def _debug(self, msg, depth = None, tag = None):
 		if tag is None:
 			tag = ''

@@ -5,6 +5,7 @@ from _sadm import version
 
 def configure(env, cfg):
 	s = env.settings
-	s.set('sadm', 'version', version.get())
 	s.set('sadm', 'env', env.name())
 	s.set('sadm', 'profile', env.profile())
+	sess = env.session
+	sess.set('sadm.version', version.get())

@@ -14,19 +14,24 @@ def post_build(env):
 	_zip(env)
 
 def _tar(env):
+	env.log("%s.tar" % env.name())
 	rdir = builddir.fpath(env, '.')
 	fn = builddir.fpath(env, env.name(), meta = True)
 	make_archive(fn, 'tar', root_dir = rdir, base_dir = '.', verbose = 1)
-	env.log("%s.tar done" % fn)
 
 def _zip(env):
+	env.log("%s.zip" % env.name())
 	rdir = builddir.fpath(env, '.', meta = True)
 	fn = builddir.fpath(env, '.')
 	make_archive(fn, 'zip', root_dir = rdir, base_dir = '.', verbose = 1)
-	env.log("%s.zip done" % fn)
 
 def _meta(env):
-	fn = builddir.fpath(env, 'meta.json', meta = True)
+	env.log('meta.json')
 	with builddir.create(env, 'meta.json', meta = True) as fh:
-		json.dump({}, fh)
-	env.log("%s done" % fn)
+		json.dump(_getmeta(env), fh, indent = '\t', sort_keys = True)
+
+def _getmeta(env):
+	return {
+		'sadm.version': env.session.get('sadm.version'),
+		'os.platform': env.session.get('os.platform'),
+	}
