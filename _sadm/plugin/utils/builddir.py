@@ -38,7 +38,12 @@ def _cleandir(env, bdir):
 	if path.exists(bdir):
 		env.debug("rmtree %s" % bdir)
 		rmtree(bdir)
+	mdir = path.normpath(bdir) + '.meta'
+	if path.exists(mdir):
+		env.debug("rmtree %s" % mdir)
+		rmtree(mdir)
 	makedirs(bdir)
+	makedirs(mdir)
 
 def _open(env, filename, mode = 'r', meta = False):
 	fn = fpath(env, filename, meta = meta)
