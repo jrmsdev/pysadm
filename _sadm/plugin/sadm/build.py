@@ -3,18 +3,13 @@
 
 from os import path, makedirs, unlink
 
-__all__ = ['pre_build', 'build', 'post_build']
+from _sadm.plugin.utils import builddir
 
-_builddir = path.join('.', 'build')
+__all__ = ['pre_build', 'build', 'post_build']
 
 def pre_build(env):
 	env.debug('pre_build')
-	builddir = path.realpath(_builddir)
-	builddir = path.join(builddir, env.profile(), env.name())
-	makedirs(builddir, exist_ok = True)
-	env.log("build dir %s" % builddir)
-	env.session.set('builddir', builddir)
-	_lock(env)
+	builddir.lock(env)
 
 def build(env):
 	env.debug('build')
@@ -23,29 +18,7 @@ def post_build(env):
 	env.debug('post_build')
 	_saveSession(env)
 	_writeSettings(env)
-	_unlock(env)
-
-def _lock(env):
-	lockfn = path.join(env.session.get('builddir'), '.lock')
-	env.debug("lockfn %s" % lockfn)
-	env.session.set('lockfn', lockfn)
-	try:
-		fh = open(lockfn, 'x')
-		fh.write('1')
-		fh.flush()
-		fh.close()
-	except FileExistsError as err:
-		raise env.error("%s" % err)
-
-def _unlock(env):
-	lockfn = env.session.get('lockfn')
-	env.debug('session stop')
-	env.session.stop()
-	try:
-		env.debug("lockfn %s" % lockfn)
-		unlink(lockfn)
-	except FileNotFoundError as err:
-		raise env.error("%s" % err)
+	builddir.unlock(env)
 
 def _saveSession(env):
 	fn = path.join(env.session.get('builddir'), 'session.json')
