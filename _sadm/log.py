@@ -157,7 +157,7 @@ _curlevel = None
 
 # public methods
 
-def init(level): # pragma: no cover
+def init(level):
 	global _logger
 	global _curlevel
 	_setColored()

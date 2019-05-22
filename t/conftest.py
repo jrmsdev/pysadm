@@ -8,6 +8,7 @@ from os import path, makedirs
 
 from _sadm import log
 log._colored = False
+log.init('quiet')
 
 # register testing plugin
 
