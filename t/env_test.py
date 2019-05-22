@@ -136,10 +136,5 @@ def test_run_env_error():
 	assert not path.isfile(cfgfn)
 
 def test_run_error():
-	cfgfn = path.join('tdata', 'builddir', 'testing', 'testing.meta', 'configure.ini')
-	if path.isfile(cfgfn):
-		unlink(cfgfn)
-	assert not path.isfile(cfgfn)
 	rc = envrun('testing', 'testing.errors', 'build')
 	assert rc == 2
-	assert not path.isfile(cfgfn)
