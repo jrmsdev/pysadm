@@ -2,7 +2,8 @@
 # See LICENSE file.
 
 import pytest
-from os import path, makedirs
+from os import path, makedirs, unlink
+from shutil import rmtree
 
 # logger
 
@@ -65,17 +66,40 @@ def testing_settings():
 # testing env setup
 
 from contextlib import contextmanager
+from _sadm.env import cmd as envcmd
 
 @pytest.fixture
 def env_setup():
 	@contextmanager
 	def wrapper(name = 'testing', profile = 'envsetup',
-		configure = True, cfgfile = None):
+		configure = False, cfgfile = None, action = None):
+		if action is not None:
+			configure = False # configure in called from cmd.run
 		try:
 			e = env.Env(profile, name)
 			if configure:
 				e.configure(cfgfile = cfgfile)
+			if action is not None:
+				envcmd.run(e, action)
 			yield e
 		finally:
-			pass
+			_clean_envsetup(e)
 	return wrapper
+
+def _clean_envsetup(env):
+	en = env.name()
+	_bdirs = [
+		path.join('tdata', 'builddir', 'envsetup', en),
+		path.join('tdata', 'builddir', 'envsetup', en + '.meta'),
+	]
+	for bdir in _bdirs:
+		if path.isdir(bdir):
+			rmtree(bdir)
+	_bfiles = [
+		path.join('tdata', 'builddir', 'envsetup', en + '.lock'),
+		path.join('tdata', 'builddir', 'envsetup', en + '.zip'),
+		path.join('tdata', 'setup', en, '.lock'),
+	]
+	for fn in _bfiles:
+		if path.isfile(fn):
+			unlink(fn)

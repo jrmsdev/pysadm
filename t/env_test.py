@@ -7,6 +7,7 @@ from time import time
 
 from _sadm import asset
 from _sadm.env import Env, _lock, _unlock
+from _sadm.env import cmd as envcmd
 from _sadm.env import run as envrun
 from _sadm.env.profile import Profile
 from _sadm.env.settings import Settings
@@ -144,8 +145,21 @@ def test_run_error():
 	assert str(env.getError()) == 'None'
 	assert rc == 2
 
-def test_env_setup(env_setup):
-	with env_setup() as env:
+def test_envsetup(env_setup):
+	with env_setup(configure = True) as env:
 		assert env.name() == 'testing'
 		assert env.profile() == 'envsetup'
 		assert env.session._start is not None # env.configure() was run
+
+def test_envsetup_action(env_setup):
+	mdir = path.join('tdata', 'builddir', 'envsetup', 'testing')
+	zfn = path.join('tdata', 'builddir', 'envsetup', 'testing.zip')
+	with env_setup(action = 'build') as env:
+		assert path.isdir(mdir)
+		assert path.isfile(zfn)
+	assert not path.isdir(mdir)
+	assert not path.isfile(zfn)
+	with raises(EnvError, match = 'invalid action configure'):
+		with env_setup(action = 'configure') as env:
+			pass
+	assert not path.isdir(mdir)
