@@ -143,3 +143,9 @@ def test_run_error():
 	rc, env = envrun('testing', 'testing.errors', 'build')
 	assert str(env.getError()) == 'None'
 	assert rc == 2
+
+def test_env_setup(env_setup):
+	with env_setup() as env:
+		assert env.name() == 'testing'
+		assert env.profile() == 'testing'
+		assert env.session._start is not None # env.configure() was run

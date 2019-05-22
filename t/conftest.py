@@ -61,3 +61,20 @@ def testing_settings():
 		e.configure()
 		return e.settings
 	return wrapper
+
+# testing env setup
+
+from contextlib import contextmanager
+
+@pytest.fixture
+def env_setup():
+	@contextmanager
+	def wrapper(name = 'testing', profile = 'testing', configure = True):
+		try:
+			e = env.Env(profile, name)
+			if configure:
+				e.configure()
+			yield e
+		finally:
+			pass
+	return wrapper
