@@ -27,7 +27,7 @@ def test_cfg():
 	assert c.get('testing', 'dir') == './tdata'
 	assert c.get('testing', 'env.testing') == 'testing/config.ini'
 	assert c.listProfiles() == ['testing']
-	assert c.listEnvs('testing') == ['testing']
+	assert sorted(c.listEnvs('testing')) == ['testing', 'testing.errors', 'testing.nodir']
 
 def test_profile_error():
 	c = cfg.new()
