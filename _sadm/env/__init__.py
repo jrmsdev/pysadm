@@ -143,7 +143,7 @@ def run(profile, env, action):
 		cmd.run(env, action)
 	except EnvError:
 		return 1
-	except Error as err: # pragma: no cover
+	except Error as err:
 		log.error("%s" % err)
 		return 2
 	return 0
@@ -151,10 +151,13 @@ def run(profile, env, action):
 def _lock(env):
 	fn = path.join(env.assets.rootdir(), path.dirname(env.cfgfile()), '.lock')
 	env.debug("lock %s" % fn)
+	envdir = path.dirname(fn)
 	try:
 		fh = open(fn, 'x')
 	except FileExistsError:
 		raise env.error("lock file exists: %s" % fn)
+	except FileNotFoundError:
+		raise env.error("env dir %s does not exists?" % envdir)
 	fh.write('1')
 	fh.flush()
 	fh.close()
