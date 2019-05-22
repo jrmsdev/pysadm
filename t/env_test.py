@@ -113,7 +113,7 @@ def test_unlock_error(testing_env):
 	assert not path.isfile(fn)
 
 def test_env_nodir_error():
-	rc = envrun('testing', 'testing.nodir', 'build')
+	rc, _ = envrun('testing', 'testing.nodir', 'build')
 	assert rc == 1
 
 def test_run():
@@ -121,7 +121,7 @@ def test_run():
 	if path.isfile(cfgfn):
 		unlink(cfgfn)
 	assert not path.isfile(cfgfn)
-	rc = envrun('testing', 'testing', 'build')
+	rc, _ = envrun('testing', 'testing', 'build')
 	assert rc == 0
 	assert path.isfile(cfgfn)
 	unlink(cfgfn)
@@ -131,10 +131,15 @@ def test_run_env_error():
 	if path.isfile(cfgfn):
 		unlink(cfgfn)
 	assert not path.isfile(cfgfn)
-	rc = envrun('testing', 'testing', 'configure') # invalid action error
+	rc, env = envrun('testing', 'testing', 'configure')
+	assert str(env.getError()) == 'EnvError: invalid action configure'
 	assert rc == 1
 	assert not path.isfile(cfgfn)
 
 def test_run_error():
-	rc = envrun('testing', 'testing.errors', 'build')
+	lockfn = path.join('tdata', 'builddir', 'testing', 'testing.errors.lock')
+	if path.isfile(lockfn):
+		unlink(lockfn)
+	rc, env = envrun('testing', 'testing.errors', 'build')
+	assert str(env.getError()) == 'None'
 	assert rc == 2

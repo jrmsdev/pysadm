@@ -12,7 +12,8 @@ def _getArgs():
 def main():
 	args = _getArgs()
 	log.debug("build %s/%s" % (args.profile, args.env))
-	return env.run(args.profile, args.env, 'build')
+	rc, _ = env.run(args.profile, args.env, 'build')
+	return rc
 
 if __name__ == '__main__':
 	sys.exit(main())

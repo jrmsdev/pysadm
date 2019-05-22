@@ -69,3 +69,10 @@ def test_dump():
 	fh.seek(0, 0)
 	assert fh.read() == '{"opt1": "val1", "opt2": "val2"}'
 	sess.stop()
+
+def test_stopped_error():
+	sess = Session()
+	sess.start()
+	sess.stop()
+	with raises(SessionError, match = 'session stopped'):
+		sess.set('testing', 'stopped')

@@ -23,6 +23,7 @@ class Env(object):
 	_logtag = None
 	_run = None
 	_lockfn = None
+	_err = None
 	assets = None
 	settings = None
 	session = None
@@ -95,8 +96,12 @@ class Env(object):
 		log.debug("%s" % msg, depth = 4, tag = tag)
 
 	def error(self, msg):
+		self._err = EnvError(msg)
 		self._log(log.error, msg)
-		return EnvError(msg)
+		return self._err
+
+	def getError(self):
+		return self._err
 
 	def start(self, action, msg = ''):
 		if self._run.get(action, None) is not None:
@@ -142,11 +147,11 @@ def run(profile, env, action):
 		env = Env(profile, env)
 		cmd.run(env, action)
 	except EnvError:
-		return 1
+		return (1, env)
 	except Error as err:
 		log.error("%s" % err)
-		return 2
-	return 0
+		return (2, env)
+	return (0, env)
 
 def _lock(env):
 	fn = path.join(env.assets.rootdir(), path.dirname(env.cfgfile()), '.lock')
