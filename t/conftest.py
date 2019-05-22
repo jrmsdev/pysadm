@@ -69,11 +69,12 @@ from contextlib import contextmanager
 @pytest.fixture
 def env_setup():
 	@contextmanager
-	def wrapper(name = 'testing', profile = 'testing', configure = True):
+	def wrapper(name = 'testing', profile = 'envsetup',
+		configure = True, cfgfile = None):
 		try:
 			e = env.Env(profile, name)
 			if configure:
-				e.configure()
+				e.configure(cfgfile = cfgfile)
 			yield e
 		finally:
 			pass

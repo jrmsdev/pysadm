@@ -22,11 +22,11 @@ def test_cfg():
 	assert c.get('default', 'env') == 'testing'
 	assert c.get('default', 'dir') == '.'
 	assert c.listPlugins('testing') == ['sadm', 'os', 'testing']
-	assert len(c.sections()) == 1
+	assert len(c.sections()) == 2
 	assert c.has_section('testing')
 	assert c.get('testing', 'dir') == './tdata'
 	assert c.get('testing', 'env.testing') == 'testing/config.ini'
-	assert c.listProfiles() == ['testing']
+	assert sorted(c.listProfiles()) == ['envsetup', 'testing']
 	assert sorted(c.listEnvs('testing')) == ['testing', 'testing.errors', 'testing.nodir']
 
 def test_profile_error():

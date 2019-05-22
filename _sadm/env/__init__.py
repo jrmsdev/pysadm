@@ -62,11 +62,11 @@ class Env(object):
 		self.assets = asset.Manager(_rootdir)
 		self.debug("assets %s" % _rootdir)
 
-	def configure(self):
+	def configure(self, cfgfile = None):
 		self.debug('session start')
 		self.session.start()
 		try:
-			plugins.configure(self)
+			plugins.configure(self, cfgfile = cfgfile)
 		except FileNotFoundError as err:
 			raise self.error("%s" % err)
 

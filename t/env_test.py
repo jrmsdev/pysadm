@@ -147,5 +147,5 @@ def test_run_error():
 def test_env_setup(env_setup):
 	with env_setup() as env:
 		assert env.name() == 'testing'
-		assert env.profile() == 'testing'
+		assert env.profile() == 'envsetup'
 		assert env.session._start is not None # env.configure() was run
