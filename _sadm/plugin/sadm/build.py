@@ -10,9 +10,6 @@ def pre_build(env):
 	builddir.lock(env)
 	_writeSettings(env)
 
-#def build(env):
-#	env.log('build')
-
 def post_build(env):
 	_saveSession(env)
 	builddir.unlock(env)

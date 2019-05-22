@@ -2,7 +2,9 @@
 # See LICENSE file.
 
 import json
+
 from hashlib import sha256
+from os import path
 from shutil import make_archive
 
 from _sadm.plugin.utils import builddir
@@ -29,6 +31,11 @@ def _zip(env):
 	rdir = builddir.fpath(env, '.', meta = True)
 	fn = builddir.fpath(env, '.')
 	make_archive(fn, 'zip', root_dir = rdir, base_dir = '.', verbose = 1)
+	h = sha256()
+	with open(fn + '.zip', 'rb') as fh:
+		h.update(fh.read())
+	with open(fn + '.checksum', 'x') as fh:
+		fh.write("%s  %s\n" % (h.hexdigest(), path.basename(env.name()) + '.zip'))
 
 def _meta(env):
 	env.log('meta.json')

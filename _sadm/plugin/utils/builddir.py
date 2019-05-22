@@ -35,15 +35,23 @@ def unlock(env):
 		raise env.error("unlock file not found: %s" % fn)
 
 def _cleandir(env, bdir):
-	if path.exists(bdir):
-		env.debug("rmtree %s" % bdir)
-		rmtree(bdir)
-	mdir = path.normpath(bdir) + '.meta'
-	if path.exists(mdir):
-		env.debug("rmtree %s" % mdir)
-		rmtree(mdir)
-	makedirs(bdir)
-	makedirs(mdir)
+	base = path.normpath(bdir)
+	bdirs = [
+		bdir,
+		base + '.meta',
+	]
+	bfiles = [
+		base + '.zip',
+		base + '.checksum',
+	]
+	for d in bdirs:
+		if path.isdir(d):
+			env.debug("rmtree %s" % d)
+			rmtree(d) # clean tree
+		makedirs(d) # recreate base dirs
+	for f in bfiles:
+		if path.isfile(f):
+			unlink(f)
 
 def _open(env, filename, mode = 'r', meta = False):
 	fn = fpath(env, filename, meta = meta)

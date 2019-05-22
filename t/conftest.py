@@ -98,6 +98,7 @@ def _clean_envsetup(env):
 	_bfiles = [
 		path.join('tdata', 'builddir', 'envsetup', en + '.lock'),
 		path.join('tdata', 'builddir', 'envsetup', en + '.zip'),
+		path.join('tdata', 'builddir', 'envsetup', en + '.checksum'),
 		path.join('tdata', 'setup', en, '.lock'),
 	]
 	for fn in _bfiles:
