@@ -112,6 +112,10 @@ def test_unlock_error(testing_env):
 		_unlock(e)
 	assert not path.isfile(fn)
 
+def test_env_nodir_error():
+	rc = envrun('testing', 'testing.nodir', 'build')
+	assert rc == 1
+
 def test_run():
 	cfgfn = path.join('tdata', 'builddir', 'testing', 'testing.meta', 'configure.ini')
 	if path.isfile(cfgfn):
@@ -122,11 +126,20 @@ def test_run():
 	assert path.isfile(cfgfn)
 	unlink(cfgfn)
 
-def test_run_error():
-	cfgfn = path.join('tdata', 'builddir', 'testing', 'testing', 'configure.ini')
+def test_run_env_error():
+	cfgfn = path.join('tdata', 'builddir', 'testing', 'testing.meta', 'configure.ini')
 	if path.isfile(cfgfn):
 		unlink(cfgfn)
 	assert not path.isfile(cfgfn)
-	rc = envrun('testing', 'testing', 'configure')
+	rc = envrun('testing', 'testing', 'configure') # invalid action error
 	assert rc == 1
+	assert not path.isfile(cfgfn)
+
+def test_run_error():
+	cfgfn = path.join('tdata', 'builddir', 'testing', 'testing.meta', 'configure.ini')
+	if path.isfile(cfgfn):
+		unlink(cfgfn)
+	assert not path.isfile(cfgfn)
+	rc = envrun('testing', 'testing.errors', 'build')
+	assert rc == 2
 	assert not path.isfile(cfgfn)
