@@ -1,6 +1,7 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
+from hashlib import sha256
 from _sadm.plugin.utils import builddir
 
 __all__ = ['pre_build', 'post_build']
@@ -23,5 +24,11 @@ def _saveSession(env):
 
 def _writeSettings(env):
 	env.log('configure.ini')
+	fn = None
 	with builddir.create(env, 'configure.ini', meta = True) as fh:
 		env.settings.write(fh)
+		fn = fh.name
+	h = sha256()
+	with open(fn, 'rb') as fh:
+		h.update(fh.read())
+	env.session.set('sadm.configure.checksum', h.hexdigest())

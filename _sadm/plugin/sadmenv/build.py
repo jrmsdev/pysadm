@@ -2,6 +2,7 @@
 # See LICENSE file.
 
 import json
+from hashlib import sha256
 from shutil import make_archive
 
 from _sadm.plugin.utils import builddir
@@ -18,6 +19,10 @@ def _tar(env):
 	rdir = builddir.fpath(env, '.')
 	fn = builddir.fpath(env, env.name(), meta = True)
 	make_archive(fn, 'tar', root_dir = rdir, base_dir = '.', verbose = 1)
+	h = sha256()
+	with open(fn + '.tar', 'rb') as fh:
+		h.update(fh.read())
+	env.session.set('sadm.env.checksum', h.hexdigest())
 
 def _zip(env):
 	env.log("%s.zip" % env.name())
@@ -32,6 +37,10 @@ def _meta(env):
 
 def _getmeta(env):
 	return {
+		'sadm.env.name': env.name(),
+		'sadm.env.profile': env.profile(),
+		'sadm.env.checksum': env.session.get('sadm.env.checksum'),
+		'sadm.configure.checksum': env.session.get('sadm.configure.checksum'),
 		'sadm.version': env.session.get('sadm.version'),
 		'os.platform': env.session.get('os.platform'),
 	}
