@@ -3,7 +3,7 @@
 
 from collections import deque
 from configparser import ConfigParser, ExtendedInterpolation
-from configparser import NoOptionError, ParsingError
+from configparser import Error as ParserError
 
 from _sadm.configure import pluginsList, getPlugin
 from _sadm.errors import SettingsError
@@ -31,7 +31,7 @@ class Settings(ConfigParser):
 	def read_file(self, fh):
 		try:
 			super().read_file(fh)
-		except ParsingError as err:
+		except ParserError as err:
 			raise SettingsError(str(err))
 
 	def getlist(self, section, option, fallback = _unset):
@@ -42,7 +42,7 @@ class Settings(ConfigParser):
 				s = super().get(section, option, fallback = '')
 				if s == '':
 					return fallback
-		except NoOptionError as err:
+		except ParserError as err:
 			raise SettingsError(str(err))
 		l = deque()
 		for val in s.split():
