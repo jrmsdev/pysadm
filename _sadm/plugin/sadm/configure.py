@@ -3,7 +3,7 @@
 
 from _sadm import version
 
-def configure(env):
+def configure(env, cfg):
 	s = env.settings
 	s.set('sadm', 'env', env.name())
 	s.set('sadm', 'profile', env.profile())

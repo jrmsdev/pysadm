@@ -20,8 +20,6 @@ def configure(env, cfgfile = None):
 	cfg = _getcfg(env, fn)
 	env.start('configure')
 	_load(env, cfg)
-	with env.assets.open(fn) as fh:
-		env.settings.read_file(fh)
 	env.end('configure')
 
 def _getcfg(env, fn):
@@ -49,13 +47,13 @@ def _load(env, cfg, forcePlugins = None):
 		else:
 			env.debug("%s plugin disabled" % p)
 
-def _initPlugin(env, p):
+def _pluginConfigure(env, cfg, n):
+	p = getPlugin(n, 'configure')
+	_initPlugin(env, p, cfg)
+	env.log(p.name)
+	p.mod.configure(env, cfg)
+
+def _initPlugin(env, p, cfg):
 	env.debug("init %s" % p.config)
 	with open(p.config, 'r') as fh:
 		env.settings.read_file(fh)
-
-def _pluginConfigure(env, cfg, n):
-	p = getPlugin(n, 'configure')
-	_initPlugin(env, p)
-	env.log(p.name)
-	p.mod.configure(env)

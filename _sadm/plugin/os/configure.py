@@ -3,6 +3,6 @@
 
 import sys
 
-def configure(env):
+def configure(env, cfg):
 	sess = env.session
 	sess.set('os.platform', sys.platform)
