@@ -12,5 +12,11 @@ class Manager(object):
 	def rootdir(self):
 		return self._dir
 
-	def open(self, relname):
-		return open(path.join(self._dir, path.normpath(relname)), 'r')
+	def path(self, name, *parts):
+		relname = path.normpath(path.join(name, *parts))
+		if relname.startswith(path.sep):
+			relname.replace(path.sep, '', 1)
+		return path.join(self._dir, relname)
+
+	def open(self, name, *parts):
+		return open(self.path(name, *parts), 'r')
