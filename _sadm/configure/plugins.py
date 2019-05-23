@@ -58,4 +58,4 @@ def _pluginConfigure(env, cfg, n):
 	p = getPlugin(n, 'configure')
 	_initPlugin(env, p)
 	env.log(p.name)
-	p.mod.configure(env, cfg)
+	p.mod.configure(env)
