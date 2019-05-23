@@ -146,20 +146,19 @@ def test_run_error():
 	assert rc == 2
 
 def test_envsetup(env_setup):
-	with env_setup(configure = True) as env:
-		assert env.name() == 'testing'
-		assert env.profile() == 'envsetup'
-		assert env.session._start is not None # env.configure() was run
+	env = env_setup(configure = True)
+	assert env.name() == 'testing'
+	assert env.profile() == 'envsetup'
+	assert env.session._start is not None # env.configure() was run
 
 def test_envsetup_action(env_setup):
 	mdir = path.join('tdata', 'builddir', 'envsetup', 'testing')
 	zfn = path.join('tdata', 'builddir', 'envsetup', 'testing.zip')
-	with env_setup(action = 'build') as env:
-		assert path.isdir(mdir)
-		assert path.isfile(zfn)
 	assert not path.isdir(mdir)
 	assert not path.isfile(zfn)
+	env_setup(action = 'build')
+	assert path.isdir(mdir)
+	assert path.isfile(zfn)
 	with raises(EnvError, match = 'invalid action configure'):
-		with env_setup(action = 'configure') as env:
-			pass
+		env_setup(action = 'configure')
 	assert not path.isdir(mdir)
