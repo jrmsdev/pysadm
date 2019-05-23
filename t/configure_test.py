@@ -2,30 +2,10 @@
 # See LICENSE file.
 
 from importlib import import_module
-from os import path
 from pytest import raises
 
 from _sadm import configure
 from _sadm.errors import PluginError
-
-_expectPlugins = {
-	0: 'testing',
-	1: 'sadm',
-	2: 'sadmenv',
-	3: 'os',
-}
-
-def test_plugins_list():
-	idx = 0
-	for p in configure.pluginsList():
-		assert p == _expectPlugins[idx]
-		idx += 1
-
-def test_plugins_list_revert():
-	idx = max(_expectPlugins.keys())
-	for p in configure.pluginsList(revert = True):
-		assert p == _expectPlugins[idx]
-		idx -= 1
 
 def test_register_error():
 	with raises(RuntimeError, match = 'plugin testing already registered'):
