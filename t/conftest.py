@@ -57,9 +57,11 @@ def testing_env():
 @pytest.fixture
 def testing_settings():
 	envmod = env
-	def wrapper(profile = 'testing', env = 'testing'):
+	def wrapper(profile = 'testing', env = 'testing', cfgfile = None):
+		if cfgfile is not None:
+			cfgfile = path.join(profile, cfgfile)
 		e = envmod.Env(profile, env)
-		e.configure()
+		e.configure(cfgfile = cfgfile)
 		return e.settings
 	return wrapper
 
