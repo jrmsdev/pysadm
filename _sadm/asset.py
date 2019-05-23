@@ -18,5 +18,6 @@ class Manager(object):
 			relname.replace(path.sep, '', 1)
 		return path.join(self._dir, relname)
 
+	# TODO: catch os errors
 	def open(self, name, *parts):
 		return open(self.path(name, *parts), 'r')
