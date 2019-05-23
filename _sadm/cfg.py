@@ -14,6 +14,7 @@ _enablePlugins = [
 	'sadm',
 	'sadmenv',
 	'os',
+	'os.user',
 ]
 
 _DEFAULT = {

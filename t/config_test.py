@@ -33,3 +33,6 @@ def test_profile_error():
 	c = cfg.new()
 	with raises(Error, match = 'ProfileError: config profile noprofile not found'):
 		c.listEnvs('noprofile')
+
+def test_default_plugins():
+	assert tuple(sorted(cfg._enablePlugins)) == ('os', 'os.user', 'sadm', 'sadmenv')
