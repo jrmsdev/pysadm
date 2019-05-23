@@ -49,7 +49,9 @@ from _sadm import env
 @pytest.fixture
 def testing_env():
 	def wrapper(name = 'testing', profile = 'testing'):
-		return env.Env(profile, name)
+		e = env.Env(profile, name)
+		_cleanEnv(e)
+		return e
 	return wrapper
 
 # testing settings
@@ -61,6 +63,7 @@ def testing_settings():
 		if cfgfile is not None:
 			cfgfile = path.join(profile, cfgfile)
 		e = envmod.Env(profile, env)
+		_cleanEnv(e)
 		e.configure(cfgfile = cfgfile)
 		return e.settings
 	return wrapper

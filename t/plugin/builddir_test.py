@@ -9,7 +9,7 @@ from _sadm.plugin.utils import builddir
 
 def test_builddir():
 	bdir = path.join('tdata', 'builddir', 'testing', 'testing')
-	assert path.isdir(bdir)
+	assert not path.isdir(bdir)
 
 def test_lock_unlock(testing_env):
 	lockfn = path.join('tdata', 'builddir', 'testing', 'testing.lock')
