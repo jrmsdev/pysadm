@@ -16,6 +16,10 @@ def test_plugins(testing_settings):
 	s = testing_settings()
 	assert sorted([p[0] for p in s.plugins('configure')]) == ['os', 'sadm', 'testing']
 
+def test_parsing_error(testing_settings):
+	with raises(SettingsError, match = 'Source contains parsing errors: '):
+		testing_settings(cfgfile = 'config-parsing-error.ini')
+
 def test_getlist_fallback(testing_settings):
 	s = testing_settings()
 	l = s.getlist('testing', 'test.notset.list', fallback = None)
