@@ -29,17 +29,17 @@ def run(env, action):
 def _runAction(env, action, cmd = None, force = False, revert = False):
 	if cmd is None:
 		cmd = action
-	for p, mod in env.settings.plugins(action, revert = revert):
-		if hasattr(mod, cmd):
-			func = getattr(mod, cmd)
-			tag = "%s.%s" % (cmd, p)
+	for p in env.settings.plugins(action, revert = revert):
+		if hasattr(p.mod, cmd):
+			func = getattr(p.mod, cmd)
+			tag = "%s.%s" % (cmd, p.name)
 			env.start(tag)
 			func(env)
 			env.end(tag)
 		else:
-			env.debug("%s plugin no action %s" % (p, cmd))
+			env.debug("%s plugin no action %s" % (p.name, cmd))
 			if force:
-				raise PluginError("%s plugin no action %s" % (p, cmd))
+				raise PluginError("%s plugin no action %s" % (p.name, cmd))
 
 def _runPreAction(env, action):
 	_runAction(env, action, cmd = "pre_%s" % action)

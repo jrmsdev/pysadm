@@ -55,7 +55,7 @@ def _initPlugin(env, fn):
 	with open(fn, 'r') as fh:
 		env.settings.read_file(fh)
 
-def _pluginConfigure(env, cfg, p):
-	mod = getPlugin(p, 'configure')
-	env.log(p)
-	mod.configure(env, cfg)
+def _pluginConfigure(env, cfg, n):
+	p = getPlugin(n, 'configure')
+	env.log(p.name)
+	p.mod.configure(env, cfg)

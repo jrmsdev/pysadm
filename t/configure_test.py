@@ -36,8 +36,8 @@ def test_plugin_init():
 	assert fn.endswith(path.join('_sadm', 'plugin', 'testing', 'config.ini'))
 
 def test_get_plugin():
-	mod = configure.getPlugin('testing', 'configure')
-	assert mod == import_module('_sadm.plugin.testing.configure')
+	p = configure.getPlugin('testing', 'configure')
+	assert p.mod == import_module('_sadm.plugin.testing.configure')
 
 def test_get_plugin_error():
 	with raises(PluginError, match = 'noplugin plugin not found'):

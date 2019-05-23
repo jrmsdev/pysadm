@@ -1,7 +1,7 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
-from collections import deque
+from collections import deque, namedtuple
 from importlib import import_module
 from os import path
 
@@ -20,6 +20,8 @@ __all__ = ['register', 'getPlugin', 'pluginInit', 'pluginList']
 _reg = {}
 _order = deque()
 
+Plugin = namedtuple('Plugin', ('name', 'fullname', 'config', 'meta', 'mod'))
+
 def register(name, filename):
 	global _next
 	n = name.split('.')[-1]
@@ -27,9 +29,11 @@ def register(name, filename):
 		raise RuntimeError("plugin %s already registered" % name)
 	filename = path.realpath(path.normpath(filename))
 	cfgfn = path.join(path.dirname(filename), 'config.ini')
+	metafn = path.join(path.dirname(filename), 'meta.json')
 	_reg[n] = {
 		'name': name,
 		'config': cfgfn,
+		'meta': metafn,
 	}
 	_order.append(n)
 
@@ -55,4 +59,5 @@ def getPlugin(name, mod):
 	except importError as err:
 		log.debug("%s" % err)
 		raise PluginError("%s plugin %s not implemented!" % (name, mod))
-	return mod
+	return Plugin(name = name, fullname = p['name'],
+		config = p['config'], meta = p['meta'], mod = mod)

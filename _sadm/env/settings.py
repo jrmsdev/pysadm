@@ -26,7 +26,7 @@ class Settings(ConfigParser):
 	def plugins(self, action, revert = False):
 		for p in pluginsList(revert = revert):
 			if self.has_section(p):
-				yield (p, getPlugin(p, action))
+				yield getPlugin(p, action)
 
 	def read_file(self, fh):
 		try:
