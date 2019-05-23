@@ -76,7 +76,7 @@ def env_setup():
 		if action is not None:
 			configure = False # configure in called from cmd.run
 		e = env.Env(profile, name)
-		_cleanSetup(e)
+		_cleanEnv(e)
 		if configure:
 			e.configure(cfgfile = cfgfile)
 		if action is not None:
@@ -84,21 +84,23 @@ def env_setup():
 		return e
 	return wrapper
 
-def _cleanSetup(env):
+def _cleanEnv(env):
 	en = env.name()
+	bdir = path.realpath(path.join('tdata', 'builddir', env.profile()))
+	pdir = path.realpath(path.join('tdata', env.profile()))
 	_bdirs = [
-		path.join('tdata', 'builddir', 'envsetup', en),
-		path.join('tdata', 'builddir', 'envsetup', en + '.meta'),
+		path.join(bdir, en),
+		path.join(bdir, en + '.meta'),
 	]
-	for bdir in _bdirs:
-		if path.isdir(bdir):
-			rmtree(bdir)
+	for d in _bdirs:
+		if path.isdir(d):
+			rmtree(d)
 	_bfiles = [
-		path.join('tdata', 'builddir', 'envsetup', en + '.lock'),
-		path.join('tdata', 'builddir', 'envsetup', en + '.zip'),
-		path.join('tdata', 'builddir', 'envsetup', en + '.checksum'),
-		path.join('tdata', 'setup', en, '.lock'),
+		path.join(bdir, en + '.lock'),
+		path.join(bdir, en + '.zip'),
+		path.join(bdir, en + '.checksum'),
+		path.join(pdir, en, '.lock'),
 	]
-	for fn in _bfiles:
-		if path.isfile(fn):
-			unlink(fn)
+	for f in _bfiles:
+		if path.isfile(f):
+			unlink(f)
