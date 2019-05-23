@@ -15,7 +15,7 @@ except NameError: # pragma: no cover
 from _sadm import log
 from _sadm.errors import PluginError
 
-__all__ = ['register', 'getPlugin', 'pluginInit', 'pluginList']
+__all__ = ['register', 'getPlugin', 'pluginList']
 
 _reg = {}
 _order = deque()
@@ -44,11 +44,6 @@ def pluginsList(revert = False):
 	else:
 		for p in _order:
 			yield p
-
-def pluginInit(name, fn = None):
-	if fn is None:
-		fn = _reg[name]['config']
-	return fn
 
 def getPlugin(name, mod):
 	p = _reg.get(name, None)

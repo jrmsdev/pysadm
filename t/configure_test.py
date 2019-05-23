@@ -31,10 +31,6 @@ def test_register_error():
 	with raises(RuntimeError, match = 'plugin testing already registered'):
 		configure.register('testing', 'filename')
 
-def test_plugin_init():
-	fn = configure.pluginInit('testing')
-	assert fn.endswith(path.join('_sadm', 'plugin', 'testing', 'config.ini'))
-
 def test_get_plugin():
 	p = configure.getPlugin('testing', 'configure')
 	assert p.mod == import_module('_sadm.plugin.testing.configure')

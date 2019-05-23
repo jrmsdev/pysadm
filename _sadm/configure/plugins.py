@@ -4,7 +4,7 @@
 from os import path
 
 from _sadm import config
-from _sadm.configure import pluginsList, pluginInit, getPlugin
+from _sadm.configure import pluginsList, getPlugin
 from _sadm.env.settings import Settings
 
 # load plugins
@@ -45,17 +45,17 @@ def _load(env, cfg, forcePlugins = None):
 		forceEna = forcePlugins.get(p, False)
 		if ena or forceEna:
 			env.debug("%s plugin enabled" % p)
-			_initPlugin(env, pluginInit(p))
 			_pluginConfigure(env, cfg, p)
 		else:
 			env.debug("%s plugin disabled" % p)
 
-def _initPlugin(env, fn):
-	env.debug("init %s" % fn)
-	with open(fn, 'r') as fh:
+def _initPlugin(env, p):
+	env.debug("init %s" % p.config)
+	with open(p.config, 'r') as fh:
 		env.settings.read_file(fh)
 
 def _pluginConfigure(env, cfg, n):
 	p = getPlugin(n, 'configure')
+	_initPlugin(env, p)
 	env.log(p.name)
 	p.mod.configure(env, cfg)
