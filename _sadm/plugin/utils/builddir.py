@@ -57,8 +57,9 @@ def _open(env, filename, mode = 'r', meta = False):
 	fn = fpath(env, filename, meta = meta)
 	if mode != 'r':
 		dstdir = path.dirname(fn)
-		env.debug("makedirs %s" % dstdir)
-		makedirs(dstdir, exist_ok = True)
+		if not path.isdir(dstdir):
+			env.debug("makedirs %s" % dstdir)
+			makedirs(dstdir, exist_ok = True)
 	env.debug("open(%s) %s" % (mode, fn))
 	return open(fn, mode)
 
