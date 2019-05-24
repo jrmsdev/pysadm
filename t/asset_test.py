@@ -22,8 +22,8 @@ def test_manager():
 def test_asset_path():
 	rdir = path.realpath(_rootdir)
 	m = Manager(_rootdir)
-	assert m.path('p0', 'p1', 'p2') == path.join(rdir, 'p0', 'p1', 'p2')
-	assert m.path(path.sep, 'p0', 'p1', 'p2') == path.join(rdir, 'p0', 'p1', 'p2')
+	assert m._path('p0', 'p1', 'p2') == path.join(rdir, 'p0', 'p1', 'p2')
+	assert m._path(path.sep, 'p0', 'p1', 'p2') == path.join(rdir, 'p0', 'p1', 'p2')
 
 def test_read_only():
 	rdir = path.join('tdata', 'tmp')
@@ -35,6 +35,7 @@ def test_read_only():
 		fh.write('testing')
 	assert path.isfile(fn)
 	m = Manager(rdir)
+	assert m.isfile('asset-readonly.test')
 	with raises(UnsupportedOperation, match = 'not writable'):
 		with m.open('asset-readonly.test') as fh:
 			fh.write('testing')
@@ -48,6 +49,7 @@ def test_oserror():
 	makedirs(fn)
 	assert path.isdir(fn)
 	m = Manager(rdir)
+	assert m.isdir('asset-oserror.dir')
 	with raises(AssetError, match = ' Is a directory: '):
 		m.open('asset-oserror.dir')
 	rmtree(fn)

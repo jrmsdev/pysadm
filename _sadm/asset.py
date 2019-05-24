@@ -14,7 +14,7 @@ class Manager(object):
 	def rootdir(self):
 		return self._dir
 
-	def path(self, name, *parts):
+	def _path(self, name, *parts):
 		relname = path.normpath(path.join(name, *parts))
 		if relname.startswith(path.sep):
 			relname = relname.replace(path.sep, '', 1)
@@ -22,8 +22,16 @@ class Manager(object):
 
 	def open(self, name, *parts):
 		try:
-			return open(self.path(name, *parts), 'r')
+			return open(self._path(name, *parts), 'r')
 		except FileNotFoundError as err:
 			raise AssetNotFoundError(str(err))
 		except OSError as err:
 			raise AssetError(str(err))
+
+	def isdir(self, name, *parts):
+		n = self._path(name, *parts)
+		return path.exists(n) and path.isdir(n)
+
+	def isfile(self, name, *parts):
+		n = self._path(name, *parts)
+		return path.exists(n) and path.isfile(n)
