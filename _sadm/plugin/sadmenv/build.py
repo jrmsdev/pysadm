@@ -16,11 +16,11 @@ def pre_build(env):
 
 def post_build(env):
 	env.build.close()
-	_tar(env)
+	_checksum(env)
 	_meta(env)
 	_zip(env)
 
-def _tar(env):
+def _checksum(env):
 	env.log("%s.tar" % env.name())
 	fn = builddir.fpath(env, env.name() + '.tar', meta = True)
 	h = sha256()
