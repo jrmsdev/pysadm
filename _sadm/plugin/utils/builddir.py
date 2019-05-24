@@ -1,8 +1,8 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
-from os import path, unlink, makedirs, system
-from shutil import rmtree
+from os import path, unlink, makedirs
+from shutil import rmtree, copytree
 
 __all__ = ['lock', 'unlock', 'fpath', 'create']
 
@@ -83,7 +83,4 @@ def create(env, filename, meta = False):
 def sync(env, src, dst):
 	srcdir = path.join(env.assets.rootdir(), src)
 	dstdir = fpath(env, dst)
-	if path.isdir(dstdir):
-		rmtree(dstdir)
-	makedirs(dstdir)
-	system("rsync -ax %s/ %s/" % (srcdir, dstdir))
+	copytree(srcdir, dstdir)
