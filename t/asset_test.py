@@ -1,13 +1,12 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
-from pytest import raises
-from os import path, makedirs, unlink
-
 from io import UnsupportedOperation
-from os import path
+from os import path, makedirs, unlink
+from pytest import raises
 
 from _sadm.asset import Manager
+from _sadm.errors import AssetNotFoundError
 
 _rootdir = path.join('tdata', 'testing')
 
@@ -16,7 +15,7 @@ def test_manager():
 	assert m._dir.endswith(_rootdir)
 	with m.open('asset.test') as fh:
 		fh.close()
-	with raises(FileNotFoundError):
+	with raises(AssetNotFoundError):
 		m.open('nofile')
 
 def test_read_only():

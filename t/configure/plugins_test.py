@@ -5,7 +5,7 @@ from pytest import raises
 
 from _sadm.configure import plugins
 from _sadm.env.settings import Settings
-from _sadm.errors import EnvError
+from _sadm.errors import EnvError, AssetNotFoundError
 
 def test_configure(testing_env):
 	e = testing_env()
@@ -15,7 +15,7 @@ def test_configure(testing_env):
 
 def test_file_not_found(testing_env):
 	e = testing_env()
-	with raises(FileNotFoundError):
+	with raises(AssetNotFoundError):
 		plugins.configure(e, cfgfile = 'nofile.ini')
 
 def test_cfg_invalid_name(testing_env):

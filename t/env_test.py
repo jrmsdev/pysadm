@@ -11,7 +11,7 @@ from _sadm.env import cmd as envcmd
 from _sadm.env import run as envrun
 from _sadm.env.profile import Profile
 from _sadm.env.settings import Settings
-from _sadm.errors import EnvError
+from _sadm.errors import EnvError, AssetNotFoundError
 
 def test_env(testing_env):
 	e = testing_env()
@@ -28,7 +28,7 @@ def test_env_configure(testing_env):
 	e = testing_env()
 	e.configure()
 	assert isinstance(e.settings, Settings)
-	with raises(EnvError, match = 'No such file or directory'):
+	with raises(AssetNotFoundError, match = 'No such file or directory'):
 		e._cfgfile = 'noconfig.ini'
 		e.session.stop()
 		e.configure()

@@ -3,6 +3,8 @@
 
 from os import path
 
+from _sadm.errors import AssetError, AssetNotFoundError
+
 class Manager(object):
 	_dir = None
 
@@ -18,6 +20,10 @@ class Manager(object):
 			relname.replace(path.sep, '', 1)
 		return path.join(self._dir, relname)
 
-	# TODO: catch os errors
 	def open(self, name, *parts):
-		return open(self.path(name, *parts), 'r')
+		try:
+			return open(self.path(name, *parts), 'r')
+		except FileNotFoundError as err:
+			raise AssetNotFoundError(str(err))
+		except OSError as err:
+			raise AssetError(str(err))

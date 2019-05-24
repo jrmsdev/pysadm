@@ -31,3 +31,9 @@ class SettingsError(Error):
 
 class SessionError(Error):
 	typ = 'SessionError'
+
+class AssetError(Error):
+	typ = 'AssetError'
+
+class AssetNotFoundError(Error):
+	typ = 'AssetNotFoundError'
