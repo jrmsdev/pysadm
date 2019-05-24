@@ -9,9 +9,13 @@ from shutil import make_archive
 
 from _sadm.plugin.utils import builddir
 
-__all__ = ['post_build']
+__all__ = ['pre_build', 'post_build']
+
+def pre_build(env):
+	env.build.create()
 
 def post_build(env):
+	env.build.close()
 	_tar(env)
 	_meta(env)
 	_zip(env)

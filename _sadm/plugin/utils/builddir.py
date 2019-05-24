@@ -21,12 +21,8 @@ def lock(env):
 	fh.flush()
 	fh.close()
 	_cleandir(env, bdir)
-	env.debug('env.build create')
-	env.build.create()
 
 def unlock(env):
-	env.debug('env.build close')
-	env.build.close()
 	fn = env.session.get('lockfn')
 	env.debug("unlock %s" % fn)
 	try:

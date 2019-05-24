@@ -76,12 +76,14 @@ def test_create(env_setup):
 	env = env_setup(configure = True)
 	builddir.lock(env)
 	try:
+		env.build.create()
 		fn = path.join('tdata', 'build', 'envsetup', 'testing', 'file.test')
 		assert not path.isfile(fn)
 		with builddir.create(env, 'file.test') as fh:
 			fh.write('1')
 		assert path.isfile(fn)
 	finally:
+		env.build.close()
 		builddir.unlock(env)
 
 def test_create_meta(env_setup):
