@@ -6,15 +6,15 @@ from _sadm.env.settings import Settings
 __all__ = ['configure']
 
 def configure(env, cfg):
-	udir = cfg.get('os.user', 'users.dir', fallback = None)
+	udir = cfg.get('os.user', 'config.dir', fallback = None)
 	if udir is None:
-		udir = env.settings.get('os.user', 'users.dir')
+		udir = env.settings.get('os.user', 'config.dir')
 
 	fn = cfg.get('os.user', 'config.file', fallback = None)
 	if fn is None:
 		fn = env.settings.get('os.user', 'config.file')
 
-	del env.settings['os.user']['users.dir']
+	del env.settings['os.user']['config.dir']
 	del env.settings['os.user']['config.file']
 
 	db = Settings()
