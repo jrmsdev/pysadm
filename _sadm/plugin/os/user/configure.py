@@ -3,6 +3,8 @@
 
 from _sadm.env.settings import Settings
 
+__all__ = ['configure']
+
 def configure(env, cfg):
 	udir = cfg.get('os.user', 'users.dir', fallback = None)
 	if udir is None:
