@@ -21,8 +21,12 @@ def lock(env):
 	fh.flush()
 	fh.close()
 	_cleandir(env, bdir)
+	env.debug('env.build create')
+	env.build.create()
 
 def unlock(env):
+	env.debug('env.build close')
+	env.build.close()
 	fn = env.session.get('lockfn')
 	env.debug("unlock %s" % fn)
 	try:
@@ -37,6 +41,7 @@ def _cleandir(env, bdir):
 		base + '.meta',
 	]
 	bfiles = [
+		base + '.tar',
 		base + '.zip',
 		base + '.checksum',
 	]
@@ -70,7 +75,10 @@ def fpath(env, *parts, meta = False):
 	return path.realpath(path.join(bdir, fn))
 
 def create(env, filename, meta = False):
-	return _open(env, filename, mode = 'x', meta = meta)
+	fh = _open(env, filename, mode = 'x', meta = meta)
+	if not meta:
+		env.build.addfile(filename)
+	return fh
 
 def sync(env, src, dst):
 	srcdir = path.join(env.assets.rootdir(), src)
