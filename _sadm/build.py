@@ -17,9 +17,16 @@ class Manager(asset.Manager):
 		self._tar = tarfile.open(self._tarfn, 'x:')
 
 	def close(self):
-		self._tar.close()
+		if self._tar is not None:
+			self._tar.close()
 
-	def addfile(self, name, user = 'root', group = ''):
+	def addfile(self, name, user = 'root', group = '', mode = 0o0644):
 		if group == '':
 			group = user
-		self._tar.add(path.join(self.rootdir(), name), arcname = name)
+		fi = self._tar.gettarinfo(name = path.join(self.rootdir(), name), arcname = name)
+		fi.uid = 0
+		fi.gid = 0
+		fi.uname = user
+		fi.gname = group
+		fi.mode = mode
+		self._tar.addfile(fi)
