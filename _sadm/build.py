@@ -25,13 +25,31 @@ class Manager(asset.Manager):
 		if self._tar is not None:
 			self._tar.close()
 
-	def addfile(self, name, user = 'root', group = '', mode = 0o0644):
+	def _tarinfo(self, inf, user = 'root', group = '',
+		filemode = 0o0644, dirmode = 0o0755):
 		if group == '':
 			group = user
-		fi = self._tar.gettarinfo(name = path.join(self.rootdir(), name), arcname = name)
-		fi.uid = 0
-		fi.gid = 0
-		fi.uname = user
-		fi.gname = group
-		fi.mode = mode
+		inf.uid = 0
+		inf.gid = 0
+		inf.uname = user
+		inf.gname = group
+		if inf.isdir():
+			inf.mode = dirmode
+		else:
+			inf.mode = filemode
+
+	def addfile(self, name, **kwargs):
+		arcname = self.name(name)
+		fn = path.join(self.rootdir(), arcname)
+		fi = self._tar.gettarinfo(name = fn, arcname = arcname)
+		self._tarinfo(fi, **kwargs)
 		self._tar.addfile(fi)
+
+	def adddir(self, name, **kwargs):
+		def dirfilter(fi):
+			self._tarinfo(fi, **kwargs)
+			return fi
+		arcname = self.name(name)
+		dirpath = path.join(self.rootdir(), arcname)
+		self._tar.add(dirpath, arcname = arcname, recursive = True,
+			filter = dirfilter)
