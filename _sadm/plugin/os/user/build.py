@@ -12,9 +12,9 @@ def build(env):
 	for user in env.settings['os.user']:
 		uid = env.settings.getint('os.user', user)
 		# ~ env.log("%d %s" % (uid, user))
-		_sshauth(env, user, homedir)
+		_synchome(env, user, homedir)
 
-def _sshauth(env, user, homedir):
+def _synchome(env, user, homedir):
 	cfgdir = env.session.get('os.user.config.dir')
 	srcdir = path.join(cfgdir, user)
 	dstdir = path.join(homedir, user)

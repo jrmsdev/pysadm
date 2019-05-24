@@ -37,3 +37,6 @@ class AssetError(Error):
 
 class AssetNotFoundError(Error):
 	typ = 'AssetNotFoundError'
+
+class BuildError(Error):
+	typ = 'BuildError'

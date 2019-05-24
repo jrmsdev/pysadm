@@ -7,6 +7,7 @@ from collections import deque
 from os import path
 
 from _sadm import asset
+from _sadm.errors import BuildError
 
 class Manager(asset.Manager):
 	_tar = None
@@ -14,7 +15,11 @@ class Manager(asset.Manager):
 
 	def create(self):
 		self._tarfn = path.normpath(self.rootdir()) + '.tar'
-		self._tar = tarfile.open(self._tarfn, 'x:')
+		# python 3.4 does not support 'x:' open mode
+		# self._tar = tarfile.open(self._tarfn, 'x:')
+		if path.isfile(self._tarfn):
+			raise BuildError("%s file exists" % self._tarfn)
+		self._tar = tarfile.open(self._tarfn, 'w')
 
 	def close(self):
 		if self._tar is not None:
