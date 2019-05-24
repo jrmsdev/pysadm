@@ -1,7 +1,7 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
-from os import path, unlink, makedirs
+from os import path, unlink, makedirs, system
 from shutil import rmtree
 
 __all__ = ['lock', 'unlock', 'fpath', 'create']
@@ -76,11 +76,10 @@ def fpath(env, *parts, meta = False):
 def create(env, filename, meta = False):
 	return _open(env, filename, mode = 'x', meta = meta)
 
-# ~ def read(env, filename):
-	# ~ return _open(env, filename, mode = 'r')
-
-# ~ def write(env, filename, append = False):
-	# ~ m = 'w'
-	# ~ if append:
-		# ~ m = 'a'
-	# ~ return _open(env, filename, mode = m)
+def sync(env, src, dst):
+	srcdir = path.join(env.assets.rootdir(), src)
+	dstdir = fpath(env, dst)
+	if path.isdir(dstdir):
+		rmtree(dstdir)
+	makedirs(dstdir)
+	system("rsync -ax %s/ %s/" % (srcdir, dstdir))

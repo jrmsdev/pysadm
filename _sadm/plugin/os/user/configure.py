@@ -17,6 +17,8 @@ def configure(env, cfg):
 	del env.settings['os.user']['config.dir']
 	del env.settings['os.user']['config.file']
 
+	env.session.set('os.user.config.dir', udir)
+
 	db = Settings()
 	with env.assets.open(udir, fn) as fh:
 		env.debug("users config %s" % fh.name)
