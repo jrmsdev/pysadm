@@ -32,6 +32,7 @@ class Manager(asset.Manager):
 		filemode = 0o0644, dirmode = 0o0755):
 		if group == '':
 			group = user
+		inf.mtime = 0 # reproducible builds
 		inf.uid = 0
 		inf.gid = 0
 		inf.uname = user
