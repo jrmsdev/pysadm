@@ -28,7 +28,7 @@ def _addusers(env, db, cfg):
 	l = cfg.getlist('os.user', 'add', fallback = [])
 	for user in l:
 		uid = db['users'][user]
-		env.log("add user %d %s" % (int(uid), user))
+		env.debug("add user %d %s" % (int(uid), user))
 		env.settings['os.user'][user] = uid
 		env.settings.add_section("os.user.%s" % user)
 		for opt, val in db["user.%s" % user].items():
