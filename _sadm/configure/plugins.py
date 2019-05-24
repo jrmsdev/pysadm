@@ -1,8 +1,6 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
-from os import path
-
 from _sadm import config
 from _sadm.configure import pluginsList, getPlugin
 from _sadm.env.settings import Settings
@@ -15,7 +13,7 @@ __all__ = ['configure']
 def configure(env, cfgfile = None):
 	if cfgfile is None:
 		cfgfile = env.cfgfile()
-	fn = path.join(env.assets.rootdir(), cfgfile)
+	fn = cfgfile
 	env.log("%s" % fn)
 	cfg = _getcfg(env, fn)
 	env.start('configure')
