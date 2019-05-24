@@ -6,8 +6,6 @@ from shutil import rmtree
 
 __all__ = ['lock', 'unlock', 'fpath', 'create']
 
-_builddir = path.join('.', 'build')
-
 def lock(env):
 	bdir = env.builddir.rootdir()
 	env.log("build dir %s" % bdir)

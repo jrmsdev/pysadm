@@ -28,4 +28,4 @@ recursive-include tdata *.test
 recursive-include venv *.sh
 recursive-include venv *.txt
 
-prune tdata/builddir
+prune tdata/build
