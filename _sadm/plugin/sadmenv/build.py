@@ -12,28 +12,15 @@ from _sadm.plugin.utils import builddir
 __all__ = ['post_build']
 
 def post_build(env):
-	for ti in env.build._tar:
-		env.log(str(ti))
-		env.log(ti.name)
-		env.log(ti.size)
-		env.log(ti.mtime)
-		env.log(ti.mode)
-		env.log(ti.type)
-		env.log(ti.uid)
-		env.log(ti.gid)
-		env.log(ti.uname)
-		env.log(ti.gname)
 	_tar(env)
 	_meta(env)
 	_zip(env)
 
 def _tar(env):
 	env.log("%s.tar" % env.name())
-	rdir = builddir.fpath(env, '.')
-	fn = builddir.fpath(env, env.name(), meta = True)
-	make_archive(fn, 'tar', root_dir = rdir, base_dir = '.', verbose = 1)
+	fn = builddir.fpath(env, '.') + '.tar'
 	h = sha256()
-	with open(fn + '.tar', 'rb') as fh:
+	with open(fn, 'rb') as fh:
 		h.update(fh.read())
 	env.session.set('sadm.env.checksum', h.hexdigest())
 
