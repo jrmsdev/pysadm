@@ -5,7 +5,7 @@ from contextlib import contextmanager
 from os import path, unlink
 from time import time
 
-from _sadm import log, config, asset, builddir
+from _sadm import log, config, asset, build
 from _sadm.configure import plugins
 from _sadm.env import cmd
 from _sadm.env.profile import Profile
@@ -27,7 +27,7 @@ class Env(object):
 	assets = None
 	settings = None
 	session = None
-	builddir = None
+	build = None
 
 	def __init__(self, profile, name):
 		self._name = name
@@ -65,8 +65,8 @@ class Env(object):
 		# env builddir
 		_builddir = path.join(path.dirname(_rootdir), 'build',
 			self._profName, self._name)
-		self.builddir = builddir.Manager(_builddir)
-		self.debug("builddir %s" % self.builddir.rootdir())
+		self.build = build.Manager(_builddir)
+		self.debug("builddir %s" % self.build.rootdir())
 
 	def configure(self, cfgfile = None):
 		self.debug('session start')

@@ -7,7 +7,7 @@ from shutil import rmtree
 __all__ = ['lock', 'unlock', 'fpath', 'create']
 
 def lock(env):
-	bdir = env.builddir.rootdir()
+	bdir = env.build.rootdir()
 	env.log("build dir %s" % bdir)
 	fn = path.normpath(bdir) + '.lock'
 	env.debug("lock %s" % fn)
@@ -60,7 +60,7 @@ def _open(env, filename, mode = 'r', meta = False):
 	return open(fn, mode)
 
 def fpath(env, *parts, meta = False):
-	bdir = env.builddir.rootdir()
+	bdir = env.build.rootdir()
 	if meta:
 		bdir = path.normpath(bdir) + '.meta'
 	fn = path.join(*parts)

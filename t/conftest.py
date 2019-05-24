@@ -82,7 +82,7 @@ def env_setup():
 	return wrapper
 
 def _cleanEnv(env):
-	bdir = env.builddir.rootdir()
+	bdir = env.build.rootdir()
 	pdir = path.realpath(path.join('tdata', env.profile(), env.name()))
 	_bdirs = [
 		bdir,
