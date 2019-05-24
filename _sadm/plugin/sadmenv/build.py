@@ -22,7 +22,7 @@ def post_build(env):
 
 def _tar(env):
 	env.log("%s.tar" % env.name())
-	fn = builddir.fpath(env, '.') + '.tar'
+	fn = builddir.fpath(env, env.name() + '.tar', meta = True)
 	h = sha256()
 	with open(fn, 'rb') as fh:
 		h.update(fh.read())
