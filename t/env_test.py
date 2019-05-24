@@ -11,7 +11,7 @@ from _sadm.env import cmd as envcmd
 from _sadm.env import run as envrun
 from _sadm.env.profile import Profile
 from _sadm.env.settings import Settings
-from _sadm.errors import EnvError, AssetNotFoundError
+from _sadm.errors import EnvError, AssetNotFoundError, SessionError
 
 def test_env(testing_env):
 	e = testing_env()
@@ -118,31 +118,31 @@ def test_env_nodir_error():
 	assert rc == 1
 
 def test_run():
-	cfgfn = path.join('tdata', 'builddir', 'testing', 'testing.meta', 'configure.ini')
+	cfgfn = path.join('tdata', 'build', 'envsetup', 'testing.meta', 'configure.ini')
 	if path.isfile(cfgfn):
 		unlink(cfgfn)
 	assert not path.isfile(cfgfn)
-	rc, _ = envrun('testing', 'testing', 'build')
+	rc, _ = envrun('envsetup', 'testing', 'build')
 	assert rc == 0
 	assert path.isfile(cfgfn)
 	unlink(cfgfn)
 
 def test_run_env_error():
-	cfgfn = path.join('tdata', 'builddir', 'testing', 'testing.meta', 'configure.ini')
+	cfgfn = path.join('tdata', 'build', 'envsetup', 'testing.meta', 'configure.ini')
 	if path.isfile(cfgfn):
 		unlink(cfgfn)
 	assert not path.isfile(cfgfn)
-	rc, env = envrun('testing', 'testing', 'configure')
-	assert str(env.getError()) == 'EnvError: invalid action configure'
+	rc, err = envrun('envsetup', 'testing', 'configure')
+	assert err == EnvError
 	assert rc == 1
 	assert not path.isfile(cfgfn)
 
 def test_run_error():
-	lockfn = path.join('tdata', 'builddir', 'testing', 'testing.errors.lock')
+	lockfn = path.join('tdata', 'build', 'envsetup', 'testing.errors.lock')
 	if path.isfile(lockfn):
 		unlink(lockfn)
-	rc, env = envrun('testing', 'testing.errors', 'build')
-	assert str(env.getError()) == 'None'
+	rc, err = envrun('envsetup', 'testing.errors', 'build')
+	assert err == SessionError
 	assert rc == 2
 
 def test_envsetup(env_setup):
@@ -152,8 +152,8 @@ def test_envsetup(env_setup):
 	assert env.session._start is not None # env.configure() was run
 
 def test_envsetup_action(env_setup):
-	mdir = path.join('tdata', 'builddir', 'envsetup', 'testing')
-	zfn = path.join('tdata', 'builddir', 'envsetup', 'testing.zip')
+	mdir = path.join('tdata', 'build', 'envsetup', 'testing')
+	zfn = path.join('tdata', 'build', 'envsetup', 'testing.zip')
 	assert not path.isdir(mdir)
 	assert not path.isfile(zfn)
 	env_setup(action = 'build')

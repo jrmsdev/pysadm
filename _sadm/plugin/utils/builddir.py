@@ -9,10 +9,8 @@ __all__ = ['lock', 'unlock', 'fpath', 'create']
 _builddir = path.join('.', 'build')
 
 def lock(env):
-	bdir = path.realpath(_builddir)
-	bdir = path.join(bdir, env.profile(), env.name())
+	bdir = env.builddir.rootdir()
 	env.log("build dir %s" % bdir)
-	env.session.set('builddir', bdir)
 	fn = path.normpath(bdir) + '.lock'
 	env.debug("lock %s" % fn)
 	env.session.set('lockfn', fn)
@@ -64,14 +62,14 @@ def _open(env, filename, mode = 'r', meta = False):
 	return open(fn, mode)
 
 def fpath(env, *parts, meta = False):
-	builddir = env.session.get('builddir')
+	bdir = env.builddir.rootdir()
 	if meta:
-		builddir = path.normpath(builddir) + '.meta'
+		bdir = path.normpath(bdir) + '.meta'
 	fn = path.join(*parts)
 	fn = path.normpath(fn)
 	if fn.startswith(path.sep):
 		fn = fn.replace(path.sep, '', 1)
-	return path.realpath(path.join(builddir, fn))
+	return path.realpath(path.join(bdir, fn))
 
 def create(env, filename, meta = False):
 	return _open(env, filename, mode = 'x', meta = meta)

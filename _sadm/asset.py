@@ -8,7 +8,7 @@ from _sadm.errors import AssetError, AssetNotFoundError
 class Manager(object):
 	_dir = None
 
-	def __init__(self, rootdir):
+	def __init__(self, rootdir = '.'):
 		self._dir = path.realpath(path.normpath(rootdir))
 
 	def rootdir(self):

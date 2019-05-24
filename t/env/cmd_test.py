@@ -7,10 +7,10 @@ from pytest import raises
 from _sadm.env import cmd
 from _sadm.errors import EnvError, PluginError
 
-def test_run(testing_env):
-	env = testing_env()
-	cfgfn = path.join('tdata', 'builddir', 'testing', 'testing.meta', 'configure.ini')
-	sessfn = path.join('tdata', 'builddir', 'testing', 'testing.meta', 'session.json')
+def test_run(env_setup):
+	env = env_setup()
+	cfgfn = path.join('tdata', 'build', 'envsetup', 'testing.meta', 'configure.ini')
+	sessfn = path.join('tdata', 'build', 'envsetup', 'testing.meta', 'session.json')
 	for fn in (cfgfn, sessfn):
 		if path.isfile(fn):
 			unlink(fn)
