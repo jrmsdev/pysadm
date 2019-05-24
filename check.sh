@@ -1,5 +1,5 @@
 #!/bin/sh -eu
 check-manifest
 python3 setup.py check
-pytest
+pytest $@
 exit 0
