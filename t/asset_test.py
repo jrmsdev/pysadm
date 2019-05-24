@@ -12,8 +12,9 @@ from _sadm.errors import AssetError, AssetNotFoundError
 _rootdir = path.join('tdata', 'testing')
 
 def test_manager():
+	rdir = path.realpath(_rootdir)
 	m = Manager(_rootdir)
-	assert m.rootdir().endswith(_rootdir)
+	assert m.rootdir() == rdir
 	with m.open('asset.test') as fh:
 		fh.close()
 	with raises(AssetNotFoundError):
@@ -24,6 +25,11 @@ def test_asset_path():
 	m = Manager(_rootdir)
 	assert m._path('p0', 'p1', 'p2') == path.join(rdir, 'p0', 'p1', 'p2')
 	assert m._path(path.sep, 'p0', 'p1', 'p2') == path.join(rdir, 'p0', 'p1', 'p2')
+
+def test_asset_name():
+	m = Manager(_rootdir)
+	assert m.name('p0', 'p1', 'p2') == path.join('p0', 'p1', 'p2')
+	assert m.name(path.sep, path.sep, 'p0', 'p1') == path.join('p0', 'p1')
 
 def test_read_only():
 	rdir = path.join('tdata', 'tmp')

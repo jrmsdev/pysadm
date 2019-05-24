@@ -14,11 +14,14 @@ class Manager(object):
 	def rootdir(self):
 		return self._dir
 
-	def _path(self, name, *parts):
-		relname = path.normpath(path.join(name, *parts))
-		if relname.startswith(path.sep):
+	def name(self, *parts):
+		relname = path.normpath(path.join(*parts))
+		while relname.startswith(path.sep):
 			relname = relname.replace(path.sep, '', 1)
-		return path.join(self._dir, relname)
+		return relname
+
+	def _path(self, name, *parts):
+		return path.join(self._dir, self.name(name, *parts))
 
 	def open(self, name, *parts):
 		try:
