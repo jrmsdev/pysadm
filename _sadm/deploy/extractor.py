@@ -17,6 +17,7 @@ _head = """#!/usr/bin/env python3
 # sadm.env self extractor
 # https://pypi.org/project/sadm/
 
+import sys
 from base64 import b64decode
 from os import path, makedirs, system, chdir, chmod
 from shutil import rmtree
@@ -35,13 +36,13 @@ def extract():
 			fh.write(b64decode(data.encode()))
 	chdir(dstdir)
 	if path.isfile(env + '.env.asc'):
-		rc = system("gpg --no-tty --no --verify %s.env.asc %s.env" % (env, env))
+		rc = system("gpg --no-tty --no --verify %s.env.asc %s.env 2>/dev/null" % (env, env))
 		if rc != 0:
+			print("env signature verify failed!", file = sys.stderr)
 			return rc
 	return system("sha256sum -c %s.env" % env)
 
 if __name__ == '__main__':
-	import sys
 	sys.exit(extract())
 
 """
