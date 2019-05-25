@@ -14,4 +14,13 @@ def loadenv(filename):
 		if rc != 0:
 			print("env signature verify failed!", file = sys.stderr)
 			return rc
-	return system("sha256sum -c %s" % envfn)
+	rc = system("sha256sum -c %s" % envfn)
+	if rc != 0:
+		print("env checksum failed!", file = sys.stderr)
+		return rc
+	return _importenv(envfn)
+
+def _importenv(envfn):
+	rootdir = path.dirname(path.dirname(envfn))
+	deploydir = path.join(rootdir, 'deploy')
+	return 0

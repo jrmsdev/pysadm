@@ -18,8 +18,8 @@ _cargo = {}
 _vars = {}
 
 def extract():
-	env = _vars['.env']
-	dstdir = _vars['.destdir']
+	env = _vars['env']
+	dstdir = _vars['destdir']
 	if path.isdir(dstdir):
 		rmtree(dstdir)
 	makedirs(dstdir, exist_ok = True)

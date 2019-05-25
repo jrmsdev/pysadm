@@ -11,8 +11,8 @@ from _sadm.errors import BuildError
 
 def gen(env):
 	_vars = {
-		'.env': env.name(),
-		'.destdir': path.join(path.sep, 'opt', 'sadm', 'env'),
+		'env': env.name(),
+		'destdir': path.join(path.sep, 'opt', 'sadm', 'env'),
 	}
 	cargo = {}
 	n = path.normpath(env.build.rootdir())
