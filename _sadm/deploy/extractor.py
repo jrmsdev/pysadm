@@ -48,13 +48,14 @@ def gen(env):
 	n = path.normpath(env.build.rootdir())
 	fn = n + '.deploy'
 	env.log("%s.deploy" % env.name())
-	for ext in ('.zip', '.env'):
+	for ext in ('.zip', '.env', '.env.asc'):
 		name = n + ext
 		if path.isfile(name):
 			env.log("load %s" % path.basename(name))
 			cargo[env.name() + ext] = _load(name)
 		else:
-			raise BuildError("%s file not found" % name)
+			if ext != '.env.asc':
+				raise BuildError("%s file not found" % name)
 	_write(fn, cargo, _vars)
 
 def _load(fn):
