@@ -31,6 +31,10 @@ def extract():
 		with open(fn, 'wb') as fh:
 			fh.write(b64decode(data.encode()))
 	chdir(dstdir)
+	if path.isfile(env + '.env.asc'):
+		rc = system("gpg --verify %s.env.asc %s.env" % (env, env))
+		if rc != 0:
+			return rc
 	return system("sha256sum -c %s.env" % env)
 
 if __name__ == '__main__':
