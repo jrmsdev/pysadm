@@ -18,21 +18,24 @@ _head = """#!/usr/bin/env python3
 # https://pypi.org/project/sadm/
 
 from base64 import b64decode
-from os import path, makedirs, system, chdir
+from os import path, makedirs, system, chdir, chmod
+from shutil import rmtree
 
 """
 _tail = """
 def extract():
 	env = _vars['.env']
 	dstdir = _vars['.destdir']
+	rmtree(dstdir)
 	makedirs(dstdir, exist_ok = True)
+	chmod(dstdir, 0o0700)
 	for fn, data in _cargo.items():
 		fn = path.join(dstdir, fn)
 		with open(fn, 'wb') as fh:
 			fh.write(b64decode(data.encode()))
 	chdir(dstdir)
 	if path.isfile(env + '.env.asc'):
-		rc = system("gpg --verify %s.env.asc %s.env" % (env, env))
+		rc = system("gpg --no-tty --no --verify %s.env.asc %s.env" % (env, env))
 		if rc != 0:
 			return rc
 	return system("sha256sum -c %s.env" % env)
