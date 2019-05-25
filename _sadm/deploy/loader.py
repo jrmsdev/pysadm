@@ -7,10 +7,11 @@ from shutil import move
 
 def loadenv(filename):
 	envfn = path.realpath(filename)
-	print("%s: load" % envfn)
 	if path.isfile(envfn + '.asc'):
 		rc = system("gpg --no-tty --no --verify %s.asc %s 2>/dev/null" % (envfn, envfn))
-		if rc != 0:
+		if rc == 0:
+			print("%s: OK" % envfn)
+		else:
 			print("env signature verify failed!", file = sys.stderr)
 			return 1
 	rc = system("sha256sum -c %s" % envfn)
