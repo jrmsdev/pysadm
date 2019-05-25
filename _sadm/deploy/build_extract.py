@@ -7,9 +7,12 @@
 # https://pypi.org/project/sadm/
 
 import sys
+
 from base64 import b64decode
-from os import path, makedirs, system, chdir, chmod
+from os import path, makedirs, chmod
 from shutil import rmtree
+
+from _sadm.deploy.loader import loadenv
 
 _cargo = {}
 _vars = {}
@@ -25,13 +28,8 @@ def extract():
 		fn = path.join(dstdir, fn)
 		with open(fn, 'wb') as fh:
 			fh.write(b64decode(data.encode()))
-	chdir(dstdir)
-	if path.isfile(env + '.env.asc'):
-		rc = system("gpg --no-tty --no --verify %s.env.asc %s.env 2>/dev/null" % (env, env))
-		if rc != 0:
-			print("env signature verify failed!", file = sys.stderr)
-			return rc
-	return system("sha256sum -c %s.env" % env)
+	envfn = path.join(dstdir, "%s.env" % env)
+	return loadenv(envfn)
 
 if __name__ == '__main__':
 	sys.exit(extract())
