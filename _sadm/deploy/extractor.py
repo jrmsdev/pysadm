@@ -6,12 +6,16 @@ import json
 from base64 import b64encode
 from os import path, chmod
 
+from _sadm import version
 from _sadm.errors import BuildError
 
 _head = """#!/usr/bin/env python3
+
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
-# WWW: https://pypi.org/project/sadm/
+
+# sadm.env self extractor
+# https://pypi.org/project/sadm/
 
 from base64 import b64decode
 from os import path, makedirs, system, chdir
@@ -32,6 +36,7 @@ def extract():
 if __name__ == '__main__':
 	import sys
 	sys.exit(extract())
+
 """
 
 def gen(env):
@@ -63,5 +68,6 @@ def _write(fn, cargo, _vars):
 		fh.write("_cargo = %s\n" % json.dumps(cargo, indent = indent, sort_keys = True))
 		fh.write("_vars = %s\n" % json.dumps(_vars, indent = indent, sort_keys = True))
 		fh.write(_tail)
+		fh.write("# sadm version %s\n" % version.get())
 		fh.flush()
 	chmod(fn, 0o0500)
