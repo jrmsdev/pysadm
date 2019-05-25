@@ -11,6 +11,8 @@ from _sadm.plugin.utils import builddir
 
 __all__ = ['pre_build', 'post_build']
 
+_destdir = path.join(path.sep, 'opt', 'sadm')
+
 def pre_build(env):
 	env.build.create()
 
@@ -37,7 +39,8 @@ def _zip(env):
 	with open(fn + '.zip', 'rb') as fh:
 		h.update(fh.read())
 	with open(fn + '.env', 'x') as fh:
-		fh.write("%s  %s\n" % (h.hexdigest(), path.basename(env.name()) + '.zip'))
+		fh.write("%s  %s\n" % (h.hexdigest(),
+			path.join(_destdir, 'env', env.name() + '.zip')))
 
 def _meta(env):
 	env.log('meta.json')
