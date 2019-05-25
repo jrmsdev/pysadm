@@ -36,7 +36,7 @@ def _zip(env):
 	h = sha256()
 	with open(fn + '.zip', 'rb') as fh:
 		h.update(fh.read())
-	with open(fn + '.checksum', 'x') as fh:
+	with open(fn + '.env', 'x') as fh:
 		fh.write("%s  %s\n" % (h.hexdigest(), path.basename(env.name()) + '.zip'))
 
 def _meta(env):

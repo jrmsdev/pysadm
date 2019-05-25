@@ -37,17 +37,18 @@ def _cleandir(env, bdir):
 		base + '.meta',
 	]
 	bfiles = [
-		base + '.tar',
 		base + '.zip',
-		base + '.checksum',
+		base + '.env',
 	]
 	for d in bdirs:
 		if path.isdir(d):
 			env.debug("rmtree %s" % d)
 			rmtree(d) # clean tree
+		env.debug("makedirs %s" % d)
 		makedirs(d) # recreate base dirs
 	for f in bfiles:
 		if path.isfile(f):
+			env.debug("unlink %s" % f)
 			unlink(f)
 
 def _open(env, filename, mode = 'r', meta = False):
