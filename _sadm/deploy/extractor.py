@@ -27,7 +27,8 @@ _tail = """
 def extract():
 	env = _vars['.env']
 	dstdir = _vars['.destdir']
-	rmtree(dstdir)
+	if path.isdir(dstdir):
+		rmtree(dstdir)
 	makedirs(dstdir, exist_ok = True)
 	chmod(dstdir, 0o0700)
 	for fn, data in _cargo.items():
