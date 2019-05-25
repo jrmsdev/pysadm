@@ -11,7 +11,7 @@ def test_getCaller():
 	assert log._getCaller(1).startswith('t/log_test.py:')
 
 def test_levels():
-	assert ['debug', 'warn', 'info', 'error', 'quiet'] == log.levels()
+	assert sorted(log.levels()) == ['debug', 'error', 'info', 'msg', 'quiet', 'warn']
 	assert log.defaultLevel() == 'warn'
 
 def test_dummyLogger():
@@ -46,25 +46,38 @@ def test_lvlInfo():
 	l, s = _sysLogger('info')
 	l.debug('test')
 	assert '' == s.getvalue()
-	l.warn('test')
-	assert '' == s.getvalue()
 	l.error('test')
 	assert 'E: test\n' == s.getvalue()
 	l.info('test')
 	assert s.getvalue().endswith('\nI: test\n')
 	l.msg('test')
 	assert s.getvalue().endswith('\ntest\n')
+	l.warn('test')
+	assert s.getvalue().endswith('\nW: test\n')
 
 def test_lvlWarn():
 	l, s = _sysLogger('warn')
 	l.debug('test')
 	assert '' == s.getvalue()
+	l.info('test')
+	assert '' == s.getvalue()
 	l.warn('test')
 	assert 'W: test\n' == s.getvalue()
 	l.error('test')
 	assert s.getvalue().endswith('\nE: test\n')
+	l.msg('test')
+	assert s.getvalue().endswith('\ntest\n')
+
+def test_lvlMsg():
+	l, s = _sysLogger('msg')
+	l.debug('test')
+	assert '' == s.getvalue()
 	l.info('test')
-	assert s.getvalue().endswith('\nI: test\n')
+	assert '' == s.getvalue()
+	l.warn('test')
+	assert '' == s.getvalue()
+	l.error('test')
+	assert 'E: test\n' == s.getvalue()
 	l.msg('test')
 	assert s.getvalue().endswith('\ntest\n')
 

@@ -70,18 +70,25 @@ class _sysLogger(object):
 			self.info = self._info
 			self.msg = self._msg
 			self.error = self._error
-		# warn: warn + info + error messages
-		elif level == 'warn':
+		# info: info + warn + msg + error
+		elif level == 'info':
 			self.debug = self._off
 			self.warn = self._warn
 			self.info = self._info
 			self.msg = self._msg
 			self.error = self._error
-		# info: info + error messages
-		elif level == 'info':
+		# warn: warn + msg + error
+		elif level == 'warn':
 			self.debug = self._off
+			self.info = self._off
+			self.warn = self._warn
+			self.msg = self._msg
+			self.error = self._error
+		# msg: msg + error
+		elif level == 'msg':
+			self.debug = self._off
+			self.info = self._off
 			self.warn = self._off
-			self.info = self._info
 			self.msg = self._msg
 			self.error = self._error
 		# error: only errors
@@ -165,7 +172,7 @@ def init(level):
 	_curlevel = level
 
 def levels():
-	return ['debug', 'warn', 'info', 'error', 'quiet']
+	return ['debug', 'info', 'warn', 'msg', 'error', 'quiet']
 
 def defaultLevel():
 	return 'warn'
