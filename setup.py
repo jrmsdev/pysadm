@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# coding: utf-8
 
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
@@ -26,6 +27,8 @@ def main():
 		# ~ deps = fh.read().splitlines()
 
 	setup(
+		author = 'Jeremías Casteglione',
+		author_email = 'jrmsdev@gmail.com',
 		python_requires = '~=3.4',
 		setup_requires = ['setuptools_scm>=3.3'],
 		install_requires = deps,
