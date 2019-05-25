@@ -21,8 +21,9 @@ def main():
 	elif cmd == 'clean':
 		_clean()
 
-	with open('requirements.txt', 'r') as fh:
-		deps = fh.read().splitlines()
+	deps = []
+	# ~ with open('requirements.txt', 'r') as fh:
+		# ~ deps = fh.read().splitlines()
 
 	setup(
 		python_requires = '~=3.4',
