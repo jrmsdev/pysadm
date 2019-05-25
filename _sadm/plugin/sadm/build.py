@@ -22,7 +22,7 @@ def post_build(env):
 	builddir.unlock(env)
 
 def _saveSession(env):
-	env.log('session.json')
+	env.debug('session.json')
 	with builddir.create(env, 'session.json', meta = True) as fh:
 		env.session.dump(fh)
 

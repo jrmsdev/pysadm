@@ -47,11 +47,11 @@ def gen(env):
 	cargo = {}
 	n = path.normpath(env.build.rootdir())
 	fn = n + '.deploy'
-	env.log("create %s" % fn)
+	env.log("%s.deploy" % env.name())
 	for ext in ('.zip', '.env'):
 		name = n + ext
 		if path.isfile(name):
-			env.log("add %s" % name)
+			env.log("load %s" % path.basename(name))
 			cargo[env.name() + ext] = _load(name)
 		else:
 			raise BuildError("%s file not found" % name)

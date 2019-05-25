@@ -137,7 +137,7 @@ class Env(object):
 		took = ''
 		if startTime is not None:
 			took = " in %f seconds" % (time() - startTime)
-		self.info("%s %d/%d actions%s" % (action, (actno - len(noend)), actno, took))
+		self.log("%s %d/%d actions%s" % (action, (actno - len(noend)), actno, took))
 		if len(noend) > 0:
 			raise self.error("not finished action(s): %s" % ','.join(noend))
 
