@@ -2,6 +2,10 @@
 # See LICENSE file.
 
 from hashlib import sha256
+from os import path, system
+
+from _sadm import config
+from _sadm.errors import BuildError
 from _sadm.plugin.utils import builddir
 
 __all__ = ['pre_build', 'post_build']
@@ -12,6 +16,7 @@ def pre_build(env):
 
 def post_build(env):
 	_saveSession(env)
+	_signBuild(env)
 	builddir.unlock(env)
 
 def _saveSession(env):
@@ -29,3 +34,14 @@ def _writeSettings(env):
 	with open(fn, 'rb') as fh:
 		h.update(fh.read())
 	env.session.set('sadm.configure.checksum', h.hexdigest())
+
+def _signBuild(env):
+	sid = config.get(env.profile(), 'build.sign', fallback = '')
+	sid = sid.strip()
+	if sid != '':
+		env.log("sign id %s" % sid)
+		fn = path.normpath(env.build.rootdir()) + '.env'
+		env.log("sign env %s" % fn)
+		rc = system("gpg --no-tty --yes -u '%s' -sba %s" % (sid, fn))
+		if rc != 0:
+			raise BuildError('build sign using gpg failed')
