@@ -39,6 +39,8 @@ def _cleandir(env, bdir):
 	bfiles = [
 		base + '.zip',
 		base + '.env',
+		base + '.env.asc',
+		base + '.deploy',
 	]
 	for d in bdirs:
 		if path.isdir(d):

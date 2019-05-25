@@ -94,6 +94,8 @@ def _cleanEnv(env):
 	_bfiles = [
 		bdir + '.zip',
 		bdir + '.env',
+		bdir + '.env.asc',
+		bdir + '.deploy',
 		path.join(bdir, '.lock'),
 		path.join(pdir, '.lock'),
 	]

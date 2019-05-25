@@ -5,6 +5,7 @@ from hashlib import sha256
 from os import path, system
 
 from _sadm import config
+from _sadm.deploy import extractor
 from _sadm.errors import BuildError
 from _sadm.plugin.utils import builddir
 
@@ -17,6 +18,7 @@ def pre_build(env):
 def post_build(env):
 	_saveSession(env)
 	_signBuild(env)
+	extractor.gen(env)
 	builddir.unlock(env)
 
 def _saveSession(env):
