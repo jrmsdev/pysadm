@@ -18,14 +18,14 @@ def loadenv(filename):
 	if rc != 0:
 		print("env checksum failed!", file = sys.stderr)
 		return 2
-	return _importenv(envfn)
+	_importenv(envfn)
+	return 0
 
 def _importenv(envfn):
 	basefn = envfn[:-4]
 	rootdir = path.dirname(path.dirname(envfn))
 	deploydir = path.join(rootdir, 'deploy')
 	makedirs(deploydir, exist_ok = True)
-	# ~ envcmd = path.join(rootdir, 'bin', 'sadm.env')
 	for ext in ('.env', '.zip'):
 		fn = basefn + ext
 		dstfn = path.join(deploydir, path.basename(fn))
@@ -33,4 +33,3 @@ def _importenv(envfn):
 			unlink(dstfn)
 		print("%s:" % fn, dstfn)
 		move(fn, dstfn)
-	return 0

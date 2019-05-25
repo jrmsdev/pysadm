@@ -19,7 +19,8 @@ _vars = {}
 
 def extract():
 	env = _vars['env']
-	dstdir = _vars['destdir']
+	rootdir = _vars['rootdir']
+	dstdir = path.join(rootdir, 'env')
 	if path.isdir(dstdir):
 		rmtree(dstdir)
 	makedirs(dstdir, exist_ok = True)

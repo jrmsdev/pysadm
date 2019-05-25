@@ -12,7 +12,7 @@ from _sadm.errors import BuildError
 def gen(env):
 	_vars = {
 		'env': env.name(),
-		'destdir': path.join(path.sep, 'opt', 'sadm', 'env'),
+		'rootdir': path.join(path.sep, 'opt', 'sadm'),
 	}
 	cargo = {}
 	n = path.normpath(env.build.rootdir())
