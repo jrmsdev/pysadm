@@ -21,6 +21,14 @@ def loadenv(filename):
 	return _importenv(envfn)
 
 def _importenv(envfn):
+	env = path.basename(envfn)[:-4]
 	rootdir = path.dirname(path.dirname(envfn))
 	deploydir = path.join(rootdir, 'deploy')
+	envcmd = path.join(rootdir, 'bin', 'sadm.env')
+	for ext in ('.env', '.env.asc', '.zip'):
+		fn = env + ext
+		if not path.isfile(fn) and ext == '.env.asc':
+			continue
+		dstfn = path.join(deploydir, fn)
+		print('IMPORT:', fn, '->', dstfn)
 	return 0
