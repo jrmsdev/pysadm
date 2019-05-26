@@ -10,6 +10,8 @@ include LICENSE
 include pytest.ini
 
 include tdata/.gitignore
+include tdata/sadm.cfg
+include tdata/profile-dir-isfile.test
 
 recursive-include _sadm *.css
 recursive-include _sadm *.html
@@ -18,11 +20,10 @@ recursive-include _sadm *.png
 recursive-include _sadm *.ini
 
 recursive-include t *.py
-recursive-include tdata *.cfg
-recursive-include tdata *.ini
-recursive-include tdata *.test
+
+recursive-include tdata/envsetup *.ini
+recursive-include tdata/testing *.ini
+recursive-include tdata/testing *.test
 
 recursive-include venv *.sh
 recursive-include venv *.txt
-
-prune tdata/build
