@@ -26,10 +26,10 @@ def main():
 		log.error('invalid usage')
 		_parser.print_usage()
 		return 1
-	print('CMD:', args.command)
-	# ~ rc, _ = env.run(args.profile, args.env, 'deploy')
-	# ~ return rc
-	return 128
+	log.debug("dispatch command %s" % cmd)
+	if args.command == 'import':
+		return loader.main(args)
+	return deploy_cmd.main(args)
 
 if __name__ == '__main__':
 	sys.exit(main())

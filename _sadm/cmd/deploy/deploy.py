@@ -7,7 +7,6 @@ def cmdArgs(parser):
 	p = parser.add_parser('deploy', help = 'deploy sadm.env')
 	p.set_defaults(command = 'deploy')
 
-def main():
-	args = _getArgs()
+def main(args):
 	log.debug("deploy %s/%s" % (args.profile, args.env))
 	return 128

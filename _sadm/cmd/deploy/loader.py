@@ -2,15 +2,13 @@
 # See LICENSE file.
 
 from _sadm import log
+from _sadm.deploy.loader import loadenv
 
 def cmdArgs(parser):
 	p = parser.add_parser('import', help = 'import sadm.env')
 	p.add_argument('filename', help = 'sadm.env file to import')
 	p.set_defaults(command = 'import')
 
-def main():
-	args = _getArgs()
-	log.debug("import %s/%s" % (args.profile, args.env))
-	# ~ rc, _ = env.run(args.profile, args.env, 'deploy')
-	# ~ return rc
-	return 128
+def main(args):
+	log.debug("import %s" % args.filename)
+	return loadenv(args.filename)
