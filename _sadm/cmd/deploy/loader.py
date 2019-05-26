@@ -6,6 +6,7 @@ from _sadm import log
 def cmdArgs(parser):
 	p = parser.add_parser('import', help = 'import sadm.env')
 	p.add_argument('filename', help = 'sadm.env file to import')
+	p.set_defaults(command = 'import')
 
 def main():
 	args = _getArgs()
