@@ -9,10 +9,8 @@
 import sys
 
 from base64 import b64decode
-from os import path, makedirs, chmod
+from os import path, makedirs, chmod, system
 from shutil import rmtree
-
-from _sadm.deploy.loader import loadenv
 
 _cargo = {}
 _vars = {}
@@ -30,7 +28,8 @@ def extract():
 		with open(fn, 'wb') as fh:
 			fh.write(b64decode(data.encode()))
 	envfn = path.join(dstdir, "%s.env" % env)
-	return loadenv(envfn)
+	envcmd = path.join(rootdir, 'bin', 'sadm.env')
+	return system("%s import %s" % (envcmd, envfn))
 
 if __name__ == '__main__':
 	sys.exit(extract())
