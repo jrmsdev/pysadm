@@ -3,7 +3,6 @@
 
 from time import strftime, time
 
-from _sadm import config
 from _sadm.errors import PluginError
 
 __all__ = ['run']
@@ -13,7 +12,7 @@ _validAction = {'build': True}
 def run(env, action):
 	_start = time()
 	env.info("%s start %s" % (action, strftime('%c %z')))
-	env.log("%s %s" % (config.name(), config.filename()))
+	env.log("%s %s" % (env.config.name(), env.config.filename()))
 	try:
 		if not _validAction.get(action, False):
 			raise env.error("invalid action %s" % action)

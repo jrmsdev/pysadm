@@ -5,7 +5,7 @@ from contextlib import contextmanager
 from os import path, unlink
 from time import time
 
-from _sadm import log, config, asset, build
+from _sadm import log, cfg, asset, build
 from _sadm.configure import plugins
 from _sadm.env import cmd
 from _sadm.env.profile import Profile
@@ -24,14 +24,20 @@ class Env(object):
 	_run = None
 	_lockfn = None
 	_err = None
+	config = None
 	assets = None
 	settings = None
 	session = None
 	build = None
 
-	def __init__(self, profile, name):
+	def __init__(self, profile, name, config = None):
+		if config is None:
+			config = cfg.new()
+		self.config = config
+		if profile == 'default':
+			profile = self.config.get('default', 'profile')
 		self._name = name
-		self._profile = Profile(profile)
+		self._profile = Profile(profile, self.config)
 		self._profName = self._profile.name()
 		self._logtag = ''
 		self._run = {}
@@ -40,10 +46,11 @@ class Env(object):
 		self._load()
 
 	def _load(self, fn = None, pdir = None):
-		# env config.ini
+		self.debug('env load')
+		# env self.config.ini
 		opt = "env.%s" % self._name
 		if fn is None:
-			fn = config.get(self._profName, opt, fallback = None)
+			fn = self.config.get(self._profName, opt, fallback = None)
 			if fn is None:
 				raise self.error('env not found')
 		fn = path.normpath(fn.strip())
@@ -52,7 +59,7 @@ class Env(object):
 		self._cfgfile = fn
 		# profile dir
 		if pdir is None:
-			pdir = config.get(self._profName, 'dir')
+			pdir = self.config.get(self._profName, 'dir')
 		pdir = path.normpath(pdir.strip())
 		if not path.exists(pdir):
 			raise self.error("%s directory not found" % pdir)
@@ -148,18 +155,6 @@ class Env(object):
 		finally:
 			_unlock(self)
 
-def run(profile, env, action):
-	err = None
-	try:
-		e = Env(profile, env)
-		cmd.run(e, action)
-	except EnvError as err:
-		return (1, err)
-	except Error as err:
-		log.error("%s" % err)
-		return (2, err)
-	return (0, err)
-
 def _lock(env):
 	fn = path.join(env.assets.rootdir(), path.dirname(env.cfgfile()), '.lock')
 	env.debug("lock %s" % fn)
@@ -187,3 +182,15 @@ def _unlock(env):
 			raise env.error("unlock file not found: %s" % env._lockfn)
 		finally:
 			env._lockfn = None
+
+def run(profile, env, action):
+	err = None
+	try:
+		e = Env(profile, env, cfg.new())
+		cmd.run(e, action)
+	except EnvError as err:
+		return (1, err)
+	except Error as err:
+		log.error("%s" % err)
+		return (2, err)
+	return (0, err)

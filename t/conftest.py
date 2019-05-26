@@ -20,12 +20,6 @@ import _sadm.plugin.testing
 from _sadm import cfg
 cfg._cfgFile = path.join('tdata', 'sadm.cfg')
 
-# attach testing config
-
-import _sadm
-del _sadm.config
-_sadm.config = cfg.new()
-
 # testing profile
 
 from _sadm.env import profile

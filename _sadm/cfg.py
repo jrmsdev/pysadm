@@ -4,6 +4,7 @@
 from os import path
 from configparser import ConfigParser
 
+from _sadm import log
 from _sadm.errors import ProfileError
 
 __all__ = ['Config', 'new']
@@ -31,6 +32,7 @@ class Config(ConfigParser):
 
 	def _init(self):
 		self._fn = _cfgFile
+		log.debug("cfg init %s" % self._fn)
 		self.reload()
 		self._name = self.get('default', 'name')
 		if self._name == '':
@@ -66,6 +68,7 @@ class Config(ConfigParser):
 		return [p.strip() for p in self.get(profile, 'plugins').split(',')]
 
 def new():
+	log.debug('cfg.new')
 	config = Config(
 		defaults = _DEFAULT,
 		strict = True,

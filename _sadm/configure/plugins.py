@@ -1,7 +1,6 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
-from _sadm import config
 from _sadm.configure import pluginsList, getPlugin
 from _sadm.env.settings import Settings
 
@@ -33,7 +32,7 @@ def _load(env, cfg, forcePlugins = None):
 	env.debug("registered plugins %s" % ','.join([p for p in pluginsList()]))
 	if forcePlugins is None:
 		forcePlugins = {}
-		for p in config.listPlugins(env.profile()):
+		for p in env.config.listPlugins(env.profile()):
 			forcePlugins[p] = True
 	env.debug("plugins force enable: %s" % ','.join([p for p in forcePlugins.keys()]))
 	for p in pluginsList():

@@ -5,7 +5,7 @@ from os import getenv
 from io import StringIO
 from bottle import route, view
 
-from _sadm import log, config
+from _sadm import log, cfg
 from _sadm.web import tpl
 
 @route('/')
@@ -20,6 +20,7 @@ def index():
 	}
 
 def _getCfg():
+	config = cfg.new()
 	buf = StringIO()
 	config.reload()
 	config.write(buf)

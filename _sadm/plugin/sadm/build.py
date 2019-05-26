@@ -4,7 +4,6 @@
 from hashlib import sha256
 from os import path, system
 
-from _sadm import config
 from _sadm.deploy import extractor
 from _sadm.errors import BuildError
 from _sadm.plugin.utils import builddir
@@ -38,7 +37,7 @@ def _writeSettings(env):
 	env.session.set('sadm.configure.checksum', h.hexdigest())
 
 def _signBuild(env):
-	sid = config.get(env.profile(), 'build.sign', fallback = '')
+	sid = env.config.get(env.profile(), 'build.sign', fallback = '')
 	sid = sid.strip()
 	if sid != '':
 		env.log("sign id %s" % sid)
