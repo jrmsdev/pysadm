@@ -4,9 +4,14 @@
 import sys
 from _sadm import log, env
 from _sadm.cmd import flags
+from _sadm.cmd.deploy import loader
 
 def _getArgs():
 	parser = flags.new('sadm', desc = 'deploy sadm env')
+	subparser = parser.add_subparsers(title = 'commands',
+		description = 'run `sadm command -h` for more information',
+		help = 'description')
+	loader.cmdArgs(subparser)
 	return flags.parse(parser)
 
 def main():
