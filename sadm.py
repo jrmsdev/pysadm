@@ -2,9 +2,11 @@
 # See LICENSE file.
 
 from _sadm.cmd import build as build_cmd
+from _sadm.cmd import deploy as deploy_cmd
 from _sadm.cmd import web as web_cmd
 
-build = build_cmd.main
-web = web_cmd.main
+__all__ = ['build', 'deploy', 'web']
 
-__all__ = ['build', 'web']
+build = build_cmd.main
+deploy = deploy_cmd.main
+web = web_cmd.main

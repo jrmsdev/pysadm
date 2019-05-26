@@ -28,7 +28,7 @@ def extract():
 		with open(fn, 'wb') as fh:
 			fh.write(b64decode(data.encode()))
 	envfn = path.join(dstdir, "%s.env" % env)
-	envcmd = path.join(rootdir, 'bin', 'sadm.env')
+	envcmd = path.join(rootdir, 'bin', 'sadm')
 	return system("%s import %s" % (envcmd, envfn))
 
 if __name__ == '__main__':

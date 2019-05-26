@@ -8,7 +8,7 @@ from _sadm.errors import ProfileError
 
 __all__ = ['Config', 'new']
 
-_cfgFile = path.realpath('./sadm.cfg')
+_cfgFile = path.realpath(path.join('.', 'sadm.cfg'))
 
 _enablePlugins = [
 	'sadm',
