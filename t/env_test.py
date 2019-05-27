@@ -26,11 +26,9 @@ def test_env(testing_env):
 
 def test_env_configure(testing_env):
 	e = testing_env()
-	e.configure()
 	assert isinstance(e.settings, Settings)
 	with raises(AssetNotFoundError, match = 'No such file or directory'):
 		e._cfgfile = 'noconfig.ini'
-		e.session.stop()
 		e.configure()
 
 def test_env_error(testing_env):

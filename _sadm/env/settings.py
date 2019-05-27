@@ -5,6 +5,7 @@ from collections import deque
 from configparser import ConfigParser, ExtendedInterpolation
 from configparser import Error as ParserError
 
+from _sadm import log
 from _sadm.configure import pluginsList, getPlugin
 from _sadm.errors import SettingsError
 
@@ -29,6 +30,7 @@ class Settings(ConfigParser):
 				yield getPlugin(p, action)
 
 	def read_file(self, fh):
+		log.debug("read file %s" % fh.name)
 		try:
 			super().read_file(fh)
 		except ParserError as err:

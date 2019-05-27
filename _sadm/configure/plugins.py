@@ -1,6 +1,8 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
+from os import path
+
 from _sadm.configure import pluginsList, getPlugin
 from _sadm.env.settings import Settings
 
@@ -14,21 +16,27 @@ def configure(env, cfgfile = None):
 		cfgfile = env.cfgfile()
 	fn = cfgfile
 	env.log("%s" % fn)
-	cfg = _getcfg(env, fn)
 	env.start('configure')
-	_load(env, cfg)
+	_getcfg(env, fn)
 	env.end('configure')
 
 def _getcfg(env, fn):
+	runconfigure = True
 	cfg = Settings()
 	with env.assets.open(fn) as fh:
 		cfg.read_file(fh)
 	n = cfg.get('default', 'name', fallback = None)
 	if n is None:
 		n = cfg.get('sadmenv', 'name', fallback = None)
+		if n is not None: # deploy mode
+			runconfigure = False
 	if n != env.name():
 		raise env.error("invalid config name '%s'" % n)
-	return cfg
+	if runconfigure:
+		_load(env, cfg)
+	else: # deploy mode
+		with env.assets.open(fn) as fh:
+			env.settings.read_file(fh)
 
 def _load(env, cfg, forcePlugins = None):
 	env.debug("registered plugins %s" % ','.join([p for p in pluginsList()]))
