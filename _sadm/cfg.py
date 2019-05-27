@@ -30,8 +30,10 @@ class Config(ConfigParser):
 	_fn = None
 	_name = None
 
-	def _init(self):
-		self._fn = _cfgFile
+	def _init(self, cfgfile = None):
+		if cfgfile is None:
+			cfgfile = _cfgFile
+		self._fn = cfgfile
 		log.debug("cfg init %s" % self._fn)
 		self.reload()
 		self._name = self.get('default', 'name')
@@ -48,7 +50,11 @@ class Config(ConfigParser):
 		return self._fn
 
 	def reload(self):
-		self.read([self._fn], encoding = 'utf-8')
+		try:
+			with open(self._fn, 'r') as fh:
+				self.read_file(fh)
+		except FileNotFoundError:
+			raise ProfileError("%s file not found" % self._fn)
 
 	def listProfiles(self):
 		return sorted(self.sections())
@@ -67,7 +73,7 @@ class Config(ConfigParser):
 	def listPlugins(self, profile):
 		return [p.strip() for p in self.get(profile, 'plugins').split(',')]
 
-def new():
+def new(cfgfile = None):
 	log.debug('cfg.new')
 	config = Config(
 		defaults = _DEFAULT,
@@ -77,5 +83,5 @@ def new():
 		comment_prefixes = ('#', ),
 		delimiters = ('=', ),
 	)
-	config._init()
+	config._init(cfgfile = cfgfile)
 	return config
