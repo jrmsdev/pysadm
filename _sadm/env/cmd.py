@@ -7,7 +7,10 @@ from _sadm.errors import PluginError
 
 __all__ = ['run']
 
-_validAction = {'build': True}
+_validAction = {
+	'build': True,
+	'deploy': True,
+}
 
 def run(env, action):
 	_start = time()
