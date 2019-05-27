@@ -36,6 +36,8 @@ class Env(object):
 		self.config = config
 		if profile == 'default':
 			profile = self.config.get('default', 'profile')
+		if name == 'default':
+			name = self.config.get('default', 'env')
 		self._name = name
 		self._profile = Profile(profile, self.config)
 		self._profName = self._profile.name()
