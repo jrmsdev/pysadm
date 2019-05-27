@@ -4,7 +4,7 @@
 from os import path
 
 from _sadm import log
-from _sadm.deploy.deploy import run
+from _sadm.deploy import cmd
 
 def cmdArgs(parser):
 	p = parser.add_parser('deploy', help = 'deploy sadm.env')
@@ -12,4 +12,4 @@ def cmdArgs(parser):
 
 def main(args):
 	log.debug("deploy %s" % args.env)
-	return run(args.env)
+	return cmd.run(args.env)
