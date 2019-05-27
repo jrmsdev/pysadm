@@ -29,7 +29,13 @@ def extract():
 			fh.write(b64decode(data.encode()))
 	envfn = path.join(dstdir, "%s.env" % env)
 	envcmd = path.join(rootdir, 'bin', 'sadm')
-	return system("%s import %s" % (envcmd, envfn))
+	rc = system("%s import %s" % (envcmd, envfn))
+	if rc != 0:
+		return 1
+	rc = system("%s --env %s deploy" % (envcmd, env))
+	if rc != 0:
+		return 2
+	return 0
 
 if __name__ == '__main__':
 	sys.exit(extract())
