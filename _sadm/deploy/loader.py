@@ -3,7 +3,7 @@
 
 import sys
 from os import path, system, makedirs, unlink, chmod
-from shutil import move
+from shutil import rmtree, unpack_archive
 
 from _sadm import log
 
@@ -24,15 +24,12 @@ def loadenv(filename):
 	return 0
 
 def _importenv(envfn):
-	basefn = envfn[:-4]
+	srcfn = envfn[:-4]
 	rootdir = path.dirname(path.dirname(envfn))
 	deploydir = path.join(rootdir, 'deploy')
-	makedirs(deploydir, exist_ok = True)
-	chmod(deploydir, 0o0700)
-	for ext in ('.env', '.zip'):
-		fn = basefn + ext
-		dstfn = path.join(deploydir, path.basename(fn))
-		if path.isfile(dstfn):
-			unlink(dstfn)
-		log.msg("%s: %s" % (fn, dstfn))
-		move(fn, dstfn)
+	envdir = path.join(deploydir, path.basename(srcfn))
+	if path.isdir(envdir):
+		rmtree(envdir)
+	makedirs(envdir)
+	chmod(envdir, 0o0700)
+	unpack_archive(srcfn + '.zip', extract_dir = envdir, format = 'zip')
