@@ -9,6 +9,7 @@ from _sadm import log
 
 def loadenv(filename):
 	envfn = path.realpath(filename)
+	log.msg("%s: load" % envfn)
 	if path.isfile(envfn + '.asc'):
 		rc = system("gpg --no-tty --no --verify %s.asc %s 2>/dev/null" % (envfn, envfn))
 		if rc == 0:
