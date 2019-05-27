@@ -24,6 +24,8 @@ def _getcfg(env, fn):
 	with env.assets.open(fn) as fh:
 		cfg.read_file(fh)
 	n = cfg.get('default', 'name', fallback = None)
+	if n is None:
+		n = cfg.get('sadmenv', 'name', fallback = None)
 	if n != env.name():
 		raise env.error("invalid config name '%s'" % n)
 	return cfg
