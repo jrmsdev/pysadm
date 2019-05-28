@@ -11,7 +11,9 @@ class Manager(object):
 	def __init__(self, rootdir = '.'):
 		self._dir = path.realpath(path.normpath(rootdir))
 
-	def rootdir(self):
+	def rootdir(self, *parts):
+		if len(parts) > 0:
+			return self._path(*parts)
 		return self._dir
 
 	def name(self, *parts):

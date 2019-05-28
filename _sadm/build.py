@@ -3,17 +3,20 @@
 
 import tarfile
 
-from collections import deque
+from collections import deque, namedtuple
 from os import path
 
 from _sadm import asset
 from _sadm.errors import BuildError
 
+_Info = namedtuple('_Info', ('name', 'args', 'type'))
+
 class Manager(asset.Manager):
-	_tar = None
 	_tarfn = None
+	_data = None
 
 	def create(self):
+		self._data = deque()
 		rdir = self.rootdir()
 		en = path.basename(rdir)
 		mdir = path.normpath(rdir) + '.meta'
@@ -22,11 +25,13 @@ class Manager(asset.Manager):
 		# self._tar = tarfile.open(self._tarfn, 'x:')
 		if path.isfile(self._tarfn):
 			raise BuildError("%s file exists" % self._tarfn)
-		self._tar = tarfile.open(self._tarfn, 'w')
 
 	def close(self):
-		if self._tar is not None:
-			self._tar.close()
+		with tarfile.open(self._tarfn, 'w') as tar:
+			for inf in self._data:
+				if inf.type == 'dir':
+					self._adddir(tar, inf)
+				self._addfile(tar, inf)
 
 	def _tarinfo(self, inf, user = 'root', group = '',
 		filemode = 0o0644, dirmode = 0o0755):
@@ -43,17 +48,23 @@ class Manager(asset.Manager):
 			inf.mode = filemode
 
 	def addfile(self, name, **kwargs):
-		arcname = self.name(name)
+		self._data.append(_Info(name = name, args = kwargs, type = 'file'))
+
+	def _addfile(self, tar, inf):
+		def _filter(fi):
+			self._tarinfo(fi, **inf.args)
+			return fi
+		arcname = self.name(inf.name)
 		fn = path.join(self.rootdir(), arcname)
-		fi = self._tar.gettarinfo(name = fn, arcname = arcname)
-		self._tarinfo(fi, **kwargs)
-		self._tar.addfile(fi)
+		tar.add(fn, arcname = arcname, recursive = False, filter = _filter)
 
 	def adddir(self, name, **kwargs):
-		def dirfilter(fi):
-			self._tarinfo(fi, **kwargs)
+		self._data.append(_Info(name = name, args = kwargs, type = 'dir'))
+
+	def _adddir(self, tar, inf):
+		def _filter(fi):
+			self._tarinfo(fi, **inf.args)
 			return fi
-		arcname = self.name(name)
+		arcname = self.name(inf.name)
 		dirpath = path.join(self.rootdir(), arcname)
-		self._tar.add(dirpath, arcname = arcname, recursive = True,
-			filter = dirfilter)
+		tar.add(dirpath, arcname = arcname, recursive = True, filter = _filter)
