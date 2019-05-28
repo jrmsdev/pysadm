@@ -7,9 +7,9 @@ from subprocess import call
 from _sadm import log, libdir
 from _sadm.errors import PluginScriptNotFound, PluginScriptNoExec
 
-__all__ = ['TTL', 'Scripts']
+__all__ = ['Scripts']
 
-TTL = 300
+_TTL = 180
 
 class Scripts(object):
 	_dir = None
@@ -33,7 +33,7 @@ class _Script(object):
 
 	def dispatch(self):
 		try:
-			return call(self._cmd, timeout = TTL)
+			return call(self._cmd, timeout = _TTL)
 		except FileNotFoundError:
 			raise PluginScriptNotFound(self._cmd[0])
 		except PermissionError:
