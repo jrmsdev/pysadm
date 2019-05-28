@@ -13,13 +13,14 @@ include tdata/.gitignore
 include tdata/sadm.cfg
 include tdata/profile-dir-isfile.test
 
-recursive-include _sadm *.css
-recursive-include _sadm *.html
-recursive-include _sadm *.ico
-recursive-include _sadm *.png
-recursive-include _sadm *.ini
+recursive-include _sadm/plugin *.ini
 
 recursive-include _sadm/scripts *.sh
+
+recursive-include _sadm/web *.css
+recursive-include _sadm/web *.html
+recursive-include _sadm/web *.ico
+recursive-include _sadm/web *.png
 
 recursive-include t *.py
 
