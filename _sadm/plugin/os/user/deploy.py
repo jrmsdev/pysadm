@@ -4,4 +4,4 @@
 __all__ = ['deploy']
 
 def deploy(env):
-	pass
+	env.log('os user')
