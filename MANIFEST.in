@@ -19,7 +19,7 @@ recursive-include _sadm *.ico
 recursive-include _sadm *.png
 recursive-include _sadm *.ini
 
-recursive-include _sadm/plugin *.sh
+recursive-include _sadm/scripts *.sh
 
 recursive-include t *.py
 

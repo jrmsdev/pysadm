@@ -11,12 +11,17 @@ __all__ = ['Scripts']
 
 _TTL = 180
 
+def _osdist():
+	return 'debian' # FIXME
+
 class Scripts(object):
 	_dir = None
 
-	def __init__(self, *dirparts):
-		d = libdir.path('plugin', *dirparts)
-		self._dir = path.join(d, 'scripts')
+	def __init__(self, pname, dist = None):
+		if dist is None:
+			dist = _osdist()
+		self._dir = libdir.path('scripts', dist, pname.replace('.', path.sep))
+		log.debug("%s" % self._dir)
 
 	def run(self, script, *args):
 		spath = path.join(self._dir, script)

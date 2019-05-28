@@ -8,13 +8,13 @@ from _sadm.errors import PluginError, PluginScriptNotFound, PluginScriptNoExec
 from _sadm.errors import PluginScriptTimeout
 from _sadm.plugin.utils import scripts
 
-s = scripts.Scripts('testing')
+s = scripts.Scripts('testing', dist = 'testing')
 
 def test_scripts_dir():
-	assert s._dir == libdir.path('plugin', 'testing', 'scripts')
+	assert s._dir == libdir.path('scripts', 'testing', 'testing')
 
 def test_noscript():
-	spath = libdir.path('plugin', 'testing', 'scripts', 'noscript.sh')
+	spath = libdir.path('scripts', 'testing', 'testing', 'noscript.sh')
 	with raises(PluginScriptNotFound, match = "PluginScriptNotFound: %s" % spath) as err:
 		s.run('noscript.sh')
 	assert err.errisinstance(PluginError)
@@ -28,13 +28,13 @@ def test_run_error():
 	assert rc == 1
 
 def test_run_noexec():
-	spath = libdir.path('plugin', 'testing', 'scripts', 'testing-noexec.sh')
+	spath = libdir.path('scripts', 'testing', 'testing', 'testing-noexec.sh')
 	with raises(PluginScriptNoExec, match = "PluginScriptNoExec: %s" % spath) as err:
 		s.run('testing-noexec.sh')
 	assert err.errisinstance(PluginError)
 
 def test_timeout():
-	spath = libdir.path('plugin', 'testing', 'scripts', 'testing-timeout.sh')
+	spath = libdir.path('scripts', 'testing', 'testing', 'testing-timeout.sh')
 	prevttl = scripts._TTL
 	scripts._TTL = 0.2
 	with raises(PluginScriptTimeout,
