@@ -33,4 +33,5 @@ def _importenv(envfn):
 		rmtree(envdir)
 	makedirs(envdir)
 	chmod(envdir, 0o0700)
+	log.msg("%s.zip: unpack" % srcfn)
 	unpack_archive(srcfn + '.zip', extract_dir = envdir, format = 'zip')
