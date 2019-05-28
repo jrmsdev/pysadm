@@ -2,7 +2,8 @@
 # See LICENSE file.
 
 from hashlib import sha256
-from os import path, system
+from os import path
+from subprocess import call
 
 from _sadm.deploy import extractor
 from _sadm.errors import BuildError
@@ -43,6 +44,6 @@ def _signBuild(env):
 		env.log("sign id %s" % sid)
 		fn = path.normpath(env.build.rootdir()) + '.env'
 		env.log("sign env %s" % fn)
-		rc = system("gpg --no-tty --yes -u '%s' -sba %s" % (sid, fn))
+		rc = call("gpg --no-tty --yes -u '%s' -sba %s" % (sid, fn), shell = True)
 		if rc != 0:
 			raise BuildError('build sign using gpg failed')

@@ -9,8 +9,9 @@
 import sys
 
 from base64 import b64decode
-from os import path, makedirs, chmod, system
+from os import path, makedirs, chmod
 from shutil import rmtree
+from subprocess import call
 
 _cargo = {}
 _vars = {}
@@ -29,12 +30,12 @@ def extract():
 			fh.write(b64decode(data.encode()))
 	envfn = path.join(dstdir, "%s.env" % env)
 	envcmd = path.join(rootdir, 'bin', 'sadm')
-	rc = system("%s import %s" % (envcmd, envfn))
+	rc = call("%s import %s" % (envcmd, envfn), shell = True)
 	if rc != 0:
-		return 1
-	rc = system("%s --env %s deploy" % (envcmd, env))
+		return rc
+	rc = call("%s --env %s deploy" % (envcmd, env), shell = True)
 	if rc != 0:
-		return 2
+		return rc
 	return 0
 
 if __name__ == '__main__':

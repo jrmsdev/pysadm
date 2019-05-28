@@ -2,8 +2,9 @@
 # See LICENSE file.
 
 import sys
-from os import path, system, makedirs, unlink, chmod
+from os import path, makedirs, unlink, chmod
 from shutil import rmtree, unpack_archive
+from subprocess import call
 
 from _sadm import log
 
@@ -11,16 +12,17 @@ def loadenv(filename):
 	envfn = path.realpath(filename)
 	log.msg("%s: load" % envfn)
 	if path.isfile(envfn + '.asc'):
-		rc = system("gpg --no-tty --no --verify %s.asc %s 2>/dev/null" % (envfn, envfn))
+		rc = call("gpg --no-tty --no --verify %s.asc %s 2>/dev/null" % (envfn, envfn),
+			shell = True)
 		if rc == 0:
 			log.msg("%s: OK" % envfn)
 		else:
 			log.error('env signature verify failed!')
-			return 1
-	rc = system("sha256sum -c %s" % envfn)
+			return rc
+	rc = call("sha256sum -c %s" % envfn, shell = True)
 	if rc != 0:
 		log.error('env checksum failed!')
-		return 2
+		return rc
 	_importenv(envfn)
 	return 0
 
