@@ -15,7 +15,8 @@ class Scripts(object):
 	_dir = None
 
 	def __init__(self, *dirparts):
-		self._dir = libdir.path('plugin', *dirparts, 'scripts')
+		d = libdir.path('plugin', *dirparts)
+		self._dir = path.join(d, 'scripts')
 
 	def run(self, script, *args):
 		spath = path.join(self._dir, script)
