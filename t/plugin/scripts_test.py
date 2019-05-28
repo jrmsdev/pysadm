@@ -5,6 +5,7 @@ from pytest import raises
 
 from _sadm import libdir
 from _sadm.errors import PluginError, PluginScriptNotFound, PluginScriptNoExec
+from _sadm.errors import PluginScriptTimeout
 from _sadm.plugin.utils import scripts
 
 s = scripts.Scripts('testing')
@@ -31,3 +32,13 @@ def test_run_noexec():
 	with raises(PluginScriptNoExec, match = "PluginScriptNoExec: %s" % spath) as err:
 		s.run('testing-noexec.sh')
 	assert err.errisinstance(PluginError)
+
+def test_timeout():
+	spath = libdir.path('plugin', 'testing', 'scripts', 'testing-timeout.sh')
+	prevttl = scripts._TTL
+	scripts._TTL = 0.2
+	with raises(PluginScriptTimeout,
+		match = "PluginScriptTimeout: %s after 0.2 seconds" % spath) as err:
+		s.run('testing-timeout.sh', '1')
+	assert err.errisinstance(PluginError)
+	scripts._TTL = prevttl

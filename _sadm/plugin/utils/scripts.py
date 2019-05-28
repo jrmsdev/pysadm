@@ -2,10 +2,10 @@
 # See LICENSE file.
 
 from os import path
-from subprocess import call
+from subprocess import call, TimeoutExpired
 
 from _sadm import log, libdir
-from _sadm.errors import PluginScriptNotFound, PluginScriptNoExec
+from _sadm.errors import PluginScriptNotFound, PluginScriptNoExec, PluginScriptTimeout
 
 __all__ = ['Scripts']
 
@@ -38,3 +38,5 @@ class _Script(object):
 			raise PluginScriptNotFound(self._cmd[0])
 		except PermissionError:
 			raise PluginScriptNoExec(self._cmd[0])
+		except TimeoutExpired:
+			raise PluginScriptTimeout("%s after %s seconds" % (self._cmd[0], _TTL))

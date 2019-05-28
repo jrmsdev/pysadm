@@ -46,3 +46,6 @@ class PluginScriptNotFound(PluginError):
 
 class PluginScriptNoExec(PluginError):
 	typ = 'PluginScriptNoExec'
+
+class PluginScriptTimeout(PluginError):
+	typ = 'PluginScriptTimeout'
