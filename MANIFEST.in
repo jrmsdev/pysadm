@@ -19,6 +19,8 @@ recursive-include _sadm *.ico
 recursive-include _sadm *.png
 recursive-include _sadm *.ini
 
+recursive-include _sadm/plugin *.sh
+
 recursive-include t *.py
 
 recursive-include tdata/envsetup *.ini

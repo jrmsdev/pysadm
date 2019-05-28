@@ -23,9 +23,6 @@ class ProfileError(Error):
 class EnvError(Error):
 	typ = 'EnvError'
 
-class PluginError(Error):
-	typ = 'PluginError'
-
 class SettingsError(Error):
 	typ = 'SettingsError'
 
@@ -40,3 +37,12 @@ class AssetNotFoundError(Error):
 
 class BuildError(Error):
 	typ = 'BuildError'
+
+class PluginError(Error):
+	typ = 'PluginError'
+
+class PluginScriptNotFound(PluginError):
+	typ = 'PluginScriptNotFound'
+
+class PluginScriptNoExec(PluginError):
+	typ = 'PluginScriptNoExec'
