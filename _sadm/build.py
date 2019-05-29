@@ -35,7 +35,7 @@ class Manager(asset.Manager):
 				self._addfile(tar, inf)
 
 	def _tarinfo(self, inf, user = 'root', group = '',
-		filemode = 0o0644, dirmode = 0o0755):
+		filemode = 644, dirmode = 755):
 		if group == '':
 			group = user
 		inf.mtime = 0 # reproducible builds
@@ -44,9 +44,9 @@ class Manager(asset.Manager):
 		inf.uname = user
 		inf.gname = group
 		if inf.isdir():
-			inf.mode = dirmode
+			inf.mode = int(str(dirmode), 8)
 		else:
-			inf.mode = filemode
+			inf.mode = int(str(filemode), 8)
 
 	def addfile(self, name, **kwargs):
 		self._data.append(_Info(name = name, args = kwargs, type = 'file'))

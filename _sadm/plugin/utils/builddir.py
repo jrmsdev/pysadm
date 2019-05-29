@@ -79,8 +79,8 @@ def create(env, filename, meta = False):
 		env.build.addfile(filename)
 	return fh
 
-def sync(env, src, dst):
+def sync(env, src, dst, **kwargs):
 	srcdir = path.join(env.assets.rootdir(), src)
 	dstdir = fpath(env, dst)
 	copytree(srcdir, dstdir, symlinks = False)
-	env.build.adddir(dst)
+	env.build.adddir(dst, **kwargs)
