@@ -15,7 +15,7 @@ def build(env):
 		_synchome(env, user, homedir)
 
 def _synchome(env, user, homedir):
-	cfgdir = env.session.get('os.users.config.dir')
+	cfgdir = env.settings.get('os', 'users.config.dir')
 	dirmode = env.settings.getint('os', 'users.dirmode')
 	filemode = env.settings.getint('os', 'users.filemode')
 	srcdir = path.join(cfgdir, user)

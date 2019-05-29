@@ -54,3 +54,12 @@ class Settings(ConfigParser):
 				if val2 != '':
 					l.append(val2)
 		return tuple(l)
+
+	def merge(self, src, section, optlist):
+		if not src.has_section(section):
+			return
+		if not self.has_section(section):
+			self.add_section(section)
+		for opt in optlist:
+			if opt in src[section]:
+				self[section][opt] = src[section][opt]

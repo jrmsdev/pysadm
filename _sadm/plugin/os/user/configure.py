@@ -6,15 +6,15 @@ from _sadm.env.settings import Settings
 __all__ = ['configure']
 
 def configure(env, cfg):
-	udir = cfg.get('os', 'users.config.dir', fallback = None)
-	if udir is None:
-		udir = env.settings.get('os', 'users.config.dir')
+	env.settings.merge(cfg, 'os', (
+		'users.config.dir',
+		'users.config.file',
+		'users.dirmode',
+		'users.filemode',
+	))
 
-	fn = cfg.get('os', 'users.config.file', fallback = None)
-	if fn is None:
-		fn = env.settings.get('os', 'users.config.file')
-
-	env.session.set('os.users.config.dir', udir)
+	udir = env.settings.get('os', 'users.config.dir')
+	fn = env.settings.get('os', 'users.config.file')
 
 	db = Settings()
 	with env.assets.open(udir, fn) as fh:
