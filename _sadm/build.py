@@ -31,6 +31,7 @@ class Manager(asset.Manager):
 			for inf in self._data:
 				if inf.type == 'dir':
 					self._adddir(tar, inf)
+					continue
 				self._addfile(tar, inf)
 
 	def _tarinfo(self, inf, user = 'root', group = '',
