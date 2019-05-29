@@ -13,14 +13,14 @@ from _sadm.web import tpl
 @tpl.data('home')
 def index():
 	log.debug("index")
+	config = cfg.new()
 	return {
-		'cfgfile': config._fn,
-		'cfg': _getCfg(),
+		'cfgfile': config.filename(),
+		'cfg': _getCfg(config),
 		'user': getenv('USER', 'nouser'),
 	}
 
-def _getCfg():
-	config = cfg.new()
+def _getCfg(config):
 	buf = StringIO()
 	config.reload()
 	config.write(buf)
