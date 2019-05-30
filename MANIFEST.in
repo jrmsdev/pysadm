@@ -25,6 +25,8 @@ recursive-include _sadm/web *.png
 recursive-include t *.py
 
 recursive-include tdata/envsetup *.ini
+recursive-include tdata/envsetup *.test
+
 recursive-include tdata/testing *.ini
 recursive-include tdata/testing *.test
 

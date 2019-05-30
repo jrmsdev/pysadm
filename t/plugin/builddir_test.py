@@ -110,3 +110,19 @@ def test_create_makedirs(env_setup):
 	with builddir.create(env, fn) as fh:
 		fh.write('1')
 	assert path.isfile(env.build.rootdir(fn))
+
+def test_sync_error(env_setup):
+	srcdir = 'nosrcdir'
+	dstdir = path.join(path.sep, 'internal', 'path')
+	env = env_setup(name = 'build.test', action = 'build')
+	assert not path.isdir(env.build.rootdir('internal'))
+	with raises(FileNotFoundError, match = "No such file or directory"):
+		builddir.sync(env, srcdir, dstdir)
+
+def test_sync(env_setup):
+	srcdir = path.join('build.test', 'assets.sync')
+	dstdir = path.join(path.sep, 'internal', 'path')
+	env = env_setup(name = 'build.test', action = 'build')
+	assert not path.isdir(env.build.rootdir('internal'))
+	builddir.sync(env, srcdir, dstdir)
+	assert path.isfile(env.build.rootdir(dstdir, 'file.test'))
