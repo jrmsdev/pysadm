@@ -86,14 +86,19 @@ def test_create(env_setup):
 		env.build.close()
 		builddir.unlock(env)
 
-def test_create_meta(env_setup):
+def test_cleandir(env_setup):
 	env = env_setup(configure = True)
 	builddir.lock(env)
 	try:
-		fn = path.join('tdata', 'build', 'envsetup', 'testing.meta', 'file.test')
-		assert not path.isfile(fn)
-		with builddir.create(env, 'file.test', meta = True) as fh:
+		envfn = path.join('tdata', 'build', 'envsetup', 'testing.env')
+		metadir = path.join('tdata', 'build', 'envsetup', 'testing.meta')
+		assert path.isdir(metadir)
+		assert not path.isfile(envfn)
+		with open(envfn, 'x') as fh:
 			fh.write('1')
-		assert path.isfile(fn)
+		assert path.isfile(envfn)
+		builddir._cleandir(env, env.build.rootdir())
+		assert path.isdir(metadir)
+		assert not path.isfile(envfn)
 	finally:
 		builddir.unlock(env)
