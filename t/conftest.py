@@ -11,6 +11,13 @@ from _sadm import log
 log._colored = False
 log.init('quiet')
 
+# version module
+
+from _sadm import version
+_versionfn = path.join('_sadm', '_version.py')
+if path.isfile(_versionfn):
+	unlink(_versionfn)
+
 # register testing plugin
 
 import _sadm.plugin.testing
