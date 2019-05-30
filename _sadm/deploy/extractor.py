@@ -26,7 +26,10 @@ def gen(env):
 		else:
 			if ext != '.env.asc':
 				raise BuildError("%s file not found" % name)
-	_write(fn, cargo, _vars)
+	try:
+		_write(fn, cargo, _vars)
+	except FileExistsError:
+		raise BuildError("%s file exists" % fn)
 
 def _load(fn):
 	with open(fn, 'rb') as fh:
