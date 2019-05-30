@@ -102,3 +102,11 @@ def test_cleandir(env_setup):
 		assert not path.isfile(envfn)
 	finally:
 		builddir.unlock(env)
+
+def test_create_makedirs(env_setup):
+	fn = path.join('asset', 'create.test')
+	env = env_setup(name = 'build.test', action = 'build')
+	assert not path.isdir(env.build.rootdir('asset'))
+	with builddir.create(env, fn) as fh:
+		fh.write('1')
+	assert path.isfile(env.build.rootdir(fn))
