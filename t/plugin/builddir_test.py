@@ -7,10 +7,6 @@ from pytest import raises
 from _sadm.errors import SessionError, EnvError
 from _sadm.plugin.utils import builddir
 
-# ~ def test_builddir():
-	# ~ bdir = path.join('tdata', 'build', 'envsetup', 'testing')
-	# ~ assert not path.isdir(bdir)
-
 def test_lock_unlock(env_setup):
 	lockfn = path.join('tdata', 'build', 'envsetup', 'testing.lock')
 	env = env_setup(configure = True)
