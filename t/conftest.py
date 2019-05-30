@@ -69,12 +69,13 @@ from _sadm.env import cmd as envcmd
 
 @pytest.fixture
 def env_setup():
-	def wrapper(name = 'testing', profile = 'envsetup',
-		configure = False, cfgfile = None, action = None):
+	def wrapper(name = 'testing', profile = 'envsetup', configure = False,
+		cfgfile = None, action = None, mkdirs = False):
 		if action is not None:
-			configure = False # configure in called from cmd.run
+			# configure is called from cmd.run
+			configure = False
 		e = env.Env(profile, name)
-		_cleanEnv(e)
+		_cleanEnv(e, mkdirs = mkdirs)
 		if configure:
 			e.configure(cfgfile = cfgfile)
 		if action is not None:
@@ -82,24 +83,27 @@ def env_setup():
 		return e
 	return wrapper
 
-def _cleanEnv(env):
+def _cleanEnv(env, mkdirs = False):
 	bdir = path.normpath(env.build.rootdir())
 	pdir = path.realpath(path.join('tdata', env.profile(), env.name()))
-	_bdirs = [
+	_bdirs = (
 		bdir,
 		bdir + '.meta',
-	]
+	)
 	for d in _bdirs:
 		if path.isdir(d):
 			rmtree(d)
-	_bfiles = [
+	_bfiles = (
 		bdir + '.zip',
 		bdir + '.env',
 		bdir + '.env.asc',
 		bdir + '.deploy',
 		path.join(bdir, '.lock'),
 		path.join(pdir, '.lock'),
-	]
+	)
 	for f in _bfiles:
 		if path.isfile(f):
 			unlink(f)
+	if mkdirs:
+		for d in _bdirs:
+			makedirs(d)
