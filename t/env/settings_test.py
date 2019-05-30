@@ -2,6 +2,7 @@
 # See LICENSE file.
 
 from configparser import ConfigParser
+from os import path
 from pytest import raises
 
 from _sadm.env.settings import Settings
@@ -53,3 +54,20 @@ def test_getlist_combined(testing_settings):
 	s = testing_settings(cfgfile = 'config-settings-getlist.ini')
 	l = s.getlist('testing', 'test.list.combined')
 	assert l == ('v0', 'v1', 'v2', 'v3', 'v4', 'v5', 'v6')
+
+def test_merge(testing_settings):
+	cfgfn = path.join('tdata', 'testing', 'config-merge.ini')
+	s = testing_settings()
+	assert sorted(s.sections()) == ['os', 'sadm', 'testing']
+	assert s.options('testing') == []
+	cfg = Settings()
+	with open(cfgfn, 'r') as fh:
+		cfg.read_file(fh)
+	s.merge(cfg, 'nosection', ('opt0', 'opt1'))
+	assert sorted(s.sections()) == ['os', 'sadm', 'testing']
+	s.merge(cfg, 'newsection', ('opt0', 'opt1'))
+	assert sorted(s.sections()) == ['newsection', 'os', 'sadm', 'testing']
+	s.merge(cfg, 'testing', ('noopt0', 'noopt1', 'noopt2'))
+	assert s.options('testing') == []
+	s.merge(cfg, 'testing', ('opt0', 'opt1', 'opt2'))
+	assert sorted(s.options('testing')) == ['opt0', 'opt1', 'opt2']
