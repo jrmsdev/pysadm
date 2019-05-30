@@ -1,6 +1,7 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
+from os import path
 from pytest import raises
 
 from _sadm.configure import plugins
@@ -27,5 +28,5 @@ def test_cfg_invalid_name(testing_env):
 def test_deploy_mode(testing_env):
 	e = testing_env()
 	e.session.start()
-	plugins.configure(e, cfgfile = 'deploy-configure.ini')
+	plugins.configure(e, cfgfile = path.join('testing', 'deploy-configure.ini'))
 	assert e.settings.sections() == ['sadmenv']

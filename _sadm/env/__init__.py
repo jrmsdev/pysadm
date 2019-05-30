@@ -80,10 +80,7 @@ class Env(object):
 	def configure(self, cfgfile = None):
 		self.debug('session start')
 		self.session.start()
-		try:
-			plugins.configure(self, cfgfile = cfgfile)
-		except FileNotFoundError as err:
-			raise self.error("%s" % err)
+		plugins.configure(self, cfgfile = cfgfile)
 
 	def name(self):
 		return self._name

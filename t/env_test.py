@@ -160,3 +160,8 @@ def test_envsetup_action(env_setup):
 	with raises(EnvError, match = 'invalid action configure'):
 		env_setup(action = 'configure')
 	assert not path.isdir(mdir)
+
+def test_env_default(testing_env):
+	e = testing_env(name = 'default', profile = 'default')
+	assert e.name() == 'testing'
+	assert e.profile() == 'testing'
