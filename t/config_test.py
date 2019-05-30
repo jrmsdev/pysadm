@@ -6,7 +6,7 @@ from os import path
 from pytest import raises
 
 from _sadm import cfg
-from _sadm.errors import Error
+from _sadm.errors import ProfileError
 
 def test_cfg():
 	assert cfg._DEFAULT['name'] == ''
@@ -31,8 +31,23 @@ def test_cfg():
 
 def test_profile_error():
 	c = cfg.new()
-	with raises(Error, match = 'ProfileError: config profile noprofile not found'):
+	with raises(ProfileError, match = 'config profile noprofile not found'):
 		c.listEnvs('noprofile')
 
 def test_default_plugins():
 	assert tuple(sorted(cfg._enablePlugins)) == ('os', 'os.user', 'sadm', 'sadmenv')
+
+def test_name():
+	c = cfg.new()
+	assert c.name() == 'sadmtest'
+	assert c._getName() == 'tdata'
+
+def test_file_not_found():
+	fn = path.join('tdata', 'testing', 'noconfig.ini')
+	with raises(ProfileError, match = 'noconfig.ini file not found'):
+		c = cfg.new(cfgfile = fn)
+
+def test_noname():
+	fn = path.join('tdata', 'testing', 'config-noname.ini')
+	c = cfg.new(cfgfile = fn)
+	assert c.name() == 'testing'

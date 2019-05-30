@@ -36,7 +36,8 @@ class Config(ConfigParser):
 		self._fn = cfgfile
 		log.debug("cfg init %s" % self._fn)
 		self.reload()
-		self._name = self.get('default', 'name')
+		n = self.get('default', 'name')
+		self._name = n.strip()
 		if self._name == '':
 			self._name = self._getName()
 
