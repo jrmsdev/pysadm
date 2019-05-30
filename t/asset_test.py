@@ -26,6 +26,12 @@ def test_asset_path():
 	assert m._path('p0', 'p1', 'p2') == path.join(rdir, 'p0', 'p1', 'p2')
 	assert m._path(path.sep, 'p0', 'p1', 'p2') == path.join(rdir, 'p0', 'p1', 'p2')
 
+def test_rootdir():
+	rdir = path.realpath(_rootdir)
+	m = Manager(_rootdir)
+	assert m.rootdir() == rdir
+	assert m.rootdir('p0', 'p1', 'p2') == path.join(rdir, 'p0', 'p1', 'p2')
+
 def test_asset_name():
 	m = Manager(_rootdir)
 	assert m.name('p0', 'p1', 'p2') == path.join('p0', 'p1', 'p2')
