@@ -11,9 +11,8 @@ from _sadm import log
 log._colored = False
 log.init('quiet')
 
-# version module
+# remove version autogen module
 
-from _sadm import version
 _versionfn = path.join('_sadm', '_version.py')
 if path.isfile(_versionfn):
 	unlink(_versionfn)
@@ -87,10 +86,12 @@ def _cleanEnv(env, mkdirs = False):
 	tmpdir = path.join('tdata', 'tmp')
 	bdir = path.normpath(env.build.rootdir())
 	pdir = path.realpath(path.join('tdata', env.profile(), env.name()))
+	deploydir = path.join(path.dirname(path.dirname(bdir)), 'deploy', env.name())
 	_dirs = (
 		tmpdir,
 		bdir,
 		bdir + '.meta',
+		deploydir,
 	)
 	for d in _dirs:
 		if path.isdir(d):

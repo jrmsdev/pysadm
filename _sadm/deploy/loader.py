@@ -8,7 +8,7 @@ from subprocess import call
 
 from _sadm import log
 
-def loadenv(filename):
+def loadenv(filename): # pragma: no cover
 	envfn = path.realpath(filename)
 	log.msg("%s: load" % envfn)
 	if path.isfile(envfn + '.asc'):
@@ -31,7 +31,7 @@ def _importenv(envfn):
 	rootdir = path.dirname(path.dirname(envfn))
 	deploydir = path.join(rootdir, 'deploy')
 	envdir = path.join(deploydir, path.basename(srcfn))
-	if path.isdir(envdir):
+	if path.isdir(envdir): # pragma: no cover
 		rmtree(envdir)
 	makedirs(envdir)
 	chmod(envdir, 0o0700)
