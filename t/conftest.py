@@ -84,16 +84,18 @@ def env_setup():
 	return wrapper
 
 def _cleanEnv(env, mkdirs = False):
+	tmpdir = path.join('tdata', 'tmp')
 	bdir = path.normpath(env.build.rootdir())
 	pdir = path.realpath(path.join('tdata', env.profile(), env.name()))
-	_bdirs = (
+	_dirs = (
+		tmpdir,
 		bdir,
 		bdir + '.meta',
 	)
-	for d in _bdirs:
+	for d in _dirs:
 		if path.isdir(d):
 			rmtree(d)
-	_bfiles = (
+	_files = (
 		bdir + '.zip',
 		bdir + '.env',
 		bdir + '.env.asc',
@@ -101,9 +103,11 @@ def _cleanEnv(env, mkdirs = False):
 		path.join(bdir, '.lock'),
 		path.join(pdir, '.lock'),
 	)
-	for f in _bfiles:
+	for f in _files:
 		if path.isfile(f):
 			unlink(f)
 	if mkdirs:
-		for d in _bdirs:
+		for d in _dirs:
 			makedirs(d)
+	else:
+		makedirs(tmpdir)

@@ -9,25 +9,18 @@
 import sys
 
 from base64 import b64decode
-from os import path, makedirs, chmod
+from os import path, makedirs, chmod, unlink
 from shutil import rmtree
 from subprocess import call
 
 _cargo = {}
 _vars = {}
 
-def extract():
+def main():
 	env = _vars['env']
 	rootdir = _vars['rootdir']
 	dstdir = path.join(rootdir, 'env')
-	if path.isdir(dstdir):
-		rmtree(dstdir)
-	makedirs(dstdir, exist_ok = True)
-	chmod(dstdir, 0o0700)
-	for fn, data in _cargo.items():
-		fn = path.join(dstdir, fn)
-		with open(fn, 'wb') as fh:
-			fh.write(b64decode(data.encode()))
+	extract(dstdir)
 	envfn = path.join(dstdir, "%s.env" % env)
 	envcmd = path.join(rootdir, 'bin', 'sadm')
 	rc = call("%s import %s" % (envcmd, envfn), shell = True)
@@ -38,5 +31,15 @@ def extract():
 		return rc
 	return 0
 
+def extract(dstdir):
+	makedirs(dstdir, exist_ok = True)
+	chmod(dstdir, 0o0700)
+	for fn, data in _cargo.items():
+		fn = path.join(dstdir, fn)
+		if path.isfile(fn):
+			unlink(fn)
+		with open(fn, 'wb') as fh:
+			fh.write(b64decode(data.encode()))
+
 if __name__ == '__main__':
-	sys.exit(extract())
+	sys.exit(main())
