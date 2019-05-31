@@ -43,7 +43,7 @@ def _load(fn):
 def _write(fn, cargo, _vars):
 	sk = True
 	indent = '\t'
-	with libdir.openfile('deploy', 'build_extract.py') as src:
+	with libdir.openfile('deploy', 'self_extract.py') as src:
 		with open(fn, 'x') as fh:
 			for line in src.readlines():
 				if line.startswith('_cargo'):
