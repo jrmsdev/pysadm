@@ -16,6 +16,7 @@ def post_deploy(env):
 	with open(fpath, 'rb') as fh:
 		tar = tarfile.open(fn, 'r:', fileobj = fh)
 		for tinfo in tar:
+			tinfo.mtime = mtime
 			env.log("  %s" % tinfo.name)
 			tar.extract(tinfo, path = target, set_attrs = True)
 		tar.close()
