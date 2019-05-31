@@ -9,27 +9,32 @@ from os import path, chmod
 from _sadm import version, libdir
 from _sadm.errors import BuildError
 
+__all__ = ['gen']
+
 def gen(env):
 	_vars = {
 		'env': env.name(),
 		'rootdir': path.join(path.sep, 'opt', 'sadm'),
 	}
+	try:
+		env.log("%s.deploy" % env.name())
+		base = path.normpath(env.build.rootdir())
+		fn = base + '.deploy'
+		_write(fn, _getcargo(env, base), _vars)
+	except FileExistsError:
+		raise BuildError("%s file exists" % fn)
+
+def _getcargo(env, base):
 	cargo = {}
-	n = path.normpath(env.build.rootdir())
-	fn = n + '.deploy'
-	env.log("%s.deploy" % env.name())
 	for ext in ('.zip', '.env', '.env.asc'):
-		name = n + ext
+		name = base + ext
 		if path.isfile(name):
 			env.log("load %s" % path.basename(name))
 			cargo[env.name() + ext] = _load(name)
 		else:
 			if ext != '.env.asc':
 				raise BuildError("%s file not found" % name)
-	try:
-		_write(fn, cargo, _vars)
-	except FileExistsError:
-		raise BuildError("%s file exists" % fn)
+	return cargo
 
 def _load(fn):
 	with open(fn, 'rb') as fh:
