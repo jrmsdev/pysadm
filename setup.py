@@ -22,9 +22,8 @@ def main():
 	elif cmd == 'clean':
 		_clean()
 
-	deps = []
-	# ~ with open('requirements.txt', 'r') as fh:
-		# ~ deps = fh.read().splitlines()
+	with open('requirements.txt', 'r') as fh:
+		deps = fh.read().splitlines()
 
 	setup(
 		author = 'Jeremías Casteglione',
