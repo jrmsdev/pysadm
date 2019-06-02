@@ -7,4 +7,5 @@ __all__ = ['deploy']
 
 def deploy(env):
 	env.log('os user')
-	check(env)
+	for diff in check(env):
+		env.error("%s" % ' '.join([str(i) for i in diff]))
