@@ -19,14 +19,15 @@ RUN rm -f /var/cache/apt/archives/*.deb
 RUN rm -f /var/cache/apt/*cache.bin
 
 RUN mkdir -p /opt/sadm
-
 RUN mkdir -p /etc/opt/sadm
-COPY docker/etc/deploy.cfg /etc/opt/sadm
-RUN chmod 444 /etc/opt/sadm/*.cfg
 
-RUN mkdir -p /opt/sadm/bin
-COPY docker/bin /opt/sadm/bin
-RUN chmod 555 /opt/sadm/bin/*
+#COPY docker/etc /etc/opt/sadm
+#RUN find /etc/opt/sadm -type d -exec chmod 555 {} \;
+#RUN find /etc/opt/sadm -type f -exec chmod 444 {} \;
+
+#RUN mkdir -p /opt/sadm/bin
+#COPY docker/bin /opt/sadm/bin
+#RUN chmod 555 /opt/sadm/bin/*
 
 RUN useradd -c sadm -m -s /bin/bash -U sadm
 
