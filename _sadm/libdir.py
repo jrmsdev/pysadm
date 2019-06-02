@@ -15,4 +15,4 @@ def path(*parts):
 	return join(_srcdir, n)
 
 def openfile(*parts):
-	return open(path(*parts), 'r')
+	return open(path(*parts), 'r', encoding = 'utf-8')
