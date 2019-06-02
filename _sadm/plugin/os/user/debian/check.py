@@ -16,5 +16,8 @@ def check(env):
 			diff.append((user, uid))
 			env.warn("%d %s not found" % (uid, user))
 		else:
-			env.log("%d %s OK" % (uid, user))
+			if info.pw_name != user:
+				env.warn("%d %s user name %s does not match" % (uid, user, info.pw_name))
+			else:
+				env.log("%d %s OK" % (uid, user))
 	return diff
