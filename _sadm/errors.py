@@ -17,6 +17,9 @@ class Error(Exception):
 	def __eq__(self, err):
 		return self.typ == err.typ
 
+	def __hash__(self):
+		return hash(self.typ)
+
 class ProfileError(Error):
 	typ = 'ProfileError'
 
