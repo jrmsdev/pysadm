@@ -32,3 +32,9 @@ recursive-include tdata/testing *.test
 
 recursive-include venv *.sh
 recursive-include venv *.txt
+
+include Dockerfile
+
+recursive-include docker *.sh
+recursive-include docker/bin *
+recursive-include docker/etc *.cfg
