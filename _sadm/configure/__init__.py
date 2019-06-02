@@ -27,15 +27,22 @@ def register(name, filename):
 	n = name.replace('_sadm.plugin.', '')
 	if _reg.get(n, None) is not None:
 		raise RuntimeError("plugin %s already registered" % name)
-	filename = path.realpath(path.normpath(filename))
-	cfgfn = path.join(path.dirname(filename), 'config.ini')
-	metafn = path.join(path.dirname(filename), 'meta.json')
+	srcdir = path.realpath(path.dirname(filename))
+	cfgfn = path.join(srcdir, 'config.ini')
+	metafn = path.join(srcdir, 'meta.json')
 	_reg[n] = {
 		'name': name,
+		'distname': _distname(srcdir, name),
 		'config': cfgfn,
 		'meta': metafn,
 	}
 	_order.append(n)
+
+def _distname(srcdir, name):
+	dist = 'debian' # FIXME
+	if path.isfile(path.join(srcdir, dist, '__init__.py')):
+		return '.'.join([name, dist])
+	return ''
 
 def pluginsList(revert = False):
 	if revert:
@@ -49,10 +56,13 @@ def getPlugin(name, mod):
 	p = _reg.get(name, None)
 	if p is None:
 		raise PluginError("%s plugin not found" % name)
+	pkg = p['name']
+	if p['distname'] != '':
+		pkg = p['distname']
 	try:
-		mod = import_module("%s.%s" % (p['name'], mod))
+		mod = import_module("%s.%s" % (pkg, mod))
 	except importError as err:
 		log.debug("%s" % err)
 		raise PluginError("%s plugin %s not implemented!" % (name, mod))
-	return Plugin(name = name, fullname = p['name'],
-		config = p['config'], meta = p['meta'], mod = mod)
+	return Plugin(name = name, fullname = pkg, config = p['config'],
+		meta = p['meta'], mod = mod)
