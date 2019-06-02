@@ -4,14 +4,17 @@
 # See LICENSE file.
 
 import sys
+
+from os import path
 from subprocess import call
 
+from _sadm import log, env
+
 if __name__ == '__main__':
+	log.init('debug')
 	pname = sys.argv[1]
-	try:
-		cfgfn = sys.argv[2]
-	except IndexError:
-		cfgfn = 'configure.ini'
-	print('CFGFN:', cfgfn)
-	sys.exit(call("./docker/run.sh /opt/sadm/bin/sadm-plugin %s %s" % (pname, cfgfn),
-		shell = True))
+	rc, _ = env.run('devel', pname, 'build', cfgfile = './docker/sadm.cfg')
+	if rc != 0:
+		sys.exit(rc)
+	# ~ sys.exit(call("./docker/run.sh /opt/sadm/bin/sadm %s %s" % (pname, cfgfn),
+		# ~ shell = True))

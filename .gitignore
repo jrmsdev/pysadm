@@ -7,3 +7,4 @@ __pycache__
 sadm.egg-info/
 _sadm/_version.py
 .*.swp
+docker/build/
