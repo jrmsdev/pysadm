@@ -4,23 +4,20 @@
 from os import path
 from subprocess import call, TimeoutExpired
 
-from _sadm import log, libdir
+from _sadm import log, libdir, dist
 from _sadm.errors import PluginScriptNotFound, PluginScriptNoExec, PluginScriptTimeout
 
 __all__ = ['Scripts']
 
 _TTL = 180
 
-def _osdist():
-	return 'debian' # FIXME
-
 class Scripts(object):
 	_dir = None
 
-	def __init__(self, pname, dist = None):
-		if dist is None:
-			dist = _osdist()
-		self._dir = libdir.path('scripts', dist, pname.replace('.', path.sep))
+	def __init__(self, pname, distname = None):
+		if distname is None:
+			distname = dist.getname()
+		self._dir = libdir.path('scripts', distname, pname.replace('.', path.sep))
 		log.debug("%s" % self._dir)
 
 	def run(self, script, *args):

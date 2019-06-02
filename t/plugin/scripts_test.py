@@ -8,7 +8,7 @@ from _sadm.errors import PluginError, PluginScriptNotFound, PluginScriptNoExec
 from _sadm.errors import PluginScriptTimeout
 from _sadm.plugin.utils import scripts
 
-s = scripts.Scripts('testing', dist = 'testing')
+s = scripts.Scripts('testing', distname = 'testing')
 
 def test_scripts_dir():
 	assert s._dir == libdir.path('scripts', 'testing', 'testing')
