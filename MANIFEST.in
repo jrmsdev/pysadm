@@ -9,6 +9,8 @@ include .coveragerc
 include LICENSE
 include pytest.ini
 
+include etc/sudoers.d/sadm
+
 include tdata/.gitignore
 include tdata/sadm.cfg
 include tdata/profile-dir-isfile.test
