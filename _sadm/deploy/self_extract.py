@@ -26,7 +26,7 @@ def main():
 	rc = call("%s import %s" % (envcmd, envfn), shell = True)
 	if rc != 0:
 		return rc
-	rc = call("%s --env %s deploy" % (envcmd, env), shell = True)
+	rc = call("sudo %s --env %s deploy" % (envcmd, env), shell = True)
 	if rc != 0:
 		return rc
 	return 0
