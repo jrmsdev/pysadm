@@ -11,7 +11,7 @@ RUN apt-get clean
 RUN apt-get update
 
 RUN apt-get dist-upgrade -y --purge
-RUN apt-get install -y --no-install-recommends python3-pip
+RUN apt-get install -y --no-install-recommends python3-pip vim-tiny
 
 COPY venv/requirements-test.txt /tmp
 COPY venv/requirements.txt /tmp
@@ -26,8 +26,7 @@ RUN rm -rf /var/lib/apt/lists/*
 RUN rm -f /var/cache/apt/archives/*.deb
 RUN rm -f /var/cache/apt/*cache.bin
 
-###RUN echo '/opt/src/sadm' >/usr/local/lib/python3.5/dist-packages/sadm.egg-link
-###RUN echo 'export PYTHONPATH=/opt/src/sadm' >>/home/sadm/.bashrc
+RUN echo '%sadm ALL=NOPASSWD: ALL' >/etc/sudoers.d/sadm
 
 USER sadm:sadm
 WORKDIR /opt/src/sadm
