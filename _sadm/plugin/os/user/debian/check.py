@@ -8,7 +8,6 @@ __all__ = ['check']
 
 def check(env):
 	diff = deque()
-	env.log('check')
 	for user in env.settings['os.user']:
 		uid = env.settings.getint('os.user', user)
 		try:
@@ -16,4 +15,6 @@ def check(env):
 		except KeyError:
 			diff.append((user, uid))
 			env.warn("%d %s not found" % (uid, user))
+		else:
+			env.log("%d %s OK" % (uid, user))
 	return diff
