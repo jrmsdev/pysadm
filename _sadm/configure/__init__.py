@@ -52,17 +52,17 @@ def pluginsList(revert = False):
 		for p in _order:
 			yield p
 
-def getPlugin(name, mod):
+def getPlugin(name, action):
 	p = _reg.get(name, None)
 	if p is None:
 		raise PluginError("%s plugin not found" % name)
 	pkg = p['name']
-	if p['distname'] != '':
+	if action == 'deploy' and p['distname'] != '':
 		pkg = p['distname']
 	try:
-		mod = import_module("%s.%s" % (pkg, mod))
+		mod = import_module("%s.%s" % (pkg, action))
 	except importError as err:
 		log.debug("%s" % err)
-		raise PluginError("%s plugin %s not implemented!" % (name, mod))
+		raise PluginError("%s plugin %s not implemented!" % (name, action))
 	return Plugin(name = name, fullname = pkg, config = p['config'],
 		meta = p['meta'], mod = mod)
