@@ -37,7 +37,7 @@ def _setColored():
 
 # debug file info
 
-_idx = __file__.find('pysadm') + 7
+_idx = __file__.find('_sadm')
 
 def _getCaller(depth):
 	inf = sys._getframe(depth)
