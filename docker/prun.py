@@ -5,13 +5,15 @@
 
 import sys
 
-from os import path
+from os import path,getenv
 from subprocess import call
+
+loglevel = getenv('SADM_LOG', 'warn')
 
 from _sadm import log, env
 
 if __name__ == '__main__':
-	log.init('debug')
+	log.init(loglevel)
 	pname = sys.argv[1]
 	rc, _ = env.run('devel', pname, 'build', cfgfile = './docker/sadm.cfg')
 	if rc != 0:
