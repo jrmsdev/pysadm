@@ -15,12 +15,8 @@ def loadenv(filename): # pragma: no cover
 	if rc != 0:
 		return rc
 	if path.isfile(envfn + '.asc'):
-		rc = call("gpg --no-tty --no --verify %s.asc %s 2>/dev/null" % (envfn, envfn),
-			shell = True)
-		if rc == 0:
-			log.msg("%s: OK" % envfn)
-		else:
-			log.error('env signature verify failed!')
+		rc = _verify(envfn)
+		if rc != 0:
 			return rc
 	rc = call("sha256sum -c %s" % envfn, shell = True)
 	if rc != 0:
@@ -36,6 +32,15 @@ def _check(envfn):
 		log.error("%s env not found" % env)
 		return 1
 	return 0
+
+def _verify(envfn):
+	rc = call("gpg --no-tty --no --verify %s.asc %s 2>/dev/null" % (envfn, envfn),
+		shell = True)
+	if rc == 0:
+		log.msg("%s: OK" % envfn)
+	else:
+		log.error('env signature verify failed!')
+	return rc
 
 def _importenv(envfn):
 	srcfn = envfn[:-4]
