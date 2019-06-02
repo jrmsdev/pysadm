@@ -8,7 +8,8 @@ _expectPlugins = {
 	1: 'sadm',
 	2: 'sadmenv',
 	3: 'os',
-	4: 'os.user',
+	4: 'os.pkg',
+	5: 'os.user',
 }
 
 def test_plugins_list():
@@ -22,3 +23,10 @@ def test_plugins_list_revert():
 	for p in configure.pluginsList(revert = True):
 		assert p == _expectPlugins[idx]
 		idx -= 1
+
+def test_plugins_new():
+	known = {}
+	for n in _expectPlugins.values():
+		known[n] = True
+	for p in configure.pluginsList():
+		assert known.get(p, False), "new unknown plugin: %s" % p

@@ -5,5 +5,7 @@
 
 import _sadm.plugin.sadm
 import _sadm.plugin.sadmenv
+
 import _sadm.plugin.os
+import _sadm.plugin.os.pkg
 import _sadm.plugin.os.user
