@@ -18,6 +18,8 @@ RUN rm -rf /var/lib/apt/lists/*
 RUN rm -f /var/cache/apt/archives/*.deb
 RUN rm -f /var/cache/apt/*cache.bin
 
+RUN rm -rf /root/.cache
+
 RUN mkdir -p /opt/sadm
 RUN mkdir -p /etc/opt/sadm
 
