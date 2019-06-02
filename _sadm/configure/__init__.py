@@ -12,7 +12,7 @@ except NameError: # pragma: no cover
 	# python 3.4 and 3.5
 	importError = Exception
 
-from _sadm import log
+from _sadm import log, dist
 from _sadm.errors import PluginError
 
 __all__ = ['register', 'getPlugin', 'pluginList']
@@ -39,9 +39,9 @@ def register(name, filename):
 	_order.append(n)
 
 def _distname(srcdir, name):
-	dist = 'debian' # FIXME
-	if path.isfile(path.join(srcdir, dist, '__init__.py')):
-		return '.'.join([name, dist])
+	dn = dist.getname()
+	if path.isfile(path.join(srcdir, dn, '__init__.py')):
+		return '.'.join([name, dn])
 	return ''
 
 def pluginsList(revert = False):
