@@ -18,5 +18,4 @@ if __name__ == '__main__':
 	rc, _ = env.run('devel', pname, 'build', cfgfile = './docker/sadm.cfg')
 	if rc != 0:
 		sys.exit(rc)
-	# ~ sys.exit(call("./docker/run.sh /opt/sadm/bin/sadm %s %s" % (pname, cfgfn),
-		# ~ shell = True))
+	sys.exit(call("./docker/run.sh ./docker/build/devel/%s.deploy" % pname, shell = True))
