@@ -14,6 +14,6 @@ def check(env):
 		try:
 			info = getpwuid(uid)
 		except KeyError:
-			diff.append(('os.user.jrms', uid))
+			diff.append((user, uid))
 			env.warn("%d %s not found" % (uid, user))
 	return diff
