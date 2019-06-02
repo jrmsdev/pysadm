@@ -6,11 +6,14 @@ from os import path, makedirs, unlink, chmod
 from shutil import rmtree, unpack_archive
 from subprocess import call
 
-from _sadm import log
+from _sadm import log, cfg, deploy
 
 def loadenv(filename): # pragma: no cover
 	envfn = path.realpath(filename)
 	log.msg("%s: load" % envfn)
+	rc = _check(envfn)
+	if rc != 0:
+		return rc
 	if path.isfile(envfn + '.asc'):
 		rc = call("gpg --no-tty --no --verify %s.asc %s 2>/dev/null" % (envfn, envfn),
 			shell = True)
@@ -24,6 +27,14 @@ def loadenv(filename): # pragma: no cover
 		log.error('env checksum failed!')
 		return rc
 	_importenv(envfn)
+	return 0
+
+def _check(envfn):
+	env = path.basename(envfn)[:-4]
+	config = cfg.new(deploy.cfgfile)
+	if not env in config.listEnvs('deploy'):
+		log.error("%s env not found" % env)
+		return 1
 	return 0
 
 def _importenv(envfn):
