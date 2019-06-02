@@ -18,10 +18,21 @@ RUN rm -rf /var/lib/apt/lists/*
 RUN rm -f /var/cache/apt/archives/*.deb
 RUN rm -f /var/cache/apt/*cache.bin
 
-RUN mkdir -p /opt/sadm/bin
-COPY docker/bin /opt/sadm/bin
+RUN mkdir -p /opt/sadm
 
 RUN mkdir -p /etc/opt/sadm
 COPY docker/etc/deploy.cfg /etc/opt/sadm
+RUN chmod 444 /etc/opt/sadm/*.cfg
+
+RUN mkdir -p /opt/sadm/bin
+COPY docker/bin /opt/sadm/bin
+RUN chmod 555 /opt/sadm/bin/*
+
+RUN useradd -c sadm -m -s /bin/bash -U sadm
+
+RUN chgrp sadm /opt/sadm
+RUN chmod g+w /opt/sadm
+
+USER sadm:sadm
 
 WORKDIR /opt/src/sadm
