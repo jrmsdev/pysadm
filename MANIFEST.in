@@ -36,11 +36,16 @@ recursive-include venv *.sh
 recursive-include venv *.txt
 
 include Dockerfile
+
 include docker/build.sh
 include docker/run.sh
 include docker/prun.py
 include docker/sadm.cfg
 include docker/bin/sadm
 include docker/etc/deploy.cfg
+
+include Dockerfile.test
+include docker/test.build.sh
+include docker/test.run.sh
 
 recursive-include docker/env *.ini
