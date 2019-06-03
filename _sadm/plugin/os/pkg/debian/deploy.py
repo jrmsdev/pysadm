@@ -11,15 +11,18 @@ def deploy(env):
 	if env.settings.getboolean('os.pkg', 'update'):
 		env.log('update')
 		_update()
-	for diff in check(env):
-		act, opt, pkg = diff
+	for diff in check(env, action = 'remove'):
+		opt, pkg = diff
 		env.log("%s %s" % (opt, pkg))
-		if act == 'remove':
-			_remove(pkg)
-		elif act == 'install':
-			_install(pkg)
-		elif act == 'prune':
-			_prune(pkg)
+		_remove(pkg)
+	for diff in check(env, action = 'install'):
+		opt, pkg = diff
+		env.log("%s %s" % (opt, pkg))
+		_install(pkg)
+	for diff in check(env, action = 'prune'):
+		opt, pkg = diff
+		env.log("%s %s" % (opt, pkg))
+		_prune(pkg)
 
 def _update():
 	call_check(['apt-get', 'update'])

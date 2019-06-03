@@ -8,10 +8,12 @@ from _sadm.plugin.utils.cmd import call
 
 __all__ = ['check']
 
-def check(env):
+def check(env, action = None):
 	diff = deque()
 	dn = dist.getname()
 	l = ('install', 'remove', 'prune')
+	if action is not None and action in l:
+		l = (action,)
 	for opt in env.settings['os.pkg']:
 		if opt in l:
 			_check(env, opt, diff)
@@ -43,20 +45,20 @@ def _check(env, opt, diff):
 		if act == 'remove':
 			rc = call("/usr/bin/dpkg-query -s %s >/dev/null 2>/dev/null" % pkg)
 			if rc == 0:
-				diff.append((act, opt, pkg))
+				diff.append((opt, pkg))
 			elif rc > 1:
 				raise env.error("os.pkg debian dpkg-query -s failed (rc:%d)" % rc)
 
 		elif act == 'install':
 			rc = call("/usr/bin/dpkg-query -s %s >/dev/null 2>/dev/null" % pkg)
 			if rc == 1:
-				diff.append((act, opt, pkg))
+				diff.append((opt, pkg))
 			elif rc > 1:
 				raise env.error("os.pkg debian dpkg-query -s failed (rc:%d)" % rc)
 
 		elif act == 'prune':
 			rc = call("/usr/bin/dpkg-query -s %s >/dev/null 2>/dev/null" % pkg)
 			if rc == 0:
-				diff.append((act, opt, pkg))
+				diff.append((opt, pkg))
 			elif rc > 1:
 				raise env.error("os.pkg debian dpkg-query -s failed (rc:%d)" % rc)
