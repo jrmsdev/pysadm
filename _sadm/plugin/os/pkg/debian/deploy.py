@@ -12,8 +12,8 @@ def deploy(env):
 		env.log('update')
 		_update()
 	for diff in check(env):
-		act, pkg = diff
-		env.log("%s %s" % (act, pkg))
+		act, opt, pkg = diff
+		env.log("%s %s" % (opt, pkg))
 		if act == 'install':
 			_install(pkg)
 

@@ -30,6 +30,8 @@ def _check(env, opt, diff):
 		l = env.settings.getlist('os.pkg', opt)
 	for pkg in l:
 		if act == 'install':
-			rc = call("/usr/bin/dpkg -s %s >/dev/null 2>/dev/null" % pkg)
-			if rc != 0:
-				diff.append(('install', pkg))
+			rc = call("/usr/bin/dpkg-query -s %s >/dev/null 2>/dev/null" % pkg)
+			if rc == 1:
+				diff.append(('install', opt, pkg))
+			elif rc > 1:
+				raise env.error("os.pkg debian dpkg-query -s failed (rc:%d)" % rc)
