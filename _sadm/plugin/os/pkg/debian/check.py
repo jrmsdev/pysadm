@@ -26,12 +26,16 @@ def _check(env, opt, diff):
 	l = []
 	act = None
 
-	if opt == 'install' or opt.endswith('.install'):
+	if opt == 'remove' or opt.endswith('.remove'):
+		act = 'remove'
+		l = env.settings.getlist('os.pkg', opt)
+
+	elif opt == 'install' or opt.endswith('.install'):
 		act = 'install'
 		l = env.settings.getlist('os.pkg', opt)
 
-	elif opt == 'remove' or opt.endswith('.remove'):
-		act = 'remove'
+	elif opt == 'prune' or opt.endswith('.prune'):
+		act = 'prune'
 		l = env.settings.getlist('os.pkg', opt)
 
 	for pkg in l:
@@ -46,6 +50,13 @@ def _check(env, opt, diff):
 		elif act == 'install':
 			rc = call("/usr/bin/dpkg-query -s %s >/dev/null 2>/dev/null" % pkg)
 			if rc == 1:
+				diff.append((act, opt, pkg))
+			elif rc > 1:
+				raise env.error("os.pkg debian dpkg-query -s failed (rc:%d)" % rc)
+
+		elif act == 'prune':
+			rc = call("/usr/bin/dpkg-query -s %s >/dev/null 2>/dev/null" % pkg)
+			if rc == 0:
 				diff.append((act, opt, pkg))
 			elif rc > 1:
 				raise env.error("os.pkg debian dpkg-query -s failed (rc:%d)" % rc)

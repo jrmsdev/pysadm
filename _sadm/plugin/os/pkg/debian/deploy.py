@@ -18,6 +18,8 @@ def deploy(env):
 			_remove(pkg)
 		elif act == 'install':
 			_install(pkg)
+		elif act == 'prune':
+			_prune(pkg)
 
 def _update():
 	call_check(['apt-get', 'update'])
@@ -27,3 +29,6 @@ def _remove(pkg):
 
 def _install(pkg):
 	call_check(['apt-get', 'install', '-yy', '--purge', '--no-install-recommends', pkg])
+
+def _prune(pkg):
+	call_check(['apt-get', 'autoremove', '-yy', '--purge', pkg])
