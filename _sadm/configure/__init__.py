@@ -5,13 +5,6 @@ from collections import deque, namedtuple
 from importlib import import_module
 from os import path
 
-try:
-	# python >= 3.6
-	importError = ModuleNotFoundError
-except NameError: # pragma: no cover
-	# python 3.4 and 3.5
-	importError = Exception
-
 from _sadm import log, dist
 from _sadm.errors import PluginError
 
@@ -61,7 +54,9 @@ def getPlugin(name, action):
 		pkg = p['distname']
 	try:
 		mod = import_module("%s.%s" % (pkg, action))
-	except importError as err:
+	except ImportError as err:
+		raise PluginError("%s plugin %s not implemented!" % (name, action))
+	except Exception as err:
 		raise PluginError("%s %s: %s" % (name, action, err))
 	return Plugin(name = name, fullname = pkg, config = p['config'],
 		meta = p['meta'], mod = mod)
