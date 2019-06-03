@@ -7,6 +7,8 @@ USER root:root
 
 ENV DEBIAN_FRONTEND noninteractive
 
+RUN echo 'Acquire::http::proxy "http://localhost:3142";' >/etc/apt/apt.conf.d/02proxy
+
 RUN apt-get clean
 RUN apt-get update
 

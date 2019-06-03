@@ -1,5 +1,5 @@
 #!/bin/sh -eu
-docker run -it --rm \
+docker run -it --rm --net=host --name=sadmtest \
 	-e PYTHONPATH=/opt/src/sadm \
 	-v ${PWD}/docker/bin:/opt/sadm/bin \
 	-v ${PWD}/docker/etc:/etc/opt/sadm \
