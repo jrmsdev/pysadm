@@ -14,11 +14,16 @@ def deploy(env):
 	for diff in check(env):
 		act, opt, pkg = diff
 		env.log("%s %s" % (opt, pkg))
-		if act == 'install':
+		if act == 'remove':
+			_remove(pkg)
+		elif act == 'install':
 			_install(pkg)
 
 def _update():
 	call_check(['apt-get', 'update'])
+
+def _remove(pkg):
+	call_check(['apt-get', 'autoremove', '-yy', '--purge', pkg])
 
 def _install(pkg):
 	call_check(['apt-get', 'install', '-yy', '--purge', '--no-install-recommends', pkg])
