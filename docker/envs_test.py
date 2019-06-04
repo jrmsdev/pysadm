@@ -6,10 +6,10 @@ from subprocess import call
 
 from _sadm import cfg
 
-prun = path.join('.', 'docker', 'prun.py')
+trun = path.join('.', 'docker', 'trun.py')
 
 def test_devel_envs():
 	config = cfg.new(cfgfile = path.join('docker', 'sadm.cfg'))
 	for env in config.listEnvs('devel'):
-		rc = call([prun, env])
-		assert rc == 0, "%s %s failed: %d" % (prun, env, rc)
+		rc = call([trun, env])
+		assert rc == 0, "%s %s failed: %d" % (trun, env, rc)
