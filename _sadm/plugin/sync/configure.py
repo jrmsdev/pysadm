@@ -4,4 +4,5 @@
 __all__ = ['configure']
 
 def configure(env, cfg):
-	pass
+	for opt in cfg['sync']:
+		env.session.set(opt, cfg.getlist('sync', opt))

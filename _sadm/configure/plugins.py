@@ -25,7 +25,7 @@ def _getcfg(env, fn):
 	cfg = Settings()
 	with env.assets.open(fn) as fh:
 		cfg.read_file(fh)
-	n = cfg.get('default', 'name', fallback = None)
+	n = cfg.get('sadm', 'env', fallback = None)
 	if n is None:
 		n = cfg.get('sadmenv', 'name', fallback = None)
 		if n is not None: # deploy mode
