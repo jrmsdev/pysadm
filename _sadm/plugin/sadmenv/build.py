@@ -54,5 +54,4 @@ def _getmeta(env):
 		'sadm.env.checksum': env.session.get('sadm.env.checksum'),
 		'sadm.configure.checksum': env.session.get('sadm.configure.checksum'),
 		'sadm.version': env.session.get('sadm.version'),
-		'os.platform': env.session.get('os.platform'),
 	}

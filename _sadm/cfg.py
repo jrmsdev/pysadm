@@ -14,8 +14,6 @@ _cfgFile = path.realpath(path.join('.', 'sadm.cfg'))
 _enablePlugins = [
 	'sadm',
 	'sadmenv',
-	'os',
-	'os.user',
 ]
 
 _DEFAULT = {

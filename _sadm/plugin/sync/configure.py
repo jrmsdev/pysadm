@@ -4,4 +4,4 @@
 __all__ = ['configure']
 
 def configure(env, cfg):
-	env.settings.merge(cfg, 'sync', lambda opt: opt)
+	pass

@@ -35,7 +35,7 @@ def test_profile_error():
 		c.listEnvs('noprofile')
 
 def test_default_plugins():
-	assert tuple(sorted(cfg._enablePlugins)) == ('os', 'os.user', 'sadm', 'sadmenv')
+	assert tuple(sorted(cfg._enablePlugins)) == ('sadm', 'sadmenv')
 
 def test_name():
 	c = cfg.new()
