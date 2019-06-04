@@ -45,6 +45,7 @@ include docker/bin/sadm
 include docker/etc/deploy.cfg
 
 include Dockerfile.test
+include docker/envs_test.py
 include docker/test.build.sh
 include docker/test.run.sh
 
