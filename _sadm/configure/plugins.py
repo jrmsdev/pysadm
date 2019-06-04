@@ -25,11 +25,12 @@ def _getcfg(env, fn):
 	cfg = Settings()
 	with env.assets.open(fn) as fh:
 		cfg.read_file(fh)
-	n = cfg.get('sadm', 'env', fallback = None)
+	n = cfg.get('sadmenv', 'name', fallback = None)
 	if n is None:
-		n = cfg.get('sadmenv', 'name', fallback = None)
-		if n is not None: # deploy mode
-			runconfigure = False
+		n = cfg.get('sadm', 'env', fallback = None)
+	else:
+		# deploy mode
+		runconfigure = False
 	if n != env.name():
 		raise env.error("invalid config name '%s'" % n)
 	if runconfigure:
