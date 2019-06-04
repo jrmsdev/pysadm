@@ -10,6 +10,7 @@ _expectPlugins = {
 	3: 'os',
 	4: 'os.pkg',
 	5: 'os.user',
+	6: 'sync',
 }
 
 def test_plugins_list():

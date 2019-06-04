@@ -9,3 +9,5 @@ import _sadm.plugin.sadmenv
 import _sadm.plugin.os
 import _sadm.plugin.os.pkg
 import _sadm.plugin.os.user
+
+import _sadm.plugin.sync
