@@ -20,7 +20,7 @@ class Scripts(object):
 		self._dir = libdir.path('scripts', distname, pname.replace('.', path.sep))
 		log.debug("%s" % self._dir)
 
-	def run(self, script, *args):
+	def run(self, script, args = tuple()):
 		spath = path.join(self._dir, script)
 		log.debug("run %s %s" % (spath, args))
 		s = _Script(spath, args)
@@ -29,9 +29,9 @@ class Scripts(object):
 class _Script(object):
 	_cmd = None
 
-	def __init__(self, script, *args):
+	def __init__(self, script, args):
 		self._cmd = [script]
-		self._cmd.extend(*args)
+		self._cmd.extend(args)
 
 	def dispatch(self):
 		try:

@@ -42,3 +42,7 @@ def test_timeout():
 		s.run('testing-timeout.sh', '1')
 	assert err.errisinstance(PluginError)
 	scripts._TTL = prevttl
+
+def test_run_args():
+	rc = s.run('testing-args.sh', ('1', '2', '3'))
+	assert rc == 0
