@@ -18,8 +18,7 @@ if __name__ == '__main__':
 	log.init(loglevel)
 	pname = sys.argv[1]
 	deployfn = "./docker/build/devel/%s.deploy" % pname
-	if not path.isfile(deployfn):
-		rc, _ = env.run('devel', pname, 'build', cfgfile = './docker/sadm.cfg')
-		if rc != 0:
-			sys.exit(rc)
+	rc, _ = env.run('devel', pname, 'build', cfgfile = './docker/sadm.cfg')
+	if rc != 0:
+		sys.exit(rc)
 	sys.exit(call("./docker/run.sh %s" % deployfn, shell = True))
