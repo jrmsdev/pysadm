@@ -39,14 +39,15 @@ include Dockerfile
 
 include docker/build.sh
 include docker/run.sh
-include docker/prun.py
+include docker/deploy.py
 include docker/sadm.cfg
 include docker/bin/sadm
 include docker/etc/deploy.cfg
 
 include Dockerfile.test
+include docker/build.test.sh
 include docker/envs_test.py
-include docker/test.build.sh
 include docker/test.run.sh
+include docker/trun.py
 
 recursive-include docker/env *.ini
