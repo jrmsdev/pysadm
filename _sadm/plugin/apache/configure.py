@@ -4,4 +4,7 @@
 __all__ = ['configure']
 
 def configure(env, cfg):
-	pass
+	env.settings.merge(cfg, 'apache', (
+		'sites.disable',
+		'sites.enable',
+	))
