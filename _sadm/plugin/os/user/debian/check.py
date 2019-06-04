@@ -2,7 +2,7 @@
 # See LICENSE file.
 
 from collections import deque
-from pwd import getpwuid
+from pwd import getpwnam
 
 __all__ = ['check']
 
@@ -11,13 +11,13 @@ def check(env):
 	for user in env.settings['os.user']:
 		uid = env.settings.getint('os.user', user)
 		try:
-			info = getpwuid(uid)
+			info = getpwnam(user)
 		except KeyError:
 			diff.append((user, uid))
 			env.warn("%d %s not found" % (uid, user))
 		else:
-			if info.pw_name != user:
-				env.warn("%d %s user name %s does not match" % (uid, user, info.pw_name))
+			if info.pw_uid != uid:
+				env.warn("%d %s uid %d does not match" % (uid, user, info.pw_uid))
 			else:
 				env.log("%d %s OK" % (uid, user))
 	return diff
