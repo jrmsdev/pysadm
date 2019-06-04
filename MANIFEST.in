@@ -51,3 +51,6 @@ include docker/test.run.sh
 include docker/trun.py
 
 recursive-include docker/env *.ini
+
+include docker/env/sync/asset.file
+recursive-include docker/env/sync/asset.dir file.*
