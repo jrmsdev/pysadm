@@ -11,3 +11,5 @@ import _sadm.plugin.os.pkg
 import _sadm.plugin.os.user
 
 import _sadm.plugin.sync
+
+import _sadm.plugin.apache

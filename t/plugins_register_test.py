@@ -3,15 +3,16 @@
 
 from _sadm import configure
 
-_expectPlugins = {
-	0: 'testing',
-	1: 'sadm',
-	2: 'sadmenv',
-	3: 'os',
-	4: 'os.pkg',
-	5: 'os.user',
-	6: 'sync',
-}
+_expectPlugins = dict(enumerate((
+	'testing',
+	'sadm',
+	'sadmenv',
+	'os',
+	'os.pkg',
+	'os.user',
+	'sync',
+	'apache',
+)))
 
 def test_plugins_list():
 	idx = 0
