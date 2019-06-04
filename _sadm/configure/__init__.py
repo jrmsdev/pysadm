@@ -55,7 +55,8 @@ def getPlugin(name, action):
 	try:
 		mod = import_module("%s.%s" % (pkg, action))
 	except ImportError as err:
-		raise PluginError("%s plugin %s not implemented!" % (name, action))
+		log.debug("%s: %s" % (type(err), err))
+		raise PluginError("%s.%s: %s" % (name, action, err))
 	except Exception as err:
 		raise PluginError("%s %s: %s" % (name, action, err))
 	return Plugin(name = name, fullname = pkg, config = p['config'],

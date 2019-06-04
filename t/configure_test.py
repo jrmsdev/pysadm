@@ -18,5 +18,5 @@ def test_get_plugin():
 def test_get_plugin_error():
 	with raises(PluginError, match = 'noplugin plugin not found'):
 		configure.getPlugin('noplugin', 'configure')
-	with raises(PluginError, match = 'testing plugin nomod not implemented'):
+	with raises(PluginError, match = 'testing.nomod: No module named'):
 		configure.getPlugin('testing', 'nomod')
