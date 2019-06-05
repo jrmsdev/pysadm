@@ -6,7 +6,7 @@ from _sadm.plugin.utils.scripts import Scripts
 
 __all__ = ['deploy']
 
-scripts = Scripts('apache')
+scripts = Scripts('service.apache')
 
 def deploy(env):
 	_reload = False
