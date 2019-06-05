@@ -44,6 +44,9 @@ class BuildError(Error):
 class PluginError(Error):
 	typ = 'PluginError'
 
+class PluginCommandError(Error):
+	typ = 'PluginCommandError'
+
 class PluginScriptNotFound(PluginError):
 	typ = 'PluginScriptNotFound'
 

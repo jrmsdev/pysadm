@@ -3,6 +3,8 @@
 
 import subprocess as proc
 
+from _sadm.errors import PluginCommandError
+
 __all__ = ['call']
 
 def call(cmd):
@@ -15,4 +17,7 @@ def call_check(cmd):
 	shell = False
 	if isinstance(cmd, str):
 		shell = True
-	return proc.check_call(cmd, shell = shell)
+	try:
+		return proc.check_call(cmd, shell = shell)
+	except proc.CalledProcessError as err:
+		raise PluginCommandError(str(err))
