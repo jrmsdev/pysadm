@@ -23,13 +23,13 @@ def main():
 	extract(dstdir)
 	envfn = path.join(dstdir, "%s.env" % env)
 	envcmd = path.join(rootdir, 'bin', 'sadm')
-	rc = call("%s import %s" % (envcmd, envfn), shell = True)
+	rc = call("%s --log info import %s" % (envcmd, envfn), shell = True)
 	if rc != 0:
 		return rc
 	sudo = ''
 	if getuid() != 0:
 		sudo = '/usr/bin/sudo -n '
-	rc = call("%s%s --env %s deploy" % (sudo, envcmd, env), shell = True)
+	rc = call("%s%s --log info --env %s deploy" % (sudo, envcmd, env), shell = True)
 	if rc != 0:
 		return rc
 	return 0
