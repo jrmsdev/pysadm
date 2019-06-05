@@ -8,9 +8,9 @@ __all__ = ['configure']
 def configure(env, cfg):
 	data = deque()
 	for opt in cfg['sync']:
-		_configure(data, cfg, opt)
+		data.append(getInfo(cfg, opt))
 	env.session.set('sync', tuple(data))
 
-def _configure(data, cfg, opt):
+def getInfo(cfg, opt):
 	i = cfg.getlist('sync', opt)
-	data.append({'src': i[0], 'dst': i[1]})
+	return {'cfg.opt': opt, 'src': i[0], 'dst': i[1]}
