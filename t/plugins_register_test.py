@@ -11,7 +11,7 @@ _expectPlugins = dict(enumerate((
 	'os.pkg',
 	'os.user',
 	'sync',
-	'apache',
+	'service.apache',
 )))
 
 def test_plugins_list():

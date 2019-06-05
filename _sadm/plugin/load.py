@@ -12,4 +12,4 @@ import _sadm.plugin.os.user
 
 import _sadm.plugin.sync
 
-import _sadm.plugin.apache
+import _sadm.plugin.service.apache
