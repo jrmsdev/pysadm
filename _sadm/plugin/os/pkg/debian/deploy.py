@@ -1,11 +1,16 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
-from .check import check
+from os import environ
 
 from _sadm.plugin.utils.cmd import call, call_check
 
+from .check import check
+
 __all__ = ['deploy']
+
+_cmdenv = environ.copy()
+_cmdenv['DEBIAN_FRONTEND'] = 'noninteractive'
 
 def deploy(env):
 	if env.settings.getboolean('os.pkg', 'update'):
@@ -24,14 +29,17 @@ def deploy(env):
 		env.log("%s %s" % (opt, pkg))
 		_prune(pkg)
 
+def _call(cmd):
+	call_check(cmd, env = _cmdenv)
+
 def _update():
-	call_check(['apt-get', 'update'])
+	_call(['apt-get', 'update'])
 
 def _remove(pkg):
-	call_check(['apt-get', 'autoremove', '-yy', '--purge', pkg])
+	_call(['apt-get', 'autoremove', '-yy', '--purge', pkg])
 
 def _install(pkg):
-	call_check(['apt-get', 'install', '-yy', '--purge', '--no-install-recommends', pkg])
+	_call(['apt-get', 'install', '-yy', '--purge', '--no-install-recommends', pkg])
 
 def _prune(pkg):
-	call_check(['apt-get', 'autoremove', '-yy', '--purge', pkg])
+	_call(['apt-get', 'autoremove', '-yy', '--purge', pkg])
