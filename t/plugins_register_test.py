@@ -11,6 +11,8 @@ _expectPlugins = dict(enumerate((
 	'os.pkg',
 	'os.user',
 	'sync',
+	'service.munin',
+	'service.munin_node',
 	'service.apache',
 )))
 
