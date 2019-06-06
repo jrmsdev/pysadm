@@ -8,3 +8,4 @@ __all__ = ['deploy']
 def deploy(env):
 	call_check('service munin-node stop')
 	call_check('service munin-node start')
+	call_check('service munin-node status')
