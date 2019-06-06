@@ -56,3 +56,4 @@ include docker/env/sync/asset.file
 recursive-include docker/env/sync/asset.dir file.*
 
 recursive-include docker/env/apache *.conf
+recursive-include docker/env/munin *.conf
