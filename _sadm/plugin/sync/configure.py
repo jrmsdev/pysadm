@@ -13,4 +13,19 @@ def configure(env, cfg):
 
 def getInfo(cfg, opt):
 	i = cfg.getlist('sync', opt)
-	return {'cfg.opt': opt, 'src': i[0], 'dst': i[1]}
+	inf = {'cfg.opt': opt, 'src': i[0], 'dst': i[1], 'args': dict()}
+	if len(i) > 2:
+		for arg in i[2:]:
+			if arg.startswith('user:'):
+				val = arg.split(':')[1]
+				inf['args']['user'] = val
+			elif arg.startswith('group:'):
+				val = arg.split(':')[1]
+				inf['args']['gruop'] = val
+			elif arg.startswith('filemode:'):
+				val = arg.split(':')[1]
+				inf['args']['filemode'] = val
+			elif arg.startswith('dirmode:'):
+				val = arg.split(':')[1]
+				inf['args']['dirmode'] = val
+	return inf

@@ -76,7 +76,7 @@ def fpath(env, *parts, meta = False):
 def create(env, filename, meta = False, **kwargs):
 	fh = _open(env, filename, mode = 'x', meta = meta)
 	if not meta:
-		env.build.addfile(filename)
+		env.build.addfile(filename, **kwargs)
 	return fh
 
 def sync(env, src, dst, **kwargs):
