@@ -73,7 +73,7 @@ def fpath(env, *parts, meta = False):
 		fn = fn.replace(path.sep, '', 1)
 	return path.realpath(path.join(bdir, fn))
 
-def create(env, filename, meta = False):
+def create(env, filename, meta = False, **kwargs):
 	fh = _open(env, filename, mode = 'x', meta = meta)
 	if not meta:
 		env.build.addfile(filename)
