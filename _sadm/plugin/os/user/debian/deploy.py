@@ -13,10 +13,16 @@ def deploy(env):
 		user = diff[0]
 		uid = diff[1]
 		cmd = ['useradd', '-m', '-U', '-u', str(uid)]
+
 		fullname = env.settings.get("os.user.%s" % user, 'fullname', fallback = '').strip()
 		if fullname != '':
 			cmd.append('-c')
 			cmd.append(fullname)
+
+		shell = env.settings.get("os.user.%s" % user, 'shell', fallback = '/bin/bash').strip()
+		cmd.append('-s')
+		cmd.append(shell)
+
 		cmd.append(user)
 		call(cmd)
 		env.log("%d %s user created" % (uid, user))
