@@ -46,6 +46,7 @@ include docker/etc/deploy.cfg
 
 include Dockerfile.test
 include docker/build.test.sh
+include docker/envbuild.py
 include docker/envs_test.py
 include docker/test.run.sh
 include docker/trun.py
