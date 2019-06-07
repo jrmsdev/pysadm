@@ -17,10 +17,16 @@ import _sadm.plugin.os.user
 
 import _sadm.plugin.sync
 
-# services that depend on apache should go before it
-# so apache is restarted after all deps were setup
+# network plugins
+
+import _sadm.plugin.network.iptables
+
+# service plugins
 
 import _sadm.plugin.service.munin
 import _sadm.plugin.service.munin_node
+
+# services that depend on apache should go before it
+# so apache is restarted after all deps were setup
 
 import _sadm.plugin.service.apache
