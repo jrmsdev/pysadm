@@ -23,6 +23,8 @@ import _sadm.plugin.network.iptables
 
 # service plugins
 
+import _sadm.plugin.service.postfix
+
 import _sadm.plugin.service.munin
 import _sadm.plugin.service.munin_node
 
