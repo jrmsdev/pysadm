@@ -60,3 +60,6 @@ recursive-include docker/env/apache *.conf
 recursive-include docker/env/munin *.conf
 
 include docker/env/iptables/iptables/rules.*
+
+include docker/env/postfix/etc/aliases
+include docker/env/postfix/etc/mailname
