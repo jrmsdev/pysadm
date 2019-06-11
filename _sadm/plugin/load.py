@@ -20,6 +20,7 @@ import _sadm.plugin.sync
 # network plugins
 
 import _sadm.plugin.network.iptables
+import _sadm.plugin.network.fail2ban
 
 # service plugins
 

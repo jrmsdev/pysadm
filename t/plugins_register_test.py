@@ -12,6 +12,7 @@ _expectPlugins = dict(enumerate((
 	'os.user',
 	'sync',
 	'network.iptables',
+	'network.fail2ban',
 	'service.postfix',
 	'service.munin',
 	'service.munin_node',
