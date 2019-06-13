@@ -4,4 +4,8 @@
 __all__ = ['configure']
 
 def configure(env, cfg):
-	pass
+	env.settings.merge(cfg, 'os', (
+		'hostname',
+		'hostname.file',
+		'users.home.dir',
+	))
