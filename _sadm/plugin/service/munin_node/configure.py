@@ -4,5 +4,4 @@
 __all__ = ['configure']
 
 def configure(env, cfg):
-	#env.settings.merge(cfg, 'service.munin_node', ())
 	pass
