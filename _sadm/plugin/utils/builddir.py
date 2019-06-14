@@ -2,9 +2,9 @@
 # See LICENSE file.
 
 from os import path, unlink, makedirs
-from shutil import rmtree, copytree
+from shutil import rmtree, copytree, copyfile
 
-__all__ = ['lock', 'unlock', 'fpath', 'create']
+__all__ = ['lock', 'unlock', 'fpath', 'create', 'sync', 'copy']
 
 def lock(env):
 	bdir = env.build.rootdir()
@@ -80,7 +80,16 @@ def create(env, filename, meta = False, **kwargs):
 	return fh
 
 def sync(env, src, dst, **kwargs):
-	srcdir = path.join(env.assets.rootdir(), src)
+	srcdir = env.assets.rootdir(src)
 	dstdir = fpath(env, dst)
 	copytree(srcdir, dstdir, symlinks = False)
 	env.build.adddir(dst, **kwargs)
+
+def copy(env, src, dst, **kwargs):
+	srcfn = env.assets.rootdir(src)
+	dstfn = fpath(env, dst)
+	dstdir = path.dirname(dstfn)
+	if not path.isdir(dstdir):
+		makedirs(dstdir)
+	copyfile(srcfn, dstfn, follow_symlinks = False)
+	env.build.addfile(dst, **kwargs)

@@ -65,4 +65,4 @@ include docker/env/postfix/etc/aliases
 include docker/env/postfix/etc/mailname
 
 include docker/env/fail2ban/iptables/rules.*
-recursive-include docker/env/fail2ban/fail2ban *.conf
+recursive-include docker/env/fail2ban *.conf
