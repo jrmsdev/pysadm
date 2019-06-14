@@ -1,13 +1,14 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
-from bottle import route, view, request
+from bottle import request
 from _sadm import log
 from _sadm.web import tpl, syslog
+from _sadm.web.app import wapp, view
 
-@route('/syslog')
-@route('/syslog/last')
-@route('/syslog/last/<limit:int>')
+@wapp.route('/syslog')
+@wapp.route('/syslog/last')
+@wapp.route('/syslog/last/<limit:int>')
 @view('syslog.html')
 @tpl.data('syslog')
 def index(limit = '100'):

@@ -1,11 +1,11 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
-from bottle import error, view
 from _sadm import log
 from _sadm.web import tpl
+from _sadm.web.app import wapp, view
 
-@error(500)
+@wapp.error(500)
 @view('error.html')
 @tpl.data('err500')
 def err500(err):
@@ -15,7 +15,7 @@ def err500(err):
 		'err': err,
 	}
 
-@error(404)
+@wapp.error(404)
 @view('error.html')
 @tpl.data('err400')
 def err400(err):

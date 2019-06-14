@@ -3,12 +3,12 @@
 
 from os import getenv
 from io import StringIO
-from bottle import route, view
 
 from _sadm import log, cfg
 from _sadm.web import tpl
+from _sadm.web.app import wapp, view
 
-@route('/')
+@wapp.route('/')
 @view('index.html')
 @tpl.data('home')
 def index():

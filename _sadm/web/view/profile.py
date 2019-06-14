@@ -1,12 +1,11 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
-from bottle import route, view
-
 from _sadm import log, cfg
 from _sadm.web import tpl
+from _sadm.web.app import wapp, view
 
-@route('/profile')
+@wapp.route('/profile')
 @view('profile.html')
 @tpl.data('profile')
 def index():

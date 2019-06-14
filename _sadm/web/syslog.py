@@ -7,6 +7,8 @@ from os import path, makedirs
 
 from _sadm import log
 
+__all__ = ['init', 'close', 'last']
+
 # SQL stuff
 
 _DB_CREATE = """
