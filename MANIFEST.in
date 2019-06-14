@@ -19,10 +19,11 @@ recursive-include _sadm/plugin *.ini
 
 recursive-include _sadm/scripts *.sh
 
-recursive-include _sadm/web *.css
-recursive-include _sadm/web *.html
-recursive-include _sadm/web *.ico
-recursive-include _sadm/web *.png
+recursive-include _sadm/web/html *.html
+recursive-include _sadm/web/static *.css
+recursive-include _sadm/web/static *.ico
+recursive-include _sadm/web/static *.png
+include _sadm/web/app.conf
 
 recursive-include t *.py
 
