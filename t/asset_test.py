@@ -43,6 +43,7 @@ def test_asset_name():
 	assert m.name('x', '..', 'p0', '..', 'p1') == 'p1'
 	assert m.name('x', '..', '..', '..', 'p0', '..', '..', 'p1') == 'p1'
 	assert m.name('..', '..', '..', 'p0', '..', '..', 'p1') == 'p1'
+	assert m.name('.filename') == '.filename'
 
 def test_read_only():
 	rdir = path.join('tdata', 'tmp')
