@@ -71,3 +71,17 @@ def test_merge(testing_settings):
 	assert s.options('testing') == []
 	s.merge(cfg, 'testing', ('opt0', 'opt1', 'opt2'))
 	assert sorted(s.options('testing')) == ['opt0', 'opt1', 'opt2']
+
+def test_merge_filter(testing_settings):
+	def optfilter(opt):
+		if opt == 'opt1' or opt == 'opt3':
+			return opt
+		return None
+	cfgfn = path.join('tdata', 'testing', 'config-merge.ini')
+	s = testing_settings()
+	cfg = Settings()
+	with open(cfgfn, 'r') as fh:
+		cfg.read_file(fh)
+	assert s.options('testing') == []
+	s.merge(cfg, 'testing', optfilter)
+	assert sorted(s.options('testing')) == ['opt1', 'opt3']
