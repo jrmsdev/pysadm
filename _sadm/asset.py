@@ -17,9 +17,14 @@ class Manager(object):
 		return self._dir
 
 	def name(self, *parts):
+		strip = True
 		relname = path.normpath(path.join(*parts))
-		while relname.startswith(path.sep):
-			relname = relname.replace(path.sep, '', 1)
+		while strip:
+			strip = False
+			for prefix in (path.sep, '..', '.' + path.sep):
+				if relname.startswith(prefix):
+					relname = relname[len(prefix):]
+					strip = True
 		return relname
 
 	def _path(self, name, *parts):
