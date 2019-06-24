@@ -1,7 +1,7 @@
 FROM debian:stable-slim
 
 LABEL maintainer="Jeremías Casteglione <jrmsdev@gmail.com>"
-LABEL version="0.1"
+LABEL version="19.6.24"
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -9,7 +9,7 @@ RUN apt-get clean
 RUN apt-get update
 
 RUN apt-get dist-upgrade -y --purge
-RUN apt-get install -y --no-install-recommends python3 python3-bottle sudo
+RUN apt-get install -y --no-install-recommends sudo python3 python3-pip
 
 RUN apt-get clean
 RUN apt-get autoremove -y --purge
@@ -17,8 +17,6 @@ RUN apt-get autoremove -y --purge
 RUN rm -rf /var/lib/apt/lists/*
 RUN rm -f /var/cache/apt/archives/*.deb
 RUN rm -f /var/cache/apt/*cache.bin
-
-RUN rm -rf /root/.cache
 
 RUN mkdir -p /opt/sadm
 RUN mkdir -p /etc/opt/sadm
