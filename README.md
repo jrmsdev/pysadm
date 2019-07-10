@@ -1,8 +1,8 @@
-[![Build Status](https://travis-ci.org/jrmsdev/pysadm.svg?branch=master)](https://travis-ci.org/jrmsdev/pysadm)
-
 # sadm
 
 sysadmin/devops/deployment tools
+
+[![Build Status](https://travis-ci.org/jrmsdev/pysadm.svg?branch=master)](https://travis-ci.org/jrmsdev/pysadm)
 
 ## install
 

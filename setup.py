@@ -29,7 +29,7 @@ def main():
 		author = 'Jeremías Casteglione',
 		author_email = 'jrmsdev@gmail.com',
 		python_requires = '~=3.4',
-		setup_requires = ['setuptools_scm>=3.3'],
+		setup_requires = ['wheel>=0.33.4', 'setuptools_scm>=3.3'],
 		install_requires = deps,
 		use_scm_version = {'write_to': '_sadm/_version.py'},
 		py_modules = ['sadm'],
