@@ -7,9 +7,9 @@ from _sadm import libdir
 
 __all__ = ['wapp', 'view']
 
-_cfgfn = libdir.path('web', 'app.conf')
-_htmldir = libdir.path('web', 'html')
-_staticdir = libdir.path('web', 'static')
+_cfgfn = libdir.fpath('web', 'app.conf')
+_htmldir = libdir.fpath('web', 'html')
+_staticdir = libdir.fpath('web', 'static')
 
 bottle.TEMPLATE_PATH.insert(0, _htmldir)
 view = bottle.view

@@ -18,7 +18,7 @@ class Scripts(object):
 	def __init__(self, pname, distname = None):
 		if distname is None:
 			distname = dist.getname()
-		self._dir = libdir.path('scripts', distname, pname.replace('.', path.sep))
+		self._dir = libdir.fpath('scripts', distname, pname.replace('.', path.sep))
 		log.debug("%s" % self._dir)
 		self._env = environ.copy()
 
