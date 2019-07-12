@@ -54,6 +54,7 @@ def _write(fn, cargo, _vars):
 						indent = indent, sort_keys = sk))
 				else:
 					fh.write(line)
-			fh.write("\n# sadm version %s\n" % version.get())
+			fh.write("\n# sadm version %s (build %s)\n" % (version.get(),
+				version.build()))
 			fh.flush()
 	chmod(fn, 0o0500)
