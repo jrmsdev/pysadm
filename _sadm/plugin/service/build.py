@@ -1,5 +1,7 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
-from _sadm.configure import register
-register(__name__, __file__)
+__all__ = ['build']
+
+def build(env):
+	pass

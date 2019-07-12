@@ -24,6 +24,8 @@ import _sadm.plugin.network.fail2ban
 
 # service plugins
 
+import _sadm.plugin.service
+
 import _sadm.plugin.service.postfix
 
 import _sadm.plugin.service.munin
