@@ -1,12 +1,21 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
+try:
+	from _sadm._version import version as _version
+	from _sadm._version import version_build as _version_build
+except ImportError:
+	_version = 'master'
+	_version_build = 'devel'
+
+__all__ = ['get', 'string']
+
 def get():
-	try:
-		from _sadm._version import version as build_version
-		return build_version # pragma: no cover
-	except ImportError:
-		return 'master'
+	return _version
+
+def build():
+	return _version_build
 
 def string():
-	return '%(prog)s version ' + get()
+	s = "%s (build %s)" % (get(), build())
+	return '%(prog)s version ' + s
