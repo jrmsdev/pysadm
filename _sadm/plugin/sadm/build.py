@@ -7,7 +7,7 @@ from subprocess import call
 
 from _sadm.deploy import extractor
 from _sadm.errors import BuildError
-from _sadm.plugin.utils import builddir
+from _sadm.utils import builddir
 
 __all__ = ['pre_build', 'post_build']
 

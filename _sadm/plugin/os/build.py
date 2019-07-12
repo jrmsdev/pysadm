@@ -3,7 +3,7 @@
 
 from os import path, makedirs
 
-from _sadm.plugin.utils import builddir
+from _sadm.utils import builddir
 
 __all__ = ['build']
 

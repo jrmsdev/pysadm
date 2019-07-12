@@ -4,7 +4,7 @@
 from os import unlink, write, close
 from tempfile import mkstemp
 
-from _sadm.plugin.utils.cmd import call, call_check
+from _sadm.utils.cmd import call, call_check
 
 __all__ = ['deploy']
 

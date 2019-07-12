@@ -7,7 +7,7 @@ from hashlib import sha256
 from os import path
 from shutil import make_archive
 
-from _sadm.plugin.utils import builddir
+from _sadm.utils import builddir
 
 __all__ = ['pre_build', 'post_build']
 

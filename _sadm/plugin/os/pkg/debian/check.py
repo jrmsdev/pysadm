@@ -4,7 +4,7 @@
 from collections import deque
 
 from _sadm import dist
-from _sadm.plugin.utils.cmd import call
+from _sadm.utils.cmd import call
 
 __all__ = ['check']
 

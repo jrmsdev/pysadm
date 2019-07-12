@@ -6,7 +6,7 @@ from pytest import raises
 from _sadm import libdir
 from _sadm.errors import PluginError, PluginScriptNotFound, PluginScriptNoExec
 from _sadm.errors import PluginScriptTimeout
-from _sadm.plugin.utils import scripts
+from _sadm.utils import scripts
 
 s = scripts.Scripts('testing', distname = 'testing')
 

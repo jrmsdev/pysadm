@@ -5,7 +5,7 @@ from os import path, unlink
 from pytest import raises
 
 from _sadm.errors import SessionError, EnvError
-from _sadm.plugin.utils import builddir
+from _sadm.utils import builddir
 
 def test_lock_unlock(env_setup):
 	lockfn = path.join('tdata', 'build', 'envsetup', 'testing.lock')

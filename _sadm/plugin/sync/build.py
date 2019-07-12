@@ -2,7 +2,7 @@
 # See LICENSE file.
 
 from _sadm import dist
-from _sadm.plugin.utils import builddir
+from _sadm.utils import builddir
 
 from .configure import getInfo
 

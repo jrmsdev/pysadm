@@ -1,8 +1,8 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
-from _sadm.plugin.utils import cmd
-from _sadm.plugin.utils.scripts import Scripts
+from _sadm.utils import cmd
+from _sadm.utils.scripts import Scripts
 
 __all__ = ['deploy']
 

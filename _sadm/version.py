@@ -3,7 +3,7 @@
 
 try:
 	from _sadm._version import version as _version
-	from _sadm._version import version_build as _version_build
+	from _sadm._version import version_build as _version_build # pragma: no cover
 except ImportError:
 	_version = 'master'
 	_version_build = 'devel'

@@ -3,7 +3,7 @@
 
 from os import environ
 
-from _sadm.plugin.utils.cmd import call, call_check
+from _sadm.utils.cmd import call, call_check
 
 from .check import check
 

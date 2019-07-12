@@ -3,7 +3,7 @@
 
 from os import path, unlink
 
-from _sadm.plugin.utils.cmd import call_check
+from _sadm.utils.cmd import call_check
 
 __all__ = ['deploy']
 
