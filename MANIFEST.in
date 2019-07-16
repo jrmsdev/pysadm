@@ -34,6 +34,7 @@ recursive-include tdata/testing *.ini
 recursive-include tdata/testing *.test
 
 recursive-include tdata/plugin *.ini
+recursive-include tdata/plugin *.conf
 
 recursive-include venv *.sh
 recursive-include venv *.txt
