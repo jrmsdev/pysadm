@@ -55,3 +55,6 @@ class PluginScriptNoExec(PluginError):
 
 class PluginScriptTimeout(PluginError):
 	typ = 'PluginScriptTimeout'
+
+class ServiceError(PluginError):
+	typ = 'ServiceError'

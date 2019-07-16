@@ -4,6 +4,7 @@
 from os import path
 
 from _sadm import libdir
+from _sadm.env.service import Service
 
 __all__ = ['configure']
 
@@ -30,6 +31,7 @@ def _loadFile(env, fn):
 	ok = False
 	env.debug("load %s" % fn)
 	if path.isfile(fn):
+		Service(fn)
 		ok = True
 	else:
 		env.warn("%s file not found" % fn)

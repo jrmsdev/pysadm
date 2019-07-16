@@ -4,7 +4,7 @@
 from os import path
 from pytest import raises
 
-from _sadm.errors import EnvError
+from _sadm.errors import EnvError, ServiceError
 from _sadm.plugin import service
 
 def test_defaults(testing_env):
@@ -30,3 +30,8 @@ def test_enable_error(testing_env):
 	env = testing_env(name = 'service', profile = 'plugin')
 	with raises(EnvError, match = 'service\.conf file not found'):
 		env.configure(cfgfile = path.join('service', 'config-nosvc.ini'))
+
+def test_config_error(testing_env):
+	env = testing_env(name = 'service', profile = 'plugin')
+	with raises(ServiceError, match = 'Source contains parsing errors'):
+		env.configure(cfgfile = path.join('service', 'config-error.ini'))
