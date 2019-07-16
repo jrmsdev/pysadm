@@ -21,18 +21,18 @@ def _loadEnabled(env):
 	for s in env.settings.getlist('service', 'enable'):
 		env.log("enable %s" % s)
 		libfn = libdir.fpath('services', s, fn)
-		libok = _loadFile(env, libfn)
+		libok = _loadConfig(env, libfn)
 		sfn = env.assets.rootdir(cfgdir, s, fn)
-		sok = _loadFile(env, sfn)
+		sok = _loadConfig(env, sfn)
 		if not sok and not libok:
 			raise env.error("%s file not found" % sfn)
 
-def _loadFile(env, fn):
+def _loadConfig(env, fn):
 	ok = False
 	env.debug("load %s" % fn)
 	if path.isfile(fn):
 		Service(fn)
 		ok = True
 	else:
-		env.warn("%s file not found" % fn)
+		env.debug("%s file not found" % fn)
 	return ok
