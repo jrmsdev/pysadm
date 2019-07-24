@@ -1,7 +1,9 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
+from io import StringIO
 from os import path
+
 from _sadm.configure import getPlugin
 
 _srcdir = path.dirname(path.dirname(path.dirname(__file__)))
@@ -23,3 +25,8 @@ class Plugin(object):
 			'plugin', name, 'meta.json'), \
 			"plugin %s meta file error: %s" % (name, self.__p.meta)
 		self.env = env
+
+	def settings(self):
+		buf = StringIO()
+		self.env.settings.write(buf)
+		return buf.read()

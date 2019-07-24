@@ -2,4 +2,5 @@
 # See LICENSE file.
 
 def test_os(testing_plugin):
-	testing_plugin('os')
+	p = testing_plugin('os')
+	assert p.settings() == ''
