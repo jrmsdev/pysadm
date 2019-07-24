@@ -77,19 +77,20 @@ from _sadm.env import cmd as envcmd
 
 @pytest.fixture
 def env_setup():
-	def wrapper(name = 'testing', profile = 'envsetup', configure = False,
-		cfgfile = None, action = None, mkdirs = False):
-		if action is not None:
-			# configure is called from cmd.run
-			configure = False
-		e = env.Env(profile, name)
-		_cleanEnv(e, mkdirs = mkdirs)
-		if configure:
-			e.configure(cfgfile = cfgfile)
-		if action is not None:
-			envcmd.run(e, action)
-		return e
-	return wrapper
+	return _newEnv
+
+def _newEnv(name = 'testing', profile = 'envsetup', configure = False,
+	cfgfile = None, action = None, mkdirs = False):
+	if action is not None:
+		# configure is called from cmd.run
+		configure = False
+	e = env.Env(profile, name)
+	_cleanEnv(e, mkdirs = mkdirs)
+	if configure:
+		e.configure(cfgfile = cfgfile)
+	if action is not None:
+		envcmd.run(e, action)
+	return e
 
 def _cleanEnv(env, mkdirs = False):
 	tmpdir = path.join('tdata', 'tmp')
@@ -129,5 +130,5 @@ from _sadmtest.plugin import Plugin
 @pytest.fixture
 def testing_plugin():
 	def wrapper(name = 'testing', ns = '_sadm'):
-		return Plugin(name, ns = ns)
+		return Plugin(name, _newEnv(name = 'plugin'), ns = ns)
 	return wrapper

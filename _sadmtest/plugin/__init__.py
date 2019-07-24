@@ -8,8 +8,9 @@ _srcdir = path.dirname(path.dirname(path.dirname(__file__)))
 
 class Plugin(object):
 	__p = None
+	env = None
 
-	def __init__(self, name, ns = '_sadm'):
+	def __init__(self, name, env, ns = '_sadm'):
 		self.__p = getPlugin(name, 'configure')
 		assert self.__p.name == name, \
 			"plugin %s name error: %s" % (name, self.__p.name)
@@ -21,3 +22,4 @@ class Plugin(object):
 		assert self.__p.meta == path.join(_srcdir, ns,
 			'plugin', name, 'meta.json'), \
 			"plugin %s meta file error: %s" % (name, self.__p.meta)
+		self.env = env
