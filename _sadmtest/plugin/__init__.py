@@ -6,27 +6,41 @@ from os import path
 
 from _sadm.configure import getPlugin
 
+__all__ = ['Plugin']
+
 _srcdir = path.dirname(path.dirname(path.dirname(__file__)))
 
 class Plugin(object):
-	__p = None
-	env = None
+	_p = None
+	_env = None
 
 	def __init__(self, name, env, ns = '_sadm'):
-		self.__p = getPlugin(name, 'configure')
-		assert self.__p.name == name, \
-			"plugin %s name error: %s" % (name, self.__p.name)
-		assert self.__p.fullname == "%s.plugin.%s" % (ns, name), \
-			"plugin %s fullname error: %s" % (name, self.__p.fullname)
-		assert self.__p.config == path.join(_srcdir, ns,
+		self._p = getPlugin(name, 'configure')
+		assert self._p.name == name, \
+			"plugin %s name error: %s" % (name, self._p.name)
+		assert self._p.fullname == "%s.plugin.%s" % (ns, name), \
+			"plugin %s fullname error: %s" % (name, self._p.fullname)
+		assert self._p.config == path.join(_srcdir, ns,
 			'plugin', name, 'config.ini'), \
-			"plugin %s config error: %s" % (name, self.__p.config)
-		assert self.__p.meta == path.join(_srcdir, ns,
+			"plugin %s config error: %s" % (name, self._p.config)
+		assert self._p.meta == path.join(_srcdir, ns,
 			'plugin', name, 'meta.json'), \
-			"plugin %s meta file error: %s" % (name, self.__p.meta)
-		self.env = env
+			"plugin %s meta file error: %s" % (name, self._p.meta)
+		self._env = env
+		assert self._envSettings() == '', \
+			"env %s settings are not empty: %s" % (env.name(), self._envSettings())
 
-	def settings(self):
+	def _envSettings(self):
 		buf = StringIO()
-		self.env.settings.write(buf)
+		self._env.settings.write(buf)
+		buf.seek(0, 0)
 		return buf.read()
+
+	def configure(self):
+		self._env.configure()
+		fn = path.join(_srcdir, 'tdata', 'plugin', self._p.name, 'default.ini')
+		if path.isfile(fn):
+			pass
+		else:
+			print(fn, "file not found")
+		return True

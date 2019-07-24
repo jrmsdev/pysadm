@@ -130,5 +130,5 @@ from _sadmtest.plugin import Plugin
 @pytest.fixture
 def testing_plugin():
 	def wrapper(name = 'testing', ns = '_sadm'):
-		return Plugin(name, _newEnv(name = 'plugin'), ns = ns)
+		return Plugin(name, _newEnv(profile = 'plugin', name = name), ns = ns)
 	return wrapper

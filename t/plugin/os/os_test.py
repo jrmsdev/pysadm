@@ -3,4 +3,4 @@
 
 def test_os(testing_plugin):
 	p = testing_plugin('os')
-	assert p.settings() == ''
+	assert p.configure()

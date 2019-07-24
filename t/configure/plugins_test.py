@@ -22,7 +22,7 @@ def test_file_not_found(testing_env):
 
 def test_cfg_invalid_name(testing_env):
 	e = testing_env()
-	with raises(EnvError, match = 'invalid config name \'fake\''):
+	with raises(EnvError, match = 'invalid config name'):
 		plugins.configure(e, cfgfile = 'testing/config-invalid-name.ini')
 
 def test_deploy_mode(testing_env):

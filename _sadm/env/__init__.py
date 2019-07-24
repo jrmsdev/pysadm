@@ -54,7 +54,7 @@ class Env(object):
 		if fn is None:
 			fn = self.config.get(self._profName, opt, fallback = None)
 			if fn is None:
-				raise self.error('env not found')
+				raise self.error("'%s/%s' env not found" % (self._profName, self._name))
 		fn = path.normpath(fn.strip())
 		if fn == '.':
 			raise self.error('config file not set')

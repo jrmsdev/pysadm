@@ -17,7 +17,7 @@ def test_defaults(testing_env):
 def test_configure(testing_env):
 	env = testing_env(name = 'service', profile = 'plugin')
 	env.configure()
-	assert sorted(env.settings.sections()) == ['sadm', 'service']
+	assert sorted(env.settings.sections()) == ['sadm', 'sadmenv', 'service']
 	assert env.settings.get('service', 'config.dir') == 'service'
 	assert env.settings.getlist('service', 'enable') == ()
 

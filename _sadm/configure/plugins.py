@@ -34,7 +34,7 @@ def _getcfg(env, fn):
 		runconfigure = False
 	# check env/config names match
 	if n != env.name():
-		raise env.error("invalid config name '%s'" % n)
+		raise env.error("%s invalid config name from %s file" % (n, env.assets.rootdir(fn)))
 	if runconfigure:
 		# env config
 		_load(env, cfg)
