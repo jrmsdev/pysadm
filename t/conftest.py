@@ -17,9 +17,10 @@ _versionfn = path.join('_sadm', '_version.py')
 if path.isfile(_versionfn):
 	unlink(_versionfn)
 
-# register testing plugin
+# register testing plugins
 
 import _sadm.plugin.testing
+import _sadm.plugin.service
 
 # config
 

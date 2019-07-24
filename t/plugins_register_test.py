@@ -5,6 +5,7 @@ from _sadm import configure
 
 _expectPlugins = dict(enumerate((
 	'testing',
+	'service',
 	'sadm',
 	'sadmenv',
 	'os',
@@ -13,9 +14,8 @@ _expectPlugins = dict(enumerate((
 	'sync',
 	'network.iptables',
 	'network.fail2ban',
-	'service',
-	'service.docker',
 	'service.postfix',
+	'service.docker',
 	'service.munin',
 	'service.munin_node',
 	'service.apache',
