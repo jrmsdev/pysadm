@@ -128,6 +128,6 @@ from _sadmtest.plugin import Plugin
 
 @pytest.fixture
 def testing_plugin():
-	def wrapper(name = 'testing'):
-		return Plugin(name)
+	def wrapper(name = 'testing', ns = '_sadm'):
+		return Plugin(name, ns = ns)
 	return wrapper
