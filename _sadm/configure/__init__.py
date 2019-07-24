@@ -28,17 +28,11 @@ def register(name, filename):
 	metafn = path.join(srcdir, 'meta.json')
 	_reg[n] = {
 		'name': name,
-		'distname': _distname(srcdir, name),
+		'srcdir': srcdir,
 		'config': cfgfn,
 		'meta': metafn,
 	}
 	_order.append(n)
-
-def _distname(srcdir, name):
-	dn = dist.getname()
-	if path.isfile(path.join(srcdir, dn, '__init__.py')):
-		return '.'.join([name, dn])
-	return ''
 
 def pluginsList(revert = False):
 	if revert:
@@ -53,8 +47,9 @@ def getPlugin(name, action):
 	if p is None:
 		raise PluginError("%s plugin not found" % name)
 	pkg = p['name']
-	if action == 'deploy' and p['distname'] != '':
-		pkg = p['distname']
+	distpkg = _distname(p['srcdir'], name)
+	if action == 'deploy' and distpkg != '':
+		pkg = distpkg
 	try:
 		mod = import_module("%s.%s" % (pkg, action))
 	except ImportError as err:
@@ -64,3 +59,9 @@ def getPlugin(name, action):
 		raise PluginError("%s %s: %s" % (name, action, err))
 	return Plugin(name = name, fullname = pkg, config = p['config'],
 		meta = p['meta'], mod = mod)
+
+def _distname(srcdir, name):
+	dn = dist.getname()
+	if path.isfile(path.join(srcdir, dn, '__init__.py')):
+		return '.'.join([name, dn])
+	return ''
