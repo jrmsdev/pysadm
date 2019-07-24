@@ -13,7 +13,7 @@ def test_register_error():
 
 def test_get_plugin():
 	p = configure.getPlugin('testing', 'configure')
-	assert p.mod == import_module('_sadm.plugin.testing.configure')
+	assert p.mod == import_module('_sadmtest.plugin.testing.configure')
 
 def test_get_plugin_error():
 	with raises(PluginError, match = 'noplugin plugin not found'):

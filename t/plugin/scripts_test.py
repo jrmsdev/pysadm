@@ -1,6 +1,7 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
+from os import path
 from pytest import raises
 
 from _sadm import libdir
@@ -9,12 +10,13 @@ from _sadm.errors import PluginScriptTimeout
 from _sadm.utils import scripts
 
 s = scripts.Scripts('testing', distname = 'testing')
+sdir = libdir.fpath('scripts', 'testing', 'testing').replace('_sadm', '_sadmtest')
 
 def test_scripts_dir():
-	assert s._dir == libdir.fpath('scripts', 'testing', 'testing')
+	assert s._dir == sdir
 
 def test_noscript():
-	spath = libdir.fpath('scripts', 'testing', 'testing', 'noscript.sh')
+	spath = path.join(sdir, 'noscript.sh')
 	with raises(PluginScriptNotFound, match = "PluginScriptNotFound: %s" % spath) as err:
 		s.run('noscript.sh')
 	assert err.errisinstance(PluginError)
@@ -28,13 +30,13 @@ def test_run_error():
 	assert rc == 1
 
 def test_run_noexec():
-	spath = libdir.fpath('scripts', 'testing', 'testing', 'testing-noexec.sh')
+	spath = path.join(sdir, 'testing-noexec.sh')
 	with raises(PluginScriptNoExec, match = "PluginScriptNoExec: %s" % spath) as err:
 		s.run('testing-noexec.sh')
 	assert err.errisinstance(PluginError)
 
 def test_timeout():
-	spath = libdir.fpath('scripts', 'testing', 'testing', 'testing-timeout.sh')
+	spath = path.join(sdir, 'testing-timeout.sh')
 	prevttl = scripts._TTL
 	scripts._TTL = 0.2
 	with raises(PluginScriptTimeout,

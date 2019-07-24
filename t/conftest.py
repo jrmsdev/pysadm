@@ -19,7 +19,7 @@ if path.isfile(_versionfn):
 
 # register testing plugins
 
-import _sadm.plugin.testing
+import _sadmtest.plugin.testing
 import _sadm.plugin.service
 
 # config

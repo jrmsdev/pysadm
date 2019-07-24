@@ -19,6 +19,8 @@ class Scripts(object):
 		if distname is None:
 			distname = dist.getname()
 		self._dir = libdir.fpath('scripts', distname, pname.replace('.', path.sep))
+		if distname == 'testing':
+			self._dir = self._dir.replace('_sadm', '_sadmtest', 1)
 		log.debug("%s" % self._dir)
 		self._env = environ.copy()
 

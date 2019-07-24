@@ -50,7 +50,7 @@ def main():
 		install_requires = deps,
 		use_scm_version = {'write_to': '_sadm/_version.py'},
 		py_modules = ['sadm'],
-		packages = find_packages(),
+		packages = find_packages(exclude = ('_sadmtest',)),
 		include_package_data = True,
 	)
 

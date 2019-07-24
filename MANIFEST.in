@@ -25,6 +25,10 @@ recursive-include _sadm/web/static *.ico
 recursive-include _sadm/web/static *.png
 include _sadm/web/app.conf
 
+recursive-include _sadmtest *.py
+recursive-include _sadmtest/plugin *.ini
+recursive-include _sadmtest/scripts *.sh
+
 recursive-include t *.py
 
 recursive-include tdata/envsetup *.ini

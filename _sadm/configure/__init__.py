@@ -17,7 +17,10 @@ Plugin = namedtuple('Plugin', ('name', 'fullname', 'config', 'meta', 'mod'))
 
 def register(name, filename):
 	global _next
-	n = name.replace('_sadm.plugin.', '')
+	if name.startswith('_sadmtest.'):
+		n = name.replace('_sadmtest.plugin.', '')
+	else:
+		n = name.replace('_sadm.plugin.', '')
 	if _reg.get(n, None) is not None:
 		raise RuntimeError("plugin %s already registered" % name)
 	srcdir = path.realpath(path.dirname(filename))
