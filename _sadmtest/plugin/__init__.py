@@ -23,11 +23,11 @@ class Plugin(object):
 			"plugin %s name error: %s" % (name, self._p.name)
 		assert self._p.fullname == "%s.plugin.%s" % (ns, name), \
 			"plugin %s fullname error: %s" % (name, self._p.fullname)
-		assert self._p.config == path.join(_srcdir, ns,
-			'plugin', name, 'config.ini'), \
-			"plugin %s config error: %s" % (name, self._p.config)
+		cfgfn = path.join(_srcdir, ns, 'plugin', name.replace('.', path.sep), 'config.ini')
+		assert self._p.config == cfgfn, \
+			"plugin %s config error: got: %s - expect: %s" % (name, self._p.config, cfgfn)
 		assert self._p.meta == path.join(_srcdir, ns,
-			'plugin', name, 'meta.json'), \
+			'plugin', name.replace('.', path.sep), 'meta.json'), \
 			"plugin %s meta file error: %s" % (name, self._p.meta)
 		self._env = env
 		assert self._envSettings() == '', \
@@ -45,7 +45,8 @@ class Plugin(object):
 
 	def configure(self):
 		self._env.configure()
-		fn = path.join(_srcdir, 'tdata', 'plugin', self._p.name, 'default.ini')
+		fn = path.join(_srcdir, 'tdata', 'plugin',
+			self._p.name.replace('.', path.sep), 'default.ini')
 		if path.isfile(fn):
 			with open(fn, 'r') as fh:
 				expect = self._cksum(fh.read())
