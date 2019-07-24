@@ -1,6 +1,9 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
+import sys
+
+from hashlib import sha256 as digest
 from io import StringIO
 from os import path
 
@@ -30,6 +33,10 @@ class Plugin(object):
 		assert self._envSettings() == '', \
 			"env %s settings are not empty: %s" % (env.name(), self._envSettings())
 
+	def _error(self, *args):
+		print('ERROR:', *args, file = sys.stderr)
+		return False
+
 	def _envSettings(self):
 		buf = StringIO()
 		self._env.settings.write(buf)
@@ -40,7 +47,25 @@ class Plugin(object):
 		self._env.configure()
 		fn = path.join(_srcdir, 'tdata', 'plugin', self._p.name, 'default.ini')
 		if path.isfile(fn):
-			pass
+			with open(fn, 'r') as fh:
+				expect = self._cksum(fh.read())
+			got = self._cksum(self._envSettings())
+			if got != expect:
+				self._error('--')
+				self._error(fn)
+				self._error('--')
+				self._error('expect:', expect)
+				with open(fn, 'r') as fh:
+					self._error(fh.read())
+				self._error('--')
+				self._error('   got:', got)
+				self._error(self._envSettings())
+				self._error('--')
+				return False
 		else:
-			print(fn, "file not found")
+			return self._error(fn, 'file not found')
 		return True
+
+	def _cksum(self, data):
+		h = digest(data.encode('utf-8'))
+		return h.hexdigest()
