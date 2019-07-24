@@ -8,6 +8,7 @@ from shutil import rmtree
 __all__ = [
 	'env_setup',
 	'testing_env',
+	'testing_plugin',
 	'testing_profile',
 	'testing_settings',
 ]
@@ -120,3 +121,13 @@ def _cleanEnv(env, mkdirs = False):
 			makedirs(d)
 	else:
 		makedirs(tmpdir)
+
+# testing plugins
+
+from _sadmtest.plugin import Plugin
+
+@pytest.fixture
+def testing_plugin():
+	def wrapper(name = 'testing'):
+		return Plugin(name)
+	return wrapper
