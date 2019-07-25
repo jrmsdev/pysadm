@@ -21,9 +21,10 @@ log.init('quiet')
 
 # remove version autogen module
 
-_versionfn = path.join('_sadm', '_version.py')
-if path.isfile(_versionfn):
-	unlink(_versionfn)
+for n in ('_version.py', '_version_build.py'):
+	fn = path.join('_sadm', n)
+	if path.isfile(fn):
+		unlink(fn)
 
 # register testing plugins
 

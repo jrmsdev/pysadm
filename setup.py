@@ -11,21 +11,21 @@ from os import makedirs, path, unlink
 from setuptools import setup, find_packages
 from sys import argv
 
+def _clean():
+	if path.isfile('./build/.gitignore'):
+		unlink('./build/.gitignore')
+
 def _build():
 	if not path.isfile('./build/.gitignore'):
 		makedirs('./build', exist_ok = True)
 		with open('./build/.gitignore', 'w') as fh:
 			fh.write('*\n')
-
-def _clean():
-	if path.isfile('./build/.gitignore'):
-		unlink('./build/.gitignore')
+	_buildInfo()
 
 def _buildInfo():
-	if path.isfile('./_sadm/_version.py'):
-		now = datetime.utcnow()
-		with open('./_sadm/_version.py', 'a') as fh:
-			fh.write("version_build = '%s'\n" % now.strftime('%y%m%d.%H%M%S'))
+	now = datetime.utcnow()
+	with open('./_sadm/_version_build.py', 'a') as fh:
+		fh.write("version_build = '%s'\n" % now.strftime('%y%m%d.%H%M%S'))
 
 def main():
 
@@ -53,8 +53,6 @@ def main():
 		packages = find_packages(),
 		include_package_data = True,
 	)
-
-	_buildInfo()
 
 if __name__ == '__main__':
 	main()

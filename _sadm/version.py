@@ -7,22 +7,18 @@ except ImportError:
 	_version = 'master'
 
 try:
-	from _sadm._version import version_build as _version_build # pragma: no cover
+	from _sadm._version_build import version_build as _version_build # pragma: no cover
 except ImportError:
-	_version_build = None
+	_version_build = 'devel'
 
-__all__ = ['get', 'string']
+__all__ = ['get', 'build', 'string']
 
 def get():
 	return _version
 
 def build():
-	if _version_build is None:
-		return 'devel'
 	return _version_build
 
 def string():
-	s = get()
-	if _version_build is not None:
-		s = "%s (build %s)" % (s, build())
+	s = "%s (build %s)" % (get(), build())
 	return '%(prog)s version ' + s
