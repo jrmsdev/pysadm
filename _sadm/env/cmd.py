@@ -31,7 +31,7 @@ def run(env, action):
 def _runAction(env, action, cmd = None, force = False, revert = False):
 	if cmd is None:
 		cmd = action
-	for p in env.settings.plugins(action, revert = revert):
+	for p in env.plugins(action, revert = revert):
 		if hasattr(p.mod, cmd):
 			func = getattr(p.mod, cmd)
 			tag = "%s.%s" % (cmd, p.name)

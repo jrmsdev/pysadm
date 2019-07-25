@@ -6,7 +6,7 @@ from os import path, unlink
 from time import time
 
 from _sadm import log, cfg, asset, build
-from _sadm.configure import plugins
+from _sadm.configure import plugins, getPlugin
 from _sadm.env import cmd
 from _sadm.env.profile import Profile
 from _sadm.env.session import Session
@@ -146,6 +146,10 @@ class Env(object):
 		self.log("%s %d/%d actions%s" % (action, (actno - len(noend)), actno, took))
 		if len(noend) > 0:
 			raise self.error("not finished action(s): %s" % ','.join(noend))
+
+	def plugins(self, action, revert = False):
+		for p in self.settings.plugins(action, revert = revert):
+			yield getPlugin(p, action)
 
 	@contextmanager
 	def lock(self):

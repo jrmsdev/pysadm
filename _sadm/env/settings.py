@@ -6,7 +6,7 @@ from configparser import ConfigParser, ExtendedInterpolation
 from configparser import Error as ParserError
 
 from _sadm import log
-from _sadm.configure import pluginsList, getPlugin
+from _sadm.configure import pluginsList
 from _sadm.errors import SettingsError
 
 __all__ = ['Settings']
@@ -27,7 +27,7 @@ class Settings(ConfigParser):
 	def plugins(self, action, revert = False):
 		for p in pluginsList(revert = revert):
 			if self.has_section(p):
-				yield getPlugin(p, action)
+				yield p
 
 	def read_file(self, fh):
 		log.debug("read file %s" % fh.name)

@@ -15,7 +15,7 @@ def test_settings(testing_env):
 
 def test_plugins(testing_settings):
 	s = testing_settings()
-	assert sorted([p[0] for p in s.plugins('configure')]) == ['os', 'sadm', 'testing']
+	assert sorted(s.plugins('configure')) == ['os', 'sadm', 'testing']
 
 def test_parsing_error(testing_settings):
 	with raises(SettingsError, match = 'Source contains parsing errors: '):
