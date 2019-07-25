@@ -72,7 +72,7 @@ def test_report(testing_env):
 	e.report('testing_report')
 	e.report('testing_report', startTime = time() - 10)
 	e.start('action2')
-	with raises(EnvError, match = 'not finished action\(s\): action2'):
+	with raises(EnvError, match = r'not finished action\(s\): action2'):
 		e.report('testing_report')
 
 def test_lock(testing_env):
