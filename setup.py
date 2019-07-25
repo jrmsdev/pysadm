@@ -42,6 +42,12 @@ def main():
 	with open('requirements.txt', 'r') as fh:
 		deps = fh.read().splitlines()
 
+	pkgexcl = (
+		'_sadmtest',
+		'_sadmtest.plugin',
+		'_sadmtest.plugin.testing',
+	)
+
 	setup(
 		author = 'Jeremías Casteglione',
 		author_email = 'jrmsdev@gmail.com',
@@ -50,7 +56,7 @@ def main():
 		install_requires = deps,
 		use_scm_version = {'write_to': '_sadm/_version.py'},
 		py_modules = ['sadm'],
-		packages = find_packages(exclude = ('_sadmtest',)),
+		packages = find_packages(exclude = pkgexcl),
 		include_package_data = True,
 	)
 
