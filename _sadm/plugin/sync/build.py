@@ -1,7 +1,6 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
-from _sadm import dist
 from _sadm.utils import builddir
 
 from .configure import getInfo
@@ -9,7 +8,7 @@ from .configure import getInfo
 __all__ = ['build']
 
 def build(env):
-	dn = dist.getname() + '.'
+	dn = env.dist() + '.'
 	for opt in env.settings['sync']:
 		if not opt.startswith(dn):
 			continue

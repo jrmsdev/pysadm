@@ -4,7 +4,7 @@
 from os import path, environ
 from subprocess import call, TimeoutExpired
 
-from _sadm import log, libdir, dist
+from _sadm import log, libdir
 from _sadm.errors import PluginScriptNotFound, PluginScriptNoExec, PluginScriptTimeout
 
 __all__ = ['Scripts']
@@ -15,9 +15,9 @@ class Scripts(object):
 	_dir = None
 	_env = None
 
-	def __init__(self, pname, sdir = None):
+	def __init__(self, pname, dist, sdir = None):
 		if sdir is None:
-			sdir = libdir.fpath('scripts', dist.getname(), pname.replace('.', path.sep))
+			sdir = libdir.fpath('scripts', dist, pname.replace('.', path.sep))
 		self._dir = sdir
 		log.debug("%s" % self._dir)
 		self._env = environ.copy()

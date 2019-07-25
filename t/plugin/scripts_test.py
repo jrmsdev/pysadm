@@ -10,7 +10,7 @@ from _sadm.utils import scripts
 
 sdir = path.join(path.dirname(path.dirname(path.dirname(__file__))), 'tlib',
 	'_sadmtest', 'scripts', 'testing', 'testing')
-s = scripts.Scripts('testing', sdir = sdir)
+s = scripts.Scripts('testing', 'testing', sdir = sdir)
 
 def test_scripts_dir():
 	assert s._dir == sdir

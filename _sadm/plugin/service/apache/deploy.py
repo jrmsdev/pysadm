@@ -6,9 +6,8 @@ from _sadm.utils.scripts import Scripts
 
 __all__ = ['deploy']
 
-scripts = Scripts('service.apache')
-
 def deploy(env):
+	scripts = Scripts('service.apache', env.dist())
 	_reload = False
 	args = env.settings.getlist('service.apache', 'conf.disable')
 	if len(args) > 0:

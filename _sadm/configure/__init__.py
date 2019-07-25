@@ -5,7 +5,7 @@ from collections import deque, namedtuple
 from importlib import import_module
 from os import path
 
-from _sadm import log, dist
+from _sadm import log
 from _sadm.errors import PluginError
 
 __all__ = ['register', 'getPlugin', 'pluginList']
@@ -46,9 +46,6 @@ def getPlugin(name, action):
 	if p is None:
 		raise PluginError("%s plugin not found" % name)
 	pkg = p['name']
-	distpkg = _distname(p['srcdir'], name)
-	if action == 'deploy' and distpkg != '':
-		pkg = distpkg
 	try:
 		mod = import_module("%s.%s" % (pkg, action))
 	except ImportError as err:
@@ -56,11 +53,10 @@ def getPlugin(name, action):
 		raise PluginError("%s.%s: %s" % (name, action, err))
 	except Exception as err:
 		raise PluginError("%s %s: %s" % (name, action, err))
-	return Plugin(name = name, fullname = pkg, config = p['config'],
-		meta = p['meta'], mod = mod)
-
-def _distname(srcdir, name):
-	dn = dist.getname()
-	if path.isfile(path.join(srcdir, dn, '__init__.py')):
-		return '.'.join([name, dn])
-	return ''
+	return Plugin(
+		name = name,
+		fullname = pkg,
+		config = p['config'],
+		meta = p['meta'],
+		mod = mod,
+	)

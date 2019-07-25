@@ -78,7 +78,7 @@ def _initPlugin(env, p, cfg):
 	for dep in pcfg.plugins():
 		pfilter = _cfgfilter.get(dep, None)
 		if pfilter is not None:
-			env.settings.merge(pcfg, dep, pfilter)
+			pfilter(env, pcfg, dep)
 	if not env.settings.has_section(p.name):
 		env.settings.add_section(p.name)
 	for opt, val in pcfg.items(p.name, raw = True):

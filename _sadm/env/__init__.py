@@ -5,7 +5,7 @@ from contextlib import contextmanager
 from os import path, unlink
 from time import time
 
-from _sadm import log, cfg, asset, build
+from _sadm import log, cfg, asset, build, dist
 from _sadm.configure import plugins, getPlugin
 from _sadm.env import cmd
 from _sadm.env.profile import Profile
@@ -46,6 +46,7 @@ class Env(object):
 		self.settings = Settings()
 		self.session = Session()
 		self._load()
+		self._check()
 
 	def _load(self, fn = None, pdir = None):
 		self.debug('env load')
@@ -76,6 +77,11 @@ class Env(object):
 			self._profName, self._name)
 		self.build = build.Manager(_builddir)
 		self.debug("builddir %s" % self.build.rootdir())
+
+	def _check(self):
+		# check env dist setting
+		if self.dist() not in dist.SUPPORTED.keys():
+			raise self.error("unsupported dist %s" % self.dist())
 
 	def configure(self, cfgfile = None):
 		self.debug('session start')
@@ -150,6 +156,9 @@ class Env(object):
 	def plugins(self, action, revert = False):
 		for p in self.settings.plugins(revert = revert):
 			yield getPlugin(p, action)
+
+	def dist(self):
+		return self.settings.get('sadm', 'env.dist', fallback = 'debian')
 
 	@contextmanager
 	def lock(self):

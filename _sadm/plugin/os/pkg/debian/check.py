@@ -3,14 +3,13 @@
 
 from collections import deque
 
-from _sadm import dist
 from _sadm.utils.cmd import call
 
 __all__ = ['check']
 
 def check(env, action = None):
 	diff = deque()
-	dn = dist.getname()
+	dn = env.dist()
 	l = ('install', 'remove', 'prune')
 	if action is not None and action in l:
 		l = (action,)

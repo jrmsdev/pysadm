@@ -3,15 +3,15 @@
 
 from collections import deque
 
-from _sadm import dist
-
 __all__ = ['cfgfilter', 'configure']
 
-def cfgfilter(opt):
-	dn = dist.getname() + '.'
-	if opt.startswith(dn):
-		return opt
-	return None
+def cfgfilter(env, pcfg, dep):
+	dn = env.dist() + '.'
+	def pfilter(opt):
+		if opt.startswith(dn):
+			return opt
+		return None
+	env.settings.merge(pcfg, dep, pfilter)
 
 def configure(env, cfg):
 	data = deque()
