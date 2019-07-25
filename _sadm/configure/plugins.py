@@ -11,6 +11,8 @@ import _sadm.plugin.load
 
 __all__ = ['configure']
 
+_cfgfilter = {}
+
 def configure(env, cfgfile = None):
 	if cfgfile is None:
 		cfgfile = env.cfgfile()
@@ -64,8 +66,20 @@ def _pluginConfigure(env, cfg, n):
 	_initPlugin(env, p, cfg)
 	env.log(p.name)
 	p.mod.configure(env, cfg)
+	if hasattr(p.mod, 'cfgfilter'):
+		env.debug("plugin %s register cfgfilter" % p.name)
+		_cfgfilter[p.name] = getattr(p.mod, 'cfgfilter')
 
 def _initPlugin(env, p, cfg):
 	env.debug("init %s" % p.config)
+	pcfg = Settings()
 	with open(p.config, 'r') as fh:
-		env.settings.read_file(fh)
+		pcfg.read_file(fh)
+	for dep in pcfg.plugins():
+		pfilter = _cfgfilter.get(dep, None)
+		if pfilter is not None:
+			env.settings.merge(pcfg, dep, pfilter)
+	if not env.settings.has_section(p.name):
+		env.settings.add_section(p.name)
+	for opt, val in pcfg.items(p.name, raw = True):
+		env.settings[p.name][opt] = val

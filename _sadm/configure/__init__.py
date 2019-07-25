@@ -35,12 +35,11 @@ def register(name, filename):
 	_order.append(n)
 
 def pluginsList(revert = False):
+	_l = list
 	if revert:
-		for p in reversed(_order):
-			yield p
-	else:
-		for p in _order:
-			yield p
+		_l = reversed
+	for p in _l(_order):
+		yield p
 
 def getPlugin(name, action):
 	p = _reg.get(name, None)

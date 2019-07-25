@@ -24,7 +24,7 @@ class Settings(ConfigParser):
 			interpolation = ExtendedInterpolation(),
 			default_section = 'default')
 
-	def plugins(self, action, revert = False):
+	def plugins(self, revert = False):
 		for p in pluginsList(revert = revert):
 			if self.has_section(p):
 				yield p
@@ -63,8 +63,11 @@ class Settings(ConfigParser):
 		if hasattr(optfilter, '__call__'):
 			for opt in src[section]:
 				if optfilter(opt) is not None:
-					self[section][opt] = src[section][opt]
+					self._overwrite(section, opt, src)
 		else:
 			for opt in optfilter:
 				if opt in src[section]:
-					self[section][opt] = src[section][opt]
+					self._overwrite(section, opt, src)
+
+	def _overwrite(self, section, opt, src):
+		self[section][opt] = src.get(section, opt, raw = True)

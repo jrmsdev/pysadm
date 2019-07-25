@@ -3,7 +3,10 @@
 
 from collections import deque
 
-__all__ = ['configure']
+__all__ = ['cfgfilter', 'configure']
+
+def cfgfilter(opt):
+	return opt
 
 def configure(env, cfg):
 	data = deque()

@@ -148,7 +148,7 @@ class Env(object):
 			raise self.error("not finished action(s): %s" % ','.join(noend))
 
 	def plugins(self, action, revert = False):
-		for p in self.settings.plugins(action, revert = revert):
+		for p in self.settings.plugins(revert = revert):
 			yield getPlugin(p, action)
 
 	@contextmanager
