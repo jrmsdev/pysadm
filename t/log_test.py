@@ -7,9 +7,6 @@ import io
 from pytest import raises
 from _sadm import log
 
-def test_getCaller():
-	assert log._getCaller(1).startswith('t/log_test.py:')
-
 def test_levels():
 	assert sorted(log.levels()) == ['debug', 'error', 'info', 'msg', 'quiet', 'warn']
 	assert log.defaultLevel() == 'warn'
@@ -114,7 +111,9 @@ def test_lvlInvalid():
 def test_debugDepth():
 	l, s = _sysLogger('debug')
 	l.debug('test', depth = 2)
-	assert s.getvalue().startswith('D: t/log_test.py:')
+	msg = s.getvalue()
+	assert msg.startswith('D: ')
+	assert msg.endswith(': test\n')
 
 def test_debugTag():
 	l, s = _sysLogger('debug')

@@ -7,6 +7,7 @@ include *.txt
 include .coveragerc
 
 include LICENSE
+include pyproject.toml
 include pytest.ini
 
 include etc/sudoers.d/sadm
@@ -25,11 +26,9 @@ recursive-include _sadm/web/static *.ico
 recursive-include _sadm/web/static *.png
 include _sadm/web/app.conf
 
-recursive-include _sadmtest *.py
-recursive-include _sadmtest/plugin *.ini
-recursive-include _sadmtest/scripts *.sh
-
 recursive-include t *.py
+recursive-include t/_sadmtest/plugin *.ini
+recursive-include t/_sadmtest/scripts *.sh
 
 recursive-include tdata/envsetup *.ini
 recursive-include tdata/envsetup *.test

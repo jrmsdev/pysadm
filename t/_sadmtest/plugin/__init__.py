@@ -11,7 +11,7 @@ from _sadm.configure import getPlugin
 
 __all__ = ['Plugin']
 
-_srcdir = path.dirname(path.dirname(path.dirname(__file__)))
+_srcdir = path.dirname(path.dirname(path.dirname(path.dirname(__file__))))
 
 class Plugin(object):
 	_p = None
@@ -23,11 +23,11 @@ class Plugin(object):
 			"plugin %s name error: %s" % (name, self._p.name)
 		assert self._p.fullname == "%s.plugin.%s" % (ns, name), \
 			"plugin %s fullname error: %s" % (name, self._p.fullname)
-		cfgfn = path.join(_srcdir, ns, 'plugin', name.replace('.', path.sep), 'config.ini')
-		assert self._p.config == cfgfn, \
+		cfgfn = path.join(ns, 'plugin', name.replace('.', path.sep), 'config.ini')
+		assert self._p.config.endswith(cfgfn), \
 			"plugin %s config error: got: %s - expect: %s" % (name, self._p.config, cfgfn)
-		assert self._p.meta == path.join(_srcdir, ns,
-			'plugin', name.replace('.', path.sep), 'meta.json'), \
+		assert self._p.meta.endswith(path.join(ns,
+			'plugin', name.replace('.', path.sep), 'meta.json')), \
 			"plugin %s meta file error: %s" % (name, self._p.meta)
 		self._env = env
 		assert self._envSettings() == '', \

@@ -4,13 +4,13 @@
 from os import path
 from pytest import raises
 
-from _sadm import libdir
 from _sadm.errors import PluginError, PluginScriptNotFound, PluginScriptNoExec
 from _sadm.errors import PluginScriptTimeout
 from _sadm.utils import scripts
 
-s = scripts.Scripts('testing', distname = 'testing')
-sdir = libdir.fpath('scripts', 'testing', 'testing').replace('_sadm', '_sadmtest')
+sdir = path.join(path.dirname(path.dirname(__file__)),
+	'_sadmtest', 'scripts', 'testing', 'testing')
+s = scripts.Scripts('testing', sdir = sdir)
 
 def test_scripts_dir():
 	assert s._dir == sdir

@@ -13,7 +13,6 @@ if upload:
 
 system('python3 setup.py clean')
 system('python3 setup.py dist')
-system("pip freeze | grep -E '^bottle' >requirements.txt")
 
 if upload:
 	system('twine upload -s -i jrmsdev@gmail.com dist/sadm-*.*')

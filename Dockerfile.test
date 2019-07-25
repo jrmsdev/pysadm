@@ -15,7 +15,7 @@ RUN apt-get update
 RUN apt-get dist-upgrade -y --purge
 
 COPY venv/requirements-test.txt /tmp
-COPY venv/requirements.txt /tmp
+COPY requirements.txt /tmp
 
 RUN pip3 install -r /tmp/requirements-test.txt
 RUN pip3 install -r /tmp/requirements.txt

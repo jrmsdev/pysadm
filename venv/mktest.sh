@@ -5,9 +5,9 @@ PIP=${ENVDIR}/bin/pip
 
 python3 -m venv --prompt sadmtest --clear ${ENVDIR}
 
-${PIP} install -r venv/requirements-test.txt --upgrade
-${PIP} install -r venv/requirements.txt --upgrade
-${PIP} install -e .
+${PIP} install --upgrade -r venv/requirements-test.txt
+${PIP} install --upgrade -r requirements.txt
+${PIP} install --upgrade .
 
 ${PIP} list
 exit 0
