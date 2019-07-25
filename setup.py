@@ -42,12 +42,6 @@ def main():
 	with open('requirements.txt', 'r') as fh:
 		deps = fh.read().splitlines()
 
-	pkgexcl = (
-		'_sadmtest',
-		'_sadmtest.plugin',
-		'_sadmtest.plugin.testing',
-	)
-
 	setup(
 		author = 'Jeremías Casteglione',
 		author_email = 'jrmsdev@gmail.com',

@@ -8,7 +8,7 @@ from _sadm.errors import PluginError, PluginScriptNotFound, PluginScriptNoExec
 from _sadm.errors import PluginScriptTimeout
 from _sadm.utils import scripts
 
-sdir = path.join(path.dirname(path.dirname(__file__)),
+sdir = path.join(path.dirname(path.dirname(path.dirname(__file__))), 'tlib',
 	'_sadmtest', 'scripts', 'testing', 'testing')
 s = scripts.Scripts('testing', sdir = sdir)
 
