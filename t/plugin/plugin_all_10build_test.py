@@ -21,3 +21,6 @@ def test_all_build(testing_plugin):
 		if path.isfile(fn):
 			p = testing_plugin(n, cfgfn = 'config-build.ini')
 			p.build()
+			# check assets/testing.txt was sync'ed
+			# so, all build tests should do that, yes...
+			p.check.builddir.file('testing.txt', 'testing\n')
