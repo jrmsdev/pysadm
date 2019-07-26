@@ -1,15 +1,15 @@
-FROM jrmsdev/sadm
+FROM jrmsdev/sadm:test
 
 LABEL maintainer="Jeremías Casteglione <jrmsdev@gmail.com>"
 LABEL version="19.7.26"
 
 USER root:root
 
-COPY venv/requirements-test.txt /tmp
-RUN pip3 install -r /tmp/requirements-test.txt
+COPY venv/requirements-dev.txt /tmp
+RUN pip3 install -r /tmp/requirements-dev.txt
 
 RUN rm -rf /root/.cache
-RUN rm -f /tmp/requirements-test.txt
+RUN rm -f /tmp/requirements-dev.txt
 
 USER sadm:sadm
 WORKDIR /opt/src/sadm

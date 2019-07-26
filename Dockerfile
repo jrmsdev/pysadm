@@ -1,7 +1,7 @@
-FROM debian:stable-slim
+FROM debian:buster-slim
 
 LABEL maintainer="Jeremías Casteglione <jrmsdev@gmail.com>"
-LABEL version="19.6.24"
+LABEL version="19.7.26"
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -10,6 +10,12 @@ RUN apt-get update
 
 RUN apt-get dist-upgrade -y --purge
 RUN apt-get install -y --no-install-recommends sudo python3 python3-pip
+
+COPY requirements.txt /tmp
+RUN pip3 install -r /tmp/requirements.txt
+
+RUN rm -rf /root/.cache
+RUN rm -f /tmp/requirements.txt
 
 RUN apt-get clean
 RUN apt-get autoremove -y --purge
@@ -31,3 +37,5 @@ RUN chmod 440 /etc/sudoers.d/sadm
 
 USER sadm:sadm
 WORKDIR /opt/src/sadm
+
+CMD /bin/bash -i -l
