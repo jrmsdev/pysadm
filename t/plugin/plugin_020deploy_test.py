@@ -5,6 +5,7 @@ from os import path, makedirs
 from shutil import rmtree, move
 
 def _build(pnew, pname, ns = '_sadm'):
+	print('-- deploy build plugin:', pname)
 	depdir = path.join('tdata', 'deploy', 'plugin', pname)
 	targetdir = path.join('tdata', 'deploy.target', 'plugin', pname)
 	for dirrm in (depdir, targetdir):
@@ -21,6 +22,7 @@ def _build(pnew, pname, ns = '_sadm'):
 
 def test_deploy_testing(testing_plugin):
 	_build(testing_plugin, 'testing', ns = '_sadmtest')
+	print('-- deploy plugin: testing')
 	p = testing_plugin('testing', ns = '_sadmtest', deploy = True)
 	p.deploy()
 
@@ -29,9 +31,10 @@ def test_all_deploy(testing_plugin):
 	t = testing_plugin(deploy = True, ns = '_sadmtest')
 	for opt in t._env.config.options('deploy'):
 		if opt.startswith('env.'):
-			env = '.'.join(opt.split('.')[1:])
-			if env == 'testing':
+			pname = '.'.join(opt.split('.')[1:])
+			if pname == 'testing':
 				continue
-			_build(testing_plugin, env)
-			p = testing_plugin(env, deploy = True)
+			_build(testing_plugin, pname)
+			print('-- deploy plugin:', pname)
+			p = testing_plugin(pname, deploy = True)
 			p.deploy()

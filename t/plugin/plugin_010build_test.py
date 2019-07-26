@@ -9,6 +9,7 @@ from _sadm.env.settings import Settings
 _srcdir = path.dirname(path.dirname(path.dirname(__file__)))
 
 def test_build_testing(testing_plugin):
+	print('-- build plugin: testing')
 	p = testing_plugin('testing', ns = '_sadmtest', cfgfn = 'config-build.ini')
 	p.build()
 	p.check.builddir.file('sadm.testing') # just to check it works both ways
@@ -18,6 +19,7 @@ def test_all_build(testing_plugin):
 	for n in pluginsList():
 		if n == 'testing':
 			continue
+		print('-- build plugin:', n)
 		_pbuild(testing_plugin, n, 'config-build.ini')
 
 def _pbuild(pnew, pname, cfgfn):
