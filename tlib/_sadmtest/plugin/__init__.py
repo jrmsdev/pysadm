@@ -8,6 +8,7 @@ from io import StringIO
 from os import path
 
 from _sadm.configure import getPlugin
+from _sadmtest.check import CheckEnv
 
 __all__ = ['Plugin']
 
@@ -16,6 +17,7 @@ _srcdir = path.dirname(path.dirname(path.dirname(path.dirname(__file__))))
 class Plugin(object):
 	_p = None
 	_env = None
+	check = None
 
 	def __init__(self, name, env, ns = '_sadm'):
 		self._p = getPlugin(name, 'configure')
@@ -32,6 +34,7 @@ class Plugin(object):
 		self._env = env
 		assert self._envSettings() == '', \
 			"env %s settings are not empty: %s" % (env.name(), self._envSettings())
+		self.check = CheckEnv(self._env)
 
 	def _error(self, *args):
 		print('ERROR:', *args, file = sys.stderr)
@@ -74,4 +77,5 @@ class Plugin(object):
 	def build(self):
 		from _sadm.env import cmd as envcmd
 		envcmd.run(self._env, 'build')
+		self.check.builddir.content()
 		return True
