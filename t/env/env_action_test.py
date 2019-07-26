@@ -4,7 +4,7 @@
 from os import path, unlink
 from pytest import raises
 
-from _sadm.env import cmd
+from _sadm.env import action as envAction
 from _sadm.errors import EnvError, PluginError
 
 def test_run(env_setup):
@@ -16,17 +16,17 @@ def test_run(env_setup):
 			unlink(fn)
 	assert not path.isfile(cfgfn)
 	assert not path.isfile(sessfn)
-	cmd.run(env, 'build')
+	envAction.run(env, 'build')
 	assert path.isfile(cfgfn)
 	assert path.isfile(sessfn)
 
 def test_run_invalid_action(testing_env):
 	env = testing_env()
 	with raises(EnvError, match = 'invalid action configure'):
-		cmd.run(env, 'configure')
+		envAction.run(env, 'configure')
 
 def test_plugin_no_action(testing_env):
 	env = testing_env()
 	env.configure()
 	with raises(PluginError, match = 'testing plugin no action nocmd'):
-		cmd._runAction(env, 'build', cmd = 'nocmd', force = True)
+		envAction._runAction(env, 'build', cmd = 'nocmd', force = True)

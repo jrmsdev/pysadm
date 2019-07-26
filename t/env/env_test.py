@@ -7,7 +7,6 @@ from time import time
 
 from _sadm import asset
 from _sadm.env import Env, _lock, _unlock
-from _sadm.env import cmd as envcmd
 from _sadm.env import run as envrun
 from _sadm.env.profile import Profile
 from _sadm.env.settings import Settings

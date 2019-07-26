@@ -17,6 +17,7 @@ _srcdir = path.dirname(path.dirname(path.dirname(path.dirname(__file__))))
 class Plugin(object):
 	_p = None
 	_env = None
+	_envAction = None
 	check = None
 
 	def __init__(self, name, env, ns = '_sadm'):
@@ -35,6 +36,8 @@ class Plugin(object):
 		assert self._envSettings() == '', \
 			"env %s settings are not empty: %s" % (env.name(), self._envSettings())
 		self.check = CheckEnv(self._env)
+		from _sadm.env import action as envAction
+		self._envAction = envAction
 
 	def _error(self, *args):
 		print('ERROR:', *args, file = sys.stderr)
@@ -75,15 +78,13 @@ class Plugin(object):
 		return True
 
 	def build(self):
-		from _sadm.env import cmd as envcmd
-		envcmd.run(self._env, 'build')
+		self._envAction.run(self._env, 'build')
 		self.check.builddir.content()
 		self.check.builddir.envChecksum()
 
 	def deploy(self):
-		from _sadm.env import cmd as envcmd
 		self._deployFiles()
-		envcmd.run(self._env, 'deploy')
+		self._envAction.run(self._env, 'deploy')
 
 	def _deployFiles(self):
 		pass

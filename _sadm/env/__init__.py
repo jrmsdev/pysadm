@@ -7,7 +7,7 @@ from time import time
 
 from _sadm import log, cfg, asset, build, dist
 from _sadm.configure import plugins, getPlugin
-from _sadm.env import cmd
+from _sadm.env import action as envAction
 from _sadm.env.profile import Profile
 from _sadm.env.session import Session
 from _sadm.env.settings import Settings
@@ -199,7 +199,7 @@ def run(profile, env, action, cfgfile = None):
 	err = None
 	try:
 		e = Env(profile, env, cfg.new(cfgfile = cfgfile))
-		cmd.run(e, action)
+		envAction.run(e, action)
 	except EnvError as err:
 		return (1, err)
 	except Error as err:

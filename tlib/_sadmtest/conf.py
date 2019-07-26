@@ -73,7 +73,7 @@ def testing_settings():
 
 # testing env setup
 
-from _sadm.env import cmd as envcmd
+from _sadm.env import action as envAction
 
 @pytest.fixture
 def env_setup():
@@ -89,7 +89,7 @@ def _newEnv(name = 'testing', profile = 'envsetup', configure = False,
 	if configure:
 		e.configure(cfgfile = cfgfile)
 	if action is not None:
-		envcmd.run(e, action)
+		envAction.run(e, action)
 	return e
 
 def _cleanEnv(env, mkdirs = False):
