@@ -1,7 +1,7 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
-from hashlib import sha256
+from hashlib import sha256, md5
 from os import path
 
 class CheckBuilddir(object):
@@ -40,7 +40,7 @@ class CheckBuilddir(object):
 		assert got == expect, \
 			"%s env checksum got: %s - expect: %s" % (self._env, got, expect)
 
-	def file(self, name, content = None):
+	def file(self, name, content = None, checksum = None):
 		fn = path.join(self._rootdir, name)
 		assert path.isfile(fn), "%s file not found" % fn
 		if content is not None:
@@ -48,3 +48,9 @@ class CheckBuilddir(object):
 				got = fh.read()
 			assert got == content, \
 				"%s content got: %s - expect: %s" % (fn, got, content)
+		if checksum is not None:
+			with open(fn, 'rb') as fh:
+				h = md5(fh.read())
+				got = h.hexdigest()
+			assert got == checksum, \
+				"%s checksum got: %s - expect: %s" % (fn, got, checksum)
