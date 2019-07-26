@@ -40,6 +40,11 @@ class CheckBuilddir(object):
 		assert got == expect, \
 			"%s env checksum got: %s - expect: %s" % (self._env, got, expect)
 
-	def file(self, name):
+	def file(self, name, content = None):
 		fn = path.join(self._rootdir, name)
 		assert path.isfile(fn), "%s file not found" % fn
+		if content is not None:
+			with open(fn, 'r') as fh:
+				got = fh.read()
+			assert got == content, \
+				"%s content got: %s - expect: %s" % (fn, got, content)
