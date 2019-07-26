@@ -1,9 +1,9 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
-from _sadm.configure import pluginsList, getPlugin
+from _sadm.configure import pluginsList
 
-def test_testing_plugin(testing_plugin):
+def test_configure_testing(testing_plugin):
 	p = testing_plugin('testing', ns = '_sadmtest')
 	assert p.configure()
 

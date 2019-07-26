@@ -43,6 +43,10 @@ class Plugin(object):
 		buf.seek(0, 0)
 		return buf.read()
 
+	def _cksum(self, data):
+		h = digest(data.encode('utf-8'))
+		return h.hexdigest()
+
 	def configure(self):
 		self._env.configure()
 		fn = path.join(_srcdir, 'tdata', 'plugin',
@@ -67,6 +71,7 @@ class Plugin(object):
 			return self._error(fn, 'file not found')
 		return True
 
-	def _cksum(self, data):
-		h = digest(data.encode('utf-8'))
-		return h.hexdigest()
+	def build(self):
+		from _sadm.env import cmd as envcmd
+		envcmd.run(self._env, 'build')
+		return True

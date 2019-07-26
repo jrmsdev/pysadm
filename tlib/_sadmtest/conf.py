@@ -29,7 +29,6 @@ for n in ('_version.py', '_version_build.py'):
 # register testing plugins
 
 import _sadmtest.plugin.testing
-import _sadm.plugin.service
 
 # config
 
@@ -112,7 +111,7 @@ def _cleanEnv(env, mkdirs = False):
 		bdir + '.env',
 		bdir + '.env.asc',
 		bdir + '.deploy',
-		path.join(bdir, '.lock'),
+		bdir + '.lock',
 		path.join(pdir, '.lock'),
 	)
 	for f in _files:

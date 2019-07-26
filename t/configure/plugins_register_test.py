@@ -5,7 +5,6 @@ from _sadm import configure
 
 _expectPlugins = dict(enumerate((
 	'testing',
-	'service',
 	'sadm',
 	'sadmenv',
 	'os',
@@ -14,6 +13,7 @@ _expectPlugins = dict(enumerate((
 	'sync',
 	'network.iptables',
 	'network.fail2ban',
+	'service',
 	'service.postfix',
 	'service.docker',
 	'service.munin',
@@ -24,13 +24,13 @@ _expectPlugins = dict(enumerate((
 def test_plugins_list():
 	idx = 0
 	for p in configure.pluginsList():
-		assert p == _expectPlugins[idx]
+		assert (idx, p) == (idx, _expectPlugins[idx])
 		idx += 1
 
 def test_plugins_list_revert():
 	idx = max(_expectPlugins.keys())
 	for p in configure.pluginsList(revert = True):
-		assert p == _expectPlugins[idx]
+		assert (idx, p) == (idx, _expectPlugins[idx])
 		idx -= 1
 
 def test_plugins_new():
