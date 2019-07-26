@@ -80,11 +80,11 @@ def env_setup():
 	return _newEnv
 
 def _newEnv(name = 'testing', profile = 'envsetup', configure = False,
-	cfgfile = None, action = None, mkdirs = False):
+	cfgfile = None, action = None, mkdirs = False, config = False):
 	if action is not None:
 		# configure is called from cmd.run
 		configure = False
-	e = env.Env(profile, name)
+	e = env.Env(profile, name, config = config)
 	_cleanEnv(e, mkdirs = mkdirs)
 	if configure:
 		e.configure(cfgfile = cfgfile)
@@ -129,9 +129,15 @@ from _sadmtest.plugin import Plugin
 
 @pytest.fixture
 def testing_plugin():
-	def wrapper(name = 'testing', ns = '_sadm', cfgfn = None):
-		env = _newEnv(profile = 'plugin', name = name)
+	def wrapper(name = 'testing', ns = '_sadm', cfgfn = None, deploy = False):
+		pdir = name.replace('.', path.sep)
+		profile = 'plugin'
+		config = None
+		if deploy:
+			profile = 'deploy'
+			config = cfg.new(cfgfile = path.join('tdata', 'plugin', pdir, 'deploy.cfg'))
+		env = _newEnv(profile = profile, name = name, config = config)
 		if cfgfn is not None:
-			env._cfgfile = path.join(name.replace('.', path.sep), cfgfn)
+			env._cfgfile = path.join(pdir, cfgfn)
 		return Plugin(name, env, ns = ns)
 	return wrapper

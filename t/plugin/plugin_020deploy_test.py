@@ -2,6 +2,9 @@
 # See LICENSE file.
 
 def test_deploy_testing(testing_plugin):
-	# ~ p = testing_plugin('testing', ns = '_sadmtest', cfgfn = 'config-deploy.ini')
-	# ~ p.deploy()
-	pass
+	p = testing_plugin('testing', ns = '_sadmtest', deploy = True)
+	p.deploy()
+
+def test_deploy_sync(testing_plugin):
+	p = testing_plugin('sync', deploy = True)
+	p.deploy()
