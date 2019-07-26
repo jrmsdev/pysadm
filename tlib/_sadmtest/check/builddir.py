@@ -39,3 +39,7 @@ class CheckBuilddir(object):
 			got = h.hexdigest()
 		assert got == expect, \
 			"%s env checksum got: %s - expect: %s" % (self._env, got, expect)
+
+	def file(self, name):
+		fn = path.join(self._rootdir, name)
+		assert path.isfile(fn), "%s file not found" % fn

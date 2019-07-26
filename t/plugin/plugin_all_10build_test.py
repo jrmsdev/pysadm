@@ -5,7 +5,8 @@
 
 def test_build_testing(testing_plugin):
 	p = testing_plugin('testing', ns = '_sadmtest', cfgfn = 'config-build.ini')
-	assert p.build()
+	p.build()
+	p.check.builddir.file('sadm.testing')
 
 # ~ def test_all_configure(testing_plugin):
 	# ~ for n in pluginsList():

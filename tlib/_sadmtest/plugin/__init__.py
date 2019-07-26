@@ -79,4 +79,3 @@ class Plugin(object):
 		envcmd.run(self._env, 'build')
 		self.check.builddir.content()
 		self.check.builddir.envChecksum()
-		return True
