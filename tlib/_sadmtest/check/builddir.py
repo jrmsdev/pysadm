@@ -1,9 +1,11 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
+from hashlib import sha256
 from os import path
 
 class CheckBuilddir(object):
+	_env = None
 	_rootdir = None
 	_deployfn = None
 	_envfn = None
@@ -11,6 +13,7 @@ class CheckBuilddir(object):
 	_zipfn = None
 
 	def __init__(self, env):
+		self._env = "%s/%s" % (env.profile(), env.name())
 		self._rootdir = env.build.rootdir()
 		self._deployfn = self._rootdir + '.deploy'
 		self._envfn = self._rootdir + '.env'
@@ -27,3 +30,12 @@ class CheckBuilddir(object):
 			"%s build meta dir not found" % self._metadir
 		assert path.isfile(self._zipfn), \
 			"%s deploy zip file not found" % self._zipfn
+
+	def envChecksum(self):
+		with open(self._envfn, 'r') as fh:
+			expect = fh.read().strip().split()[0]
+		with open(self._zipfn, 'rb') as fh:
+			h = sha256(fh.read())
+			got = h.hexdigest()
+		assert got == expect, \
+			"%s env checksum got: %s - expect: %s" % (self._env, got, expect)
