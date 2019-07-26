@@ -1,7 +1,7 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
-from . import debian
+from .debian import deploy as debian
 
 __all__ = ['deploy']
 
