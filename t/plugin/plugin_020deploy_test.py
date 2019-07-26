@@ -6,8 +6,10 @@ from shutil import rmtree, move
 
 def _build(pnew, pname):
 	depdir = path.join('tdata', 'deploy', 'plugin', pname)
-	if path.isdir(depdir):
-		rmtree(depdir)
+	targetdir = path.join('tdata', 'deploy.target', 'plugin', pname)
+	for dirrm in (depdir, targetdir):
+		if path.isdir(dirrm):
+			rmtree(dirrm)
 	p = pnew(pname, cfgfn = 'config-build.ini')
 	p.build()
 	makedirs(depdir, exist_ok = True)
