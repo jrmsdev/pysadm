@@ -42,6 +42,8 @@ recursive-include tdata/plugin *.ini
 recursive-include tdata/plugin *.conf
 recursive-include tdata/plugin *.txt
 
+include tdata/plugin/service/postfix/etc/aliases
+include tdata/plugin/service/postfix/etc/mailname
 include tdata/plugin/users/sadmtest/.bashrc
 
 recursive-include venv *.sh
