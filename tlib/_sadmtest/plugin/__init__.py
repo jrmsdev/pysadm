@@ -79,3 +79,7 @@ class Plugin(object):
 		envcmd.run(self._env, 'build')
 		self.check.builddir.content()
 		self.check.builddir.envChecksum()
+
+	def deploy(self):
+		from _sadm.env import cmd as envcmd
+		envcmd.run(self._env, 'deploy')
