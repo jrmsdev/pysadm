@@ -10,10 +10,7 @@ if test "X${TAG}" != "X"; then
 fi
 docker run -it --rm --name=${NAME} \
 	--hostname=${NAME} \
-	-e PYTHONPATH=/opt/src/sadm \
-	-v ${PWD}/docker/bin:/opt/sadm/bin \
+	-e PATH=/home/sadm/.local/bin:/usr/local/bin:/usr/bin:/bin \
 	-v ${PWD}:/opt/src/sadm \
 	${IMAGE} $@
 exit 0
-
-	#~ -v ${PWD}/docker/etc:/etc/opt/sadm \

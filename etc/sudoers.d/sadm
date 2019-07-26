@@ -1,1 +1,1 @@
-%sadm	ALL=NOPASSWD: /opt/sadm/bin/sadm
+sadm	ALL=NOPASSWD: ALL

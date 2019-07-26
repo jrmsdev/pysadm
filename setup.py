@@ -43,7 +43,7 @@ def main():
 		install_requires = deps,
 		use_scm_version = {
 			'write_to': '_sadm/_version.py',
-			'fallback_version': '0.0.0',
+			'fallback_version': '0.0',
 		},
 		py_modules = ['sadm'],
 		packages = find_packages(),
