@@ -34,7 +34,7 @@ def main():
 	except IndexError:
 		cmd = 'none'
 
-	if cmd in ['build', 'dist', 'install']:
+	if cmd in ['build', 'dist', 'install', 'bdist_wheel']:
 		_build()
 	elif cmd == 'clean':
 		_clean()
