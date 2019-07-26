@@ -2,12 +2,12 @@
 # See LICENSE file.
 
 try:
-	from _sadm._version import version as _version # pragma: no cover
+	from _sadm._version import version as _version
 except ImportError:
 	_version = 'master'
 
 try:
-	from _sadm._version_build import version_build as _version_build # pragma: no cover
+	from _sadm._version_build import version_build as _version_build
 except ImportError:
 	_version_build = 'devel'
 
