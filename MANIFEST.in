@@ -39,6 +39,7 @@ recursive-include tdata/testing *.ini
 recursive-include tdata/testing *.test
 
 recursive-include tdata/plugin *.ini
+recursive-include tdata/plugin *.cfg
 recursive-include tdata/plugin *.conf
 recursive-include tdata/plugin *.txt
 
@@ -50,15 +51,16 @@ recursive-include venv *.sh
 recursive-include venv *.txt
 
 include Dockerfile
+include Dockerfile.dev
+include Dockerfile.test
 
 include docker/build.sh
 include docker/run.sh
+include docker/bin/sadm
+
 include docker/deploy.py
 include docker/sadm.cfg
-include docker/bin/sadm
 include docker/etc/deploy.cfg
-
-include Dockerfile.test
 include docker/build.test.sh
 include docker/envbuild.py
 include docker/envs_test.py

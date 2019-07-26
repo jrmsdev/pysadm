@@ -80,7 +80,7 @@ def env_setup():
 	return _newEnv
 
 def _newEnv(name = 'testing', profile = 'envsetup', configure = False,
-	cfgfile = None, action = None, mkdirs = False, config = False):
+	cfgfile = None, action = None, mkdirs = False, config = None):
 	if action is not None:
 		# configure is called from cmd.run
 		configure = False
