@@ -82,4 +82,8 @@ class Plugin(object):
 
 	def deploy(self):
 		from _sadm.env import cmd as envcmd
+		self._deployFiles()
 		envcmd.run(self._env, 'deploy')
+
+	def _deployFiles(self):
+		pass

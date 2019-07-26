@@ -135,7 +135,7 @@ def testing_plugin():
 		config = None
 		if deploy:
 			profile = 'deploy'
-			config = cfg.new(cfgfile = path.join('tdata', 'plugin', pdir, 'deploy.cfg'))
+			config = cfg.new(cfgfile = path.join('tdata', 'deploy.cfg'))
 		env = _newEnv(profile = profile, name = name, config = config)
 		if cfgfn is not None:
 			env._cfgfile = path.join(pdir, cfgfn)
