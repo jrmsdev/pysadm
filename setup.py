@@ -19,7 +19,8 @@ def _clean():
 
 def _buildInfo():
 	now = datetime.utcnow()
-	with open('./_sadm/_version_build.py', 'a') as fh:
+	with open('./_sadm/_version_build.py', 'w') as fh:
+		fh.write('# auto-generated file\n')
 		fh.write("version_build = '%s'\n" % now.strftime('%y%m%d.%H%M%S'))
 
 def main():
@@ -40,7 +41,10 @@ def main():
 		python_requires = '~=3.4',
 		setup_requires = ['wheel>=0.33', 'setuptools_scm>=3.3'],
 		install_requires = deps,
-		use_scm_version = {'write_to': '_sadm/_version.py'},
+		use_scm_version = {
+			'write_to': '_sadm/_version.py',
+			'fallback_version': '0.0.0',
+		},
 		py_modules = ['sadm'],
 		packages = find_packages(),
 		include_package_data = True,
