@@ -19,7 +19,14 @@ def _build(pnew, pname):
 		dst = path.join(depdir, fn)
 		move(src, dst)
 
-def test_deploy_sync(testing_plugin):
-	_build(testing_plugin, 'sync')
-	p = testing_plugin('sync', deploy = True)
-	p.deploy()
+def test_all_deploy(testing_plugin):
+	makedirs(path.join('tdata', 'deploy', 'plugin'), exist_ok = True)
+	t = testing_plugin(deploy = True, ns = '_sadmtest')
+	for opt in t._env.config.options('deploy'):
+		if opt.startswith('env.'):
+			env = '.'.join(opt.split('.')[1:])
+			if env == 'testing':
+				continue
+			_build(testing_plugin, env)
+			p = testing_plugin(env, deploy = True)
+			p.deploy()
