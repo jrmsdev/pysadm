@@ -7,5 +7,8 @@ if test "X${TAG}" != "X"; then
 	IMAGE="jrmsdev/sadm:${TAG}"
 	DOCKERFN="Dockerfile.${TAG}"
 fi
-docker build -t ${IMAGE} -f ${DOCKERFN} .
+docker build \
+	--build-arg SADM_UID=$(id -u) \
+	--build-arg SADM_GID=$(id -g) \
+	-t ${IMAGE} -f ${DOCKERFN} .
 exit 0

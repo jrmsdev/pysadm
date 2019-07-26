@@ -27,7 +27,11 @@ RUN rm -f /var/cache/apt/*cache.bin
 RUN mkdir -p /opt/sadm
 RUN mkdir -p /etc/opt/sadm
 
-RUN useradd -c sadm -m -s /bin/bash -U sadm
+ARG SADM_UID=1000
+ARG SADM_GID=1000
+
+RUN groupadd -g ${SADM_GID} sadm
+RUN useradd -c sadm -m -d /home/sadm -s /bin/bash -g ${SADM_GID} -u ${SADM_UID} sadm
 
 RUN chgrp sadm /opt/sadm
 RUN chmod g+w /opt/sadm
