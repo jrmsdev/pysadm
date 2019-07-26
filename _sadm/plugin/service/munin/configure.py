@@ -4,5 +4,9 @@
 __all__ = ['configure']
 
 def configure(env, cfg):
-	#env.settings.merge(cfg, 'service.munin', ())
-	pass
+	env.settings.merge(cfg, 'service.munin', (
+		'config.dir',
+		'db.dir',
+		'dbdir.user',
+		'dbdir.group',
+	))
