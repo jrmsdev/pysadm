@@ -129,6 +129,9 @@ from _sadmtest.plugin import Plugin
 
 @pytest.fixture
 def testing_plugin():
-	def wrapper(name = 'testing', ns = '_sadm'):
-		return Plugin(name, _newEnv(profile = 'plugin', name = name), ns = ns)
+	def wrapper(name = 'testing', ns = '_sadm', cfgfn = None):
+		env = _newEnv(profile = 'plugin', name = name)
+		if cfgfn is not None:
+			env._cfgfile = path.join(name, cfgfn)
+		return Plugin(name, env, ns = ns)
 	return wrapper
