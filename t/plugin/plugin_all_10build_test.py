@@ -17,7 +17,8 @@ def test_all_build(testing_plugin):
 	for n in pluginsList():
 		if n == 'testing':
 			continue
-		fn = path.join(_srcdir, 'tdata', 'plugin', n, 'config-build.ini')
+		fn = path.join(_srcdir, 'tdata', 'plugin',
+			n.replace('.', path.sep), 'config-build.ini')
 		if path.isfile(fn):
 			p = testing_plugin(n, cfgfn = 'config-build.ini')
 			p.build()

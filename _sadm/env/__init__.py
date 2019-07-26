@@ -168,7 +168,7 @@ class Env(object):
 			_unlock(self)
 
 def _lock(env):
-	fn = path.join(env.assets.rootdir(), path.dirname(env.cfgfile()), '.lock')
+	fn = env.assets.rootdir(path.dirname(env.cfgfile()), '.lock')
 	env.debug("lock %s" % fn)
 	envdir = path.dirname(fn)
 	try:
