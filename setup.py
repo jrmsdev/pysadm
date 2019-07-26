@@ -12,15 +12,10 @@ from setuptools import setup, find_packages
 from sys import argv
 
 def _clean():
-	if path.isfile('./build/.gitignore'):
-		unlink('./build/.gitignore')
-
-def _build():
-	if not path.isfile('./build/.gitignore'):
-		makedirs('./build', exist_ok = True)
-		with open('./build/.gitignore', 'w') as fh:
-			fh.write('*\n')
-	_buildInfo()
+	for n in ('_version.py', '_version_build.py'):
+		fn = path.join('_sadm', n)
+		if path.isfile(fn):
+			unlink(fn)
 
 def _buildInfo():
 	now = datetime.utcnow()
@@ -34,13 +29,13 @@ def main():
 	except IndexError:
 		cmd = 'none'
 
-	if cmd in ['build', 'dist', 'install', 'bdist_wheel']:
-		_build()
-	elif cmd == 'clean':
+	if cmd == 'clean':
 		_clean()
 
 	with open('requirements.txt', 'r') as fh:
 		deps = fh.read().splitlines()
+
+	_buildInfo()
 
 	setup(
 		author = 'Jeremías Casteglione',
