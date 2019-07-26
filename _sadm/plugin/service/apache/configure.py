@@ -5,6 +5,7 @@ __all__ = ['configure']
 
 def configure(env, cfg):
 	env.settings.merge(cfg, 'service.apache', (
+		'sites.dir',
 		'conf.disable',
 		'mod.disable',
 		'site.disable',
