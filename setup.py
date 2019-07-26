@@ -29,9 +29,6 @@ def main():
 	except IndexError:
 		cmd = 'none'
 
-	if cmd == 'clean':
-		_clean()
-
 	with open('requirements.txt', 'r') as fh:
 		deps = fh.read().splitlines()
 
@@ -48,6 +45,9 @@ def main():
 		packages = find_packages(),
 		include_package_data = True,
 	)
+
+	if cmd == 'clean':
+		_clean()
 
 if __name__ == '__main__':
 	main()
