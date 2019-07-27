@@ -1,16 +1,17 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
-from os import path, makedirs, chmod
+from os import path, chmod
 from shutil import chown
 
 from _sadm.utils.cmd import call, call_check
+from _sadm.utils.sh import makedirs
 
 __all__ = ['deploy']
 
 def deploy(env):
 	dbdir = env.settings.get('service.munin', 'db.dir')
-	makedirs(dbdir, mode = 0o755, exist_ok = True)
+	makedirs(dbdir, exists_ok = True)
 	chmod(dbdir, 0o750)
 
 	dbuser = env.settings.get('service.munin', 'dbdir.user')
