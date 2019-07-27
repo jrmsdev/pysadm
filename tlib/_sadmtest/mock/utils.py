@@ -50,5 +50,8 @@ class MockCmdProc(object):
 				cmdline = ' '.join(args)
 			else:
 				cmdline = args
-			return self._cfg[method][cmdline]
+			try:
+				return self._cfg[method][cmdline]
+			except KeyError as err:
+				raise KeyError("%s - %s method" % (str(err), method))
 		return wrapper
