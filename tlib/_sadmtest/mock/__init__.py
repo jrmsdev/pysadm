@@ -19,6 +19,8 @@ def deploy(pname, cfg):
 	try:
 		m = Manager()
 		_sadm.utils.cmd.proc = MockCmdProc(cfg)
+		_sadm.utils.sh.shutil = MockShUtil(cfg)
 		yield m
 	finally:
 		_sadm.utils.cmd.proc = _sadm.utils.cmd._ProcMan()
+		_sadm.utils.sh.shutil = _sadm.utils.sh._ShUtil()
