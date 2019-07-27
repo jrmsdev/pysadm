@@ -1,10 +1,8 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
-from os import unlink, write, close
-from tempfile import mkstemp
-
 from _sadm.utils.cmd import call, call_check
+from _sadm.utils.sh import mktmp
 
 __all__ = ['deploy']
 
@@ -16,11 +14,13 @@ def deploy(env):
 
 def _autoconf(env):
 	env.log('autoconf')
-	tmpfn = ''
-	fd, tmpfn = mkstemp(prefix = __name__, text = True)
-	write(fd, b'exit 0')
-	close(fd)
+	tmpfh = mktmp(prefix = __name__)
+	tmpfh.write('exit 128')
+	tmpfh.close()
+	tmpfn = tmpfh.name()
 	env.debug("tmpfn %s" % tmpfn)
-	call("munin-node-configure --shell >%s 2>&1" % tmpfn)
-	call_check("/bin/sh -eu %s" % tmpfn)
-	unlink(tmpfn)
+	try:
+		call("munin-node-configure --shell >%s 2>&1" % tmpfn)
+		call_check("/bin/sh -eu %s" % tmpfn)
+	finally:
+		tmpfh.unlink()
