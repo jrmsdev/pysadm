@@ -141,7 +141,7 @@ def _newPlugin(name = 'testing', ns = '_sadm', cfgfn = None,
 		config = cfg.new(cfgfile = path.join('tdata', 'deploy.cfg'))
 	env = _newEnv(profile = profile, name = name, config = config)
 	if cfgfn is not None:
-		env._cfgfile = path.join(pdir, cfgfn)
+		env._cfgfile = path.join(pdir, 'config', cfgfn)
 	p = Plugin(name, env, ns = ns)
 	if deploy and buildDeploy:
 		_buildDeploy(name, ns = ns)
@@ -154,7 +154,7 @@ def _buildDeploy(pname, ns = '_sadm'):
 	for dirrm in (depdir, targetdir):
 		if path.isdir(dirrm):
 			rmtree(dirrm)
-	p = _newPlugin(pname, ns = ns, cfgfn = 'config-build.ini')
+	p = _newPlugin(pname, ns = ns, cfgfn = 'build.ini')
 	p.build()
 	makedirs(depdir, exist_ok = True)
 	metadir = path.join('tdata', 'build', 'plugin', pname + '.meta')

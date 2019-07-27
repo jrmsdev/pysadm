@@ -84,10 +84,10 @@ class Plugin(object):
 		self.check.builddir.content()
 		self.check.builddir.envChecksum()
 
-	def deploy(self, mockCfg = 'config-build.ini', mockProfile = None):
+	def deploy(self, mockCfg = 'build.ini', mockProfile = None):
 		from _sadm.env.settings import Settings
 		cfgfn = path.join('tdata', 'plugin',
-			self._p.name.replace('.', path.sep), mockCfg)
+			self._p.name.replace('.', path.sep), 'config', mockCfg)
 		cfg = Settings()
 		with open(cfgfn, 'r') as fh:
 			cfg.read_file(fh)

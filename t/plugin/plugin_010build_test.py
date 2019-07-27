@@ -10,7 +10,7 @@ _srcdir = path.dirname(path.dirname(path.dirname(__file__)))
 
 def test_build_testing(testing_plugin):
 	print('-- build plugin: testing')
-	p = testing_plugin('testing', ns = '_sadmtest', cfgfn = 'config-build.ini')
+	p = testing_plugin('testing', ns = '_sadmtest', cfgfn = 'build.ini')
 	p.build()
 	p.check.builddir.file('sadm.testing') # just to check it works both ways
 	p.check.builddir.file('sadm.testing', 'testing\n')
@@ -20,7 +20,7 @@ def test_all_build(testing_plugin):
 		if n == 'testing':
 			continue
 		print('-- build plugin:', n)
-		_pbuild(testing_plugin, n, 'config-build.ini')
+		_pbuild(testing_plugin, n, 'build.ini')
 
 def _pbuild(pnew, pname, cfgfn):
 	fn = path.join(_srcdir, 'tdata', 'plugin',

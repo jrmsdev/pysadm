@@ -57,4 +57,5 @@ class MockShUtil(object):
 		return MockTmpFile(suffix = suffix, prefix = prefix, dir = dir)
 
 	def check(self):
+		# ~ assert self._mock.mock_calls == [], str(self._mock.mock_calls)
 		pass
