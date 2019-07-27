@@ -1,3 +1,4 @@
 #!/bin/sh -eu
-pytest --cov --cov-report=html --cov-report=term
+REPORT=${1:-'term'}
+PYTHONPATH=${PWD} pytest --cov=_sadm --cov-report=${REPORT}
 exit 0
