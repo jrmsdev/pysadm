@@ -89,3 +89,4 @@ class Plugin(object):
 			self._p.name.replace('.', path.sep), mockcfg)
 		with mock.deploy(self._p.name, cfgfn) as mockman:
 			self._envAction.run(self._env, 'deploy')
+			# mockman.check.....

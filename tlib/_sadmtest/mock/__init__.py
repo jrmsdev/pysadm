@@ -2,13 +2,18 @@
 # See LICENSE file.
 
 from contextlib import contextmanager
+from unittest.mock import patch
+
 from _sadmtest.mock import utils
+
+import _sadm.utils.cmd
 
 @contextmanager
 def deploy(pname, cfgfn):
 	print('-- mock.plugin:', pname, cfgfn)
 	try:
-		m = utils.MockCmd()
+		m = utils.MockCmdProc()
+		_sadm.utils.cmd.proc = m
 		yield m
 	finally:
-		pass
+		_sadm.utils.cmd.proc = _sadm.utils.cmd._ProcMan()
