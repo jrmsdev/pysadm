@@ -1,5 +1,3 @@
 #!/bin/sh -eu
-coverage run -m pytest $@
-coverage report
-coverage html
+pytest --cov --cov-report=html --cov-report=term
 exit 0
