@@ -46,6 +46,8 @@ class MockCmdProc(object):
 
 	def _sideEffect(self, method):
 		def wrapper(args, **kwargs):
+			if not method in self._cfg:
+				raise KeyError("%s method is not configured (yet)" % method)
 			if isinstance(args, list):
 				cmdline = ' '.join(args)
 			else:
