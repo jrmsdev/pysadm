@@ -13,15 +13,15 @@ branches:
     - master
     - next
 
-matrix:
-  fast_finish: true
-
 python:
   - "3.4"
   - "3.5"
   - "3.6"
   - "3.7"
   - "nightly"
+
+matrix:
+  fast_finish: true
 
 cache: pip
 
@@ -32,3 +32,8 @@ install:
   - sadm --version
 
 script: ./check.sh
+
+after_success:
+  - test -z $CODECOV_TOKEN || pip install --upgrade codecov
+  - test -z $CODECOV_TOKEN || ./coverage.sh
+  - test -z $CODECOV_TOKEN || codecov
