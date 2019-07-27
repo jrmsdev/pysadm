@@ -1,7 +1,7 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
-from subprocess import check_call as call
+from _sadm.utils.cmd import callCheck as call
 
 from .check import check
 
