@@ -98,6 +98,5 @@ class Plugin(object):
 			cfg = cfg[cfgSection]
 		else:
 			cfg = None
-		with mock.deploy(self._p.name, cfg) as mockman:
+		with mock.deploy(self._p.name, cfg):
 			self._envAction.run(self._env, 'deploy')
-			# mockman.check.....

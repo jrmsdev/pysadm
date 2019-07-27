@@ -15,3 +15,6 @@ class MockShUtil(object):
 		self.makedirs = self._mock.mock_makedirs
 		self.chmod = self._mock.mock_chmod
 		self.chown = self._mock.mock_chown
+
+	def check(self):
+		pass

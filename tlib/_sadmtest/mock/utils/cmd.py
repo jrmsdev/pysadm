@@ -48,7 +48,10 @@ class MockCmdProc(object):
 				retval = int(i[0])
 				cmdline = ';'.join(i[1:]).strip()
 				d[cmdline] = retval
-				self._expect[opt].append(call(cmdline))
+				if opt == 'call':
+					self._expect[opt].append(call(cmdline, shell = True))
+				elif opt == 'check_call':
+					self._expect[opt].append(cmdline)
 		return d
 
 	def _sideEffect(self, method):
@@ -64,3 +67,21 @@ class MockCmdProc(object):
 			except KeyError as err:
 				raise KeyError("%s - %s method" % (str(err), method))
 		return wrapper
+
+	def check(self):
+		if self._expect is None:
+			return
+		# call
+		got = self.call.call_args_list
+		expect = list(self._expect['call'])
+		assert got == expect, \
+			"call method check got: %s - expect: %s" % (got, expect)
+		# check_call
+		got = []
+		for x in [x[1][0] for x in self.check_call.mock_calls]:
+			if isinstance(x, list):
+				x = ' '.join(x)
+			got.append(x)
+		expect = list(self._expect['check_call'])
+		assert got == expect, \
+			"check_call method check got: %s - expect: %s" % (got, expect)

@@ -10,17 +10,16 @@ from _sadmtest.mock.utils.sh import MockShUtil
 import _sadm.utils.cmd
 import _sadm.utils.sh
 
-class Manager(object):
-	pass
-
 @contextmanager
-def deploy(pname, cfg):
-	print('-- mock.plugin:', pname, cfg)
+def deploy(name, cfg):
+	print('-- mock deploy:', name, cfg)
 	try:
-		m = Manager()
 		_sadm.utils.cmd.proc = MockCmdProc(cfg)
 		_sadm.utils.sh.shutil = MockShUtil(cfg)
-		yield m
+		yield
+		print('-- post check mock deploy:', name)
+		_sadm.utils.cmd.proc.check()
+		_sadm.utils.sh.shutil.check()
 	finally:
 		_sadm.utils.cmd.proc = _sadm.utils.cmd._ProcMan()
 		_sadm.utils.sh.shutil = _sadm.utils.sh._ShUtil()
