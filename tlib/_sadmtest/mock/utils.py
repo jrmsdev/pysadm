@@ -17,13 +17,27 @@ class MockCmdProc(object):
 
 	def _configure(self):
 		self._cfg = {
-			'call': 0,
-			'check_call': 0,
+			'call': {
+				'/usr/bin/dpkg-query -s less >/dev/null 2>/dev/null': 0,
+				'/usr/bin/dpkg-query -s vim-tiny >/dev/null 2>/dev/null': 0,
+				'/usr/bin/dpkg-query -s sudo >/dev/null 2>/dev/null': 0,
+				'/usr/bin/dpkg-query -s rsync >/dev/null 2>/dev/null': 0,
+				'/usr/bin/dpkg-query -s python3 >/dev/null 2>/dev/null': 0,
+				'/usr/bin/dpkg-query -s nano >/dev/null 2>/dev/null': 0,
+			},
+			'check_call': {
+				'apt-get update': 0,
+				'apt-get autoremove -yy --purge nano': 0,
+			}
 		}
 		self.call.side_effect = self._sideEffect('call')
 		self.check_call.side_effect = self._sideEffect('check_call')
 
 	def _sideEffect(self, method):
-		def wrapper(*args, **kwargs):
-			return self._cfg[method]
+		def wrapper(args, **kwargs):
+			if isinstance(args, list):
+				cmdline = ' '.join(args)
+			else:
+				cmdline = args
+			return self._cfg[method][cmdline]
 		return wrapper
