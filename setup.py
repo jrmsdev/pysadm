@@ -38,7 +38,7 @@ def main():
 	setup(
 		author = 'Jeremías Casteglione',
 		author_email = 'jrmsdev@gmail.com',
-		python_requires = '~=3.4',
+		python_requires = '~=3.6',
 		setup_requires = ['wheel>=0.33', 'setuptools_scm>=3.3'],
 		install_requires = deps,
 		use_scm_version = {

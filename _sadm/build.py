@@ -21,8 +21,6 @@ class Manager(asset.Manager):
 		en = path.basename(rdir)
 		mdir = path.normpath(rdir) + '.meta'
 		self._tarfn = path.join(mdir, en + '.tar')
-		# python 3.4 does not support 'x:' open mode
-		# self._tar = tarfile.open(self._tarfn, 'x:')
 		if path.isfile(self._tarfn):
 			raise BuildError("%s file exists" % self._tarfn)
 
