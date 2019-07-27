@@ -15,7 +15,7 @@ def call(cmd):
 		shell = True
 	return proc.call(cmd, shell = shell)
 
-def call_check(cmd, env = None):
+def callCheck(cmd, env = None):
 	if env is None:
 		env = environ.copy()
 	shell = False
@@ -25,3 +25,5 @@ def call_check(cmd, env = None):
 		return proc.check_call(cmd, env = env, shell = shell)
 	except proc.CalledProcessError as err:
 		raise PluginCommandError(str(err))
+
+call_check = callCheck # FIXME!!!

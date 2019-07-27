@@ -13,7 +13,7 @@ _cmdenv = environ.copy()
 _cmdenv['DEBIAN_FRONTEND'] = 'noninteractive'
 
 def deploy(env):
-	if env.settings.getboolean('os.pkg', 'update'):
+	if env.settings.getboolean('os.pkg', 'update', fallback = False):
 		env.log('update')
 		_update()
 	for diff in check(env, action = 'remove'):

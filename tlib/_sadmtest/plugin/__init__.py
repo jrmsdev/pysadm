@@ -8,6 +8,8 @@ from io import StringIO
 from os import path
 
 from _sadm.configure import getPlugin
+
+from _sadmtest import mock
 from _sadmtest.check import CheckEnv
 
 __all__ = ['Plugin']
@@ -83,6 +85,7 @@ class Plugin(object):
 		self.check.builddir.envChecksum()
 
 	def deploy(self):
+		mock.plugin(self._p.name, self._env.cfgfile())
 		self._deployFiles()
 		self._envAction.run(self._env, 'deploy')
 
