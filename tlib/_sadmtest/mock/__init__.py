@@ -12,7 +12,7 @@ import _sadm.utils.cmd
 def deploy(pname, cfg):
 	print('-- mock.plugin:', pname, cfg)
 	try:
-		m = utils.MockCmdProc()
+		m = utils.MockCmdProc(cfg)
 		_sadm.utils.cmd.proc = m
 		yield m
 	finally:
