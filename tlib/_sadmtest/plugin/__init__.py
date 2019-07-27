@@ -84,9 +84,20 @@ class Plugin(object):
 		self.check.builddir.content()
 		self.check.builddir.envChecksum()
 
-	def deploy(self, mockcfg = 'config-build.ini'):
+	def deploy(self, mockCfg = 'config-build.ini', mockProfile = None):
+		from _sadm.env.settings import Settings
 		cfgfn = path.join('tdata', 'plugin',
-			self._p.name.replace('.', path.sep), mockcfg)
-		with mock.deploy(self._p.name, cfgfn) as mockman:
+			self._p.name.replace('.', path.sep), mockCfg)
+		cfg = Settings()
+		with open(cfgfn, 'r') as fh:
+			cfg.read_file(fh)
+		cfgSection = '_sadmtest.mock.deploy'
+		if mockProfile is not None:
+			cfgSection = "%s.%s" % (cfgSection, mockProfile)
+		if cfg.has_section(cfgSection):
+			cfg = cfg[cfgSection]
+		else:
+			cfg = None
+		with mock.deploy(self._p.name, cfg) as mockman:
 			self._envAction.run(self._env, 'deploy')
 			# mockman.check.....

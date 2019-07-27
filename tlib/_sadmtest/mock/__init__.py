@@ -9,8 +9,8 @@ from _sadmtest.mock import utils
 import _sadm.utils.cmd
 
 @contextmanager
-def deploy(pname, cfgfn):
-	print('-- mock.plugin:', pname, cfgfn)
+def deploy(pname, cfg):
+	print('-- mock.plugin:', pname, cfg)
 	try:
 		m = utils.MockCmdProc()
 		_sadm.utils.cmd.proc = m
