@@ -24,8 +24,8 @@ class MockCmdProc(object):
 		d = {}
 		if cfg is None:
 			return d
-		d['call'] = self._parseCmdOptions(cfg, 'cmd.proc.call')
-		d['check_call'] = self._parseCmdOptions(cfg, 'cmd.proc.check_call')
+		d['call'] = self._parseCmdOptions(cfg, 'cmd.call')
+		d['check_call'] = self._parseCmdOptions(cfg, 'cmd.check_call')
 		return d
 
 	def _parseCmdOptions(self, cfg, opt):
