@@ -4,7 +4,7 @@
 from contextlib import contextmanager
 from unittest.mock import patch
 
-from _sadmtest.mock import utils
+from _sadmtest.mock.utils.cmd import MockCmdProc
 
 import _sadm.utils.cmd
 
@@ -12,7 +12,7 @@ import _sadm.utils.cmd
 def deploy(pname, cfg):
 	print('-- mock.plugin:', pname, cfg)
 	try:
-		m = utils.MockCmdProc(cfg)
+		m = MockCmdProc(cfg)
 		_sadm.utils.cmd.proc = m
 		yield m
 	finally:
