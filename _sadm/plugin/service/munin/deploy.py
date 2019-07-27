@@ -1,11 +1,10 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
-from os import path, chmod
-from shutil import chown
+from os import path
 
 from _sadm.utils.cmd import call, call_check
-from _sadm.utils.sh import makedirs
+from _sadm.utils.sh import makedirs, chmod, chown
 
 __all__ = ['deploy']
 
