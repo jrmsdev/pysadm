@@ -1,11 +1,13 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
-from unittest.mock import Mock
+from collections import deque
+from unittest.mock import Mock, call
 
 class MockCmdProc(object):
 	_mock = None
 	_cfg = None
+	_expect = None
 	call = None
 	check_call = None
 
@@ -24,13 +26,17 @@ class MockCmdProc(object):
 		d = {}
 		if cfg is None:
 			return d
-		d['call'] = self._parseCmdOptions(cfg, 'cmd.call')
-		d['check_call'] = self._parseCmdOptions(cfg, 'cmd.check_call')
+		self._expect = {
+			'call': deque(),
+			'check_call': deque(),
+		}
+		d['call'] = self._parseCmdOptions(cfg, 'call')
+		d['check_call'] = self._parseCmdOptions(cfg, 'check_call')
 		return d
 
 	def _parseCmdOptions(self, cfg, opt):
 		d = {}
-		data = cfg.get(opt, fallback = '')
+		data = cfg.get('cmd.' + opt, fallback = '')
 		if data != '':
 			for line in data.splitlines():
 				line = line.strip()
@@ -42,6 +48,7 @@ class MockCmdProc(object):
 				retval = int(i[0])
 				cmdline = ';'.join(i[1:]).strip()
 				d[cmdline] = retval
+				self._expect[opt].append(call(cmdline))
 		return d
 
 	def _sideEffect(self, method):
