@@ -131,7 +131,8 @@ from _sadmtest.plugin import Plugin
 def testing_plugin():
 	return _newPlugin
 
-def _newPlugin(name = 'testing', ns = '_sadm', cfgfn = None, deploy = False):
+def _newPlugin(name = 'testing', ns = '_sadm', cfgfn = None,
+	deploy = False, buildDeploy = True):
 	pdir = name.replace('.', path.sep)
 	profile = 'plugin'
 	config = None
@@ -142,7 +143,7 @@ def _newPlugin(name = 'testing', ns = '_sadm', cfgfn = None, deploy = False):
 	if cfgfn is not None:
 		env._cfgfile = path.join(pdir, cfgfn)
 	p = Plugin(name, env, ns = ns)
-	if deploy:
+	if deploy and buildDeploy:
 		_buildDeploy(name, ns = ns)
 	return p
 

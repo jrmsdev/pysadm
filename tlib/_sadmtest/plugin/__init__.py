@@ -84,10 +84,8 @@ class Plugin(object):
 		self.check.builddir.content()
 		self.check.builddir.envChecksum()
 
-	def deploy(self):
-		mock.plugin(self._p.name, self._env.cfgfile())
-		self._deployFiles()
-		self._envAction.run(self._env, 'deploy')
-
-	def _deployFiles(self):
-		pass
+	def deploy(self, mockcfg = 'config-build.ini'):
+		cfgfn = path.join('tdata', 'plugin',
+			self._p.name.replace('.', path.sep), mockcfg)
+		with mock.deploy(self._p.name, cfgfn) as mockman:
+			self._envAction.run(self._env, 'deploy')
