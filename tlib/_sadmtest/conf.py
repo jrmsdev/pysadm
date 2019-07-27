@@ -3,7 +3,7 @@
 
 import pytest
 from os import path, makedirs, unlink
-from shutil import rmtree
+from shutil import rmtree, move
 
 __all__ = [
 	'env_setup',
@@ -129,15 +129,35 @@ from _sadmtest.plugin import Plugin
 
 @pytest.fixture
 def testing_plugin():
-	def wrapper(name = 'testing', ns = '_sadm', cfgfn = None, deploy = False):
-		pdir = name.replace('.', path.sep)
-		profile = 'plugin'
-		config = None
-		if deploy:
-			profile = 'deploy'
-			config = cfg.new(cfgfile = path.join('tdata', 'deploy.cfg'))
-		env = _newEnv(profile = profile, name = name, config = config)
-		if cfgfn is not None:
-			env._cfgfile = path.join(pdir, cfgfn)
-		return Plugin(name, env, ns = ns)
-	return wrapper
+	return _newPlugin
+
+def _newPlugin(name = 'testing', ns = '_sadm', cfgfn = None, deploy = False):
+	pdir = name.replace('.', path.sep)
+	profile = 'plugin'
+	config = None
+	if deploy:
+		profile = 'deploy'
+		config = cfg.new(cfgfile = path.join('tdata', 'deploy.cfg'))
+	env = _newEnv(profile = profile, name = name, config = config)
+	if cfgfn is not None:
+		env._cfgfile = path.join(pdir, cfgfn)
+	p = Plugin(name, env, ns = ns)
+	if deploy:
+		_buildDeploy(name, ns = ns)
+	return p
+
+def _buildDeploy(pname, ns = '_sadm'):
+	print('-- deploy plugin build:', pname)
+	depdir = path.join('tdata', 'deploy', 'plugin', pname)
+	targetdir = path.join('tdata', 'deploy.target', 'plugin', pname)
+	for dirrm in (depdir, targetdir):
+		if path.isdir(dirrm):
+			rmtree(dirrm)
+	p = _newPlugin(pname, ns = ns, cfgfn = 'config-build.ini')
+	p.build()
+	makedirs(depdir, exist_ok = True)
+	metadir = path.join('tdata', 'build', 'plugin', pname + '.meta')
+	for fn in ('configure.ini', 'meta.json', pname + '.tar'):
+		src = path.join(metadir, fn)
+		dst = path.join(depdir, fn)
+		move(src, dst)
