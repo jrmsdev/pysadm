@@ -10,5 +10,5 @@ fi
 docker build \
 	--build-arg SADM_UID=$(id -u) \
 	--build-arg SADM_GID=$(id -g) \
-	-t ${IMAGE} -f ${DOCKERFN} .
+	-t ${IMAGE} -f docker/${DOCKERFN} .
 exit 0
