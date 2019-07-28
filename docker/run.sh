@@ -9,7 +9,7 @@ if test "X${TAG}" != 'X'; then
 	NAME="sadm${TAG}"
 fi
 PYPATH=''
-if test "${TAG}" = 'dev'; then
+if test "${TAG}" = 'dev' || test "${TAG}" = 'docs'; then
 	PYPATH='-e PYTHONPATH=/opt/src/sadm'
 fi
 docker run -it --rm --name=${NAME} \
