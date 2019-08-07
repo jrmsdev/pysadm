@@ -168,19 +168,23 @@ def test_env_default(testing_env):
 	assert e.profile() == 'testing'
 
 def test_build_checksum(env_setup):
+	metafn = path.join('tdata', 'build', 'envsetup', 'testing.meta', 'meta.json')
+
 	# cksum0
 	env = env_setup(action = 'build')
-	metafn = path.join('tdata', 'build', 'envsetup', 'testing.meta', 'meta.json')
 	assert path.isfile(metafn)
 	with open(metafn, 'r') as fh:
 		data = json.load(fh)
+	cksum0 = data.get('sadm.env.checksum', None)
+
 	unlink(metafn)
 	assert not path.isfile(metafn)
-	cksum0 = data.get('sadm.env.checksum', None)
+
 	# cksum1
 	env = env_setup(action = 'build')
 	assert path.isfile(metafn)
 	with open(metafn, 'r') as fh:
 		data = json.load(fh)
 	cksum1 = data.get('sadm.env.checksum', None)
+
 	assert cksum1 == cksum0
