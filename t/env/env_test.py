@@ -1,6 +1,8 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
+import json
+
 from pytest import raises
 from os import path, unlink, makedirs
 from time import time
@@ -164,3 +166,23 @@ def test_env_default(testing_env):
 	e = testing_env(name = 'default', profile = 'default')
 	assert e.name() == 'testing'
 	assert e.profile() == 'testing'
+
+def test_build_checksum(env_setup):
+	cksum = '6441547b34e8d7f5bb366df064d57cd39d81d32c9570009f2527666357202963'
+	# cksum0
+	env = env_setup(action = 'build')
+	metafn = path.join('tdata', 'build', 'envsetup', 'testing.meta', 'meta.json')
+	assert path.isfile(metafn)
+	with open(metafn, 'r') as fh:
+		data = json.load(fh)
+	unlink(metafn)
+	assert not path.isfile(metafn)
+	cksum0 = data.get('sadm.env.checksum', None)
+	assert cksum0 == cksum
+	# cksum1
+	env = env_setup(action = 'build')
+	assert path.isfile(metafn)
+	with open(metafn, 'r') as fh:
+		data = json.load(fh)
+	cksum1 = data.get('sadm.env.checksum', None)
+	assert cksum1 == cksum
