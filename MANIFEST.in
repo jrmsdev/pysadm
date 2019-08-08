@@ -62,29 +62,3 @@ include docker/Dockerfile
 include docker/Dockerfile.*
 include docker/build.sh
 include docker/run.sh
-include docker/bin/sadm
-
-include docker/deploy.py
-include docker/sadm.cfg
-include docker/etc/deploy.cfg
-include docker/build.test.sh
-include docker/envbuild.py
-include docker/envs_test.py
-include docker/test.run.sh
-include docker/trun.py
-
-recursive-include docker/env *.ini
-
-include docker/env/sync/asset.file
-recursive-include docker/env/sync/asset.dir file.*
-
-recursive-include docker/env/apache *.conf
-recursive-include docker/env/munin *.conf
-
-include docker/env/iptables/iptables/rules.*
-
-include docker/env/postfix/etc/aliases
-include docker/env/postfix/etc/mailname
-
-include docker/env/fail2ban/iptables/rules.*
-recursive-include docker/env/fail2ban *.conf
