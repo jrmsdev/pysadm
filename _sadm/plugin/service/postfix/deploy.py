@@ -1,11 +1,12 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
-from _sadm.utils.cmd import call, call_check
+from _sadm.utils import systemd
+from _sadm.utils.cmd import callCheck
 
 __all__ = ['deploy']
 
 def deploy(env):
 	env.log('newaliases')
-	call_check('newaliases')
-	call_check('service postfix restart')
+	callCheck('newaliases')
+	systemd.restart('postfix')

@@ -3,7 +3,7 @@
 
 from os import path, unlink
 
-from _sadm.utils.cmd import call_check
+from _sadm.utils import systemd
 
 __all__ = ['deploy']
 
@@ -15,5 +15,5 @@ def deploy(env):
 		if path.isfile(fn):
 			env.log("remove %s" % fn)
 			unlink(fn)
-	call_check('service fail2ban restart')
-	call_check('service fail2ban status')
+	systemd.restart('fail2ban')
+	systemd.status('fail2ban')

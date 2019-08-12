@@ -125,6 +125,9 @@ def _cleanEnv(env, mkdirs = False):
 
 # testing plugins
 
+from _sadm.utils import systemd
+systemd._ctlcmd = ['systemctl']
+
 from _sadmtest.plugin import Plugin
 
 @pytest.fixture

@@ -3,7 +3,7 @@
 
 from os import path
 
-from _sadm.utils.cmd import call, call_check
+from _sadm.utils import systemd
 from _sadm.utils.sh import makedirs, chmod, chown
 
 __all__ = ['deploy']
@@ -19,9 +19,9 @@ def deploy(env):
 
 	env.log("dbdir %s (%s:%s)" % (dbdir, dbuser, dbgroup))
 
-	if call('service cron status') == 0:
-		call_check('service cron reload')
+	if systemd.status('cron') == 0:
+		systemd.reload('cron')
 	else:
-		call_check('service cron start')
+		systemd.start('cron')
 
-	call('service munin start')
+	systemd.start('munin')
