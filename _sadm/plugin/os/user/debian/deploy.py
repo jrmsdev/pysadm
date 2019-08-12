@@ -10,19 +10,31 @@ __all__ = ['deploy']
 def deploy(env):
 	env.log('os user')
 	for diff in check(env):
-		user = diff[0]
-		uid = diff[1]
-		cmd = ['useradd', '-m', '-U', '-u', str(uid)]
+		typ = diff[0]
+		if typ == 'group':
+			_addGroup(env, diff[1], diff[2])
+		elif typ == 'user':
+			_addUser(env, diff[1], diff[2])
+		else:
+			raise RuntimeError("unknown os.user check type: %s" % typ)
 
-		fullname = env.settings.get("os.user.%s" % user, 'fullname', fallback = '').strip()
-		if fullname != '':
-			cmd.append('-c')
-			cmd.append(fullname)
+def _addGroup(env, group, gid):
+	cmd = ['groupadd', '-g', str(gid), group]
+	call(cmd)
+	env.log("%d %s group created" % (gid, group))
 
-		shell = env.settings.get("os.user.%s" % user, 'shell', fallback = '/bin/bash').strip()
-		cmd.append('-s')
-		cmd.append(shell)
+def _addUser(env, user, uid):
+	cmd = ['useradd', '-m', '-U', '-u', str(uid)]
 
-		cmd.append(user)
-		call(cmd)
-		env.log("%d %s user created" % (uid, user))
+	fullname = env.settings.get("os.user.%s" % user, 'fullname', fallback = '').strip()
+	if fullname != '':
+		cmd.append('-c')
+		cmd.append(fullname)
+
+	shell = env.settings.get("os.user.%s" % user, 'shell', fallback = '/bin/bash').strip()
+	cmd.append('-s')
+	cmd.append(shell)
+
+	cmd.append(user)
+	call(cmd)
+	env.log("%d %s user created" % (uid, user))

@@ -21,7 +21,17 @@ def configure(env, cfg):
 		env.debug("users config %s" % fh.name)
 		db.read_file(fh)
 
+	_addgroups(env, db, cfg)
 	_addusers(env, db, cfg)
+
+def _addgroups(env, db, cfg):
+	l = cfg.getlist('os.group', 'add', fallback = [])
+	for group in l:
+		gid = db['groups'][group]
+		env.debug("add group %d %s" % (int(gid), group))
+		if not env.settings.has_section('os.group'):
+			env.settings.add_section('os.group')
+		env.settings['os.group'][group] = gid
 
 def _addusers(env, db, cfg):
 	l = cfg.getlist('os.user', 'add', fallback = [])
