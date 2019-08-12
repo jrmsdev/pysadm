@@ -6,4 +6,4 @@ from _sadm.utils import systemd
 __all__ = ['deploy']
 
 def deploy(env):
-	systemd.reload('netfilter-persistent')
+	systemd.restart('netfilter-persistent')
