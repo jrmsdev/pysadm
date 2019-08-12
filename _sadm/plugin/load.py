@@ -22,6 +22,10 @@ import _sadm.plugin.sync
 import _sadm.plugin.network.iptables
 import _sadm.plugin.network.fail2ban
 
+# vcs clone should happen between network and service stuff
+
+import _sadm.plugin.vcs.clone
+
 # service plugins
 
 import _sadm.plugin.service.postfix
