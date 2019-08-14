@@ -21,7 +21,9 @@ def test_build_testing(testing_plugin):
 	# ~ p.build()
 
 def test_all_build(testing_plugin):
-	for n in pluginsList():
+	pl = list(pluginsList())
+	print('-- plugins list:', pl)
+	for n in pl:
 		if n == 'testing':
 			continue
 		print('-- build plugin:', n)
@@ -29,7 +31,7 @@ def test_all_build(testing_plugin):
 
 def _pbuild(pnew, pname, cfgfn):
 	fn = path.join(_srcdir, 'tdata', 'plugin',
-		pname.replace('.', path.sep), cfgfn)
+		pname.replace('.', path.sep), 'config', cfgfn)
 	if path.isfile(fn):
 		p = pnew(pname, cfgfn = cfgfn)
 		p.build()
