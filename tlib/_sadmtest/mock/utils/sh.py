@@ -57,6 +57,7 @@ class MockShUtil(object):
 
 	def _configure(self, cfg):
 		self.mktmp.side_effect = self._mktmp
+		self.getcwd.side_effect = self._getcwd
 		if cfg is None:
 			return
 		self._utilsExpect(cfg)
@@ -72,13 +73,18 @@ class MockShUtil(object):
 	def _mktmp(self, suffix = None, prefix = None, dir = None):
 		return MockTmpFile(suffix = suffix, prefix = prefix, dir = dir)
 
+	def _getcwd(self):
+		return path.join(path.sep, 'testing', 'workdir')
+
 	def check(self): # TODO!!
 		got = []
 		for x in self._mock.mock_calls:
 			xname = x[0].replace('mock_', '', 1)
 			xargs = x[1]
+			cmdline = xname
+			if len(xargs) > 0:
+				cmdline = "%s %s" % (xname, ' '.join([str(i) for i in xargs]))
 			xkwargs = x[2]
-			cmdline = "%s %s" % (xname, ' '.join([str(i) for i in xargs]))
 			for k, v in xkwargs.items():
 				v = str(v)
 				cmdline = "%s, %s=%s" % (cmdline, k, v)
