@@ -7,6 +7,9 @@ __all__ = ['fpath', 'fopen']
 
 _srcdir = realpath(dirname(__file__))
 
+def root():
+	return _srcdir
+
 def fpath(*parts):
 	n = join(*parts)
 	n = normpath(n)

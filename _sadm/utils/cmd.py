@@ -16,11 +16,11 @@ class _ProcMan(object):
 
 proc = _ProcMan()
 
-def call(cmd):
+def call(cmd, env = None, timeout = None):
 	shell = False
 	if isinstance(cmd, str):
 		shell = True
-	return proc.call(cmd, shell = shell)
+	return proc.call(cmd, env = env, shell = shell, timeout = timeout)
 
 def callCheck(cmd, env = None):
 	if env is None:

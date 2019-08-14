@@ -2,7 +2,12 @@
 # See LICENSE file.
 
 from collections import deque
+from os import path
 from unittest.mock import Mock, call
+
+from _sadm import libdir
+
+_srcdir = path.dirname(libdir.root())
 
 class MockCmdProc(object):
 	_mock = None
@@ -47,9 +52,11 @@ class MockCmdProc(object):
 				i = line.split(';')
 				retval = int(i[0])
 				cmdline = ';'.join(i[1:]).strip()
+				if cmdline.startswith(path.join('_sadm', 'scripts')):
+					cmdline = "%s%s%s" % (_srcdir, path.sep, cmdline)
 				d[cmdline] = retval
 				if opt == 'call':
-					self._expect[opt].append(call(cmdline, shell = True))
+					self._expect[opt].append(call(cmdline, env = None, shell = True, timeout = None))
 				elif opt == 'check_call':
 					self._expect[opt].append(cmdline)
 		return d

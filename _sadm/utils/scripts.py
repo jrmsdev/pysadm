@@ -2,10 +2,11 @@
 # See LICENSE file.
 
 from os import path, environ
-from subprocess import call, TimeoutExpired
+from subprocess import TimeoutExpired
 
 from _sadm import log, libdir
 from _sadm.errors import PluginScriptNotFound, PluginScriptNoExec, PluginScriptTimeout
+from _sadm.utils import cmd
 
 __all__ = ['Scripts']
 
@@ -39,7 +40,7 @@ class _Script(object):
 		if env is None:
 			env = environ.copy()
 		try:
-			return call(self._cmd, env = env, timeout = _TTL)
+			return cmd.call(self._cmd, env = env, timeout = _TTL)
 		except FileNotFoundError:
 			raise PluginScriptNotFound(self._cmd[0])
 		except PermissionError:
