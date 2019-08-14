@@ -1,6 +1,8 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
+from _sadm.utils.cmd import callCheck
+
 from .check import check
 
 __all__ = ['deploy']
@@ -17,3 +19,5 @@ def _cloneRepo(env, name, typ, repo):
 
 def _gitClone(env, name, repo):
 	env.log("clone git repo %s" % name)
+	cmd = ['git', 'clone', '-b', repo['branch'], repo['remote'], repo['path']]
+	callCheck(cmd)

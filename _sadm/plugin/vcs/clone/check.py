@@ -37,20 +37,14 @@ def check(env):
 			chdir(oldwd)
 	return status
 
-def getRepo(env, name):
-	repo = {}
-	sect = "vcs.repo.%s" % name
-	for key, defval in _OPTIONS:
-		repo[key] = env.settings.get(sect, key, fallback = defval)
-	return repo
-
 def _getRepos(env):
 	repos = {}
 	for sect in env.settings.sections():
-		if sect.startswith('vcs.repo.'):
-			rn = sect.replace('vcs.repo.', '', 1)
-			# override if already defined
-			repos[rn] = getRepo(env, rn)
+		if sect.startswith('vcs.repo:'):
+			rn = sect.replace('vcs.repo:', '', 1)
+			repos[rn] = {} # override if already defined
+			for key, defval in _OPTIONS:
+				repos[rn][key] = env.settings.get(sect, key, fallback = defval)
 	return repos
 
 def _gitCheck(env, status, name, repo): # TODO!!
