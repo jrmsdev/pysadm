@@ -55,10 +55,7 @@ class MockCmdProc(object):
 				if cmdline.startswith(path.join('_sadm', 'scripts')):
 					cmdline = "%s%s%s" % (_srcdir, path.sep, cmdline)
 				d[cmdline] = retval
-				if opt == 'call':
-					self._expect[opt].append(call(cmdline, env = None, shell = True, timeout = None))
-				elif opt == 'check_call':
-					self._expect[opt].append(cmdline)
+				self._expect[opt].append(cmdline)
 		return d
 
 	def _sideEffect(self, method):
@@ -79,7 +76,11 @@ class MockCmdProc(object):
 		if self._expect is None:
 			return
 		# call
-		got = self.call.call_args_list
+		got = []
+		for x in [x[1][0] for x in self.call.mock_calls]:
+			if isinstance(x, list):
+				x = ' '.join(x)
+			got.append(x)
 		expect = list(self._expect['call'])
 		assert got == expect, \
 			"call method check got: %s - expect: %s" % (got, expect)
