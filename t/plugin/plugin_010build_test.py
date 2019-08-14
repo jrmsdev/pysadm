@@ -15,6 +15,11 @@ def test_build_testing(testing_plugin):
 	p.check.builddir.file('sadm.testing') # just to check it works both ways
 	p.check.builddir.file('sadm.testing', 'testing\n')
 
+# ~ def test_build_vcs_clone(testing_plugin):
+	# ~ print('-- build plugin: vcs.clone')
+	# ~ p = testing_plugin('vcs.clone', cfgfn = 'build.ini')
+	# ~ p.build()
+
 def test_all_build(testing_plugin):
 	for n in pluginsList():
 		if n == 'testing':

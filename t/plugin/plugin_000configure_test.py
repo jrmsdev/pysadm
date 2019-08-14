@@ -11,5 +11,6 @@ def test_all_configure(testing_plugin):
 	for n in pluginsList():
 		if n in ('testing', 'sadm', 'sadmenv'):
 			continue
+		print('-- configure plugin:', n)
 		p = testing_plugin(n)
 		assert p.configure(), "%s plugin.configure failed" % n

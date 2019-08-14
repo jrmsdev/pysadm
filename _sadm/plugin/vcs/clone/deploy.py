@@ -4,4 +4,5 @@
 __all__ = ['deploy']
 
 def deploy(env):
-	pass
+	for opt in env.settings.options('vcs.clone'):
+		print(opt)

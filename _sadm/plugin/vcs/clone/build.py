@@ -4,4 +4,4 @@
 __all__ = ['build']
 
 def build(env):
-	pass
+	return None

@@ -2,7 +2,6 @@
 # See LICENSE file.
 
 from contextlib import contextmanager
-from unittest.mock import patch
 
 from _sadmtest.mock.utils.cmd import MockCmdProc
 from _sadmtest.mock.utils.sh import MockShUtil

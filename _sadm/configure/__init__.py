@@ -16,7 +16,6 @@ _order = deque()
 Plugin = namedtuple('Plugin', ('name', 'fullname', 'config', 'meta', 'mod'))
 
 def register(name, filename):
-	global _next
 	if name.startswith('_sadmtest.'):
 		n = name.replace('_sadmtest.plugin.', '')
 	else:
