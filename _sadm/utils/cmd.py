@@ -32,5 +32,3 @@ def callCheck(cmd, env = None):
 		return proc.check_call(cmd, env = env, shell = shell)
 	except subprocess.CalledProcessError as err:
 		raise PluginCommandError(str(err))
-
-call_check = callCheck # FIXME!!!

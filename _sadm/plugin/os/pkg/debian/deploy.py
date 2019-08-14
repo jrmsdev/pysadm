@@ -3,7 +3,7 @@
 
 from os import environ
 
-from _sadm.utils.cmd import call, call_check
+from _sadm.utils.cmd import call, callCheck
 
 from .check import check
 
@@ -30,7 +30,7 @@ def deploy(env):
 		_prune(pkg)
 
 def _call(cmd):
-	call_check(cmd, env = _cmdenv)
+	callCheck(cmd, env = _cmdenv)
 
 def _update():
 	_call(['apt-get', 'update'])
