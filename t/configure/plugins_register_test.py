@@ -53,10 +53,11 @@ def test_plugins_list_match_fs():
 	for x in fs:
 		fsok['.'.join(x.split(path.sep)[2:-1])] = True
 	fs = [x for x in fsok.keys()]
+	fs.remove('skel')
 	fs.append('testing')
 	fs = sorted(fs)
-	pl.append('skel')
 	pl = sorted(pl)
 	print('-- PL:', pl)
 	print('-- FS:', fs)
 	assert fs == pl
+	assert fs == sorted([n for _, n in _expectPlugins.items()])
