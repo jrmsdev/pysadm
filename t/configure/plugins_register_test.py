@@ -1,6 +1,9 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
+from glob import glob
+from os import path
+
 from _sadm import configure
 
 _expectPlugins = dict(enumerate((
@@ -40,3 +43,20 @@ def test_plugins_new():
 		known[n] = True
 	for p in configure.pluginsList():
 		assert known.get(p, False), "new unknown plugin: %s" % p
+
+def test_plugins_list_match_fs():
+	pl = list(configure.pluginsList())
+	fs = glob(path.join('_sadm', 'plugin', '*', 'config.ini'))
+	fs.extend(glob(path.join('_sadm', 'plugin', '**', 'config.ini')))
+	fs.extend(glob(path.join('_sadm', 'plugin', '**', '*', 'config.ini')))
+	fsok = {}
+	for x in fs:
+		fsok['.'.join(x.split(path.sep)[2:-1])] = True
+	fs = [x for x in fsok.keys()]
+	fs.append('testing')
+	fs = sorted(fs)
+	pl.append('skel')
+	pl = sorted(pl)
+	print('-- PL:', pl)
+	print('-- FS:', fs)
+	assert fs == pl
