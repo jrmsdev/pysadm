@@ -14,7 +14,7 @@ if test "${TAG}" = 'dev' || test "${TAG}" = 'docs'; then
 fi
 docker run -it --rm --name=${NAME} \
 	--hostname=${NAME} \
-	-e PATH=/home/sadm/.local/bin:/usr/local/bin:/usr/bin:/bin \
 	-v ${PWD}:/opt/src/sadm \
+	--user sadm \
 	${PYPATH} ${IMAGE} $@
 exit 0
