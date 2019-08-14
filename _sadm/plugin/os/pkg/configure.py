@@ -3,7 +3,7 @@
 
 __all__ = ['cfgfilter', 'configure']
 
-_options = ('update', 'install', 'remove', 'prune')
+_options = ('update', 'install', 'remove', 'prune', 'common.enable')
 
 def cfgfilter(env, pcfg, dep):
 	dn = env.dist() + '.'

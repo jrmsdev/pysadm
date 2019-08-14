@@ -13,7 +13,14 @@ def check(env, action = None):
 	l = ('install', 'remove', 'prune')
 	if action is not None and action in l:
 		l = (action,)
+	doCommon = env.settings.getboolean('os.pkg', 'common.enable', fallback = True)
+	commonDisable = []
+	if not doCommon:
+		for x in l:
+			commonDisable.append("%s.%s" % (dn, x))
 	for opt in env.settings['os.pkg']:
+		if opt in commonDisable:
+			continue
 		if opt in l:
 			_check(env, opt, diff)
 			continue
