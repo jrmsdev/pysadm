@@ -2,7 +2,9 @@
 # See LICENSE file.
 
 from collections import deque
-from os import path, chdir, getcwd
+from os import path
+
+from _sadm.utils.sh import chdir, getcwd
 
 __all__ = ['check', 'getRepo']
 

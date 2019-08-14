@@ -5,7 +5,7 @@ import os
 import shutil as _sh
 import tempfile
 
-__all__ = ['makedirs', 'chmod', 'chown', 'mktmp']
+__all__ = ['makedirs', 'chmod', 'chown', 'mktmp', 'getcwd', 'chdir']
 
 class TmpFile(object):
 	_fd = None
@@ -40,6 +40,8 @@ class _ShUtil(object):
 	chmod = os.chmod
 	chown = _sh.chown
 	mktmp = None
+	getcwd = os.getcwd
+	chdir = os.chdir
 
 	def __init__(self):
 		self.mktmp = self._mktmp
@@ -60,3 +62,9 @@ def chown(path, user = None, group = None):
 
 def mktmp(suffix = None, prefix = None, dir = None):
 	return shutil.mktmp(suffix = suffix, prefix = prefix, dir = dir)
+
+def getcwd():
+	return shutil.getcwd()
+
+def chdir(path):
+	return shutil.chdir(path)

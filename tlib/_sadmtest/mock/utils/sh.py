@@ -41,6 +41,8 @@ class MockShUtil(object):
 	chmod = None
 	chown = None
 	mktmp = None
+	getcwd = None
+	chdir = None
 
 	def __init__(self, cfg):
 		self._mock = Mock()
@@ -48,6 +50,8 @@ class MockShUtil(object):
 		self.chmod = self._mock.mock_chmod
 		self.chown = self._mock.mock_chown
 		self.mktmp = self._mock.mock_mktmp
+		self.getcwd = self._mock.mock_getcwd
+		self.chdir = self._mock.mock_chdir
 		self._configure(cfg)
 
 	def _configure(self, cfg):
@@ -56,6 +60,6 @@ class MockShUtil(object):
 	def _mktmp(self, suffix = None, prefix = None, dir = None):
 		return MockTmpFile(suffix = suffix, prefix = prefix, dir = dir)
 
-	def check(self):
+	def check(self): # TODO!!
 		# ~ assert self._mock.mock_calls == [], str(self._mock.mock_calls)
 		pass
