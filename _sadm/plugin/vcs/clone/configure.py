@@ -6,7 +6,6 @@ __all__ = ['configure']
 def configure(env, cfg):
 	if cfg.getboolean('vcs.clone', 'enable', fallback = True):
 		for s in cfg.sections():
-			print('-- SECTION:', s)
 			if s.startswith('vcs.repo'):
 				_configRepo(env, cfg, s)
 

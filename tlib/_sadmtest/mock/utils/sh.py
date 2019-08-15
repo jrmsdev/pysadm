@@ -39,6 +39,7 @@ class MockShUtil(object):
 	_mock = None
 	_expect = None
 	_return = None
+	_default = None
 	makedirs = None
 	chmod = None
 	chown = None
@@ -47,23 +48,29 @@ class MockShUtil(object):
 	chdir = None
 
 	def __init__(self, cfg):
+		self._expect = []
+		self._return = {}
+		self._default = {}
 		self._mock = Mock()
+		self.mktmp = self._mock.mock_mktmp
+		self.getcwd = self._mock.mock_getcwd
 		self.makedirs = self._mock.mock_makedirs
 		self.chmod = self._mock.mock_chmod
 		self.chown = self._mock.mock_chown
-		self.mktmp = self._mock.mock_mktmp
-		self.getcwd = self._mock.mock_getcwd
 		self.chdir = self._mock.mock_chdir
-		self._expect = []
-		self._return = {}
 		self._configure(cfg)
 
 	def _configure(self, cfg):
-		self.mktmp.side_effect = self._mktmp
-		self.getcwd.side_effect = self._getcwd
 		if cfg is None:
 			return
+		self._utilsDefault()
 		self._parseConfig(cfg)
+		self.mktmp.side_effect = self._mktmp
+		self.getcwd.side_effect = self._sideEffect('getcwd')
+		self.makedirs.side_effect = self._sideEffect('makedirs')
+
+	def _utilsDefault(self):
+		self._default['getcwd'] = path.join(path.sep, 'testing', 'workdir')
 
 	def _parseConfig(self, cfg):
 		data = cfg.get('shutil', fallback = '')
@@ -85,11 +92,19 @@ class MockShUtil(object):
 			self._return[name] = deque()
 		self._return[name].appendleft(data)
 
+	def _sideEffect(self, util):
+		def wrapper(*args, **kwargs):
+			rtrn = self._return.get(util, None)
+			if rtrn is None:
+				return self._default.get(util, None)
+			data = rtrn.pop()
+			if data == '':
+				return self._default.get(util, None)
+			return data
+		return wrapper
+
 	def _mktmp(self, suffix = None, prefix = None, dir = None):
 		return MockTmpFile(suffix = suffix, prefix = prefix, dir = dir)
-
-	def _getcwd(self):
-		return path.join(path.sep, 'testing', 'workdir')
 
 	def check(self):
 		got = []
