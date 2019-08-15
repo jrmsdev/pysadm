@@ -71,6 +71,10 @@ class MockPath(object):
 				return self._default.get(util, None)
 			if data == '':
 				return self._default.get(util, None)
+			if data == 'False':
+				return False
+			elif data == 'True':
+				return True
 			return data
 		return wrapper
 
