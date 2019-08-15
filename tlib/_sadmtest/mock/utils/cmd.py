@@ -83,7 +83,7 @@ class MockCmdProc(object):
 			got.append(x)
 		expect = list(self._expect['call'])
 		assert got == expect, \
-			"call method got: %s - expect: %s" % (got, expect)
+			"mock cmd call got: %s - expect: %s" % (got, expect)
 		# check_call
 		got = []
 		for x in [x[1][0] for x in self.check_call.mock_calls]:
@@ -92,4 +92,4 @@ class MockCmdProc(object):
 			got.append(x)
 		expect = list(self._expect['check_call'])
 		assert got == expect, \
-			"check_call method got: %s - expect: %s" % (got, expect)
+			"mock cmd check_call got: %s - expect: %s" % (got, expect)
