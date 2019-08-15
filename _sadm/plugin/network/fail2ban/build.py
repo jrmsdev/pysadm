@@ -1,9 +1,7 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
-from os import path
-
-from _sadm.utils import builddir
+from _sadm.utils import builddir, path
 
 __all__ = ['build']
 

@@ -1,9 +1,7 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
-from os import path, unlink
-
-from _sadm.utils import systemd
+from _sadm.utils import path, systemd
 
 __all__ = ['deploy']
 
@@ -14,6 +12,6 @@ def deploy(env):
 		fn = path.join(destdir, jn + '.conf')
 		if path.isfile(fn):
 			env.log("remove %s" % fn)
-			unlink(fn)
+			path.unlink(fn)
 	systemd.restart('fail2ban')
 	systemd.status('fail2ban')

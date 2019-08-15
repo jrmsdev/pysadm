@@ -1,10 +1,9 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
-from os import path
-
 from _sadm import libdir
 from _sadm.env.service import Service
+from _sadm.utils import path
 
 __all__ = ['configure']
 

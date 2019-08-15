@@ -1,8 +1,6 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
-from os import path
-
 from _sadm.utils import systemd
 from _sadm.utils.sh import makedirs, chmod, chown
 
