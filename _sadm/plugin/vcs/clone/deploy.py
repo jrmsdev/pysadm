@@ -18,7 +18,17 @@ def _cloneRepo(env, name, typ, repo):
 	if typ == 'git':
 		_gitClone(env, name, repo)
 
+_gitConfigDone = False
+
+def _gitConfig():
+	global _gitConfigDone
+	cmd = ['git', 'config', '--global', 'core.sshCommand',
+		'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no']
+	callCheck(cmd)
+	_gitConfigDone = True
+
 def _gitClone(env, name, repo):
+	_gitConfigDone or _gitConfig()
 	env.log("clone git repo %s" % name)
 	cmd = ['git', 'clone', '-b', repo['branch'], repo['remote'], repo['path']]
 	callCheck(cmd)

@@ -14,7 +14,6 @@ import _sadm.plugin.os.user
 
 # deploy assets after all os stuff was done but before services/apps setup
 # so services/apps deploy can use built (already deployed) assets
-
 import _sadm.plugin.sync
 
 # network plugins
@@ -23,7 +22,6 @@ import _sadm.plugin.network.iptables
 import _sadm.plugin.network.fail2ban
 
 # vcs clone should happen between network and service stuff
-
 import _sadm.plugin.vcs.clone
 
 # service plugins
@@ -37,5 +35,4 @@ import _sadm.plugin.service.munin_node
 
 # services that depend on apache should go before it
 # so apache is restarted after all deps were setup
-
 import _sadm.plugin.service.apache

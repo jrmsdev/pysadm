@@ -92,4 +92,4 @@ class MockCmdProc(object):
 			got.append(x)
 		expect = list(self._expect['check_call'])
 		assert got == expect, \
-			"mock cmd check_call got: %s - expect: %s" % (got, expect)
+			"mock cmd check_call \ngot:\n%s\nexpect:\n%s" % ('\n'.join(got), '\n'.join(expect))
