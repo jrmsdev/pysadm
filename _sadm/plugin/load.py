@@ -24,11 +24,12 @@ import _sadm.plugin.network.fail2ban
 # vcs clone should happen between network and service stuff
 import _sadm.plugin.vcs.clone
 
+# docker stuff
+import _sadm.plugin.docker
+
 # service plugins
 
 import _sadm.plugin.service.postfix
-
-import _sadm.plugin.service.docker
 
 import _sadm.plugin.service.munin
 import _sadm.plugin.service.munin_node
