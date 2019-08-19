@@ -3,5 +3,15 @@
 
 __all__ = ['configure']
 
+_composeOptions = ('path',)
+
 def configure(env, cfg):
-	pass
+	if not cfg.getboolean('docker', 'enable', fallback = False):
+		return
+	env.settings.merge(cfg, 'docker', ('enable',))
+	for s in cfg.sections():
+		if s.startswith('docker.compose:'):
+			name = s.replace('docker.compose:', '', 1).strip()
+			if name == '':
+				raise env.error('docker.compose name is empty')
+			env.settings.merge(cfg, s, _composeOptions)
