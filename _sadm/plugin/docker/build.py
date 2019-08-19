@@ -13,7 +13,7 @@ def build(env):
 			_composeConfigure(env, name, cfg)
 
 def _composeConfigure(env, name, cfg):
-	env.log("docker-compose configure %s" % name)
+	env.log("docker-compose %s" % name)
 	enable = cfg.getboolean('systemd.enable', fallback = True)
 	if enable:
 		spath = cfg.get('path', fallback = '')

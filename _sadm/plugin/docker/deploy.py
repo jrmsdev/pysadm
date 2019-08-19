@@ -27,14 +27,8 @@ def _composeBuild(env, name, cfg):
 def _composeConfigure(env, name, cfg):
 	env.log("docker-compose configure %s" % name)
 	enable = cfg.getboolean('systemd.enable', fallback = True)
+	service = "docker-compose-%s.service" % name
 	if enable:
-		service = "docker-compose-%s.service" % name
 		systemd.enable(service)
-	if cfg.getboolean('start', fallback = True):
-		workdir = cfg.get('path')
-		oldwdir = sh.getcwd()
-		try:
-			sh.chdir(workdir)
-			cmd.callCheck(['docker-compose', 'up'])
-		finally:
-			sh.chdir(oldwdir)
+		if cfg.getboolean('start', fallback = True):
+			systemd.start(service)
