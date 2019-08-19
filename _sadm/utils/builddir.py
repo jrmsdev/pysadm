@@ -69,7 +69,7 @@ def fpath(env, *parts, meta = False):
 		bdir = path.normpath(bdir) + '.meta'
 	fn = path.join(*parts)
 	fn = path.normpath(fn)
-	if fn.startswith(path.sep):
+	while fn.startswith(path.sep):
 		fn = fn.replace(path.sep, '', 1)
 	return path.realpath(path.join(bdir, fn))
 

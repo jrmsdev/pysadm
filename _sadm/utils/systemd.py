@@ -1,6 +1,8 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
+from _sadm import libdir
+from _sadm.utils import builddir, path
 from _sadm.utils.cmd import call, callCheck
 
 _ctlcmd = ['systemctl', '--quiet', '--no-pager', '--no-legend', '--no-ask-password']
@@ -29,3 +31,12 @@ def restart(service, *args):
 
 def reload(service, *args):
 	return _cmd(service, 'reload', *args)
+
+def configure(env, unit, typ, name, tpldat):
+	service = "%s-%s.%s" % (unit, name, typ)
+	with libdir.fopen('utils', 'systemd', "%s.%s" % (unit, typ)) as fh:
+		data = fh.read()
+	dst = path.join('etc', 'systemd', 'system', service)
+	with builddir.create(env, dst) as fh:
+		fh.write(data.format(**tpldat))
+		fh.flush()
