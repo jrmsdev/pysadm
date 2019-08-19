@@ -7,7 +7,6 @@ AssertFileIsExecutable=/usr/bin/docker-compose
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-Restart=on-failure
 SuccessExitStatus=0
 WorkingDirectory={servicePath}
 ExecStart=/usr/bin/docker-compose up --detach --build
