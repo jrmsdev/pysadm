@@ -1,7 +1,7 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
-from _sadm.utils import systemd
+from _sadm.utils import systemd, path, sh, cmd
 
 __all__ = ['deploy']
 
@@ -10,7 +10,19 @@ def deploy(env):
 		if s.startswith('docker-compose:'):
 			name = s.replace('docker-compose:', '', 1).strip()
 			cfg = env.settings[s]
+			_composeBuild(env, name, cfg)
 			_composeConfigure(env, name, cfg)
+
+def _composeBuild(env, name, cfg):
+	env.log("docker-compose build %s" % name)
+	if cfg.getboolean('build', fallback = True):
+		workdir = cfg.get('path')
+		oldwdir = sh.getcwd()
+		try:
+			sh.chdir(workdir)
+			cmd.callCheck(['docker-compose', 'build'])
+		finally:
+			sh.chdir(oldwdir)
 
 def _composeConfigure(env, name, cfg):
 	env.log("docker-compose configure %s" % name)
@@ -18,3 +30,11 @@ def _composeConfigure(env, name, cfg):
 	if enable:
 		service = "docker-compose-%s.service" % name
 		systemd.enable(service)
+	if cfg.getboolean('start', fallback = True):
+		workdir = cfg.get('path')
+		oldwdir = sh.getcwd()
+		try:
+			sh.chdir(workdir)
+			cmd.callCheck(['docker-compose', 'up'])
+		finally:
+			sh.chdir(oldwdir)
