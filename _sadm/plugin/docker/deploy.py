@@ -6,7 +6,7 @@ from _sadm.utils import systemd, path, sh, cmd
 __all__ = ['deploy']
 
 def deploy(env):
-	systemd.reload('docker')
+	systemd.restart('docker')
 	for s in env.settings.sections():
 		if s.startswith('docker-compose:'):
 			name = s.replace('docker-compose:', '', 1).strip()
