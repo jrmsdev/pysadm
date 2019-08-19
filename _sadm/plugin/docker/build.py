@@ -9,8 +9,6 @@ def build(env):
 	for s in env.settings.sections():
 		if s.startswith('docker-compose:'):
 			name = s.replace('docker-compose:', '', 1).strip()
-			if name == '':
-				raise env.error('docker-compose name is empty')
 			cfg = env.settings[s]
 			_composeConfigure(env, name, cfg)
 

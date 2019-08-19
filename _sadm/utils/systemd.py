@@ -5,6 +5,8 @@ from _sadm import libdir
 from _sadm.utils import builddir, path
 from _sadm.utils.cmd import call, callCheck
 
+__all__ = ['status', 'start', 'stop', 'restart', 'reload', 'enable', 'configure']
+
 _ctlcmd = ['systemctl', '--quiet', '--no-pager', '--no-legend', '--no-ask-password']
 
 def _cmd(service, action, *args, check = True):
@@ -31,6 +33,9 @@ def restart(service, *args):
 
 def reload(service, *args):
 	return _cmd(service, 'reload', *args)
+
+def enable(service, *args):
+	return _cmd(service, 'enable', *args)
 
 def configure(env, unit, typ, name, tpldat):
 	service = "%s-%s.%s" % (unit, name, typ)

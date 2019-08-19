@@ -21,6 +21,8 @@ recursive-include _sadm/plugin *.ini
 
 recursive-include _sadm/scripts *.sh
 
+recursive-include _sadm/utils/systemd *.service
+
 recursive-include _sadm/web/html *.html
 recursive-include _sadm/web/static *.css
 recursive-include _sadm/web/static *.ico
