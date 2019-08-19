@@ -16,4 +16,5 @@ def _configRepo(env, cfg, sect):
 		'branch',
 		'checkout',
 		'path',
+		'update',
 	))

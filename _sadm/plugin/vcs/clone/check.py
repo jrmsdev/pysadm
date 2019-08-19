@@ -14,6 +14,7 @@ _OPTIONS = (
 	('branch', 'master'),
 	('checkout', ''),
 	('path', ''),
+	('update', False),
 )
 
 def check(env):
@@ -37,6 +38,7 @@ def check(env):
 			raise env.error("%s" % err)
 		finally:
 			chdir(oldwd)
+		status.append(('OK', name, typ, repo))
 	return status
 
 def _getRepos(env):
@@ -46,7 +48,10 @@ def _getRepos(env):
 			rn = sect.replace('vcs.repo:', '', 1)
 			repos[rn] = {} # override if already defined
 			for key, defval in _OPTIONS:
-				repos[rn][key] = env.settings.get(sect, key, fallback = defval)
+				if isinstance(defval, bool):
+					repos[rn][key] = env.settings.getboolean(sect, key, fallback = defval)
+				else:
+					repos[rn][key] = env.settings.get(sect, key, fallback = defval)
 	return repos
 
 def _gitCheck(env, status, name, repo): # TODO!!

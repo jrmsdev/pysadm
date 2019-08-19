@@ -13,10 +13,18 @@ def deploy(env):
 	for st, name, typ, repo in status:
 		if st == 'MISS':
 			_cloneRepo(env, name, typ, repo)
+		else:
+			_updateRepo(env, name, typ, repo)
 
 def _cloneRepo(env, name, typ, repo):
 	if typ == 'git':
 		_gitClone(env, name, repo)
+
+def _updateRepo(env, name, typ, repo):
+	if not repo['update']:
+		return
+	if typ == 'git':
+		_gitUpdate(env, name, repo)
 
 _gitConfigDone = False
 
@@ -40,3 +48,12 @@ def _gitClone(env, name, repo):
 			callCheck(cmd)
 		finally:
 			chdir(oldwd)
+
+def _gitUpdate(env, name, repo):
+	env.log("update git repo %s" % name)
+	oldwd = getcwd()
+	try:
+		chdir(repo['path'])
+		callCheck(['git', 'pull'])
+	finally:
+		chdir(oldwd)
