@@ -39,5 +39,5 @@ class WebhookRepo(object):
 		self._prov.auth(req)
 
 	def exec(self, task, req):
-		fn = self._prov.task(task, req)
-		dispatch(task, fn)
+		# ~ fn = self._prov.task(task, req)
+		dispatch(task, '')

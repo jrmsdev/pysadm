@@ -1,7 +1,7 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
-from bottle import response, HTTPError, request
+from bottle import response, HTTPError, request, HTTP_CODES
 
 from _sadm import log
 
@@ -18,7 +18,10 @@ def handler(code, error):
 	else:
 		log.error("%s %d - %s" % (request.remote_addr, code, request.path))
 	response.headers['Content-Type'] = 'text/plain; charset=UTF-8'
-	return "ERROR: %d\n" % code
+	codeStatus = HTTP_CODES.get(code, None)
+	if codeStatus is not None:
+		return "%s\n" % codeStatus
+	return "ERROR %d\n" % code
 
 def init(wapp):
 
