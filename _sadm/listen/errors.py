@@ -18,7 +18,7 @@ def handler(code, error):
 	else:
 		log.error("%s %d - %s" % (request.remote_addr, code, request.path))
 	response.headers['Content-Type'] = 'text/plain; charset=UTF-8'
-	return "ERROR: %d" % code
+	return "ERROR: %d\n" % code
 
 def init(wapp):
 
@@ -33,6 +33,10 @@ def init(wapp):
 	@wapp.error(404)
 	def error_404(error):
 		return handler(404, error)
+
+	@wapp.error(405)
+	def error_405(error):
+		return handler(405, error)
 
 def error(code, msg):
 	log.error("%s %d - %s" % (request.remote_addr, code, msg))
