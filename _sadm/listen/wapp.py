@@ -51,6 +51,8 @@ def init(cfgfn = None):
 			if not initDone.get('webhook', False):
 				log.debug('enable webhook')
 				from _sadm.listen import webhook
+				from _sadm.listen.plugin.webhook import WebhookPlugin
+				wapp.install(WebhookPlugin())
 				initDone['webhook'] = True
 
 	return wapp

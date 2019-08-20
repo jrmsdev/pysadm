@@ -39,3 +39,7 @@ class WebhookRepo(object):
 		if typeClass is None:
 			raise error(400, "webhook %s repo %s invalid type: %s" % (provider, name, rType))
 		self.cmd = typeClass(cfg)
+
+	def auth(self, req):
+		# ~ self._prov.auth(req)
+		pass
