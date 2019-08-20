@@ -1,23 +1,20 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
+from _sadm.listen.exec import dispatch
 from _sadm.listen.errors import error
 
-from .git import GitRepo
 from .provider.bitbucket import BitbucketProvider
 
 __all__ = ['WebhookRepo']
 
-_type = {
-	'git': GitRepo,
-}
+_types = ['git']
 _provider = {
 	'bitbucket': BitbucketProvider,
 }
 
 class WebhookRepo(object):
 	_prov = None
-	cmd = None
 
 	def __init__(self, config, provider, name):
 		provClass = _provider.get(provider, None)
@@ -35,11 +32,12 @@ class WebhookRepo(object):
 		if rProv != provider:
 			raise error(400, "webhook %s repo %s invalid provider: %s" % (provider, name, rProv))
 		rType = cfg.get('type', fallback = 'git')
-		typeClass = _type.get(rType, None)
-		if typeClass is None:
+		if not rType in _types:
 			raise error(400, "webhook %s repo %s invalid type: %s" % (provider, name, rType))
-		self.cmd = typeClass(cfg)
 
 	def auth(self, req):
-		# ~ self._prov.auth(req)
-		pass
+		self._prov.auth(req)
+
+	def exec(self, task, req):
+		fn = self._prov.task(task, req)
+		dispatch(task, fn)

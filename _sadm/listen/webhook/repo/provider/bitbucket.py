@@ -7,3 +7,6 @@ class BitbucketProvider(object):
 
 	def __init__(self, cfg):
 		pass
+
+	def auth(self, req):
+		pass

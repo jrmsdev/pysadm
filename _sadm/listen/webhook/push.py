@@ -13,4 +13,5 @@ __all__ = ['push']
 def push(provider, name):
 	repo = WebhookRepo(config, provider, name)
 	repo.auth(request)
+	repo.exec('webhook.repo.push', request)
 	return 'done'

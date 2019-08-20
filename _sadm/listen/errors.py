@@ -5,7 +5,7 @@ from bottle import response, HTTPError, request
 
 from _sadm import log
 
-__all__ = ['init']
+__all__ = ['init', 'error']
 
 def handler(code, error):
 	log.debug("handler %d" % code)
