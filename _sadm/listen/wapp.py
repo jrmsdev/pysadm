@@ -5,6 +5,7 @@ import bottle
 from configparser import ConfigParser, ExtendedInterpolation
 
 from _sadm import libdir, log, version
+from _sadm.listen import errors
 from _sadm.utils import path
 
 __all__ = ['wapp', 'config', 'init']
@@ -14,6 +15,8 @@ bottle.TEMPLATE_PATH = []
 
 _cfgfn = libdir.fpath('listen', 'wapp.conf')
 wapp.config.load_config(_cfgfn)
+
+errors.init(wapp)
 
 config = ConfigParser(
 	defaults = {
