@@ -16,8 +16,6 @@ bottle.TEMPLATE_PATH = []
 _cfgfn = libdir.fpath('listen', 'wapp.conf')
 wapp.config.load_config(_cfgfn)
 
-errors.init(wapp)
-
 config = ConfigParser(
 	defaults = {
 		'sadm': {
@@ -44,10 +42,12 @@ def init(cfgfn = None):
 	log.init(config.get('sadm', 'log'))
 	log.debug(version.string('sadm'))
 
-	initDone = {}
+	errors.init(wapp)
 
+	initDone = {}
 	for sect in config.sections():
-		if sect == 'sadm.webhook':
+
+		if sect.startswith('sadm.webhook:'):
 			if not initDone.get('webhook', False):
 				log.debug('enable webhook')
 				from _sadm.listen import webhook
