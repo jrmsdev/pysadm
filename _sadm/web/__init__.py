@@ -13,4 +13,4 @@ import _sadm.web.view.about
 
 def start(host, port, debug):
 	wapp.run(host = host, port = port, reloader = debug,
-		quiet = log._curlevel != 'debug', debug = debug)
+		quiet = log.curLevel('debug'), debug = debug)

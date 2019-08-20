@@ -17,17 +17,17 @@ include tdata/deploy.cfg
 include tdata/sadm.cfg
 include tdata/profile-dir-isfile.test
 
+include _sadm/listen/wapp.conf
+
 recursive-include _sadm/plugin *.ini
-
 recursive-include _sadm/scripts *.sh
-
 recursive-include _sadm/utils/systemd *.service
 
+include _sadm/web/app.conf
 recursive-include _sadm/web/html *.html
 recursive-include _sadm/web/static *.css
 recursive-include _sadm/web/static *.ico
 recursive-include _sadm/web/static *.png
-include _sadm/web/app.conf
 
 include docs/build.sh
 include docs/conf.py

@@ -177,6 +177,9 @@ def levels():
 def defaultLevel():
 	return 'warn'
 
+def curLevel(lvl):
+	return _curlevel == lvl
+
 def debug(msg, depth = None, tag = None):
 	_logger.debug(msg, depth = depth, tag = tag)
 

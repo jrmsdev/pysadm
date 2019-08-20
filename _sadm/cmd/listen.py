@@ -4,7 +4,9 @@
 # See LICENSE file.
 
 import sys
+
 from _sadm import listen
+from _sadm.cmd import flags
 
 def main():
 	return listen.start()

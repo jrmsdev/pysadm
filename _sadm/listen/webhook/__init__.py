@@ -3,4 +3,10 @@
 
 from . import bitbucket
 
-__all__ = []
+__all__ = ['WebhookPlugin']
+
+class WebhookPlugin(object):
+	name = 'sadm.webhook'
+
+	def setup(self, wapp):
+		pass
