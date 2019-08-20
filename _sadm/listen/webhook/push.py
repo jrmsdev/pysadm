@@ -5,6 +5,6 @@ from _sadm.listen.wapp import wapp
 
 __all__ = ['push']
 
-@wapp.route('/hook/bitbucket/<name>/push')
-def push(repo, name):
+@wapp.route('/hook/<provider>/<name>/push')
+def push(repo, provider, name):
 	return 'it works!!'
