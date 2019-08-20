@@ -14,9 +14,8 @@ class WebhookPlugin(object):
 		log.debug('setup')
 
 	def apply(self, callback, ctx):
-		log.debug("ctx: %s - %s" % (type(ctx), ctx))
 		if ctx['rule'].startswith('/hook/'):
-			log.debug('apply')
+			log.debug("apply for rule: %s" % ctx['rule'])
 			def wrapper(*args, **kwargs):
 				log.debug('apply.wrapper')
 				resp = callback(*args, **kwargs)
