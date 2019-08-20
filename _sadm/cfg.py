@@ -24,7 +24,7 @@ _DEFAULT = {
 	'plugins': ','.join(_enablePlugins),
 }
 
-class Config(ConfigParser):
+class BaseConfig(ConfigParser):
 	_fn = None
 	_name = None
 
@@ -54,6 +54,8 @@ class Config(ConfigParser):
 				self.read_file(fh)
 		except FileNotFoundError:
 			raise ProfileError("%s file not found" % self._fn)
+
+class Config(BaseConfig):
 
 	def listProfiles(self):
 		return sorted(self.sections())
