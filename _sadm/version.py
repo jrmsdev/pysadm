@@ -19,6 +19,8 @@ def get():
 def build():
 	return _version_build
 
-def string():
+def string(prog = None):
 	s = "%s (build %s)" % (get(), build())
-	return '%(prog)s version ' + s
+	if prog is None:
+		return '%(prog)s version ' + s
+	return "%s version %s" % (prog, s)

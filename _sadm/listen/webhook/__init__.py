@@ -10,3 +10,6 @@ class WebhookPlugin(object):
 
 	def setup(self, wapp):
 		pass
+
+	def apply(self, callback, route):
+		pass

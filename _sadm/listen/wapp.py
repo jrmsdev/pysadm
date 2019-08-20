@@ -3,7 +3,7 @@
 
 import bottle
 
-from _sadm import libdir, log
+from _sadm import libdir, log, version
 from _sadm.utils import path
 
 __all__ = ['wapp']
@@ -19,9 +19,9 @@ if path.isfile(_systemCfg):
 	wapp.config.load_config(_systemCfg)
 
 log.init(wapp.config['sadm.log'])
+log.debug(version.string('sadm'))
 
 for opt in wapp.config.keys():
-	log.debug("config section %s" % opt)
 	if opt.startswith('sadm.webhook.'):
 		log.debug("enable %s" % opt)
 		from _sadm.listen.webhook import WebhookPlugin
