@@ -10,16 +10,20 @@ __all__ = ['makedirs', 'chmod', 'chown', 'mktmp', 'getcwd', 'chdir']
 class TmpFile(object):
 	_fd = None
 	_fn = None
+	_rm = None
 
-	def __init__(self, suffix = None, prefix = None, dir = None):
+	def __init__(self, suffix = None, prefix = None, dir = None, remove = False):
 		self._fd, self._fn = tempfile.mkstemp( suffix = suffix,
 			prefix = prefix, dir = dir, text = False)
+		self._rm = remove
 
 	def __enter__(self):
 		return self
 
 	def __exit__(self, *args):
 		self._close()
+		if self._rm:
+			self.unlink()
 
 	def close(self):
 		os.close(self._fd)
@@ -46,8 +50,8 @@ class _ShUtil(object):
 	def __init__(self):
 		self.mktmp = self._mktmp
 
-	def _mktmp(self, suffix = None, prefix = None, dir = None):
-		return TmpFile(suffix = suffix, prefix = prefix, dir = dir)
+	def _mktmp(self, suffix = None, prefix = None, dir = None, remove = False):
+		return TmpFile(suffix = suffix, prefix = prefix, dir = dir, remove = remove)
 
 shutil = _ShUtil()
 
@@ -60,8 +64,8 @@ def chmod(path, mode):
 def chown(path, user = None, group = None):
 	return shutil.chown(path, user = user, group = group)
 
-def mktmp(suffix = None, prefix = None, dir = None):
-	return shutil.mktmp(suffix = suffix, prefix = prefix, dir = dir)
+def mktmp(suffix = None, prefix = None, dir = None, remove = False):
+	return shutil.mktmp(suffix = suffix, prefix = prefix, dir = dir, remove = remove)
 
 def getcwd():
 	return shutil.getcwd()

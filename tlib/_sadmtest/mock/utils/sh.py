@@ -8,7 +8,7 @@ from unittest.mock import Mock
 class MockTmpFile(object):
 	_fn = None
 
-	def __init__(self, suffix = None, prefix = None, dir = None):
+	def __init__(self, suffix = None, prefix = None, dir = None, remove = False):
 		if suffix is None:
 			suffix = '.mock'
 		if prefix is None:
@@ -106,8 +106,8 @@ class MockShUtil(object):
 			return data
 		return wrapper
 
-	def _mktmp(self, suffix = None, prefix = None, dir = None):
-		return MockTmpFile(suffix = suffix, prefix = prefix, dir = dir)
+	def _mktmp(self, suffix = None, prefix = None, dir = None, remove = False):
+		return MockTmpFile(suffix = suffix, prefix = prefix, dir = dir, remove = remove)
 
 	def check(self):
 		got = []
