@@ -28,6 +28,14 @@ def _run(taskfn):
 	callCheck(cmd)
 
 def main(args):
+	if len(args) != 1:
+		print('ERROR: sadm-listen exec no args', file = sys.stderr)
+		return 1
+	taskfn = args[0]
+	print(taskfn)
+	task = None
+	with open(taskfn, 'r') as fh:
+		task = json.load(fh)
 	return 0
 
 if __name__ == '__main__':
