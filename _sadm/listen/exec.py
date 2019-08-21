@@ -54,6 +54,9 @@ def main(args):
 	try:
 		with open(taskfn, 'r') as fh:
 			obj = json.load(fh)
+	except Exception as err:
+		log.error("%s" % err)
+		return 2
 	finally:
 		path.unlink(taskfn)
 	log.init(obj.get('sadm.log', 'warn'))
@@ -62,15 +65,15 @@ def main(args):
 	task = obj.get('task', None)
 	if task is None:
 		log.error('listen.exec task not set')
-		return 2
+		return 3
 	taskAction = obj.get('task.action', None)
 	if taskAction is None:
 		log.error("listen.exec task %s: no action" % task)
-		return 3
+		return 4
 	taskArgs = obj.get('task.args', None)
 	if taskArgs is None:
 		log.error("listen.exec task %s: no args" % task)
-		return 4
+		return 5
 	cliURL = obj.get('sadm.listen.url', 'http://127.0.0.1:3666')
 	cli = ListenClient(cliURL)
 	cli.exec(task, taskAction, taskArgs)
