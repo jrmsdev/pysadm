@@ -5,6 +5,7 @@ import json
 import sys
 
 from _sadm import log, libdir, version
+from _sadm.listen.webhook.repo.provider.bitbucket import BitbucketProvider
 from _sadm.utils import sh, path
 from _sadm.utils.cmd import callCheck
 
@@ -29,8 +30,7 @@ def dispatch(task, action, kwargs):
 	try:
 		_run(taskfn)
 	finally:
-		# ~ path.unlink(taskfn)
-		pass # FIXME
+		path.unlink(taskfn)
 
 def _run(taskfn):
 	self = libdir.fpath('listen', 'exec.py')
@@ -43,6 +43,7 @@ def _run(taskfn):
 #
 
 _taskman = {
+	'webhook.repo.bitbucket': BitbucketProvider(),
 }
 
 def main(args):
@@ -56,6 +57,10 @@ def main(args):
 	log.init(obj.get('sadm.log', 'warn'))
 	log.debug(version.string('sadm-listen'))
 	log.debug("task file %s" % taskfn)
+	task = obj.get('task', None)
+	if task is None:
+		raise RuntimeError('listen.exec task not set')
+	tman = _taskman.get(task, None)
 	return 0
 
 if __name__ == '__main__':

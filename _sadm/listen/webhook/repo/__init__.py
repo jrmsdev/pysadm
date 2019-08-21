@@ -16,7 +16,7 @@ _validVCS = {
 	'git': True,
 }
 _provider = {
-	'bitbucket': BitbucketProvider,
+	'bitbucket': BitbucketProvider(),
 }
 
 class WebhookRepo(object):
@@ -29,8 +29,8 @@ class WebhookRepo(object):
 	def __init__(self, config, provider, name):
 		self._provName = provider
 		self._repoName = name
-		provClass = _provider.get(provider, None)
-		if provClass is None:
+		prov = _provider.get(provider, None)
+		if prov is None:
 			raise error(400, "webhook invalid provider: %s" % provider)
 		sect = "sadm.webhook:%s" % name
 		if not config.has_section(sect):
@@ -39,7 +39,7 @@ class WebhookRepo(object):
 
 		# TODO: check repo.path and other pre-fly checks
 
-		self._prov = provClass()
+		self._prov = prov
 		self._loadRepo(self._cfg, provider, name)
 
 	def _loadRepo(self, cfg, provider, name):
@@ -66,11 +66,11 @@ class WebhookRepo(object):
 			args = {
 				'request': reqfn,
 				'repo.name': self._repoName,
-				'repo.provider': self._provName,
 				'repo.vcs': self._repoVCS,
 				'repo.path': self._cfg.get('path'),
 			}
-			dispatch('webhook.repo', action, args)
+			task = "webhook.repo.%s" % self._provName
+			dispatch(task, action, args)
 		finally:
 			path.unlink(reqfn)
 
