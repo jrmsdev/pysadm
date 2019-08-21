@@ -12,15 +12,19 @@ from .provider.bitbucket import BitbucketProvider
 
 __all__ = ['WebhookRepo']
 
-_types = ['git']
+_validVCS = {
+	'git': True,
+}
 _provider = {
 	'bitbucket': BitbucketProvider,
 }
 
 class WebhookRepo(object):
+	_cfg = None
 	_prov = None
 	_provName = None
 	_repoName = None
+	_repoVCS = None
 
 	def __init__(self, config, provider, name):
 		self._provName = provider
@@ -31,28 +35,42 @@ class WebhookRepo(object):
 		sect = "sadm.webhook:%s" % name
 		if not config.has_section(sect):
 			raise error(400, "webhook %s repo not found: %s" % (provider, name))
-		cfg = config[sect]
-		self._prov = provClass(cfg)
-		self._loadRepo(cfg, provider, name)
+		self._cfg = config[sect]
+
+		# TODO: check repo.path and other pre-fly checks
+
+		self._prov = provClass()
+		self._loadRepo(self._cfg, provider, name)
 
 	def _loadRepo(self, cfg, provider, name):
-		rProv = cfg.get('provider', fallback = '')
+		rProv = cfg.get('provider', fallback = 'none')
 		if rProv != provider:
 			raise error(400, "webhook %s repo %s invalid provider: %s" % (provider, name, rProv))
-		rType = cfg.get('type', fallback = 'git')
-		if not rType in _types:
-			raise error(400, "webhook %s repo %s invalid type: %s" % (provider, name, rType))
+		vcs = cfg.get('vcs', fallback = 'git')
+		if not _validVCS.get(vcs, False):
+			raise error(400, "webhook %s repo %s invalid vcs: %s" % (provider, name, vcs))
+		self._repoVCS = vcs
 
 	def auth(self, req):
-		self._prov.auth(req)
+		self._prov.auth(req, self._cfg)
 
-	def exec(self, task, req):
+	def exec(self, req, action):
 		log.debug("req.body: %s" % req.body)
 		if not req.body:
 			raise error(400, "webhook %s repo %s empty body" % (self._provName, self._repoName))
+
+		# TODO: check self._cfg.getboolean(action... if disabled raise error 400
+
 		reqfn = self._reqSave(req.body)
 		try:
-			dispatch(task, request = reqfn)
+			args = {
+				'request': reqfn,
+				'repo.name': self._repoName,
+				'repo.provider': self._provName,
+				'repo.vcs': self._repoVCS,
+				'repo.path': self._cfg.get('path'),
+			}
+			dispatch('webhook.repo', action, args)
 		finally:
 			path.unlink(reqfn)
 

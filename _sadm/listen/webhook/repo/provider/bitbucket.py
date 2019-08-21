@@ -5,8 +5,5 @@ __all__ = ['BitbucketProvider']
 
 class BitbucketProvider(object):
 
-	def __init__(self, cfg):
-		pass
-
-	def auth(self, req):
+	def auth(self, req, cfg):
 		pass

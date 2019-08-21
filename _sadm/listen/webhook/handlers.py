@@ -13,6 +13,5 @@ __all__ = ['repo']
 def repo(provider, name, action):
 	repo = WebhookRepo(config, provider, name)
 	repo.auth(request)
-	task = "webhook.repo.%s" % action
-	repo.exec(task, request)
+	repo.exec(request, action)
 	return 'OK\n'
