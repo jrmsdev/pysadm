@@ -60,7 +60,15 @@ def main(args):
 	task = obj.get('task', None)
 	if task is None:
 		raise RuntimeError('listen.exec task not set')
-	tman = _taskman.get(task, None)
+	taskman = _taskman.get(task, None)
+	if taskman is None:
+		raise RuntimeError("listen.exec task %s: no manager" % task)
+	taskAction = obj.get('task.action', None)
+	if taskAction is None:
+		raise RuntimeError("listen.exec task %s: no action" % task)
+	taskArgs = obj.get('task.args', None)
+	if taskArgs is None:
+		raise RuntimeError("listen.exec task %s: no args" % task)
 	return 0
 
 if __name__ == '__main__':
