@@ -28,5 +28,6 @@ class ListenClient(object):
 			log.error("%s - %s" % (url, err))
 
 	def exec(self, task, action, args):
+		log.debug("exec: %s %s" % (task, action))
 		path = self._path('_', 'exec', task, action)
 		self._post(path, json.dumps(args).encode('UTF-8'))

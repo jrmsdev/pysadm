@@ -17,12 +17,13 @@ _taskman = {
 
 @wapp.route('/_/exec/<task>/<action>', 'POST')
 def exech(task, action):
+	log.debug("exec handle: %s %s" % (task, action))
 	taskman = _taskman.get(task, None)
 	if taskman is None:
 		raise error(500, "listen.exec task %s: no manager" % task)
 	try:
 		args = json.load(request.body)
-		taskman.hook(task, args)
+		taskman.hook(action, args)
 	except Exception as err:
 		raise error(500, "%s" % err)
 	return 'OK\n'
