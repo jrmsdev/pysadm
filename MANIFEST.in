@@ -63,4 +63,5 @@ include .dockerignore
 include docker/Dockerfile
 include docker/Dockerfile.*
 include docker/build.sh
+include docker/build-all.sh
 include docker/run.sh

@@ -65,6 +65,6 @@ class WebhookRepo(object):
 		args = self._prov.repoArgs(obj, self._cfg)
 		task = "webhook.repo.%s" % self._repoVCS
 		try:
-			dispatch(task, action, args)
+			dispatch(req, task, action, args)
 		except CommandError as err:
 			raise error(500, "webhook %s repo %s: %s" % (self._provName, self._repoName, err))
