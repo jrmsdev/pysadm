@@ -6,7 +6,7 @@ import json
 from _sadm import log
 from _sadm.listen.exec import dispatch
 from _sadm.listen.errors import error
-from _sadm.utils import sh
+from _sadm.utils import sh, path
 
 from .provider.bitbucket import BitbucketProvider
 
@@ -51,7 +51,10 @@ class WebhookRepo(object):
 		if not req.body:
 			raise error(400, "webhook %s repo %s empty body" % (self._provName, self._repoName))
 		fn = self._reqSave(req.body)
-		dispatch(task, fn)
+		try:
+			dispatch(task, fn)
+		finally:
+			path.unlink(fn)
 
 	def _reqSave(self, body):
 		obj = json.loads(body.read())
