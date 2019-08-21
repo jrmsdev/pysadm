@@ -52,8 +52,11 @@ def main(args):
 		return 1
 	taskfn = args[0]
 	obj = None
-	with open(taskfn, 'r') as fh:
-		obj = json.load(fh)
+	try:
+		with open(taskfn, 'r') as fh:
+			obj = json.load(fh)
+	finally:
+		path.unlink(taskfn)
 	log.init(obj.get('sadm.log', 'warn'))
 	log.debug(version.string('sadm-listen'))
 	log.debug("task file %s" % taskfn)
