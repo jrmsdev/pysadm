@@ -50,11 +50,11 @@ class WebhookRepo(object):
 		log.debug("req.body: %s" % req.body)
 		if not req.body:
 			raise error(400, "webhook %s repo %s empty body" % (self._provName, self._repoName))
-		fn = self._reqSave(req.body)
+		reqfn = self._reqSave(req.body)
 		try:
-			dispatch(task, fn)
+			dispatch(task, request = reqfn)
 		finally:
-			path.unlink(fn)
+			path.unlink(reqfn)
 
 	def _reqSave(self, body):
 		obj = json.loads(body.read())
