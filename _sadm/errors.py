@@ -41,8 +41,8 @@ class AssetNotFoundError(Error):
 class BuildError(Error):
 	typ = 'BuildError'
 
-class PluginCommandError(Error): # FIXME: should be called just CommandError
-	typ = 'PluginCommandError'
+class CommandError(Error):
+	typ = 'CommandError'
 
 class PluginError(Error):
 	typ = 'PluginError'

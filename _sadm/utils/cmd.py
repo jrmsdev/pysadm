@@ -5,7 +5,7 @@ import subprocess
 
 from os import environ
 
-from _sadm.errors import PluginCommandError
+from _sadm.errors import CommandError
 
 __all__ = ['call', 'callCheck']
 
@@ -28,7 +28,10 @@ def callCheck(cmd, env = None):
 	shell = False
 	if isinstance(cmd, str):
 		shell = True
+	cmderr = None
 	try:
-		return proc.check_call(cmd, env = env, shell = shell)
+		proc.check_call(cmd, env = env, shell = shell)
 	except subprocess.CalledProcessError as err:
-		raise PluginCommandError(str(err))
+		cmderr = str(err)
+	if cmderr is not None:
+		raise CommandError(cmderr)

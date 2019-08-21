@@ -4,6 +4,7 @@
 import json
 
 from _sadm import log
+from _sadm.errors import CommandError
 from _sadm.listen.exec import dispatch
 from _sadm.listen.errors import error
 
@@ -63,4 +64,7 @@ class WebhookRepo(object):
 		obj = json.loads(req.body.read())
 		args = self._prov.repoArgs(obj, self._cfg)
 		task = "webhook.repo.%s" % self._repoVCS
-		dispatch(task, action, args)
+		try:
+			dispatch(task, action, args)
+		except CommandError as err:
+			raise error(500, "webhook %s repo %s: %s" % (self._provName, self._repoName, err))
