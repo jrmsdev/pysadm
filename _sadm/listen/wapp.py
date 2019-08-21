@@ -44,6 +44,8 @@ def init(cfgfn = None):
 
 	errors.init(wapp)
 
+	from _sadm.listen import handlers
+
 	initDone = {}
 	for sect in config.sections():
 

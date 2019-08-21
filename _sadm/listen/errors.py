@@ -7,7 +7,7 @@ from _sadm import log
 
 __all__ = ['init', 'error']
 
-def handler(code, error):
+def _handler(code, error):
 	log.debug("handler %d" % code)
 	log.debug("%d - %s" % (error.status_code, error.status_line))
 	argsLen = len(error.args)
@@ -27,19 +27,19 @@ def init(wapp):
 
 	@wapp.error(500)
 	def error_500(error):
-		return handler(500, error)
+		return _handler(500, error)
 
 	@wapp.error(400)
 	def error_400(error):
-		return handler(400, error)
+		return _handler(400, error)
 
 	@wapp.error(404)
 	def error_404(error):
-		return handler(404, error)
+		return _handler(404, error)
 
 	@wapp.error(405)
 	def error_405(error):
-		return handler(405, error)
+		return _handler(405, error)
 
 def error(code, msg):
 	log.error("%s %d - %s" % (request.remote_addr, code, msg))
