@@ -26,3 +26,9 @@ def _run(taskfn):
 	cmd = [sys.executable, self, taskfn]
 	log.debug("run: %s" % cmd)
 	callCheck(cmd)
+
+def main(args):
+	return 0
+
+if __name__ == '__main__':
+	sys.exit(main(sys.argv[1:]))
