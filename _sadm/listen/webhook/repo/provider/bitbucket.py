@@ -7,3 +7,12 @@ class BitbucketProvider(object):
 
 	def auth(self, req, cfg):
 		pass
+
+	def taskArgs(self, req, cfg):
+		return {
+			'repo.vcs': cfg.get('vcs'),
+			'repo.path': cfg.get('path'),
+		}
+
+	def hook(self, action, args):
+		pass

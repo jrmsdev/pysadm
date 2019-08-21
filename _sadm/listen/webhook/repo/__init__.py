@@ -24,7 +24,6 @@ class WebhookRepo(object):
 	_prov = None
 	_provName = None
 	_repoName = None
-	_repoVCS = None
 
 	def __init__(self, config, provider, name):
 		self._provName = provider
@@ -37,48 +36,25 @@ class WebhookRepo(object):
 			raise error(400, "webhook %s repo not found: %s" % (provider, name))
 		self._cfg = config[sect]
 
-		# TODO: check repo.path and other pre-fly checks
-
 		self._prov = prov
-		self._loadRepo(self._cfg, provider, name)
+		self._loadProvider(self._cfg, provider, name)
+		self._checkRepo(self._cfg)
 
-	def _loadRepo(self, cfg, provider, name):
+	def _loadProvider(self, cfg, provider, name):
 		rProv = cfg.get('provider', fallback = 'none')
 		if rProv != provider:
 			raise error(400, "webhook %s repo %s invalid provider: %s" % (provider, name, rProv))
+
+	def _checkRepo(self, cfg): # TODO: check repo.path and other pre-fly checks
 		vcs = cfg.get('vcs', fallback = 'git')
 		if not _validVCS.get(vcs, False):
 			raise error(400, "webhook %s repo %s invalid vcs: %s" % (provider, name, vcs))
-		self._repoVCS = vcs
 
 	def auth(self, req):
 		self._prov.auth(req, self._cfg)
 
 	def exec(self, req, action):
-		log.debug("req.body: %s" % req.body)
-		if not req.body:
-			raise error(400, "webhook %s repo %s empty body" % (self._provName, self._repoName))
-
 		# TODO: check self._cfg.getboolean(action... if disabled raise error 400
-
-		reqfn = self._reqSave(req.body)
-		try:
-			args = {
-				'request': reqfn,
-				'repo.name': self._repoName,
-				'repo.vcs': self._repoVCS,
-				'repo.path': self._cfg.get('path'),
-			}
-			task = "webhook.repo.%s" % self._provName
-			dispatch(task, action, args)
-		finally:
-			path.unlink(reqfn)
-
-	def _reqSave(self, body):
-		obj = json.loads(body.read())
-		data = json.dumps(obj)
-		fn = None
-		with sh.mktmp(prefix = __name__, suffix = '.json') as fh:
-			fh.write(data)
-			fn = fh.name()
-		return fn
+		args = self._prov.taskArgs(req, self._cfg)
+		task = "webhook.repo.%s" % self._provName
+		dispatch(task, action, args)

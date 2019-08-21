@@ -15,13 +15,13 @@ __all__ = ['dispatch', 'main']
 # webhook dispatch task (exec new process)
 #
 
-def dispatch(task, action, kwargs):
+def dispatch(task, action, taskArgs):
 	log.debug("dispatch task: %s - action: %s" % (task, action))
 	obj = {
 		'sadm.log': log.curLevel(),
 		'task': task,
 		'task.action': action,
-		'task.args': kwargs,
+		'task.args': taskArgs,
 	}
 	taskfn = None
 	with sh.mktmp(prefix = __name__, suffix = ".%s.json" % task) as fh:
@@ -69,6 +69,7 @@ def main(args):
 	taskArgs = obj.get('task.args', None)
 	if taskArgs is None:
 		raise RuntimeError("listen.exec task %s: no args" % task)
+	taskman.hook(taskAction, taskArgs)
 	return 0
 
 if __name__ == '__main__':
