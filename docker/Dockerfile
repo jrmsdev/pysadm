@@ -1,7 +1,7 @@
 FROM debian:buster-slim
 
 LABEL maintainer="Jeremías Casteglione <jrmsdev@gmail.com>"
-LABEL version="19.08.14"
+LABEL version="19.08.21"
 
 USER root:root
 WORKDIR /root
@@ -12,7 +12,8 @@ RUN apt-get clean
 RUN apt-get update
 
 RUN apt-get dist-upgrade -y --purge
-RUN apt-get install -y --no-install-recommends sudo python3 python3-pip
+RUN apt-get install -y --no-install-recommends sudo python3 python3-pip \
+	at uwsgi-plugin-python3
 
 RUN apt-get clean
 RUN apt-get autoremove -y --purge
@@ -40,7 +41,6 @@ RUN chown -v sadm:sadm /opt/src/sadm /opt/sadm /etc/opt/sadm
 RUN chmod -v 750 /opt/src/sadm /opt/sadm /etc/opt/sadm
 
 COPY --chown=sadm:sadm requirements.txt /tmp
-
 RUN sudo -u sadm pip3 install --system -r /tmp/requirements.txt
 
 RUN rm -rf /root/.cache/pip
