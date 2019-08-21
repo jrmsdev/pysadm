@@ -5,5 +5,5 @@ __all__ = ['GitRepo']
 
 class GitRepo(object):
 
-	def __init__(self, cfg):
+	def hook(self, action, args):
 		pass

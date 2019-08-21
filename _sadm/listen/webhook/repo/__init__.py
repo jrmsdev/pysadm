@@ -23,6 +23,7 @@ class WebhookRepo(object):
 	_prov = None
 	_provName = None
 	_repoName = None
+	_repoVCS = None
 
 	def __init__(self, config, provider, name):
 		self._provName = provider
@@ -44,10 +45,12 @@ class WebhookRepo(object):
 		if rProv != provider:
 			raise error(400, "webhook %s repo %s invalid provider: %s" % (provider, name, rProv))
 
-	def _checkRepo(self, cfg): # TODO: check repo.path and other pre-fly checks
+	def _checkRepo(self, cfg):
 		vcs = cfg.get('vcs', fallback = 'git')
 		if not _validVCS.get(vcs, False):
 			raise error(400, "webhook %s repo %s invalid vcs: %s" % (provider, name, vcs))
+		self._repoVCS = vcs
+		# TODO: check repo.path and other pre-fly checks
 
 	def auth(self, req):
 		self._prov.auth(req, self._cfg)
@@ -56,8 +59,8 @@ class WebhookRepo(object):
 		# TODO: check self._cfg.getboolean(action... if disabled raise error 400
 		log.debug("req.body: %s" % req.body)
 		if not req.body:
-			raise error(400, "webhook %s repo %s empty body" % (self._provName, self._repoName))
+			raise error(400, "webhook %s repo %s no request body" % (self._provName, self._repoName))
 		obj = json.loads(req.body.read())
-		args = self._prov.taskArgs(obj, self._cfg)
-		task = "webhook.repo.%s" % self._provName
+		args = self._prov.repoArgs(obj, self._cfg)
+		task = "webhook.repo.%s" % self._repoVCS
 		dispatch(task, action, args)

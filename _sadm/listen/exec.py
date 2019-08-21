@@ -5,7 +5,7 @@ import json
 import sys
 
 from _sadm import log, libdir, version
-from _sadm.listen.webhook.repo.provider.bitbucket import BitbucketProvider
+from _sadm.listen.webhook.repo.vcs.git import GitRepo
 from _sadm.utils import sh, path
 from _sadm.utils.cmd import callCheck
 
@@ -43,7 +43,7 @@ def _run(taskfn):
 #
 
 _taskman = {
-	'webhook.repo.bitbucket': BitbucketProvider(),
+	'webhook.repo.git': GitRepo(),
 }
 
 def main(args):
