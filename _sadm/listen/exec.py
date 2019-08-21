@@ -27,24 +27,18 @@ def dispatch(task, action, taskArgs):
 	with sh.mktmp(prefix = __name__, suffix = ".%s.json" % task) as fh:
 		taskfn = fh.name()
 		fh.write(json.dumps(obj))
-	try:
-		_run(taskfn)
-	finally:
-		path.unlink(taskfn)
+	_sched(taskfn)
 
-def _run(taskfn):
+def _sched(taskfn):
 	self = libdir.fpath('listen', 'exec.py')
 	cmd = [sys.executable, self, taskfn]
-	log.debug("run: %s" % cmd)
-	callCheck(cmd)
+	atcmd = "echo 'sleep 1 && %s' | at -M now" % ' '.join(cmd)
+	log.debug("run: %s" % atcmd)
+	callCheck(atcmd)
 
 #
 # task exec main (runs under a new process)
 #
-
-_taskman = {
-	'webhook.repo.git': GitRepo(),
-}
 
 def main(args):
 	if len(args) != 1:
@@ -60,16 +54,12 @@ def main(args):
 	task = obj.get('task', None)
 	if task is None:
 		raise RuntimeError('listen.exec task not set')
-	taskman = _taskman.get(task, None)
-	if taskman is None:
-		raise RuntimeError("listen.exec task %s: no manager" % task)
 	taskAction = obj.get('task.action', None)
 	if taskAction is None:
 		raise RuntimeError("listen.exec task %s: no action" % task)
 	taskArgs = obj.get('task.args', None)
 	if taskArgs is None:
 		raise RuntimeError("listen.exec task %s: no args" % task)
-	taskman.hook(taskAction, taskArgs)
 	return 0
 
 if __name__ == '__main__':
