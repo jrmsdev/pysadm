@@ -5,10 +5,10 @@ __all__ = ['BitbucketProvider']
 
 class BitbucketProvider(object):
 
-	def auth(self, req, cfg):
+	def auth(self, req, cfg): # FIXME
 		pass
 
-	def taskArgs(self, req, cfg):
+	def taskArgs(self, obj, cfg):
 		return {
 			'repo.vcs': cfg.get('vcs'),
 			'repo.path': cfg.get('path'),

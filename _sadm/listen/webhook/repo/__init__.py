@@ -6,7 +6,6 @@ import json
 from _sadm import log
 from _sadm.listen.exec import dispatch
 from _sadm.listen.errors import error
-from _sadm.utils import sh, path
 
 from .provider.bitbucket import BitbucketProvider
 
@@ -55,6 +54,10 @@ class WebhookRepo(object):
 
 	def exec(self, req, action):
 		# TODO: check self._cfg.getboolean(action... if disabled raise error 400
-		args = self._prov.taskArgs(req, self._cfg)
+		log.debug("req.body: %s" % req.body)
+		if not req.body:
+			raise error(400, "webhook %s repo %s empty body" % (self._provName, self._repoName))
+		obj = json.loads(req.body.read())
+		args = self._prov.taskArgs(obj, self._cfg)
 		task = "webhook.repo.%s" % self._provName
 		dispatch(task, action, args)
