@@ -2,9 +2,11 @@
 # See LICENSE file.
 
 import json
+import sys
 
-from _sadm import log
+from _sadm import log, libdir
 from _sadm.utils import sh, path
+from _sadm.utils.cmd import callCheck
 
 __all__ = ['dispatch']
 
@@ -20,4 +22,7 @@ def dispatch(task, **kwargs):
 		path.unlink(taskfn)
 
 def _run(taskfn):
-	log.debug("run: %s" % taskfn)
+	self = libdir.fpath('listen', 'exec.py')
+	cmd = [sys.executable, self, taskfn]
+	log.debug("run: %s" % cmd)
+	callCheck(cmd)
