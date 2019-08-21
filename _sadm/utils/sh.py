@@ -13,7 +13,10 @@ class TmpFile(object):
 	_rm = None
 
 	def __init__(self, suffix = None, prefix = None, dir = None, remove = False):
-		self._fd, self._fn = tempfile.mkstemp( suffix = suffix,
+		if prefix is not None:
+			if not prefix.endswith('.'):
+				prefix = "%s." % prefix
+		self._fd, self._fn = tempfile.mkstemp(suffix = suffix,
 			prefix = prefix, dir = dir, text = False)
 		self._rm = remove
 
@@ -21,7 +24,7 @@ class TmpFile(object):
 		return self
 
 	def __exit__(self, *args):
-		self._close()
+		self.close()
 		if self._rm:
 			self.unlink()
 
