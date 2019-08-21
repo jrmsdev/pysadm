@@ -7,7 +7,6 @@ from urllib.parse import urlparse
 
 from _sadm import log, libdir, version
 from _sadm.listen.client import ListenClient
-from _sadm.listen.webhook.repo.vcs.git import GitRepo
 from _sadm.utils import sh, path
 from _sadm.utils.cmd import callCheck
 
@@ -62,13 +61,16 @@ def main(args):
 	log.debug("task file %s" % taskfn)
 	task = obj.get('task', None)
 	if task is None:
-		raise RuntimeError('listen.exec task not set')
+		log.error('listen.exec task not set')
+		return 2
 	taskAction = obj.get('task.action', None)
 	if taskAction is None:
-		raise RuntimeError("listen.exec task %s: no action" % task)
+		log.error("listen.exec task %s: no action" % task)
+		return 3
 	taskArgs = obj.get('task.args', None)
 	if taskArgs is None:
-		raise RuntimeError("listen.exec task %s: no args" % task)
+		log.error("listen.exec task %s: no args" % task)
+		return 4
 	cliURL = obj.get('sadm.listen.url', 'http://127.0.0.1:3666')
 	cli = ListenClient(cliURL)
 	cli.exec(task, taskAction, taskArgs)
