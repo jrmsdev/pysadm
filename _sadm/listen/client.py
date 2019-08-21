@@ -20,9 +20,12 @@ class ListenClient(object):
 
 	def _post(self, path, data):
 		url = self._path(self._url, path)
-		with urlopen(url, data) as resp:
-			if resp.status != 200:
-				log.error("%s returned: %d - %s" % (url, resp.status, resp.reason))
+		try:
+			with urlopen(url, data) as resp:
+				if resp.status != 200:
+					log.error("%s returned: %d - %s" % (url, resp.status, resp.reason))
+		except Exception as err:
+			log.error("%s - %s" % (url, err))
 
 	def exec(self, task, action, args):
 		path = self._path('_', 'exec', task, action)

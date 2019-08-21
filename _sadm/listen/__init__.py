@@ -8,8 +8,9 @@ __all__ = ['start']
 
 def start():
 	w = wapp.init()
-	debug = log.debugEnabled()
+	quiet = log.curLevel() == 'quiet'
+	debug = wapp.config.getboolean('sadm.listen', 'debug', fallback = False)
 	host = wapp.config.get('sadm.listen', 'host', fallback = '127.0.0.1')
 	port = wapp.config.getint('sadm.listen', 'port', fallback = 3666)
 	return w.run(host = host, port = port, debug = debug,
-		reloader = debug, quiet = not debug)
+		reloader = debug, quiet = quiet)
