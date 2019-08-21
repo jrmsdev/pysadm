@@ -7,11 +7,12 @@ from _sadm.listen.wapp import wapp, config
 
 from .repo import WebhookRepo
 
-__all__ = ['push']
+__all__ = ['repo']
 
-@wapp.route('/hook/<provider>/<name>/push', 'POST')
-def push(provider, name):
+@wapp.route('/hook/<provider>/<name>/<action>', 'POST')
+def repo(provider, name, action):
 	repo = WebhookRepo(config, provider, name)
 	repo.auth(request)
-	repo.exec('webhook.repo.push', request)
+	task = "webhook.repo.%s" % action
+	repo.exec(task, request)
 	return 'OK\n'
