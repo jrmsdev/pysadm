@@ -19,7 +19,7 @@ def _configureDeploy(env, cfg):
 		if not cfg.has_section('sync'):
 			cfg.add_section('sync')
 		cfg.set('sync', 'sadm.deploy.config',
-			"deploy.cfg %s filemode=640" % path.join(path.sep,
+			"deploy.cfg %s filemode=644" % path.join(path.sep,
 				'etc', 'opt', 'sadm', 'deploy.cfg'))
 
 def _configureListen(env, cfg):
@@ -29,11 +29,12 @@ def _configureListen(env, cfg):
 		if not cfg.has_section('sync'):
 			cfg.add_section('sync')
 		cfg.set('sync', 'sadm.listen.config',
-			"listen.cfg %s filemode=640" % path.join(path.sep,
+			"listen.cfg %s filemode=644" % path.join(path.sep,
 				'etc', 'opt', 'sadm', 'listen.cfg'))
 		# os.pkg
 		if not env.settings.has_section('os.pkg'):
 			env.settings.add_section('os.pkg')
-		env.settings.setlist('os.pkg', 'debian.sadm.listen.install', (
-			'at', 'uwsgi-plugin-python3', 'ssl-cert',
-		))
+		if env.dist() == 'debian':
+			env.settings.setlist('os.pkg', 'debian.sadm.listen.install', (
+				'at', 'uwsgi-plugin-python3', 'ssl-cert',
+			))
