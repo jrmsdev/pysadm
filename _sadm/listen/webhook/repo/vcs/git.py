@@ -15,6 +15,7 @@ class GitRepo(object):
 		sh.chdir(repodir)
 		if action == 'push':
 			self._pull()
+			# TODO: vcs.repo.deploy
 
 	def _pull(self):
 		log.debug('git pull')

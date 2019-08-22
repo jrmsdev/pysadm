@@ -36,7 +36,7 @@ def dispatch(req, task, action, taskArgs):
 
 def _sched(taskfn):
 	self = libdir.fpath('listen', 'exec.py')
-	cmd = [sys.executable, self, taskfn]
+	cmd = [path.join(sys.exec_prefix, 'bin', 'python3'), self, taskfn]
 	atcmd = "echo 'sleep 1 && %s' | at now" % ' '.join(cmd)
 	log.debug("run: %s" % atcmd)
 	callCheck(atcmd)
