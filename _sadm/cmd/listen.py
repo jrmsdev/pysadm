@@ -26,7 +26,7 @@ def uwsgi():
 	return 0
 
 if __name__ == '__main__':
-	if '--uwsgi' in sys.argv:
-		sys.exit(uwsgi())
-	else:
+	if '--bottle' in sys.argv:
 		sys.exit(main())
+	else:
+		sys.exit(uwsgi())
