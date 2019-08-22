@@ -2,6 +2,8 @@
 # See LICENSE file.
 
 import json
+import ssl
+
 from urllib.request import urlopen
 
 from _sadm import log
@@ -20,8 +22,12 @@ class ListenClient(object):
 
 	def _post(self, path, data):
 		url = self._path(self._url, path)
+		ctx = None
+		if url.startswith('https'):
+			ctx = ssl.create_default_context()
+			ctx.check_hostname = False
 		try:
-			with urlopen(url, data) as resp:
+			with urlopen(url, data, context = ctx) as resp:
 				if resp.status != 200:
 					log.error("%s returned: %d - %s" % (url, resp.status, resp.reason))
 		except Exception as err:
