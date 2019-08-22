@@ -7,6 +7,7 @@ import sys
 
 from _sadm import listen, libdir
 from _sadm.cmd import flags
+from _sadm.utils import path
 from _sadm.utils.cmd import callCheck
 
 def main():
@@ -15,14 +16,11 @@ def main():
 def uwsgi():
 	cmd = [
 		'uwsgi',
-		'--master',
-		'--thunder-lock',
-		'--processes', '4',
-		'--threads', '2',
 		'--need-plugin', 'python3',
-		'--http-socket', '127.0.0.1:3666',
 		'--virtualenv', sys.exec_prefix,
-		'--wsgi-file', libdir.fpath('listen', 'wsgi.py'),
+		'--http-socket', '127.0.0.1:3666',
+		'--touch-reload', path.join(path.sep, 'run', 'sadm.listen.uwsgi.reload'),
+		'--ini', libdir.fpath('listen', 'uwsgi.ini'),
 	]
 	callCheck(cmd)
 	return 0
