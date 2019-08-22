@@ -39,7 +39,7 @@ def init(cfgfn = None):
 		cfgfn = path.join(path.sep, 'etc', 'opt', 'sadm', 'listen.cfg')
 	config.read(cfgfn)
 
-	log.init(config.get('sadm', 'log'))
+	log.init(config.get('sadm', 'log', fallback = 'warn'))
 	log.debug(version.string('sadm'))
 
 	errors.init(wapp)

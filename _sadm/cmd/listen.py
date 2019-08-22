@@ -19,7 +19,7 @@ def uwsgi():
 	cmd = [
 		'uwsgi',
 		'--need-plugin', 'python3',
-		'--virtualenv', sys.exec_prefix,
+		'--pyhome', sys.exec_prefix,
 		'--https-socket', "127.0.0.1:3666,%s,%s" % (crtfn, keyfn),
 		'--touch-reload', path.join(path.sep, 'run', 'sadm.listen.uwsgi.reload'),
 		'--ini', libdir.fpath('listen', 'uwsgi.ini'),
