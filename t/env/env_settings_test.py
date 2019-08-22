@@ -15,7 +15,7 @@ def test_settings(testing_env):
 
 def test_plugins(testing_settings):
 	s = testing_settings()
-	assert sorted(s.plugins('configure')) == ['os', 'sadm', 'testing']
+	assert sorted(s.plugins('configure')) == ['os', 'sadm', 'sync', 'testing']
 
 def test_parsing_error(testing_settings):
 	with raises(SettingsError, match = 'Source contains parsing errors: '):
@@ -58,15 +58,15 @@ def test_getlist_combined(testing_settings):
 def test_merge(testing_settings):
 	cfgfn = path.join('tdata', 'testing', 'config-merge.ini')
 	s = testing_settings()
-	assert sorted(s.sections()) == ['os', 'sadm', 'testing']
+	assert sorted(s.sections()) == ['os', 'sadm', 'sync', 'testing']
 	assert s.options('testing') == []
 	cfg = Settings()
 	with open(cfgfn, 'r') as fh:
 		cfg.read_file(fh)
 	s.merge(cfg, 'nosection', ('opt0', 'opt1'))
-	assert sorted(s.sections()) == ['os', 'sadm', 'testing']
+	assert sorted(s.sections()) == ['os', 'sadm', 'sync', 'testing']
 	s.merge(cfg, 'newsection', ('opt0', 'opt1'))
-	assert sorted(s.sections()) == ['newsection', 'os', 'sadm', 'testing']
+	assert sorted(s.sections()) == ['newsection', 'os', 'sadm', 'sync', 'testing']
 	s.merge(cfg, 'testing', ('noopt0', 'noopt1', 'noopt2'))
 	assert s.options('testing') == []
 	s.merge(cfg, 'testing', ('opt0', 'opt1', 'opt2'))

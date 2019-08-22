@@ -10,20 +10,13 @@ from _sadm.utils import path, builddir
 
 __all__ = ['pre_build', 'post_build']
 
+#
+# pre build
+#
+
 def pre_build(env):
 	builddir.lock(env)
 	_writeSettings(env)
-
-def post_build(env):
-	_saveSession(env)
-	_signBuild(env)
-	extractor.gen(env)
-	builddir.unlock(env)
-
-def _saveSession(env):
-	env.debug('session.json')
-	with builddir.create(env, 'session.json', meta = True) as fh:
-		env.session.dump(fh)
 
 def _writeSettings(env):
 	env.log('configure.ini')
@@ -35,6 +28,21 @@ def _writeSettings(env):
 	with open(fn, 'rb') as fh:
 		h.update(fh.read())
 	env.session.set('sadm.configure.checksum', h.hexdigest())
+
+#
+# post build
+#
+
+def post_build(env):
+	_saveSession(env)
+	_signBuild(env)
+	extractor.gen(env)
+	builddir.unlock(env)
+
+def _saveSession(env):
+	env.debug('session.json')
+	with builddir.create(env, 'session.json', meta = True) as fh:
+		env.session.dump(fh)
 
 def _signBuild(env):
 	sid = env.config.get(env.profile(), 'build.sign', fallback = '')
