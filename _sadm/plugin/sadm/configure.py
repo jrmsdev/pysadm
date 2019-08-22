@@ -16,20 +16,22 @@ def configure(env, cfg):
 def _configureDeploy(env, cfg):
 	if env.assets.isfile('deploy.cfg'):
 		env.log('sync deploy.cfg')
-		if not env.settings.has_section('sync'):
-			env.settings.add_section('sync')
-		env.settings.set('sync', 'sadm.deploy.config',
+		if not cfg.has_section('sync'):
+			cfg.add_section('sync')
+		cfg.set('sync', 'sadm.deploy.config',
 			"deploy.cfg %s filemode=640" % path.join(path.sep,
 				'etc', 'opt', 'sadm', 'deploy.cfg'))
 
 def _configureListen(env, cfg):
 	if env.assets.isfile('listen.cfg'):
 		env.log('enable sadm.listen')
-		if not env.settings.has_section('sync'):
-			env.settings.add_section('sync')
-		env.settings.set('sync', 'sadm.listen.config',
+		# sync
+		if not cfg.has_section('sync'):
+			cfg.add_section('sync')
+		cfg.set('sync', 'sadm.listen.config',
 			"listen.cfg %s filemode=640" % path.join(path.sep,
 				'etc', 'opt', 'sadm', 'listen.cfg'))
+		# os.pkg
 		if not env.settings.has_section('os.pkg'):
 			env.settings.add_section('os.pkg')
 		env.settings.setlist('os.pkg', 'debian.sadm.listen.install', (

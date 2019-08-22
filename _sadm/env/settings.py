@@ -58,7 +58,7 @@ class Settings(ConfigParser):
 	def setlist(self, section, option, args):
 		if not self.has_section(section):
 			self.add_section(section)
-		data = "\n\t%s" % '\n\t'.join(args)
+		data = "\n%s" % '\n'.join(args)
 		self.set(section, option, data)
 
 	def merge(self, src, section, optfilter):
