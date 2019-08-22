@@ -10,8 +10,6 @@ include LICENSE
 include pyproject.toml
 include pytest.ini
 
-include etc/sudoers.d/sadm
-
 include tdata/.gitignore
 include tdata/deploy.cfg
 include tdata/sadm.cfg
