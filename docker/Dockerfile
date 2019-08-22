@@ -13,7 +13,7 @@ RUN apt-get update
 
 RUN apt-get dist-upgrade -y --purge
 RUN apt-get install -y --no-install-recommends sudo python3 python3-pip \
-	at uwsgi-plugin-python3
+	at uwsgi-plugin-python3 ssl-cert
 
 RUN apt-get clean
 RUN apt-get autoremove -y --purge
@@ -31,6 +31,7 @@ ARG SADM_GID=1000
 RUN groupadd -g ${SADM_GID} sadm
 RUN useradd -c sadm -m -d /home/sadm -s /bin/bash -g ${SADM_GID} -u ${SADM_UID} sadm
 RUN adduser sadm staff
+RUN adduser sadm ssl-cert
 
 RUN chgrp -v staff /usr/local/bin
 RUN chmod -v g+ws /usr/local/bin
