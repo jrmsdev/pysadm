@@ -33,10 +33,10 @@ def getInfo(cfg, opt):
 
 			elif arg.startswith('group:'):
 				val = arg.split(':')[1]
-				inf['args']['gruop'] = val
+				inf['args']['group'] = val
 			elif arg.startswith('group='):
 				val = arg.split('=')[1]
-				inf['args']['gruop'] = val
+				inf['args']['group'] = val
 
 			elif arg.startswith('filemode:'):
 				val = arg.split(':')[1]
