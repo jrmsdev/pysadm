@@ -27,13 +27,28 @@ def getInfo(cfg, opt):
 			if arg.startswith('user:'):
 				val = arg.split(':')[1]
 				inf['args']['user'] = val
+			elif arg.startswith('user='):
+				val = arg.split('=')[1]
+				inf['args']['user'] = val
+
 			elif arg.startswith('group:'):
 				val = arg.split(':')[1]
 				inf['args']['gruop'] = val
+			elif arg.startswith('group='):
+				val = arg.split('=')[1]
+				inf['args']['gruop'] = val
+
 			elif arg.startswith('filemode:'):
 				val = arg.split(':')[1]
 				inf['args']['filemode'] = val
+			elif arg.startswith('filemode='):
+				val = arg.split('=')[1]
+				inf['args']['filemode'] = val
+
 			elif arg.startswith('dirmode:'):
 				val = arg.split(':')[1]
+				inf['args']['dirmode'] = val
+			elif arg.startswith('dirmode='):
+				val = arg.split('=')[1]
 				inf['args']['dirmode'] = val
 	return inf
