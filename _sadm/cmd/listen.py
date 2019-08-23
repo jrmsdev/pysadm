@@ -14,13 +14,11 @@ def bottle():
 	return listen.start()
 
 def uwsgi():
-	crtfn = path.join(path.sep, 'etc', 'ssl', 'certs', 'ssl-cert-snakeoil.pem')
-	keyfn = path.join(path.sep, 'etc', 'ssl', 'private', 'ssl-cert-snakeoil.key')
 	cmd = [
 		'uwsgi',
 		'--need-plugin', 'python3',
 		'--pyhome', sys.exec_prefix,
-		'--https-socket', "127.0.0.1:3666,%s,%s" % (crtfn, keyfn),
+		'--set-ph', 'netloc=127.0.0.1:3666',
 		'--touch-reload', path.join(path.sep, 'run', 'sadm.listen.uwsgi.reload'),
 		'--ini', libdir.fpath('listen', 'uwsgi.ini'),
 	]
