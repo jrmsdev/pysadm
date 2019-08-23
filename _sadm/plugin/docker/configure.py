@@ -14,6 +14,7 @@ _composeOptions = (
 def configure(env, cfg):
 	if not cfg.getboolean('docker', 'enable', fallback = False):
 		return
+	env.settings.add_section('service.docker') # enable service setup plugin
 	env.settings.merge(cfg, 'docker', ('enable',))
 	for s in cfg.sections():
 		if s.startswith('docker-compose:'):

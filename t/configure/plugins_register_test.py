@@ -20,6 +20,7 @@ _expectPlugins = dict(enumerate((
 	'docker',
 	'service',
 	'service.postfix',
+	'service.docker',
 	'service.munin',
 	'service.munin_node',
 	'service.apache',

@@ -42,6 +42,7 @@ import _sadm.plugin.docker
 # service plugins
 
 import _sadm.plugin.service.postfix
+import _sadm.plugin.service.docker
 
 import _sadm.plugin.service.munin
 import _sadm.plugin.service.munin_node

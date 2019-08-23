@@ -75,10 +75,12 @@ def _initPlugin(env, p, cfg):
 	pcfg = Settings()
 	with open(p.config, 'r') as fh:
 		pcfg.read_file(fh)
+	# load plugin deps
 	for dep in pcfg.plugins():
 		pfilter = _cfgfilter.get(dep, None)
 		if pfilter is not None:
 			pfilter(env, pcfg, dep)
+	# merge plugin config to env settings
 	if not env.settings.has_section(p.name):
 		env.settings.add_section(p.name)
 	for opt, val in pcfg.items(p.name, raw = True):
