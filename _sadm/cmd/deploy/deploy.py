@@ -17,7 +17,8 @@ def main(args, sumode):
 		dn = path.join('~', '.local', 'sadm', 'deploy')
 		sh.makedirs(dn, mode = 0o750, exists_ok = True)
 		with sh.lockd(dn):
-			pass
+			tmpdir = sh.mktmpdir(dir = dn, prefix = '')
+			print(tmpdir)
 	return cmd.run(args.env, sumode)
 
 def _sumode():
