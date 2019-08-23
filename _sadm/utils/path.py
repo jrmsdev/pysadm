@@ -27,6 +27,8 @@ def isdir(name):
 	return _path.isdir(name)
 
 def join(base, *parts):
+	if base.startswith('~'):
+		base = os.path.expanduser(base)
 	return _path.join(base, *parts)
 
 def abspath(name):
