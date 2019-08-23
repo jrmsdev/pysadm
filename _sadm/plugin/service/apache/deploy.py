@@ -6,6 +6,9 @@ from _sadm.utils.scripts import Scripts
 
 __all__ = ['deploy']
 
+# run as root at last pass
+sumode = 'post'
+
 def deploy(env):
 	scripts = Scripts('service.apache', env.dist())
 	_reload = False

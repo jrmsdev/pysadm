@@ -5,5 +5,8 @@ from _sadm.utils import systemd
 
 __all__ = ['deploy']
 
+# run as root at first pass
+sumode = 'pre'
+
 def deploy(env):
 	systemd.restart('netfilter-persistent')

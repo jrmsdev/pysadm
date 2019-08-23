@@ -6,6 +6,9 @@ from _sadm.utils.cmd import callCheck
 
 __all__ = ['deploy']
 
+# run as root at last pass
+sumode = 'post'
+
 def deploy(env):
 	env.log('newaliases')
 	callCheck('newaliases')

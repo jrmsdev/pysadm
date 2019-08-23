@@ -23,7 +23,7 @@ class Plugin(object):
 	check = None
 
 	def __init__(self, name, env, ns = '_sadm'):
-		self._p = getPlugin(name, 'configure')
+		self._p = getPlugin(name, 'deploy')
 		assert self._p.name == name, \
 			"plugin %s name error: %s" % (name, self._p.name)
 		assert self._p.fullname == "%s.plugin.%s" % (ns, name), \
@@ -99,4 +99,4 @@ class Plugin(object):
 		else:
 			cfg = None
 		with mock.deploy(self._p.name, cfg):
-			self._envAction.run(self._env, 'deploy')
+			self._envAction.run(self._env, 'deploy', sumode = self._p.sumode)

@@ -6,6 +6,9 @@ from os import stat
 
 __all__ = ['deploy']
 
+# run as root at first pass
+sumode = 'pre'
+
 def deploy(env):
 	fn = env.name() + '.tar'
 	fpath = env.assets.rootdir(env.name(), fn)

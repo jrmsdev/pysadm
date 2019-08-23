@@ -33,7 +33,7 @@ def _runAction(env, action, cmd = None, force = False, revert = False, sumode = 
 		cmd = action
 	for p in env.plugins(action, revert = revert):
 		if p.sumode != sumode:
-			env.debug("%s sumode exclude %s" % (sumode, p.name))
+			env.debug("%s sumode exclude %s %s" % (sumode, p.name, cmd))
 			continue
 		if hasattr(p.mod, cmd):
 			func = getattr(p.mod, cmd)

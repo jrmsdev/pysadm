@@ -6,6 +6,9 @@ from _sadm.utils.sh import makedirs, chmod, chown
 
 __all__ = ['deploy']
 
+# run as root at last pass
+sumode = 'post'
+
 def deploy(env):
 	dbdir = env.settings.get('service.munin', 'db.dir')
 	makedirs(dbdir, exists_ok = True)

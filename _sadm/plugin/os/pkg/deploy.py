@@ -5,6 +5,9 @@ from .debian import deploy as debian
 
 __all__ = ['deploy']
 
+# run as root at first pass
+sumode = 'pre'
+
 def deploy(env):
 	dn = env.dist()
 	if dn == 'debian':

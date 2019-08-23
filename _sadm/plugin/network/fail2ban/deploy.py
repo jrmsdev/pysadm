@@ -5,6 +5,9 @@ from _sadm.utils import path, systemd
 
 __all__ = ['deploy']
 
+# run as root at first pass
+sumode = 'pre'
+
 def deploy(env):
 	destdir = env.settings.get('network.fail2ban', 'jail.destdir')
 	jdisable = env.settings.getlist('network.fail2ban', 'jail.disable')

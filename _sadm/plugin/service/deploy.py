@@ -3,5 +3,8 @@
 
 __all__ = ['deploy']
 
+# run as root at last pass
+sumode = 'post'
+
 def deploy(env):
 	pass

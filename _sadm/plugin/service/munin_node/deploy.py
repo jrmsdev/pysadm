@@ -7,6 +7,9 @@ from _sadm.utils.sh import mktmp
 
 __all__ = ['deploy']
 
+# run as root at last pass
+sumode = 'post'
+
 def deploy(env):
 	_autoconf(env)
 	systemd.stop('munin-node')
