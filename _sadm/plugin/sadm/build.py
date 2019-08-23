@@ -4,11 +4,12 @@
 from hashlib import sha256
 from subprocess import call
 
+from _sadm import libdir
 from _sadm.deploy import extractor
 from _sadm.errors import BuildError
 from _sadm.utils import path, builddir
 
-__all__ = ['pre_build', 'post_build']
+__all__ = ['pre_build', 'build', 'post_build']
 
 #
 # pre build
@@ -29,6 +30,27 @@ def _writeSettings(env):
 		h.update(fh.read())
 	env.session.set('sadm.configure.checksum', h.hexdigest())
 
+#
+# build
+#
+
+def build(env):
+	if env.session.get('sadm.listen.enable', False):
+		env.log('enable sadm-listen')
+		_buildListen(env)
+
+def _buildListen(env):
+	cfgfiles = (
+		(libdir.fpath('listen', 'uwsgi.ini'),
+			path.join(path.sep, 'etc', 'opt', 'sadm', 'uwsgi.ini')),
+		(libdir.fpath('listen', 'uwsgi.service'),
+			path.join(path.sep, 'etc', 'systemd', 'system', 'sadm-listen.service')),
+	)
+	for srcfn, dstfn in cfgfiles:
+		env.log("create %s" % dstfn)
+		with open(srcfn, 'r') as src:
+			with builddir.create(env, dstfn) as dst:
+				dst.write(src.read())
 #
 # post build
 #

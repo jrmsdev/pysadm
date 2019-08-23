@@ -25,6 +25,7 @@ def _configureDeploy(env, cfg):
 def _configureListen(env, cfg):
 	if env.assets.isfile('listen.cfg'):
 		env.log('enable sadm.listen')
+		env.session.set('sadm.listen.enable', True)
 		# sync
 		if not cfg.has_section('sync'):
 			cfg.add_section('sync')
