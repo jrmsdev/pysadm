@@ -48,6 +48,9 @@ class Env(object):
 		self._load()
 		self._check()
 
+	def __str__(self):
+		return "%s/%s" % (self._profName, self._name)
+
 	def _load(self, fn = None, pdir = None):
 		self.debug('env load')
 		# env self.config.ini
@@ -197,8 +200,12 @@ def _unlock(env):
 
 def run(profile, env, action, cfgfile = None, sumode = 'not'):
 	err = None
+	e = None
 	try:
-		e = Env(profile, env, cfg.new(cfgfile = cfgfile))
+		if isinstance(env, Env):
+			e = env
+		else:
+			e = Env(profile, env, cfg.new(cfgfile = cfgfile))
 		envAction.run(e, action, sumode = sumode)
 	except EnvError as err:
 		return (1, err)

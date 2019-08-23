@@ -20,8 +20,8 @@ def _getArgs():
 
 def main():
 	sumode = 'not'
-	if '--sumode' in sys.argv:
-		sys.argv.remove('--sumode')
+	if '--sumode-pre' in sys.argv:
+		sys.argv.remove('--sumode-pre')
 		sumode = 'pre'
 	elif '--sumode-post' in sys.argv:
 		sys.argv.remove('--sumode-post')

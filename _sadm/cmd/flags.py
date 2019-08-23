@@ -1,11 +1,15 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
+import sys
 import argparse
 
 from _sadm import log, version
 
 __all__ = ['new', 'parse']
+
+program = sys.argv[0]
+cmdline = None
 
 def new(prog, desc = ''):
 	p = argparse.ArgumentParser(prog = prog, description = desc)
@@ -22,6 +26,8 @@ def new(prog, desc = ''):
 	return p
 
 def parse(p):
+	global cmdline
+	cmdline = ' '.join(sys.argv).strip()
 	args = p.parse_args()
 	if args.debug:
 		log.init('debug')
