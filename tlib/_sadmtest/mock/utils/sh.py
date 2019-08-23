@@ -2,7 +2,6 @@
 # See LICENSE file.
 
 from collections import deque
-from os import path
 from unittest.mock import Mock
 
 class MockTmpFile(object):
@@ -14,8 +13,8 @@ class MockTmpFile(object):
 		if prefix is None:
 			prefix = __name__
 		if dir is None:
-			dir = path.join(path.sep, 'tmp')
-		self._fn = path.join(dir, prefix + suffix)
+			dir = '/tmp'
+		self._fn = '/'.join([dir, prefix + suffix])
 
 	def __enter__(self):
 		return self
@@ -44,6 +43,7 @@ class MockShUtil(object):
 	chmod = None
 	chown = None
 	mktmp = None
+	mktmpdir = None
 	getcwd = None
 	chdir = None
 	getuid = None
@@ -55,6 +55,7 @@ class MockShUtil(object):
 		self._default = {}
 		self._mock = Mock()
 		self.mktmp = self._mock.mock_mktmp
+		self.mktmpdir = self._mock.mock_mktmpdir
 		self.getcwd = self._mock.mock_getcwd
 		self.makedirs = self._mock.mock_makedirs
 		self.chmod = self._mock.mock_chmod
@@ -70,11 +71,12 @@ class MockShUtil(object):
 		self._utilsDefault()
 		self._parseConfig(cfg)
 		self.mktmp.side_effect = self._mktmp
+		self.mktmpdir.side_effect = self._mktmpdir
 		self.getcwd.side_effect = self._sideEffect('getcwd')
 		self.makedirs.side_effect = self._sideEffect('makedirs')
 
 	def _utilsDefault(self):
-		self._default['getcwd'] = path.join(path.sep, 'testing', 'workdir')
+		self._default['getcwd'] = '/testing/workdir'
 		self._default['getuid'] = 3000
 		self._default['getgid'] = 3000
 
@@ -114,6 +116,13 @@ class MockShUtil(object):
 
 	def _mktmp(self, suffix = None, prefix = None, dir = None, remove = False):
 		return MockTmpFile(suffix = suffix, prefix = prefix, dir = dir, remove = remove)
+
+	def _mktmpdir(self, suffix = None, prefix = None):
+		if suffix is None:
+			suffix = '.mock'
+		if prefix is None:
+			prefix = __name__
+		return prefix + suffix
 
 	def check(self):
 		got = []

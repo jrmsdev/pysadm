@@ -1,8 +1,6 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
-from os import path
-
 from _sadm import log
 from _sadm.deploy import cmd
 

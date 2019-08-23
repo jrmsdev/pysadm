@@ -48,6 +48,7 @@ class _ShUtil(object):
 	chmod = os.chmod
 	chown = _sh.chown
 	mktmp = None
+	mktmpdir = tempfile.mkdtemp
 	getcwd = os.getcwd
 	chdir = os.chdir
 	getuid = os.getuid
@@ -72,6 +73,9 @@ def chown(path, user = None, group = None):
 
 def mktmp(suffix = None, prefix = None, dir = None, remove = False):
 	return shutil.mktmp(suffix = suffix, prefix = prefix, dir = dir, remove = remove)
+
+def mktmpdir(suffix = None, prefix = None, dir = None):
+	return shutil.mktmpdir(suffix = suffix, prefix = prefix, dir = dir)
 
 def getcwd():
 	return shutil.getcwd()
