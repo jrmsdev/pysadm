@@ -9,7 +9,7 @@
 import sys
 
 from base64 import b64decode
-from os import path, makedirs, chmod, unlink, getuid
+from os import path, makedirs, chmod, unlink
 from shutil import rmtree
 from subprocess import call
 
@@ -26,10 +26,7 @@ def main():
 	rc = call("%s --log info import %s" % (envcmd, envfn), shell = True)
 	if rc != 0:
 		return rc
-	sudo = ''
-	if getuid() != 0:
-		sudo = '/usr/bin/sudo -n '
-	rc = call("%s%s --log info --env %s deploy" % (sudo, envcmd, env), shell = True)
+	rc = call("%s --log info --env %s deploy" % (envcmd, env), shell = True)
 	if rc != 0:
 		return rc
 	return 0

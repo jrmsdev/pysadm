@@ -3,7 +3,7 @@
 
 from _sadm import log, env, deploy
 
-def run(envname):
-	log.debug("run %s" % envname)
-	rc, _ = env.run('deploy', envname, 'deploy', cfgfile = deploy.cfgfile)
+def run(envname, sumode):
+	log.debug("run %s sumode=%s" % (envname, sumode))
+	rc, _ = env.run('deploy', envname, 'deploy', cfgfile = deploy.cfgfile, sumode = sumode)
 	return rc

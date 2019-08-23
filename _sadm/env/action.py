@@ -12,7 +12,7 @@ _validAction = {
 	'deploy': True,
 }
 
-def run(env, action):
+def run(env, action, sumode = False):
 	_start = time()
 	env.info("%s start %s" % (action, strftime('%c %z')))
 	env.log("%s %s" % (env.config.name(), env.config.filename()))
