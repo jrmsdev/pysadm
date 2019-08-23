@@ -13,7 +13,7 @@ __all__ = ['register', 'getPlugin', 'pluginList']
 _reg = {}
 _order = deque()
 
-Plugin = namedtuple('Plugin', ('name', 'fullname', 'config', 'meta', 'mod'))
+Plugin = namedtuple('Plugin', ('name', 'fullname', 'config', 'meta', 'mod', 'sumode'))
 
 def register(name, filename):
 	if name.startswith('_sadmtest.'):
@@ -52,10 +52,15 @@ def getPlugin(name, action):
 		raise PluginError("%s.%s: %s" % (name, action, err))
 	except Exception as err:
 		raise PluginError("%s %s: %s" % (name, action, err))
+	sumode = 'not'
+	if action == 'deploy':
+		if hasattr(mod, 'sumode'):
+			sumode = getattr(mod, 'sumode')
 	return Plugin(
 		name = name,
 		fullname = pkg,
 		config = p['config'],
 		meta = p['meta'],
 		mod = mod,
+		sumode = sumode,
 	)

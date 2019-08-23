@@ -1,6 +1,10 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
+#
+# deploy actions root/sumode pre
+#
+
 # register plugins (order really matters)
 
 import _sadm.plugin.sadm
@@ -21,11 +25,19 @@ import _sadm.plugin.sync
 import _sadm.plugin.network.iptables
 import _sadm.plugin.network.fail2ban
 
+#
+# deploy user mode actions
+#
+
 # vcs clone should happen between network and service stuff
 import _sadm.plugin.vcs.clone
 
 # docker stuff
 import _sadm.plugin.docker
+
+#
+# deploy actions root/sumode pre
+#
 
 # service plugins
 

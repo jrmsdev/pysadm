@@ -19,15 +19,18 @@ def _getArgs():
 	return flags.parse(_parser)
 
 def main():
-	sumode = False
+	sumode = 'not'
 	if '--sumode' in sys.argv:
 		sys.argv.remove('--sumode')
-		sumode = True
+		sumode = 'pre'
+	elif '--sumode-post' in sys.argv:
+		sys.argv.remove('--sumode-post')
+		sumode = 'post'
 
 	args = _getArgs()
 	log.debug("deploy %s/%s sumode=%s" % (args.profile, args.env, sumode))
 
-	if not sumode and sh.getuid() == 0:
+	if sumode == 'not' and sh.getuid() == 0:
 		log.error('do not run as root')
 		return 9
 

@@ -22,6 +22,7 @@ _DEFAULT = {
 	'env': 'default',
 	'dir': '.',
 	'plugins': ','.join(_enablePlugins),
+	'sudo.command': path.join(path.sep, 'usr', 'bin', 'sudo'),
 }
 
 class Config(ConfigParser):

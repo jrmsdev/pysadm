@@ -16,7 +16,6 @@ def test_cfg():
 	assert isinstance(c, ConfigParser)
 	assert c.name() == 'sadmtest'
 	assert c.filename().endswith(path.join('tdata', 'sadm.cfg'))
-	assert len(c.defaults()) == 5
 	assert c.get('default', 'name') == 'sadmtest'
 	assert c.get('default', 'profile') == 'testing'
 	assert c.get('default', 'env') == 'testing'

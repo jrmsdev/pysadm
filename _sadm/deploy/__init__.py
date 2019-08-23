@@ -3,4 +3,6 @@
 
 from os import path
 
+__all__ = ['cfgfile']
+
 cfgfile = path.join(path.sep, 'etc', 'opt', 'sadm', 'deploy.cfg')

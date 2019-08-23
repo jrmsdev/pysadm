@@ -12,7 +12,7 @@ _validAction = {
 	'deploy': True,
 }
 
-def run(env, action, sumode = False):
+def run(env, action, sumode = 'not'):
 	_start = time()
 	env.info("%s start %s" % (action, strftime('%c %z')))
 	env.log("%s %s" % (env.config.name(), env.config.filename()))
@@ -21,17 +21,20 @@ def run(env, action, sumode = False):
 			raise env.error("invalid action %s" % action)
 		with env.lock() as env:
 			env.configure()
-			_runPreAction(env, action)
-			_runAction(env, action)
-			_runPostAction(env, action)
+			_runPreAction(env, action, sumode)
+			_runAction(env, action, sumode = sumode)
+			_runPostAction(env, action, sumode)
 			env.report(action, startTime = _start)
 	finally:
 		env.info("%s end %s" % (action, strftime('%c %z')))
 
-def _runAction(env, action, cmd = None, force = False, revert = False):
+def _runAction(env, action, cmd = None, force = False, revert = False, sumode = 'not'):
 	if cmd is None:
 		cmd = action
 	for p in env.plugins(action, revert = revert):
+		if p.sumode != sumode:
+			env.debug("%s sumode exclude %s" % (sumode, p.name))
+			continue
 		if hasattr(p.mod, cmd):
 			func = getattr(p.mod, cmd)
 			tag = "%s.%s" % (cmd, p.name)
@@ -43,8 +46,8 @@ def _runAction(env, action, cmd = None, force = False, revert = False):
 			if force:
 				raise PluginError("%s plugin no action %s" % (p.name, cmd))
 
-def _runPreAction(env, action):
-	_runAction(env, action, cmd = "pre_%s" % action)
+def _runPreAction(env, action, sumode):
+	_runAction(env, action, cmd = "pre_%s" % action, sumode = sumode)
 
-def _runPostAction(env, action):
-	_runAction(env, action, cmd = "post_%s" % action, revert = True)
+def _runPostAction(env, action, sumode):
+	_runAction(env, action, cmd = "post_%s" % action, revert = True, sumode = sumode)

@@ -195,7 +195,7 @@ def _unlock(env):
 		finally:
 			env._lockfn = None
 
-def run(profile, env, action, cfgfile = None, sumode = False):
+def run(profile, env, action, cfgfile = None, sumode = 'not'):
 	err = None
 	try:
 		e = Env(profile, env, cfg.new(cfgfile = cfgfile))
