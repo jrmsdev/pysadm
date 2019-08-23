@@ -46,6 +46,8 @@ class MockShUtil(object):
 	mktmp = None
 	getcwd = None
 	chdir = None
+	getuid = None
+	getgid = None
 
 	def __init__(self, cfg):
 		self._expect = []
@@ -58,6 +60,8 @@ class MockShUtil(object):
 		self.chmod = self._mock.mock_chmod
 		self.chown = self._mock.mock_chown
 		self.chdir = self._mock.mock_chdir
+		self.getuid = self._mock.mock_getuid
+		self.getgid = self._mock.mock_getgid
 		self._configure(cfg)
 
 	def _configure(self, cfg):
@@ -71,6 +75,8 @@ class MockShUtil(object):
 
 	def _utilsDefault(self):
 		self._default['getcwd'] = path.join(path.sep, 'testing', 'workdir')
+		self._default['getuid'] = 3000
+		self._default['getgid'] = 3000
 
 	def _parseConfig(self, cfg):
 		data = cfg.get('shutil', fallback = '')
