@@ -2,11 +2,14 @@
 # See LICENSE file.
 
 import os
+import os.path
 import shutil as _sh
 import tempfile
 
-__all__ = ['makedirs', 'chmod', 'chown', 'mktmp', 'getcwd', 'chdir',
-	'getuid', 'getgid']
+from contextlib import contextmanager
+
+__all__ = ['TmpFile', 'makedirs', 'chmod', 'chown', 'mktmp', 'mktmpdir',
+	'getcwd', 'chdir', 'getuid', 'getgid', 'lockd']
 
 class TmpFile(object):
 	_fd = None
@@ -53,12 +56,24 @@ class _ShUtil(object):
 	chdir = os.chdir
 	getuid = os.getuid
 	getgid = os.getgid
+	lockd = None
 
 	def __init__(self):
 		self.mktmp = self._mktmp
+		self.lockd = self._lockd
 
 	def _mktmp(self, suffix = None, prefix = None, dir = None, remove = False):
 		return TmpFile(suffix = suffix, prefix = prefix, dir = dir, remove = remove)
+
+	def _lockd(path):
+		fn = os.path.join(path, '.sadmlock')
+		try:
+			with open(fn, 'x') as fh:
+				fh.write('1\n')
+				fh.flush()
+			yield
+		finally:
+			os.unlink(fn)
 
 shutil = _ShUtil()
 
@@ -88,3 +103,10 @@ def getuid():
 
 def getgid():
 	return shutil.getgid()
+
+@contextmanager
+def lockd(path):
+	try:
+		yield shutil.lockd(path)
+	finally:
+		pass

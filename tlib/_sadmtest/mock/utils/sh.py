@@ -48,6 +48,7 @@ class MockShUtil(object):
 	chdir = None
 	getuid = None
 	getgid = None
+	lockd = None
 
 	def __init__(self, cfg):
 		self._expect = []
@@ -63,6 +64,7 @@ class MockShUtil(object):
 		self.chdir = self._mock.mock_chdir
 		self.getuid = self._mock.mock_getuid
 		self.getgid = self._mock.mock_getgid
+		self.lockd = self._mock.mock_lockd
 		self._configure(cfg)
 
 	def _configure(self, cfg):
