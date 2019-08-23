@@ -2,8 +2,6 @@
 # See LICENSE file.
 
 import os
-# ~ import os.path
-# ~ import shutil as _sh
 import tempfile
 
 __all__ = ['TmpFile']
@@ -14,9 +12,8 @@ class TmpFile(object):
 	_rm = None
 
 	def __init__(self, suffix = None, prefix = None, dir = None, remove = False):
-		if prefix is not None:
-			if not prefix.endswith('.'):
-				prefix = "%s." % prefix
+		if prefix and not prefix.endswith('.'):
+			prefix = "%s." % prefix
 		self._fd, self._fn = tempfile.mkstemp(suffix = suffix,
 			prefix = prefix, dir = dir, text = False)
 		self._rm = remove

@@ -4,10 +4,10 @@
 import os
 import os.path
 import shutil as _sh
-import tempfile
 
 from contextlib import contextmanager
 
+from .tmpdir import TmpDir
 from .tmpfile import TmpFile
 
 __all__ = ['makedirs', 'chmod', 'chown', 'mktmp', 'mktmpdir', 'getcwd', 'chdir',
@@ -19,7 +19,7 @@ class _ShUtil(object):
 		self.chmod = os.chmod
 		self.chown = _sh.chown
 		self.mktmp = self._mktmp
-		self.mktmpdir = tempfile.mkdtemp
+		self.mktmpdir = self._mktmpdir
 		self.getcwd = os.getcwd
 		self.chdir = os.chdir
 		self.getuid = os.getuid
@@ -28,6 +28,9 @@ class _ShUtil(object):
 
 	def _mktmp(self, suffix = None, prefix = None, dir = None, remove = False):
 		return TmpFile(suffix = suffix, prefix = prefix, dir = dir, remove = remove)
+
+	def _mktmpdir(self, suffix = None, prefix = None, dir = None, rmtree = False):
+		return TmpDir(suffix = suffix, prefix = prefix, dir = dir, rmtree = rmtree)
 
 	def _lockd(self, path):
 		fn = os.path.join(path, '.sadmlock')
@@ -53,8 +56,8 @@ def chown(path, user = None, group = None):
 def mktmp(suffix = None, prefix = None, dir = None, remove = False):
 	return shutil.mktmp(suffix = suffix, prefix = prefix, dir = dir, remove = remove)
 
-def mktmpdir(suffix = None, prefix = None, dir = None):
-	return shutil.mktmpdir(suffix = suffix, prefix = prefix, dir = dir)
+def mktmpdir(suffix = None, prefix = None, dir = None, rmtree = False):
+	return shutil.mktmpdir(suffix = suffix, prefix = prefix, dir = dir, rmtree = rmtree)
 
 def getcwd():
 	return shutil.getcwd()
