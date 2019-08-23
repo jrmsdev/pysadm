@@ -47,25 +47,22 @@ class TmpFile(object):
 		return self._fn
 
 class _ShUtil(object):
-	makedirs = os.makedirs
-	chmod = os.chmod
-	chown = _sh.chown
-	mktmp = None
-	mktmpdir = tempfile.mkdtemp
-	getcwd = os.getcwd
-	chdir = os.chdir
-	getuid = os.getuid
-	getgid = os.getgid
-	lockd = None
-
 	def __init__(self):
+		self.makedirs = os.makedirs
+		self.chmod = os.chmod
+		self.chown = _sh.chown
 		self.mktmp = self._mktmp
+		self.mktmpdir = tempfile.mkdtemp
+		self.getcwd = os.getcwd
+		self.chdir = os.chdir
+		self.getuid = os.getuid
+		self.getgid = os.getgid
 		self.lockd = self._lockd
 
 	def _mktmp(self, suffix = None, prefix = None, dir = None, remove = False):
 		return TmpFile(suffix = suffix, prefix = prefix, dir = dir, remove = remove)
 
-	def _lockd(path):
+	def _lockd(self, path):
 		fn = os.path.join(path, '.sadmlock')
 		try:
 			with open(fn, 'x') as fh:

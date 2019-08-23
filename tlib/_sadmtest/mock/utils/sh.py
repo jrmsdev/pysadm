@@ -35,20 +35,9 @@ class MockTmpFile(object):
 		return self._fn
 
 class MockShUtil(object):
-	_mock = None
 	_expect = None
 	_return = None
 	_default = None
-	makedirs = None
-	chmod = None
-	chown = None
-	mktmp = None
-	mktmpdir = None
-	getcwd = None
-	chdir = None
-	getuid = None
-	getgid = None
-	lockd = None
 
 	def __init__(self, cfg):
 		self._expect = []
