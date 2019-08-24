@@ -20,7 +20,7 @@ ExecStart=/usr/bin/uwsgi --need-plugin python3 \
 	--set-ph sadm-uid=${SADM_UID} \
 	--set-ph sadm-gid=${SADM_GID} \
 	--set-ph netport=${SADM_LISTEN_PORT} \
-	--ini /etc/opt/sadm/uwsgi.ini
+	--ini /etc/opt/sadm/listen/uwsgi.ini
 
 [Install]
 WantedBy=multi-user.target

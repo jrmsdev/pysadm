@@ -42,11 +42,13 @@ def build(env):
 def _buildListen(env):
 	cfgfiles = (
 		(libdir.fpath('listen', 'wsgi', 'uwsgi.ini'),
-			path.join(path.sep, 'etc', 'opt', 'sadm', 'uwsgi.ini')),
+			path.join(path.sep, 'etc', 'opt', 'sadm', 'listen', 'uwsgi.ini')),
 		(libdir.fpath('listen', 'wsgi', 'uwsgi.service'),
 			path.join(path.sep, 'etc', 'systemd', 'system', 'sadm-listen.service')),
 		(libdir.fpath('listen', 'wsgi', 'apache.conf'),
-			path.join(path.sep, 'etc', 'opt', 'sadm', 'apache.conf')),
+			path.join(path.sep, 'etc', 'opt', 'sadm', 'listen', 'apache.conf')),
+		(libdir.fpath('listen', 'wsgi', 'nginx.conf'),
+			path.join(path.sep, 'etc', 'opt', 'sadm', 'listen', 'nginx.conf')),
 	)
 	for srcfn, dstfn in cfgfiles:
 		env.log("create %s" % dstfn)
