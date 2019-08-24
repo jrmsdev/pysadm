@@ -16,6 +16,7 @@ include tdata/sadm.cfg
 include tdata/profile-dir-isfile.test
 
 include _sadm/listen/wapp.conf
+recursive-include _sadm/listen/wsgi *.conf
 recursive-include _sadm/listen/wsgi *.ini
 recursive-include _sadm/listen/wsgi *.service
 
