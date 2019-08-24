@@ -33,8 +33,8 @@ def dispatch(req, task, action, taskArgs):
 	_sched(taskfn)
 
 def _getURL(req):
-	for k, v in req.headers.items():
-		log.debug("%s: %s" % (k, v))
+	# ~ for k, v in req.headers.items():
+		# ~ log.debug("%s: %s" % (k, v))
 	u = urlparse(req.url)
 	if u.scheme == '':
 		u.scheme = 'http'
