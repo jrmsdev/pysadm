@@ -13,5 +13,5 @@ if test "${TAG}" = 'dev' || test "${TAG}" = 'docs'; then
 	PYPATH='-e PYTHONPATH=/opt/src/sadm'
 fi
 docker run -it --rm --name=${NAME} --hostname=${NAME} --user sadm \
-	-v ${PWD}:/opt/src/sadm ${PYPATH} ${IMAGE} $@
+	-p 3666:80 -v ${PWD}:/opt/src/sadm ${PYPATH} ${IMAGE} $@
 exit 0

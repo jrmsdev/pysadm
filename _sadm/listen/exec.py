@@ -18,12 +18,10 @@ __all__ = ['dispatch', 'main']
 
 def dispatch(req, task, action, taskArgs):
 	log.debug("dispatch task: %s - action: %s" % (task, action))
-	reqURL = urlparse(req.url)
-	if reqURL.scheme == '':
-		reqURL.scheme = 'http'
+	reqURL = _getURL(req)
 	obj = {
 		'sadm.log': log.curLevel(),
-		'sadm.listen.url': "%s://%s" % (reqURL.scheme, reqURL.netloc),
+		'sadm.listen.url': reqURL,
 		'task': task,
 		'task.action': action,
 		'task.args': taskArgs,
@@ -33,6 +31,16 @@ def dispatch(req, task, action, taskArgs):
 		taskfn = fh.name()
 		fh.write(json.dumps(obj))
 	_sched(taskfn)
+
+def _getURL(req):
+	for k, v in req.headers.items():
+		log.debug("%s: %s" % (k, v))
+	u = urlparse(req.url)
+	if u.scheme == '':
+		u.scheme = 'http'
+	url = "%s://127.0.0.1:%s" % (u.scheme, u.port)
+	log.debug("URL: %s" % url)
+	return url
 
 def _sched(taskfn):
 	self = libdir.fpath('listen', 'exec.py')
