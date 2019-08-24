@@ -10,16 +10,17 @@ Restart=on-failure
 KillSignal=SIGQUIT
 StandardError=syslog
 PrivateTmp=true
-EnvironmentFile=/etc/opt/sadm/uwsgi/environ
+Environment=SADM_HOME=/opt/sadm
+Environment=SADM_UID=sadm
+Environment=SADM_GID=sadm
+Environment=SADM_LISTEN_PORT=3666
 EnvironmentFile=-/etc/default/sadm-listen
 ExecStart=/usr/bin/uwsgi --need-plugin python3 \
 	--set-ph sadm-home=${SADM_HOME} \
 	--set-ph sadm-uid=${SADM_UID} \
 	--set-ph sadm-gid=${SADM_GID} \
-	--set-ph netloc=${SADM_LISTEN} \
-	--set-ph sslcrt=${SADM_LISTEN_SSLCRT} \
-	--set-ph sslkey=${SADM_LISTEN_SSLKEY} \
-	--ini /etc/opt/sadm/uwsgi/config.ini
+	--set-ph netport=${SADM_LISTEN_PORT} \
+	--ini /etc/opt/sadm/uwsgi.ini
 
 [Install]
 WantedBy=multi-user.target
