@@ -19,7 +19,7 @@ def uwsgi():
 		'--need-plugin', 'python3',
 		'--touch-reload', path.join(path.sep, 'run', 'sadm.listen.uwsgi.reload'),
 		'--set-ph', "sadm-home=%s" % sys.exec_prefix,
-		'--ini', libdir.fpath('listen', 'uwsgi.ini'),
+		'--ini', libdir.fpath('listen', 'wsgi', 'uwsgi.ini'),
 	]
 	callCheck(cmd)
 	return 0
