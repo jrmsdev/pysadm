@@ -11,31 +11,42 @@ __all__ = [
 	'testing_plugin',
 	'testing_profile',
 	'testing_settings',
+	'testing_wapp',
 ]
 
+#
 # logger
+#
 
 from _sadm import log
 log._colored = False
 log.init('quiet')
 
+#
 # remove version autogen module
+#
 
 for n in ('_version.py', '_version_build.py'):
 	fn = path.join('_sadm', n)
 	if path.isfile(fn):
 		unlink(fn)
 
+#
 # register testing plugins
+#
 
 import _sadmtest.plugin.testing
 
+#
 # config
+#
 
 from _sadm import cfg
 cfg._cfgFile = path.join('tdata', 'sadm.cfg')
 
+#
 # testing profile
+#
 
 from _sadm.env import profile
 
@@ -45,7 +56,9 @@ def testing_profile():
 		return profile.Profile(name)
 	return wrapper
 
+#
 # testing env
+#
 
 from _sadm import env
 
@@ -57,7 +70,9 @@ def testing_env():
 		return e
 	return wrapper
 
+#
 # testing settings
+#
 
 @pytest.fixture
 def testing_settings():
@@ -71,7 +86,9 @@ def testing_settings():
 		return e.settings
 	return wrapper
 
+#
 # testing env setup
+#
 
 from _sadm.env import action as envAction
 
@@ -123,7 +140,9 @@ def _cleanEnv(env, mkdirs = False):
 	else:
 		makedirs(tmpdir)
 
+#
 # testing plugins
+#
 
 from _sadm.utils import systemd
 systemd._ctlcmd = ['systemctl']
@@ -165,3 +184,18 @@ def _buildDeploy(pname, ns = '_sadm'):
 		src = path.join(metadir, fn)
 		dst = path.join(depdir, fn)
 		move(src, dst)
+
+#
+# testing webapps
+#
+
+from _sadmtest.listen.wapp import ListenWebapp
+
+@pytest.fixture
+def testing_wapp():
+	def wrapper(app):
+		if app == 'listen':
+			return ListenWebapp()
+		else:
+			raise RuntimeError("invalid webapp: %s" % app)
+	return wrapper

@@ -11,19 +11,28 @@ import _sadm.utils.cmd
 import _sadm.utils.path
 import _sadm.utils.sh
 
+def _mockUtils(cfg):
+	_sadm.utils.cmd.proc = MockCmdProc(cfg)
+	_sadm.utils.path._path = MockPath(cfg)
+	_sadm.utils.sh.shutil = MockShUtil(cfg)
+
+def _mockUtilsCheck():
+	_sadm.utils.path._path.check()
+	_sadm.utils.sh.shutil.check()
+	_sadm.utils.cmd.proc.check()
+
+def _mockUtilsRestore():
+	_sadm.utils.cmd.proc = _sadm.utils.cmd._ProcMan()
+	_sadm.utils.path._path = _sadm.utils.path._Path()
+	_sadm.utils.sh.shutil = _sadm.utils.sh._ShUtil()
+
 @contextmanager
 def deploy(name, cfg):
 	print('-- mock deploy:', name, cfg)
 	try:
-		_sadm.utils.cmd.proc = MockCmdProc(cfg)
-		_sadm.utils.path._path = MockPath(cfg)
-		_sadm.utils.sh.shutil = MockShUtil(cfg)
+		_mockUtils(cfg)
 		yield
 		print('-- post check mock deploy:', name)
-		_sadm.utils.path._path.check()
-		_sadm.utils.sh.shutil.check()
-		_sadm.utils.cmd.proc.check()
+		_mockUtilsCheck()
 	finally:
-		_sadm.utils.cmd.proc = _sadm.utils.cmd._ProcMan()
-		_sadm.utils.path._path = _sadm.utils.path._Path()
-		_sadm.utils.sh.shutil = _sadm.utils.sh._ShUtil()
+		_mockUtilsRestore()
