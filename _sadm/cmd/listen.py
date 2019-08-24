@@ -7,7 +7,7 @@ import sys
 
 from _sadm import listen, libdir
 from _sadm.cmd import flags
-from _sadm.utils import path
+from _sadm.utils import path, sh
 from _sadm.utils.cmd import callCheck
 
 def bottle():
@@ -17,9 +17,8 @@ def uwsgi():
 	cmd = [
 		'uwsgi',
 		'--need-plugin', 'python3',
-		'--pyhome', sys.exec_prefix,
-		'--set-ph', 'netloc=127.0.0.1:3666',
 		'--touch-reload', path.join(path.sep, 'run', 'sadm.listen.uwsgi.reload'),
+		'--set-ph', "sadm-home=%s" % sys.exec_prefix,
 		'--ini', libdir.fpath('listen', 'uwsgi.ini'),
 	]
 	callCheck(cmd)
