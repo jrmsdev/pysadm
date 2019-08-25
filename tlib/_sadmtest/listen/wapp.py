@@ -1,6 +1,8 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
+import bottle
+
 from os import path
 
 from _sadmtest import mock
@@ -16,13 +18,14 @@ class ListenWebapp(TestingWebapp):
 
 	def __enter__(self):
 		fn = path.join('tdata', 'listen.cfg')
-		_sadm.listen.wapp.config = _sadm.listen.wapp._newConfig(fn)
+		_sadm.listen.wapp.wapp = _sadm.listen.wapp.init(cfgfn = fn)
 		if self.profile != '':
 			fn = path.join('tdata', 'listen', self.profile, 'listen.cfg')
-			with open(fn, 'r') as fh:
-				_sadm.listen.wapp.config.read_file(fh)
+			_sadm.listen.wapp.config.read(fn)
 		with mock.utils(_sadm.listen.wapp.config):
 			return self
 
 	def __exit__(self, exc_type, exc_val, exc_tb):
 		del _sadm.listen.wapp.config
+		del _sadm.listen.wapp.wapp
+		_sadm.listen.wapp.wapp = bottle.Bottle()
