@@ -29,9 +29,13 @@ def _mockUtilsRestore():
 	_sadm.utils.sh.shutil = _sadm.utils.sh._ShUtil()
 
 @contextmanager
-def utils(cfg):
+def utils(cfg, tag = 'utils'):
+	mockcfg = None
+	sect = "_sadmtest.mock.%s" % tag
+	if cfg and cfg.has_section(sect):
+		mockcfg = cfg[sect]
 	try:
-		_mockUtils(cfg)
+		_mockUtils(mockcfg)
 		yield
 		_mockUtilsCheck()
 	finally:
