@@ -16,15 +16,19 @@ bottle.TEMPLATE_PATH = []
 _cfgfn = libdir.fpath('listen', 'wapp.conf')
 wapp.config.load_config(_cfgfn)
 
-config = ConfigParser(
-	defaults = None,
-	allow_no_value = False,
-	delimiters = ('=',),
-	comment_prefixes = ('#',),
-	strict = True,
-	interpolation = ExtendedInterpolation(),
-	default_section = 'default',
-)
+errors.init(wapp)
+
+def _newConfig():
+	return ConfigParser(
+		defaults = None,
+		allow_no_value = False,
+		delimiters = ('=',),
+		comment_prefixes = ('#',),
+		strict = True,
+		interpolation = ExtendedInterpolation(),
+		default_section = 'default',
+	)
+config = _newConfig()
 
 def init(cfgfn = None):
 	if cfgfn is None: # pragma: no cover
@@ -34,8 +38,6 @@ def init(cfgfn = None):
 
 	log.init(config.get('sadm', 'log', fallback = 'warn'))
 	log.debug(version.string('sadm'))
-
-	errors.init(wapp)
 
 	from _sadm.listen import handlers
 	from _sadm.listen.plugin import HandlersPlugin

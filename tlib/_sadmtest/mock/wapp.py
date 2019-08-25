@@ -5,8 +5,17 @@ class MockRequest(object):
 	pass
 
 class MockWebapp(object):
+	wapp = None
 	name = None
 	response = None
 
-	def POST(self, datname, callback, *args):
+	def __getCallback(self, name, method):
+		for r in self.wapp.routes:
+			if r.name == name and r.method == method:
+				return r.callback
+		assert False, \
+			"wapp %s no callback found for route %s method %s" % (self.name, name, method)
+
+	def POST(self, datname, routeName, *args):
+		callback = self.__getCallback(routeName, 'POST')
 		self.response = callback(*args)

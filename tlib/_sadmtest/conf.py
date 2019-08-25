@@ -200,6 +200,6 @@ _sadm.listen.webhook.repo._provider['testing'] = TestingProvider()
 
 @pytest.fixture
 def listen_wapp():
-	def wrapper():
-		return ListenWebapp()
+	def wrapper(profile = ''):
+		return ListenWebapp(profile)
 	return wrapper

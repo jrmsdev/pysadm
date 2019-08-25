@@ -5,6 +5,7 @@ import json
 
 from _sadm import log
 from _sadm.errors import CommandError
+from _sadm.listen import wapp
 from _sadm.listen.exec import dispatch
 from _sadm.listen.errors import error
 
@@ -26,16 +27,16 @@ class WebhookRepo(object):
 	_repoName = None
 	_repoVCS = None
 
-	def __init__(self, config, provider, name):
+	def __init__(self, provider, name):
 		self._provName = provider
 		self._repoName = name
 		prov = _provider.get(provider, None)
 		if prov is None:
 			raise error(400, "webhook invalid provider: %s" % provider)
 		sect = "sadm.webhook:%s" % name
-		if not config.has_section(sect):
+		if not wapp.config.has_section(sect):
 			raise error(400, "webhook %s repo not found: %s" % (provider, name))
-		self._cfg = config[sect]
+		self._cfg = wapp.config[sect]
 
 		self._prov = prov
 		self._loadProvider(self._cfg, provider, name)

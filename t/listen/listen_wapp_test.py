@@ -24,10 +24,9 @@ ROUTES = [
 
 def test_default_wapp():
 	cfgfn = path.join('tdata', 'listen.cfg')
-	assert not errors._initDone
+	assert errors._initDone
 	w = wapp.init(cfgfn = cfgfn)
 	assert isinstance(w, Bottle)
-	assert errors._initDone
 	assert sorted([p.name for p in w.plugins]) == ['json', 'sadm.listen', 'template']
 	routes = []
 	for r in w.routes:
@@ -35,6 +34,7 @@ def test_default_wapp():
 	assert sorted(routes) == ROUTES
 
 def test_wapp(listen_wapp):
-	wapp = listen_wapp()
-	assert wapp.name == 'listen'
-	assert wapp.response is None
+	w = listen_wapp()
+	assert w.name == 'listen'
+	assert w.wapp is wapp.wapp
+	assert w.response is None
