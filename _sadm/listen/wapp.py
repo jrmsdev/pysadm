@@ -10,7 +10,13 @@ from _sadm.utils import path
 
 __all__ = ['wapp', 'config', 'init']
 
-wapp = bottle.Bottle()
+class Webapp(bottle.Bottle):
+
+	@property
+	def request(self):
+		return bottle.request
+
+wapp = Webapp()
 bottle.TEMPLATE_PATH = []
 
 _cfgfn = libdir.fpath('listen', 'wapp.conf')
