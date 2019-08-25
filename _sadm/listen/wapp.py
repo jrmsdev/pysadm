@@ -27,7 +27,7 @@ config = ConfigParser(
 )
 
 def init(cfgfn = None):
-	if cfgfn is None:
+	if cfgfn is None: # pragma: no cover
 		cfgfn = path.join(path.sep, 'etc', 'opt', 'sadm', 'listen.cfg')
 	with open(cfgfn, 'r') as fh:
 		config.read_file(fh)

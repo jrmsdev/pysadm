@@ -18,8 +18,8 @@ def test_config_error():
 		w = wapp.init(cfgfn = cfgfn)
 
 ROUTES = [
-	'POST /_/exec/<task>/<action>',
-	'POST /hook/<provider>/<name>/<action>',
+	'_exec /_/exec/<task>/<action> POST',
+	'hook.repo /hook/<provider>/<name>/<action> POST',
 ]
 
 def test_default_wapp():
@@ -29,4 +29,7 @@ def test_default_wapp():
 	assert isinstance(w, Bottle)
 	assert errors._initDone
 	assert sorted([p.name for p in w.plugins]) == ['json', 'sadm.listen', 'template']
-	assert sorted([' '.join(str(r).split()[:2]).replace('<', '', 1).replace("'", '') for r in w.routes]) == ROUTES
+	routes = []
+	for r in w.routes:
+		routes.append(' '.join([str(r.name), r.rule, r.method]))
+	assert sorted(routes) == ROUTES

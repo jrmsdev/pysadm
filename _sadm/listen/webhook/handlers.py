@@ -9,7 +9,7 @@ from .repo import WebhookRepo
 
 __all__ = ['repo']
 
-@wapp.route('/hook/<provider>/<name>/<action>', 'POST')
+@wapp.route('/hook/<provider>/<name>/<action>', 'POST', name = 'hook.repo')
 def repo(provider, name, action):
 	repo = WebhookRepo(config, provider, name)
 	repo.auth(request)

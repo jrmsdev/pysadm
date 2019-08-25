@@ -6,7 +6,7 @@ from _sadm.listen import wapp
 
 __all__ = ['start']
 
-def start():
+def start(): # pragma: no cover
 	w = wapp.init()
 	quiet = log.curLevel() == 'quiet'
 	debug = wapp.config.getboolean('sadm.listen', 'debug', fallback = False)

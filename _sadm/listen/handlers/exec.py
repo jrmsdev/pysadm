@@ -15,7 +15,7 @@ _taskman = {
 	'webhook.repo.git': GitRepo(),
 }
 
-@wapp.route('/_/exec/<task>/<action>', 'POST')
+@wapp.route('/_/exec/<task>/<action>', 'POST', name = '_exec')
 def exech(task, action):
 	log.debug("exec handle: %s %s" % (task, action))
 	taskman = _taskman.get(task, None)
