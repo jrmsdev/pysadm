@@ -6,7 +6,6 @@ from bottle import request
 
 from _sadm import log
 from _sadm.listen.errors import error
-from _sadm.listen.wapp import wapp
 from _sadm.listen.webhook.repo.vcs.git import GitRepo
 
 __all__ = ['exech']
@@ -15,8 +14,7 @@ _taskman = {
 	'webhook.repo.git': GitRepo(),
 }
 
-@wapp.route('/_/exec/<task>/<action>', 'POST', name = '_exec')
-def exech(task, action):
+def handle(task, action):
 	log.debug("exec handle: %s %s" % (task, action))
 	taskman = _taskman.get(task, None)
 	if taskman is None:

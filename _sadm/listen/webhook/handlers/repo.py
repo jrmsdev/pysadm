@@ -3,14 +3,11 @@
 
 from bottle import request
 
-from _sadm.listen.wapp import wapp
-
-from .repo import WebhookRepo
+from _sadm.listen.webhook.repo import WebhookRepo
 
 __all__ = ['repo']
 
-@wapp.route('/hook/<provider>/<name>/<action>', 'POST', name = 'hook.repo')
-def repo(provider, name, action):
+def handle(provider, name, action):
 	repo = WebhookRepo(provider, name)
 	repo.auth(request)
 	repo.exec(request, action)

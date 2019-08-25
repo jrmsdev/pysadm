@@ -14,9 +14,6 @@ _sadm.listen.webhook.repo._provider['testing'] = TestingProvider()
 class ListenWebapp(TestingWebapp):
 	name = 'listen'
 
-	def __mockConfig(self):
-		return None # FIXME
-
 	def __enter__(self):
 		fn = path.join('tdata', 'listen.cfg')
 		_sadm.listen.wapp.config = _sadm.listen.wapp._newConfig(fn)
@@ -24,7 +21,7 @@ class ListenWebapp(TestingWebapp):
 			fn = path.join('tdata', 'listen', self.profile, 'listen.cfg')
 			with open(fn, 'r') as fh:
 				_sadm.listen.wapp.config.read_file(fh)
-		with mock.utils(self.__mockConfig()):
+		with mock.utils(_sadm.listen.wapp.config):
 			return self
 
 	def __exit__(self, exc_type, exc_val, exc_tb):

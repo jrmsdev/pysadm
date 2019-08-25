@@ -5,24 +5,16 @@ import bottle
 from configparser import ConfigParser, ExtendedInterpolation
 
 from _sadm import libdir, log, version
-from _sadm.listen import errors
+from _sadm.listen import errors, handlers
 from _sadm.utils import path
 
 __all__ = ['wapp', 'config', 'init']
 
-wapp = bottle.Bottle()
-
-bottle.TEMPLATE_PATH = []
-wapp.uninstall('template')
-wapp.uninstall('json')
-
-_cfgfn = libdir.fpath('listen', 'wapp.conf')
-wapp.config.load_config(_cfgfn)
-
-errors.init(wapp)
-
-config = None
+_wappcfg = libdir.fpath('listen', 'wapp.conf')
 _cfgfn = path.join(path.sep, 'etc', 'opt', 'sadm', 'listen.cfg')
+
+wapp = bottle.Bottle()
+config = None
 
 def _newConfig(fn):
 	c = ConfigParser(
@@ -40,24 +32,21 @@ def _newConfig(fn):
 
 def init(cfgfn = _cfgfn):
 	global config
-	config = _newConfig(cfgfn)
 
+	wapp.config.load_config(_wappcfg)
+	bottle.TEMPLATE_PATH = []
+
+	config = _newConfig(cfgfn)
 	log.init(config.get('sadm', 'log', fallback = 'error'))
 	log.debug(version.string('sadm-listen'))
 
-	from _sadm.listen import handlers
-	from _sadm.listen.plugin import HandlersPlugin
-	wapp.install(HandlersPlugin())
+	rmplugins = [p.strip() for p in wapp.config.get('plugins.uninstall', '').split(' ')]
+	for p in rmplugins:
+		if p != '':
+			log.debug("plugin uninstall %s" % p)
+			wapp.uninstall(p)
 
-	initDone = {}
-	for sect in config.sections():
-
-		if sect.startswith('sadm.webhook:'):
-			if not initDone.get('webhook', False):
-				log.debug('enable webhook')
-				from _sadm.listen import webhook
-				from _sadm.listen.plugin.webhook import WebhookPlugin
-				wapp.install(WebhookPlugin())
-				initDone['webhook'] = True
+	errors.init(wapp)
+	handlers.init(wapp, config)
 
 	return wapp

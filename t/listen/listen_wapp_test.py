@@ -17,14 +17,14 @@ def test_config_error():
 
 ROUTES = [
 	'_exec /_/exec/<task>/<action> POST',
-	'hook.repo /hook/<provider>/<name>/<action> POST',
 ]
 
 def test_default_wapp():
 	cfgfn = path.join('tdata', 'listen.cfg')
-	assert errors._initDone
+	assert not errors._initDone
 	w = wapp.init(cfgfn = cfgfn)
-	assert sorted([p.name for p in w.plugins]) == ['sadm.listen']
+	assert errors._initDone
+	assert sorted([p.name for p in w.plugins]) == ['sadm.listen.response']
 	routes = []
 	for r in w.routes:
 		routes.append(' '.join([str(r.name), r.rule, r.method]))
