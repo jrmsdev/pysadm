@@ -12,5 +12,5 @@ def start(): # pragma: no cover
 	debug = wapp.config.getboolean('sadm.listen', 'debug', fallback = False)
 	host = wapp.config.get('sadm.listen', 'host', fallback = '127.0.0.1')
 	port = wapp.config.getint('sadm.listen', 'port', fallback = 3666)
-	return w.run(host = host, port = port, debug = debug,
+	return w.run(host = '127.0.0.1', port = port, debug = debug,
 		reloader = debug, quiet = quiet)

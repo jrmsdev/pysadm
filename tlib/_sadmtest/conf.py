@@ -193,10 +193,6 @@ def _buildDeploy(pname, ns = '_sadm'):
 #
 
 from _sadmtest.listen.wapp import ListenWebapp
-from _sadmtest.listen.webhook.repo.provider import TestingProvider
-
-import _sadm.listen.webhook.repo
-_sadm.listen.webhook.repo._provider['testing'] = TestingProvider()
 
 @pytest.fixture
 def listen_wapp():

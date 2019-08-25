@@ -10,26 +10,22 @@ from _sadm.utils import path
 
 __all__ = ['wapp', 'config', 'init']
 
-class Webapp(bottle.Bottle):
+wapp = bottle.Bottle()
 
-	@property
-	def request(self):
-		return bottle.request
-
-	@property
-	def response(self):
-		return bottle.response
-
-wapp = Webapp()
 bottle.TEMPLATE_PATH = []
+wapp.uninstall('template')
+wapp.uninstall('json')
 
 _cfgfn = libdir.fpath('listen', 'wapp.conf')
 wapp.config.load_config(_cfgfn)
 
 errors.init(wapp)
 
-def _newConfig():
-	return ConfigParser(
+config = None
+_cfgfn = path.join(path.sep, 'etc', 'opt', 'sadm', 'listen.cfg')
+
+def _newConfig(fn):
+	c = ConfigParser(
 		defaults = None,
 		allow_no_value = False,
 		delimiters = ('=',),
@@ -38,16 +34,16 @@ def _newConfig():
 		interpolation = ExtendedInterpolation(),
 		default_section = 'default',
 	)
-config = _newConfig()
+	with open(fn, 'r') as fh:
+		c.read_file(fh)
+	return c
 
-def init(cfgfn = None):
-	if cfgfn is None: # pragma: no cover
-		cfgfn = path.join(path.sep, 'etc', 'opt', 'sadm', 'listen.cfg')
-	with open(cfgfn, 'r') as fh:
-		config.read_file(fh)
+def init(cfgfn = _cfgfn):
+	global config
+	config = _newConfig(cfgfn)
 
-	log.init(config.get('sadm', 'log', fallback = 'warn'))
-	log.debug(version.string('sadm'))
+	log.init(config.get('sadm', 'log', fallback = 'error'))
+	log.debug(version.string('sadm-listen'))
 
 	from _sadm.listen import handlers
 	from _sadm.listen.plugin import HandlersPlugin

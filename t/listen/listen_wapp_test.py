@@ -1,7 +1,6 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
-from bottle import Bottle
 from configparser import ConfigParser
 from os import path
 from pytest import raises
@@ -26,7 +25,6 @@ def test_default_wapp():
 	cfgfn = path.join('tdata', 'listen.cfg')
 	assert errors._initDone
 	w = wapp.init(cfgfn = cfgfn)
-	assert isinstance(w, Bottle)
 	assert sorted([p.name for p in w.plugins]) == ['json', 'sadm.listen', 'template']
 	routes = []
 	for r in w.routes:
@@ -36,5 +34,4 @@ def test_default_wapp():
 def test_wapp(listen_wapp):
 	with listen_wapp() as w:
 		assert w.name == 'listen'
-		assert w.wapp is wapp.wapp
 		assert w.response is None

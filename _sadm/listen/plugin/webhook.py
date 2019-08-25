@@ -1,6 +1,8 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
+from bottle import response
+
 from _sadm import log
 
 __all__ = ['WebhookPlugin']
@@ -20,7 +22,7 @@ class WebhookPlugin(object):
 			def wrapper(*args, **kwargs):
 				log.debug('apply.wrapper')
 				resp = callback(*args, **kwargs)
-				self.__wapp.response.headers['Content-Type'] = 'text/plain; charset=UTF-8'
+				response.headers['Content-Type'] = 'text/plain; charset=UTF-8'
 				return resp
 			return wrapper
 		log.debug("ignore rule: %s" % ctx.rule)

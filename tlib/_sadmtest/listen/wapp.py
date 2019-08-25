@@ -3,19 +3,24 @@
 
 from os import path
 
+from _sadmtest.listen.webhook.repo.provider import TestingProvider
+from _sadmtest.mock.wapp import TestingWebapp, MockWebapp
+
 import _sadm.listen.wapp
+_sadm.listen.wapp.wapp = MockWebapp()
 
-from _sadmtest.mock.wapp import MockWebapp
+import _sadm.listen.webhook.repo
+_sadm.listen.webhook.repo._provider['testing'] = TestingProvider()
 
-class ListenWebapp(MockWebapp):
+class ListenWebapp(TestingWebapp):
 	name = 'listen'
 
 	def __init__(self, profile):
 		self._profile = profile
+		self.wapp = _sadm.listen.wapp
 
 	def __enter__(self):
-		_sadm.listen.wapp._mockWebapp = True
-		self.wapp = _sadm.listen.wapp.init(cfgfn = path.join('tdata', 'listen.cfg'))
+		_sadm.listen.wapp.init(cfgfn = path.join('tdata', 'listen.cfg'))
 		if self._profile != '':
 			parts = ['tdata', 'listen']
 			parts.extend(self._profile.split('/'))
@@ -26,6 +31,5 @@ class ListenWebapp(MockWebapp):
 		return self
 
 	def __exit__(self, exc_type, exc_val, exc_tb):
-		_sadm.listen.wapp._mockWebapp = False
 		del _sadm.listen.wapp.config
 		_sadm.listen.wapp.config = _sadm.listen.wapp._newConfig()
