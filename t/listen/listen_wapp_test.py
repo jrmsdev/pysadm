@@ -8,8 +8,7 @@ from pytest import raises
 from _sadm.listen import wapp, errors
 
 def test_default_config():
-	assert isinstance(wapp.config, ConfigParser)
-	assert wapp.config.sections() == []
+	assert wapp.config is None
 
 def test_config_error():
 	cfgfn = path.join('tdata', 'no-listen.cfg')
@@ -25,7 +24,7 @@ def test_default_wapp():
 	cfgfn = path.join('tdata', 'listen.cfg')
 	assert errors._initDone
 	w = wapp.init(cfgfn = cfgfn)
-	assert sorted([p.name for p in w.plugins]) == ['json', 'sadm.listen', 'template']
+	assert sorted([p.name for p in w.plugins]) == ['sadm.listen']
 	routes = []
 	for r in w.routes:
 		routes.append(' '.join([str(r.name), r.rule, r.method]))

@@ -21,9 +21,10 @@ def test_noprovider():
 	assert err.status_code == 400
 	assert err.body == 'webhook invalid provider: noprov'
 
-def test_norepo():
-	with raises(HTTPError) as exc:
-		repo.WebhookRepo('testing', 'norepo')
-	err = exc.value
-	assert err.status_code == 400
-	assert err.body == 'webhook testing repo not found: norepo'
+def test_norepo(listen_wapp):
+	with listen_wapp():
+		with raises(HTTPError) as exc:
+			repo.WebhookRepo('testing', 'norepo')
+		err = exc.value
+		assert err.status_code == 400
+		assert err.body == 'webhook testing repo not found: norepo'

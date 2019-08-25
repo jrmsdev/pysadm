@@ -1,6 +1,8 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
+import bottle
+
 class TestingWebapp(object):
 	name = None
 	response = None
