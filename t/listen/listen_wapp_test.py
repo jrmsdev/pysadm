@@ -34,7 +34,7 @@ def test_default_wapp():
 	assert sorted(routes) == ROUTES
 
 def test_wapp(listen_wapp):
-	w = listen_wapp()
-	assert w.name == 'listen'
-	assert w.wapp is wapp.wapp
-	assert w.response is None
+	with listen_wapp() as w:
+		assert w.name == 'listen'
+		assert w.wapp is wapp.wapp
+		assert w.response is None
