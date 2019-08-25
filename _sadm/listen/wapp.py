@@ -17,15 +17,7 @@ _cfgfn = libdir.fpath('listen', 'wapp.conf')
 wapp.config.load_config(_cfgfn)
 
 config = ConfigParser(
-	defaults = {
-		'sadm': {
-			'log': 'warn',
-		},
-		'sadm.listen': {
-			'host': '127.0.0.1',
-			'port': 3666,
-		}
-	},
+	defaults = None,
 	allow_no_value = False,
 	delimiters = ('=',),
 	comment_prefixes = ('#',),
@@ -37,7 +29,8 @@ config = ConfigParser(
 def init(cfgfn = None):
 	if cfgfn is None:
 		cfgfn = path.join(path.sep, 'etc', 'opt', 'sadm', 'listen.cfg')
-	config.read(cfgfn)
+	with open(cfgfn, 'r') as fh:
+		config.read_file(fh)
 
 	log.init(config.get('sadm', 'log', fallback = 'warn'))
 	log.debug(version.string('sadm'))

@@ -23,7 +23,10 @@ def _handler(code, error):
 		return "%s\n" % codeStatus
 	return "ERROR %d\n" % code
 
+_initDone = False
+
 def init(wapp):
+	global _initDone
 
 	@wapp.error(500)
 	def error_500(error):
@@ -40,6 +43,8 @@ def init(wapp):
 	@wapp.error(405)
 	def error_405(error):
 		return _handler(405, error)
+
+	_initDone = True
 
 def error(code, msg):
 	log.error("%s %d - %s" % (request.remote_addr, code, msg))

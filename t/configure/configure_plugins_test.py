@@ -13,7 +13,7 @@ def test_configure(testing_env):
 	e.session.start()
 	plugins.configure(e)
 	assert isinstance(e.settings, Settings)
-	assert sorted(e.settings.sections()) == ['os', 'sadm', 'sync', 'testing']
+	assert sorted(e.settings.sections()) == ['os', 'os.pkg', 'sadm', 'sync', 'testing']
 
 def test_file_not_found(testing_env):
 	e = testing_env()

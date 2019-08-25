@@ -4,6 +4,7 @@
 import pytest
 from os import path, makedirs, unlink
 from shutil import rmtree, move
+from unittest.mock import Mock
 
 __all__ = [
 	'env_setup',
@@ -11,7 +12,7 @@ __all__ = [
 	'testing_plugin',
 	'testing_profile',
 	'testing_settings',
-	'testing_wapp',
+	'listen_wapp',
 ]
 
 #
@@ -19,8 +20,10 @@ __all__ = [
 #
 
 from _sadm import log
+
 log._colored = False
 log.init('quiet')
+log.init = Mock()
 
 #
 # remove version autogen module
@@ -192,10 +195,7 @@ def _buildDeploy(pname, ns = '_sadm'):
 from _sadmtest.listen.wapp import ListenWebapp
 
 @pytest.fixture
-def testing_wapp():
-	def wrapper(app):
-		if app == 'listen':
-			return ListenWebapp()
-		else:
-			raise RuntimeError("invalid webapp: %s" % app)
+def listen_wapp():
+	def wrapper():
+		return ListenWebapp()
 	return wrapper
