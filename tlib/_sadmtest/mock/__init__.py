@@ -11,6 +11,8 @@ import _sadm.utils.cmd
 import _sadm.utils.path
 import _sadm.utils.sh
 
+__all__ = ['utils']
+
 def _mockUtils(cfg):
 	_sadm.utils.cmd.proc = MockCmdProc(cfg)
 	_sadm.utils.path._path = MockPath(cfg)
@@ -27,12 +29,10 @@ def _mockUtilsRestore():
 	_sadm.utils.sh.shutil = _sadm.utils.sh._ShUtil()
 
 @contextmanager
-def deploy(name, cfg):
-	print('-- mock deploy:', name, cfg)
+def utils(cfg):
 	try:
 		_mockUtils(cfg)
 		yield
-		print('-- post check mock deploy:', name)
 		_mockUtilsCheck()
 	finally:
 		_mockUtilsRestore()
