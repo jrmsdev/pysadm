@@ -14,6 +14,7 @@ class ListenWebapp(MockWebapp):
 		self._profile = profile
 
 	def __enter__(self):
+		_sadm.listen.wapp._mockWebapp = True
 		self.wapp = _sadm.listen.wapp.init(cfgfn = path.join('tdata', 'listen.cfg'))
 		if self._profile != '':
 			parts = ['tdata', 'listen']
@@ -25,5 +26,6 @@ class ListenWebapp(MockWebapp):
 		return self
 
 	def __exit__(self, exc_type, exc_val, exc_tb):
+		_sadm.listen.wapp._mockWebapp = False
 		del _sadm.listen.wapp.config
 		_sadm.listen.wapp.config = _sadm.listen.wapp._newConfig()

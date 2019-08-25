@@ -16,6 +16,10 @@ class Webapp(bottle.Bottle):
 	def request(self):
 		return bottle.request
 
+	@property
+	def response(self):
+		return bottle.response
+
 wapp = Webapp()
 bottle.TEMPLATE_PATH = []
 
