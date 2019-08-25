@@ -13,16 +13,11 @@ _sadm.listen.webhook.repo._provider['testing'] = TestingProvider()
 class ListenWebapp(TestingWebapp):
 	name = 'listen'
 
-	def __init__(self, profile):
-		self._profile = profile
-
 	def __enter__(self):
-		_sadm.listen.wapp.config = _sadm.listen.wapp._newConfig(path.join('tdata', 'listen.cfg'))
-		if self._profile != '':
-			parts = ['tdata', 'listen']
-			parts.extend(self._profile.split('/'))
-			parts.append('listen.cfg')
-			fn = path.join(*parts)
+		fn = path.join('tdata', 'listen.cfg')
+		_sadm.listen.wapp.config = _sadm.listen.wapp._newConfig(fn)
+		if self.profile != '':
+			fn = path.join('tdata', 'listen', self.profile, 'listen.cfg')
 			with open(fn, 'r') as fh:
 				_sadm.listen.wapp.config.read_file(fh)
 		return self
