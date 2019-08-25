@@ -4,4 +4,4 @@
 from _sadmtest.mock.wapp import MockWebapp
 
 class ListenWebapp(MockWebapp):
-	pass
+	name = 'listen'

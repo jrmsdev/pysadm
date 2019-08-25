@@ -33,3 +33,8 @@ def test_default_wapp():
 	for r in w.routes:
 		routes.append(' '.join([str(r.name), r.rule, r.method]))
 	assert sorted(routes) == ROUTES
+
+def test_wapp(listen_wapp):
+	wapp = listen_wapp()
+	assert wapp.name == 'listen'
+	assert wapp.response is None
