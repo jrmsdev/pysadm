@@ -2,6 +2,7 @@
 # See LICENSE file.
 
 from contextlib import contextmanager
+from os import getenv
 
 from _sadmtest.mock.utils.cmd import MockCmdProc
 from _sadmtest.mock.utils.path import MockPath
@@ -37,8 +38,6 @@ def utils(cfg, tag = 'utils'):
 		mockcfg = cfg[sect]
 	try:
 		print('mock.utils', "cfg=%s" % str(mockcfg is not None))
-		_sadm.log._logger = _sadm.log._sysLogger('debug')
-		_sadm.log._curlevel = 'debug'
 		_mockUtils(mockcfg)
 		yield
 		print('mock.utils.check')
@@ -46,6 +45,20 @@ def utils(cfg, tag = 'utils'):
 	finally:
 		print('mock.utils.restore')
 		_mockUtilsRestore()
-		del _sadm.log._logger
-		_sadm.log._logger = _sadm.log._dummyLogger()
-		_sadm.log._curlevel = 'quiet'
+
+@contextmanager
+def log():
+	level = getenv('SADMTEST_LOG', 'off')
+	ena = level != 'off'
+	try:
+		if ena:
+			print('mock.log', "level=%s" % level)
+			_sadm.log._logger = _sadm.log._sysLogger(level)
+			_sadm.log._curlevel = level
+		yield
+	finally:
+		if ena:
+			print('mock.log.restore')
+			del _sadm.log._logger
+			_sadm.log._logger = _sadm.log._dummyLogger()
+			_sadm.log._curlevel = 'quiet'

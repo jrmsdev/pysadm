@@ -8,10 +8,13 @@ if test "X${TAG}" != 'X'; then
 	IMAGE="jrmsdev/sadm:${TAG}"
 	NAME="sadm${TAG}"
 fi
-PYPATH=''
+ENVVARS=''
 if test "${TAG}" = 'dev' || test "${TAG}" = 'docs'; then
-	PYPATH='-e PYTHONPATH=/opt/src/sadm'
+	ENVVARS='-e PYTHONPATH=/opt/src/sadm'
+fi
+if test "${TAG}" = 'dev' || test "${TAG}" = 'test'; then
+	ENVVARS="${ENVVARS} -e SADMTEST_LOG=debug"
 fi
 docker run -it --rm --name=${NAME} --hostname=${NAME} --user sadm \
-	-p 3666:80 -v ${PWD}:/opt/src/sadm ${PYPATH} ${IMAGE} $@
+	-p 3666:80 -v ${PWD}:/opt/src/sadm ${ENVVARS} ${IMAGE} $@
 exit 0
