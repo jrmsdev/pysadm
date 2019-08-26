@@ -13,7 +13,7 @@ import _sadm.utils.cmd
 import _sadm.utils.path
 import _sadm.utils.sh
 
-__all__ = ['utils']
+__all__ = ['utils', 'log']
 
 def _mockUtils(cfg):
 	_sadm.utils.cmd.proc = MockCmdProc(cfg)

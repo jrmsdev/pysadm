@@ -21,12 +21,12 @@ class ListenWebapp(TestingWebapp):
 		fn = path.join('tdata', 'listen.cfg')
 		if self.profile != '.':
 			fn = path.join('tdata', 'listen', self.profile, 'listen.cfg')
-		with mock.log():
-			_sadm.listen.wapp.wapp = _sadm.listen.wapp.init(cfgfn = fn)
-			with mock.utils(_sadm.listen.wapp.config):
-				return self
+		_sadm.listen.wapp.wapp = _sadm.listen.wapp.init(cfgfn = fn)
+		with mock.utils(_sadm.listen.wapp.config):
+			return self
 
 	def __exit__(self, exc_type, exc_val, exc_tb):
+		print("listen wapp exit %s" % self.profile)
 		del _sadm.listen.wapp.config
 		del _sadm.listen.wapp.wapp
 		_sadm.listen.wapp.wapp = bottle.Bottle()

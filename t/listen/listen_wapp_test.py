@@ -10,6 +10,8 @@ from glob import glob
 from os import path
 from pytest import raises
 
+from _sadmtest import mock
+
 from _sadm.listen import wapp, errors
 
 def test_default_config():
@@ -87,12 +89,13 @@ def test_all(listen_wapp):
 	for patt in patterns:
 		for fn in glob(patt):
 			cfgfiles[fn] = True
-	for fn in sorted(cfgfiles.keys()):
-		profile = fn.replace(path.join('tdata', 'listen'), '', 1)
-		profile = '/'.join(profile.split(path.sep)[:-1])
-		if profile.startswith('/'):
-			profile = profile[1:]
-			_testProfile(listen_wapp, profile, fn)
+	with mock.log():
+		for fn in sorted(cfgfiles.keys()):
+			profile = fn.replace(path.join('tdata', 'listen'), '', 1)
+			profile = '/'.join(profile.split(path.sep)[:-1])
+			if profile.startswith('/'):
+				profile = profile[1:]
+				_testProfile(listen_wapp, profile, fn)
 
 def _testProfile(listen_wapp, profile, cfgfn):
 	print(profile, cfgfn)
