@@ -1,4 +1,8 @@
 {
-  "headers": {},
-  "data": {}
+	"handler": {
+		"name": "hook.repo",
+		"args": ["bitbucket", "testing", "push"]
+	},
+	"headers": {},
+	"data": {}
 }

@@ -39,6 +39,7 @@ def init(cfgfn = _cfgfn):
 	config = _newConfig(cfgfn)
 	log.init(config.get('sadm', 'log', fallback = 'error'))
 	log.debug(version.string('sadm-listen'))
+	log.debug("read config %s" % cfgfn)
 
 	rmplugins = [p.strip() for p in wapp.config.get('plugins.uninstall', '').split(' ')]
 	for p in rmplugins:
@@ -49,4 +50,5 @@ def init(cfgfn = _cfgfn):
 	errors.init(wapp)
 	handlers.init(wapp, config)
 
+	log.debug("loaded handlers %s" % [r.name for r in wapp.routes])
 	return wapp
