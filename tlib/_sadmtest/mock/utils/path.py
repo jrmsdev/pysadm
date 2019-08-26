@@ -18,7 +18,6 @@ class MockPath(object):
 		self._mock = Mock()
 		self.isfile = self._mock.isfile
 		self.isdir = self._mock.isdir
-		self.join = self._mock.join
 		self.abspath = self._mock.abspath
 		self.normpath = self._mock.normpath
 		self.unlink = self._mock.unlink
@@ -28,7 +27,6 @@ class MockPath(object):
 		self._setDefaults()
 		self.isfile.side_effect = self._sideEffect('isfile')
 		self.isdir.side_effect = self._sideEffect('isdir')
-		self.join.side_effect = self._sideEffect('join')
 		self.abspath.side_effect = self._sideEffect('abspath')
 		self.normpath.side_effect = self._sideEffect('normpath')
 		self.unlink.side_effect = self._sideEffect('unlink')
@@ -49,8 +47,8 @@ class MockPath(object):
 					x = l.split(';')
 					rtrn = x[0].strip()
 					cmdline = ';'.join(x[1:]).strip()
-					self._expect.append(cmdline)
 					util = cmdline.split(' ')[0].strip()
+					self._expect.append(cmdline)
 					self._setReturn(util, rtrn)
 
 	def _setReturn(self, name, data):
@@ -93,3 +91,6 @@ class MockPath(object):
 			got.append(cmdline)
 		assert got == self._expect, \
 			"mock path got: %s - expect: %s" % (got, self._expect)
+
+	def join(self, *parts):
+		return '/'.join(parts)

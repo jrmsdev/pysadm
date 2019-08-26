@@ -42,10 +42,13 @@ def _getURL(req):
 	log.debug("URL: %s" % url)
 	return url
 
+_pycmd = path.join(sys.exec_prefix, 'bin', 'python3')
+_selfpath = libdir.fpath('listen', 'exec.py')
+
 def _sched(taskfn):
-	self = libdir.fpath('listen', 'exec.py')
-	cmd = [path.join(sys.exec_prefix, 'bin', 'python3'), self, taskfn]
-	atcmd = "echo 'sleep 1 && %s' | at now" % ' '.join(cmd)
+	log.debug("exec prefix %s" % sys.exec_prefix)
+	cmd = [_pycmd, _selfpath, taskfn]
+	atcmd = "echo '%s' | at now" % ' '.join(cmd)
 	log.debug("run: %s" % atcmd)
 	callCheck(atcmd)
 

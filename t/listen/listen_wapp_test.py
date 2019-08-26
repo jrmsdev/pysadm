@@ -91,11 +91,15 @@ def test_all(listen_wapp):
 			cfgfiles[fn] = True
 	with mock.log():
 		for fn in sorted(cfgfiles.keys()):
-			profile = fn.replace(path.join('tdata', 'listen'), '', 1)
-			profile = '/'.join(profile.split(path.sep)[:-1])
-			if profile.startswith('/'):
-				profile = profile[1:]
-				_testProfile(listen_wapp, profile, fn)
+			with mock.utils(_mockConfig(fn)):
+				profile = fn.replace(path.join('tdata', 'listen'), '', 1)
+				profile = '/'.join(profile.split(path.sep)[:-1])
+				if profile.startswith('/'):
+					profile = profile[1:]
+					_testProfile(listen_wapp, profile, fn)
+
+def _mockConfig(fn):
+	return wapp._newConfig(fn)
 
 def _testProfile(listen_wapp, profile, cfgfn):
 	print(profile, cfgfn)
