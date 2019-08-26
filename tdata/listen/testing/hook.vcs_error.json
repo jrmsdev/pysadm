@@ -1,12 +1,12 @@
 {
 	"handler": {
 		"name": "hook.repo",
-		"args": ["testing", "testing", "push"]
+		"args": ["testing", "vcs.error", "push"]
 	},
 	"headers": {},
 	"data": {},
 	"response.error": {
 		"status": 400,
-		"match": "invalid provider: bitbucket"
+		"match": "invalid vcs: vcserr"
 	}
 }

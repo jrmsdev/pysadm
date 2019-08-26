@@ -112,7 +112,11 @@ def _testProfile(listen_wapp, profile, cfgfn):
 						_wappPOST(wapp, datname, hfunc, h.args)
 				err = exc.value
 				assert err.status_code == resp.status
-				assert err.body.find(resp.content)
+				try:
+					match = err.body.index(resp.content) >= 1
+				except ValueError:
+					match = False
+				assert match, "error did not match: %s - %s" % (resp.content, err.body)
 			else:
 				if h.method == 'POST':
 					_wappPOST(wapp, datname, hfunc, h.args)
