@@ -1,7 +1,7 @@
 {
 	"handler": {
 		"name": "hook.repo",
-		"args": ["testing", "testing", "push"]
+		"args": ["testing", "testing.proverr", "push"]
 	},
 	"headers": {},
 	"data": {},

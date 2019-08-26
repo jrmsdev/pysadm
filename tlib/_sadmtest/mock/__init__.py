@@ -7,6 +7,7 @@ from _sadmtest.mock.utils.cmd import MockCmdProc
 from _sadmtest.mock.utils.path import MockPath
 from _sadmtest.mock.utils.sh import MockShUtil
 
+import _sadm.log
 import _sadm.utils.cmd
 import _sadm.utils.path
 import _sadm.utils.sh
@@ -35,8 +36,16 @@ def utils(cfg, tag = 'utils'):
 	if cfg and cfg.has_section(sect):
 		mockcfg = cfg[sect]
 	try:
+		print('mock.utils', "cfg=%s" % str(mockcfg is not None))
+		_sadm.log._logger = _sadm.log._sysLogger('debug')
+		_sadm.log._curlevel = 'debug'
 		_mockUtils(mockcfg)
 		yield
+		print('mock.utils.check')
 		_mockUtilsCheck()
 	finally:
+		print('mock.utils.restore')
 		_mockUtilsRestore()
+		del _sadm.log._logger
+		_sadm.log._logger = _sadm.log._dummyLogger()
+		_sadm.log._curlevel = 'quiet'
