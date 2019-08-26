@@ -1,8 +1,10 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
+import bottle
 import json
 
+from collections import namedtuple
 from configparser import ConfigParser
 from glob import glob
 from os import path
@@ -52,9 +54,34 @@ def test_webhook_routes(listen_wapp):
 			routes.append(' '.join([str(r.name), r.rule, r.method]))
 		assert sorted(routes) == WEBHOOK_ROUTES
 
+Handler = namedtuple('Handler', ['name', 'args', 'method'])
+def newHandler(dat):
+	return Handler(
+		name = dat['handler']['name'],
+		args = dat['handler'].get('args', []),
+		method = dat['handler'].get('method', 'POST'),
+	)
+
+Response = namedtuple('Response', ['status', 'error', 'content'])
+def newResponse(dat):
+	err = dat.get('response.error', None)
+	if err is None:
+		return Response(
+			status = 200,
+			error = False,
+			content = dat.get('response', 'OK'),
+		)
+	else:
+		return Response(
+			status = err.get('status', 400),
+			error = True,
+			content = err.get('match', None),
+		)
+
 def test_all(listen_wapp):
 	patterns = [
 		path.join('tdata', 'listen', '*', 'listen.cfg'),
+		path.join('tdata', 'listen', '*', '*', 'listen.cfg'),
 	]
 	cfgfiles = {}
 	for patt in patterns:
@@ -75,26 +102,27 @@ def _testProfile(listen_wapp, profile, cfgfn):
 		print(' ', datname, datfn)
 		with open(datfn, 'r') as fh:
 			dat = json.load(fh)
-		hndlr = dat['handler']['name']
-		hargs = dat['handler'].get('args', [])
-		hmeth = dat['handler'].get('method', 'GET')
-		if dat.get('data', None) is not None:
-			hmeth = 'POST'
+		h = newHandler(dat)
+		resp = newResponse(dat)
 		with listen_wapp(profile = profile) as wapp:
-			hfunc = _getHandler(wapp, hndlr)
-			if hmeth == 'POST':
-				_wappPOST(wapp, datname, hfunc, hargs)
-			_wappCheck(wapp, dat.get('response', 'OK'))
+			hfunc = _getHandler(wapp, h.name)
+			if resp.error:
+				with raises(bottle.HTTPError) as exc:
+					if h.method == 'POST':
+						_wappPOST(wapp, datname, hfunc, h.args)
+				err = exc.value
+				assert err.status_code == resp.status
+				assert err.body.find(resp.content)
+			else:
+				if h.method == 'POST':
+					_wappPOST(wapp, datname, hfunc, h.args)
+				assert wapp.response == resp.content
 
 def _getHandler(wapp, name):
 	for r in wapp.routes:
 		if r.name == name:
 			return r.callback
-	print('wapp routes', wapp.routes)
 	assert False, "wapp handler not found: %s" % name
 
 def _wappPOST(wapp, datname, hfunc, hargs):
 	wapp.POST(datname, hfunc, *hargs)
-
-def _wappCheck(wapp, resp):
-	assert wapp.response == resp
