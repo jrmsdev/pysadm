@@ -10,6 +10,8 @@ from _sadmtest.listen.webhook.repo.provider import TestingProvider
 from _sadmtest.wapp import TestingWebapp
 
 import _sadm.listen.wapp
+_sadm.listen.wapp._cfgfn = path.join('tdata', 'listen.cfg')
+
 import _sadm.listen.webhook.repo
 _sadm.listen.webhook.repo._provider['testing'] = TestingProvider()
 
@@ -26,7 +28,6 @@ class ListenWebapp(TestingWebapp):
 	def __enter__(self):
 		print("listen wapp init %s" % self.profile)
 		fn = path.join('tdata', 'listen.cfg')
-		_sadm.listen.wapp._cfgfn = fn
 		if self.profile != '.':
 			fn = path.join('tdata', 'listen', self.profile, 'listen.cfg')
 		_sadm.listen.wapp.wapp = _sadm.listen.wapp.init(cfgfn = fn)
@@ -35,10 +36,9 @@ class ListenWebapp(TestingWebapp):
 	def __exit__(self, exc_type, exc_val, exc_tb):
 		print("listen wapp exit %s" % self.profile)
 		del _sadm.listen.wapp.config
+		_sadm.listen.wapp.config = None
 		del _sadm.listen.wapp.wapp
 		_sadm.listen.wapp.wapp = bottle.Bottle()
-		_sadm.listen.wapp._cfgfn = path.join(path.sep,
-			'etc', 'opt', 'sadm', 'listen.cfg')
 
 	@property
 	def routes(self):

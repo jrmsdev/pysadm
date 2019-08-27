@@ -41,13 +41,6 @@ def test_wapp(listen_wapp):
 		assert w.name == 'listen'
 		assert w.response is None
 
-def test_wsgi_application(listen_wapp):
-	with mock.log():
-		with mock.utils(None):
-			from _sadm.listen import wsgi
-			with listen_wapp():
-				assert isinstance(wsgi.application, bottle.Bottle)
-
 WEBHOOK_ROUTES = ROUTES[:]
 WEBHOOK_ROUTES.extend([
 	'hook.repo /hook/<provider>/<name>/<action> POST',
