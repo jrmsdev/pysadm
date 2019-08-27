@@ -36,3 +36,7 @@ class ListenWebapp(TestingWebapp):
 	@property
 	def routes(self):
 		return _sadm.listen.wapp.wapp.routes
+
+	@property
+	def plugins(self):
+		return _sadm.listen.wapp.wapp.plugins

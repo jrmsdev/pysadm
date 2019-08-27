@@ -26,21 +26,27 @@ ROUTES = [
 	'_exec /_/exec/<task>/<action> POST',
 ]
 
-def test_default_wapp():
-	cfgfn = path.join('tdata', 'listen.cfg')
+def test_default_wapp(listen_wapp):
 	assert not errors._initDone
-	w = wapp.init(cfgfn = cfgfn)
-	assert errors._initDone
-	assert sorted([p.name for p in w.plugins]) == ['sadm.listen.response']
-	routes = []
-	for r in w.routes:
-		routes.append(' '.join([str(r.name), r.rule, r.method]))
-	assert sorted(routes) == ROUTES
+	with listen_wapp() as w:
+		assert errors._initDone
+		assert sorted([p.name for p in w.plugins]) == ['sadm.listen.response']
+		routes = []
+		for r in w.routes:
+			routes.append(' '.join([str(r.name), r.rule, r.method]))
+		assert sorted(routes) == ROUTES
 
 def test_wapp(listen_wapp):
 	with listen_wapp() as w:
 		assert w.name == 'listen'
 		assert w.response is None
+
+def test_wsgi_application(listen_wapp):
+	with mock.log():
+		with mock.utils(None):
+			from _sadm.listen import wsgi
+			with listen_wapp():
+				assert isinstance(wsgi.application, bottle.Bottle)
 
 WEBHOOK_ROUTES = ROUTES[:]
 WEBHOOK_ROUTES.extend([
