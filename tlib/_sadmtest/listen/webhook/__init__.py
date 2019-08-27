@@ -2,4 +2,6 @@
 # See LICENSE file.
 
 class TestingTask(object):
-	pass
+	def hook(self, action, args):
+		if action == 'testing.error':
+			raise RuntimeError('_exec task testing.error')

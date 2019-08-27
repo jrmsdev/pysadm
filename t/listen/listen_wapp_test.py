@@ -127,7 +127,7 @@ def _testProfile(listen_wapp, profile, cfgfn):
 					err = exc.value
 					assert err.status_code == resp.status
 					try:
-						match = err.body.index(resp.content) >= 1
+						match = err.body.index(resp.content) >= 0
 					except ValueError:
 						match = False
 					assert match, "error did not match: %s - %s" % (resp.content, err.body)

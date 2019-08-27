@@ -5,6 +5,7 @@ import bottle
 
 from os import path
 
+from _sadmtest.listen.webhook import TestingTask
 from _sadmtest.listen.webhook.repo.provider import TestingProvider
 from _sadmtest.wapp import TestingWebapp
 
@@ -15,6 +16,9 @@ _sadm.listen.webhook.repo._provider['testing'] = TestingProvider()
 import _sadm.listen.exec
 _sadm.listen.exec._pycmd = '/opt/sadm/bin/python3'
 _sadm.listen.exec._selfpath = '/opt/src/sadm/listen/exec.py'
+
+import _sadm.listen.handlers.exec
+_sadm.listen.handlers.exec._taskman['testing'] = TestingTask()
 
 class ListenWebapp(TestingWebapp):
 	name = 'listen'
