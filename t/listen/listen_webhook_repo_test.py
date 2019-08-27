@@ -28,3 +28,10 @@ def test_norepo(listen_wapp):
 		err = exc.value
 		assert err.status_code == 400
 		assert err.body == 'webhook testing repo not found: norepo'
+
+def test_json_error(listen_wapp):
+	with listen_wapp(profile = 'testing') as wapp:
+		r = repo.WebhookRepo('testing', 'testing')
+		with raises(HTTPError) as err:
+			r.exec(wapp.request(), 'testing')
+		wapp.checkException(err, 400, 'testing/testing: Expecting value')
