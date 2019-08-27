@@ -6,6 +6,7 @@ from os import path
 from unittest.mock import Mock, call
 
 from _sadm import libdir
+from _sadm.errors import CommandError
 
 _srcdir = path.dirname(libdir.root())
 
@@ -67,7 +68,10 @@ class MockCmdProc(object):
 			else:
 				cmdline = args
 			try:
-				return self._cfg[method][cmdline]
+				rc = int(self._cfg[method][cmdline])
+				if method == 'check_call' and rc != 0:
+					raise CommandError("mock error code %d" % rc)
+				return rc
 			except KeyError as err:
 				raise KeyError("%s - %s method" % (str(err), method))
 		return wrapper
