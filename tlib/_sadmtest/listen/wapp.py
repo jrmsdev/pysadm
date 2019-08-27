@@ -26,6 +26,7 @@ class ListenWebapp(TestingWebapp):
 	def __enter__(self):
 		print("listen wapp init %s" % self.profile)
 		fn = path.join('tdata', 'listen.cfg')
+		_sadm.listen.wapp._cfgfn = fn
 		if self.profile != '.':
 			fn = path.join('tdata', 'listen', self.profile, 'listen.cfg')
 		_sadm.listen.wapp.wapp = _sadm.listen.wapp.init(cfgfn = fn)
@@ -36,6 +37,8 @@ class ListenWebapp(TestingWebapp):
 		del _sadm.listen.wapp.config
 		del _sadm.listen.wapp.wapp
 		_sadm.listen.wapp.wapp = bottle.Bottle()
+		_sadm.listen.wapp._cfgfn = path.join(path.sep,
+			'etc', 'opt', 'sadm', 'listen.cfg')
 
 	@property
 	def routes(self):
