@@ -62,8 +62,6 @@ class WebhookRepo(object):
 	def exec(self, req, action):
 		# TODO: check self._cfg.getboolean(action... if disabled raise error 400
 		log.debug("req.body: %s" % req.body)
-		if not req.body:
-			raise error(400, "webhook %s: no request body" % self._slug)
 		try:
 			obj = json.loads(req.body.read())
 		except JSONDecodeError as err:

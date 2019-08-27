@@ -57,11 +57,11 @@ class MockShUtil(object):
 		self._configure(cfg)
 
 	def _configure(self, cfg):
+		self.mktmp.side_effect = self._mktmp
 		if cfg is None:
 			return
 		self._utilsDefault()
 		self._parseConfig(cfg)
-		self.mktmp.side_effect = self._mktmp
 		self.mktmpdir.side_effect = self._mktmpdir
 		self.getcwd.side_effect = self._sideEffect('getcwd')
 		self.makedirs.side_effect = self._sideEffect('makedirs')

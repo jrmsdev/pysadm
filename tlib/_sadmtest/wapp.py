@@ -24,12 +24,17 @@ class TestingWebapp(object):
 			return json.load(fh)
 
 	def POST(self, pdata, callback, *args):
+		self.response = None
 		post = self.__postData(pdata)
 		# TODO: set headers from posdata
 		data = json.dumps(post['data']).encode('utf-8')
-		bottle.request.environ['CONTENT_LENGTH'] = str(len(data))
-		bottle.request.environ['wsgi.input'] = BytesIO()
-		bottle.request.environ['wsgi.input'].write(data)
-		bottle.request.environ['wsgi.input'].seek(0, 0)
-		resp = callback(*args)
-		self.response = resp.strip()
+		try:
+			bottle.request.environ['CONTENT_LENGTH'] = str(len(data))
+			bottle.request.environ['wsgi.input'] = BytesIO()
+			bottle.request.environ['wsgi.input'].write(data)
+			bottle.request.environ['wsgi.input'].seek(0, 0)
+			resp = callback(*args)
+			self.response = resp.strip()
+		finally:
+			del bottle.request
+			bottle.request = bottle.LocalRequest()
