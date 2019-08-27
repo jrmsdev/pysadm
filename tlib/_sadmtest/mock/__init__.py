@@ -37,11 +37,12 @@ def utils(cfg, tag = 'utils'):
 	if cfg and cfg.has_section(sect):
 		mockcfg = cfg[sect]
 	try:
-		print('mock.utils', "cfg=%s" % str(mockcfg is not None))
+		print('mock.utils', sect, "cfg=%s" % str(mockcfg is not None))
 		_mockUtils(mockcfg)
 		yield
-		print('mock.utils.check')
-		_mockUtilsCheck()
+		if mockcfg:
+			print('mock.utils.check')
+			_mockUtilsCheck()
 	finally:
 		print('mock.utils.restore')
 		_mockUtilsRestore()

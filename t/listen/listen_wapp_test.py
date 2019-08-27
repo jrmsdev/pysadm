@@ -96,8 +96,8 @@ def test_all(listen_wapp):
 		for fn in glob(patt):
 			cfgfiles[fn] = True
 	with mock.log():
-		for fn in sorted(cfgfiles.keys()):
-			with mock.utils(_mockConfig(fn)):
+		with mock.utils(None):
+			for fn in sorted(cfgfiles.keys()):
 				profile = fn.replace(path.join('tdata', 'listen'), '', 1)
 				profile = '/'.join(profile.split(path.sep)[:-1])
 				if profile.startswith('/'):
@@ -111,29 +111,30 @@ def _testProfile(listen_wapp, profile, cfgfn):
 	print(profile, cfgfn)
 	profdir = path.dirname(cfgfn)
 	for datfn in sorted(glob(path.join(profdir, '*.json'))):
-		datname = path.basename(datfn).replace('.json', '')
+		datname = path.basename(datfn).replace('.json', '').strip()
 		print(' ', datname, datfn)
 		with open(datfn, 'r') as fh:
 			dat = json.load(fh)
 		h = newHandler(dat)
 		resp = newResponse(dat)
-		with listen_wapp(profile = profile) as wapp:
-			hfunc = _getHandler(wapp, h.name)
-			if resp.error:
-				with raises(bottle.HTTPError) as exc:
+		with mock.utils(_mockConfig(cfgfn), tag = datname):
+			with listen_wapp(profile = profile) as wapp:
+				hfunc = _getHandler(wapp, h.name)
+				if resp.error:
+					with raises(bottle.HTTPError) as exc:
+						if h.method == 'POST':
+							_wappPOST(wapp, datname, hfunc, h.args)
+					err = exc.value
+					assert err.status_code == resp.status
+					try:
+						match = err.body.index(resp.content) >= 1
+					except ValueError:
+						match = False
+					assert match, "error did not match: %s - %s" % (resp.content, err.body)
+				else:
 					if h.method == 'POST':
 						_wappPOST(wapp, datname, hfunc, h.args)
-				err = exc.value
-				assert err.status_code == resp.status
-				try:
-					match = err.body.index(resp.content) >= 1
-				except ValueError:
-					match = False
-				assert match, "error did not match: %s - %s" % (resp.content, err.body)
-			else:
-				if h.method == 'POST':
-					_wappPOST(wapp, datname, hfunc, h.args)
-				assert wapp.response == resp.content
+					assert wapp.response == resp.content
 
 def _getHandler(wapp, name):
 	for r in wapp.routes:
