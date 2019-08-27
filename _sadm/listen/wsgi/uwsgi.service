@@ -13,17 +13,15 @@ PrivateTmp=true
 Environment=SADM_HOME=/opt/sadm
 Environment=SADM_UID=sadm
 Environment=SADM_GID=sadm
-Environment=SADM_LISTEN_PORT=3666
-EnvironmentFile=-/etc/default/sadm-listen
+Environment=LISTEN_PORT=3666
+EnvironmentFile=-/etc/default/sadm
 PIDFile=/run/sadm.listen.uwsgi.pid
 ExecStart=/usr/bin/uwsgi --need-plugin python3 \
 	--set-ph sadm-home=${SADM_HOME} \
 	--set-ph sadm-uid=${SADM_UID} \
 	--set-ph sadm-gid=${SADM_GID} \
-	--set-ph netport=${SADM_LISTEN_PORT} \
+	--set-ph listen-port=${LISTEN_PORT} \
 	--safe-pidfile /run/sadm.listen.uwsgi.pid \
-	--touch-reload /etc/opt/sadm/listen.cfg \
-	--touch-reload /etc/opt/sadm/listen/uwsgi.ini \
 	--ini /etc/opt/sadm/listen/uwsgi.ini
 
 [Install]
