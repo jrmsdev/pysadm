@@ -47,6 +47,7 @@ recursive-include tdata/envsetup *.test
 
 recursive-include tdata/listen *.cfg
 recursive-include tdata/listen *.json
+recursive-include tdata/listen *.task
 
 recursive-include tdata/testing *.ini
 recursive-include tdata/testing *.test
