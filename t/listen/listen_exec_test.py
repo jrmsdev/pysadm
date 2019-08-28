@@ -8,6 +8,9 @@ from _sadmtest import mock
 from _sadm.listen import exec as _exec
 from _sadm.listen import wapp
 
+cfgfn = path.join('tdata', 'listen', 'exec', 'listen.cfg')
+cfg = wapp._newConfig(cfgfn)
+
 def test_get_url(listen_wapp):
 	with mock.log():
 		with listen_wapp() as wapp:
@@ -24,8 +27,6 @@ def test_main_no_args(listen_wapp):
 				assert rc == 1
 
 def test_main_no_task_file(listen_wapp):
-	cfgfn = path.join('tdata', 'listen', 'exec', 'listen.cfg')
-	cfg = wapp._newConfig(cfgfn)
 	with mock.log():
 		with mock.utils(cfg, tag = 'no_task_file'):
 			with listen_wapp():
@@ -33,10 +34,22 @@ def test_main_no_task_file(listen_wapp):
 				assert rc == 2
 
 def test_main_no_task(listen_wapp):
-	cfgfn = path.join('tdata', 'listen', 'exec', 'listen.cfg')
-	cfg = wapp._newConfig(cfgfn)
 	with mock.log():
 		with mock.utils(cfg, tag = 'no_task'):
 			with listen_wapp():
 				rc = _exec.main(['tdata/listen/exec/unset.task'])
 				assert rc == 3
+
+def test_main_no_action(listen_wapp):
+	with mock.log():
+		with mock.utils(cfg, tag = 'no_action'):
+			with listen_wapp():
+				rc = _exec.main(['tdata/listen/exec/no_action.task'])
+				assert rc == 4
+
+def test_main_no_action_args(listen_wapp):
+	with mock.log():
+		with mock.utils(cfg, tag = 'no_action_args'):
+			with listen_wapp():
+				rc = _exec.main(['tdata/listen/exec/no_action_args.task'])
+				assert rc == 5
