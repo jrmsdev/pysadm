@@ -36,9 +36,13 @@ def _getURL(req):
 	# ~ for k, v in req.headers.items():
 		# ~ log.debug("%s: %s" % (k, v))
 	u = urlparse(req.url)
-	if u.scheme == '':
-		u.scheme = 'http'
-	url = "%s://127.0.0.1:%s" % (u.scheme, u.port)
+	scheme = u.scheme
+	if not scheme: # pragma: no cover
+		scheme = 'http'
+	port = u.port
+	if not port:
+		port = '3666'
+	url = "%s://127.0.0.1:%s" % (scheme, port)
 	log.debug("URL: %s" % url)
 	return url
 
@@ -90,5 +94,5 @@ def main(args):
 	cli.exec(task, taskAction, taskArgs)
 	return 0
 
-if __name__ == '__main__':
+if __name__ == '__main__': # pragma: no cover
 	sys.exit(main(sys.argv[1:]))

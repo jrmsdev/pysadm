@@ -9,6 +9,8 @@ from _sadmtest.listen.webhook import TestingTask
 from _sadmtest.listen.webhook.repo.provider import TestingProvider
 from _sadmtest.wapp import TestingWebapp
 
+import _sadm.listen.errors
+
 import _sadm.listen.wapp
 _sadm.listen.wapp._cfgfn = path.join('tdata', 'listen.cfg')
 
@@ -39,6 +41,7 @@ class ListenWebapp(TestingWebapp):
 		_sadm.listen.wapp.config = None
 		del _sadm.listen.wapp.wapp
 		_sadm.listen.wapp.wapp = bottle.Bottle()
+		_sadm.listen.errors._initDone = False
 
 	@property
 	def routes(self):
