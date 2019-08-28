@@ -7,11 +7,13 @@ from os import getenv
 from _sadmtest.mock.utils.cmd import MockCmdProc
 from _sadmtest.mock.utils.path import MockPath
 from _sadmtest.mock.utils.sh import MockShUtil
+from _sadmtest.mock.utils.net import MockNet
 
 import _sadm.log
 import _sadm.utils.cmd
 import _sadm.utils.path
 import _sadm.utils.sh
+import _sadm.utils.net
 
 __all__ = ['utils', 'log']
 
@@ -19,16 +21,19 @@ def _mockUtils(cfg):
 	_sadm.utils.cmd.proc = MockCmdProc(cfg)
 	_sadm.utils.path._path = MockPath(cfg)
 	_sadm.utils.sh.shutil = MockShUtil(cfg)
+	_sadm.utils.net._net = MockNet(cfg)
 
 def _mockUtilsCheck():
 	_sadm.utils.path._path.check()
 	_sadm.utils.sh.shutil.check()
 	_sadm.utils.cmd.proc.check()
+	_sadm.utils.net._net.check()
 
 def _mockUtilsRestore():
 	_sadm.utils.cmd.proc = _sadm.utils.cmd._ProcMan()
 	_sadm.utils.path._path = _sadm.utils.path._Path()
 	_sadm.utils.sh.shutil = _sadm.utils.sh._ShUtil()
+	_sadm.utils.net._net = _sadm.utils.net._Net()
 
 @contextmanager
 def utils(cfg, tag = 'utils'):

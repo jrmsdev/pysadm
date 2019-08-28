@@ -42,7 +42,9 @@ class MockCmdProc(object):
 
 	def _parseCmdOptions(self, cfg, opt):
 		d = {}
-		data = cfg.get('cmd.' + opt, fallback = '')
+		data = cfg.get('utils.cmd.' + opt, fallback = None)
+		if data is None:
+			data = cfg.get('cmd.' + opt, fallback = '')
 		if data != '':
 			for line in data.splitlines():
 				line = line.strip()

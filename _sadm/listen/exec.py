@@ -91,8 +91,7 @@ def main(args):
 		return 5
 	cliURL = obj.get('sadm.listen.url', 'http://127.0.0.1:3666')
 	cli = ListenClient(cliURL)
-	cli.exec(task, taskAction, taskArgs)
-	return 0
+	return cli.exec(task, taskAction, taskArgs)
 
 if __name__ == '__main__': # pragma: no cover
 	sys.exit(main(sys.argv[1:]))

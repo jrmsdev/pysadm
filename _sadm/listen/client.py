@@ -4,9 +4,8 @@
 import json
 import ssl
 
-from urllib.request import urlopen
-
 from _sadm import log
+from _sadm.utils.net import urlopen
 
 __all__ = ['ListenClient']
 
@@ -26,14 +25,15 @@ class ListenClient(object):
 		if url.startswith('https'):
 			ctx = ssl.create_default_context()
 			ctx.check_hostname = False
-		try:
-			with urlopen(url, data, context = ctx) as resp:
-				if resp.status != 200:
-					log.error("%s returned: %d - %s" % (url, resp.status, resp.reason))
-		except Exception as err:
-			log.error("%s - %s" % (url, err))
+		with urlopen(url, data, context = ctx) as resp:
+			if resp.status != 200:
+				log.error("%s returned: %d - %s" % (url, resp.status, resp.reason))
+		return resp.status
 
 	def exec(self, task, action, args):
 		log.debug("exec: %s %s" % (task, action))
 		path = self._path('_', 'exec', task, action)
-		self._post(path, json.dumps(args).encode('UTF-8'))
+		status = self._post(path, json.dumps(args).encode('UTF-8'))
+		if status != 200:
+			return 9
+		return 0
