@@ -61,9 +61,9 @@ def test_main_exec_error(listen_wapp):
 				rc = _exec.main(['tdata/listen/exec/exec.task'])
 				assert rc == 9
 
-# ~ def test_main_exec(listen_wapp):
-	# ~ with mock.log():
-		# ~ with mock.utils(cfg, tag = 'exec'):
-			# ~ with listen_wapp(profile = 'exec'):
-				# ~ rc = _exec.main(['tdata/listen/exec/exec.task'])
-				# ~ assert rc == 0
+def test_main_exec(listen_wapp):
+	with mock.log():
+		with mock.utils(cfg, tag = 'exec'):
+			with listen_wapp(profile = 'exec'):
+				rc = _exec.main(['tdata/listen/exec/exec.task'])
+				assert rc == 0

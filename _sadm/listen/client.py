@@ -22,7 +22,7 @@ class ListenClient(object):
 	def _post(self, path, data):
 		url = self._path(self._url, path)
 		ctx = None
-		if url.startswith('https'):
+		if url.startswith('https'): # pragma: no cover
 			ctx = ssl.create_default_context()
 			ctx.check_hostname = False
 		with urlopen(url, data, context = ctx) as resp:

@@ -94,6 +94,7 @@ class MockNet(object):
 
 	def _urlopen(self, url, data = None, timeout = None, context = None):
 		resp = HTTPResponse(Mock())
-		resp.status = 500
+		data = self._return.get('urlopen', None)
+		resp.status = int(data.pop().strip())
 		resp.reason = 'Mock not configured'
 		return resp
