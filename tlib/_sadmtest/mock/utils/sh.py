@@ -72,7 +72,7 @@ class MockShUtil(object):
 		self._default['getgid'] = 3000
 
 	def _parseConfig(self, cfg):
-		data = cfg.get('utils.shutil', fallback = None)
+		data = cfg.get('utils.sh', fallback = None)
 		if data is None:
 			data = cfg.get('shutil', fallback = '')
 		if data != '':
