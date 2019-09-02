@@ -1,8 +1,7 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
-from _sadm.utils.cmd import callCheck
-from _sadm.utils.sh import chdir, getcwd
+from _sadm.utils.vcs import git
 
 from .check import check
 
@@ -17,43 +16,18 @@ def deploy(env):
 			_updateRepo(env, name, typ, repo)
 
 def _cloneRepo(env, name, typ, repo):
+	env.log("clone %s repo %s" % (typ, name))
 	if typ == 'git':
 		_gitClone(env, name, repo)
 
 def _updateRepo(env, name, typ, repo):
+	env.log("update %s repo %s" % (typ, name))
 	if not repo['update']:
 		return
 	if typ == 'git':
-		_gitUpdate(env, name, repo)
-
-_gitConfigDone = False
-
-def _gitConfig():
-	global _gitConfigDone
-	cmd = ['git', 'config', '--global', 'core.sshCommand',
-		'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no']
-	callCheck(cmd)
-	_gitConfigDone = True
+		git.pull(repo['path'])
 
 def _gitClone(env, name, repo):
-	_gitConfigDone or _gitConfig()
-	env.log("clone git repo %s" % name)
-	cmd = ['git', 'clone', '-b', repo['branch'], repo['remote'], repo['path']]
-	callCheck(cmd)
+	git.clone(repo['path'], repo['remote'], repo['branch'])
 	if repo['checkout'] != '':
-		oldwd = getcwd()
-		try:
-			chdir(repo['path'])
-			cmd = ['git', 'checkout', repo['checkout']]
-			callCheck(cmd)
-		finally:
-			chdir(oldwd)
-
-def _gitUpdate(env, name, repo):
-	env.log("update git repo %s" % name)
-	oldwd = getcwd()
-	try:
-		chdir(repo['path'])
-		callCheck(['git', 'pull'])
-	finally:
-		chdir(oldwd)
+		git.checkout(repo['path'], repo['checkout'])

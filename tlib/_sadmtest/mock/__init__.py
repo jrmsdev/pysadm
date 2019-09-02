@@ -14,6 +14,7 @@ import _sadm.utils.cmd
 import _sadm.utils.path
 import _sadm.utils.sh
 import _sadm.utils.net
+import _sadm.utils.vcs.git
 
 __all__ = ['utils', 'log']
 
@@ -34,6 +35,7 @@ def _mockUtilsRestore():
 	_sadm.utils.path._path = _sadm.utils.path._Path()
 	_sadm.utils.sh.shutil = _sadm.utils.sh._ShUtil()
 	_sadm.utils.net._net = _sadm.utils.net._Net()
+	_sadm.utils.vcs.git._configDone = False
 
 @contextmanager
 def utils(cfg, tag = 'utils'):
