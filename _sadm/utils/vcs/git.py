@@ -16,7 +16,7 @@ def _configure():
 	if _configDone:
 		return
 	cmd = ['git', 'config', '--global', 'core.sshCommand',
-		'ssh -n -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no']
+		'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no']
 	callCheck(cmd)
 	_configDone = True
 
