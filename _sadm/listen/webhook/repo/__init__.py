@@ -38,7 +38,9 @@ class WebhookRepo(object):
 			raise error(400, "webhook invalid provider: %s" % provider)
 		sect = "sadm.webhook:%s" % name
 		if not wapp.config.has_section(sect):
-			raise error(400, "webhook %s repo not found: %s" % (provider, name))
+			sect = "webhook.repo:%s" % name
+			if not wapp.config.has_section(sect):
+				raise error(400, "webhook %s repo not found: %s" % (provider, name))
 		self._cfg = wapp.config[sect]
 		self._prov = prov
 		self._loadProvider(self._cfg, provider, name)

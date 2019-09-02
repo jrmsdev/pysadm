@@ -15,7 +15,7 @@ def init(wapp, config):
 
 	initDone = {}
 	for sect in config.sections():
-		if sect.startswith('sadm.webhook:'):
+		if sect.startswith('sadm.webhook:') or sect.startswith('webhook.repo:'):
 			if not initDone.get('webhook', False):
 				log.debug('enable webhook')
 				_initWebhooks(wapp)
