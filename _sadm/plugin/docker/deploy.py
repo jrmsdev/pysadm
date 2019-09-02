@@ -19,6 +19,19 @@ def _composeBuild(env, name, cfg):
 		oldwdir = sh.getcwd()
 		try:
 			sh.chdir(workdir)
+			_composeEnv(env, cfg)
 			cmd.callCheck(['docker-compose', 'build'])
 		finally:
 			sh.chdir(oldwdir)
+
+def _composeEnv(env, cfg):
+	content = cfg.get('env', fallback = '')
+	data = []
+	for line in content.splitlines():
+		line = line.strip()
+		if line != '' and not line.startswith('#'):
+			data.append(line)
+	if data:
+		with open('.env', 'w') as fh:
+			fh.write('\n'.join(data))
+			fh.write('\n')
