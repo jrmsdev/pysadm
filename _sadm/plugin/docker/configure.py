@@ -9,6 +9,8 @@ _composeOptions = (
 	'systemd.enable',
 	'build',
 	'start',
+	'env',
+	'env.file',
 )
 
 def configure(env, cfg):
