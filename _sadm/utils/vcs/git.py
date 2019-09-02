@@ -5,6 +5,7 @@ from contextlib import contextmanager
 
 from _sadm.utils import sh
 from _sadm.utils.cmd import callCheck
+from _sadm.utils import path as fpath
 
 __all__ = ['clone', 'checkout', 'pull', 'deploy']
 
@@ -42,8 +43,13 @@ def pull(path):
 	with _repoDir(path):
 		callCheck(['git', 'pull'])
 
+_deployScripts = ('install.sh', 'build.sh',  'check.sh', 'deploy.sh')
+
 def deploy(path):
 	pull(path)
 	with _repoDir(path):
-		pass
-		# TODO: run .sadm/deploy.scripts
+		if fpath.isdir('.sadm'):
+			for sn in _deployScripts:
+				script = fpath.join('.', '.sadm', sn)
+				if fpath.isfile(script):
+					callCheck(['/bin/sh', script])
