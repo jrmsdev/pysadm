@@ -23,15 +23,24 @@ def _configureDeploy(env, cfg):
 				'etc', 'opt', 'sadm', 'deploy.cfg'))
 
 def _configureListen(env, cfg):
-	if env.assets.isfile('listen.cfg'):
-		env.log('enable sadm.listen')
+	cfgFiles = (
+		'listen.cfg',
+		env.assets.name(env.name(), 'listen.cfg'),
+	)
+	cfgfn = None
+	for fn in cfgFiles:
+		if env.assets.isfile(fn):
+			cfgfn = fn
+			break
+	if cfgfn is not None:
+		env.log("enable sadm.listen %s" % cfgfn)
 		env.session.set('sadm.listen.enable', True)
 		# sync
 		if not cfg.has_section('sync'):
 			cfg.add_section('sync')
 		cfg.set('sync', 'sadm.listen.config',
-			"listen.cfg %s filemode=644" % path.join(path.sep,
-				'etc', 'opt', 'sadm', 'listen.cfg'))
+			"%s %s filemode=644" % (cfgfn, path.join(path.sep,
+				'etc', 'opt', 'sadm', 'listen.cfg')))
 		# os.pkg
 		if not env.settings.has_section('os.pkg'):
 			env.settings.add_section('os.pkg')
