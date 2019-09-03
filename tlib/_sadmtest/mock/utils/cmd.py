@@ -21,12 +21,14 @@ class MockCmdProc(object):
 		self._mock = Mock()
 		self.call = self._mock.mock_call
 		self.check_call = self._mock.mock_check_call
+		self.callOutput = self._mock.mock_callOutput
 		self._configure(cfg)
 
 	def _configure(self, cfg):
 		self._cfg = self._parseConfig(cfg)
 		self.call.side_effect = self._sideEffect('call')
 		self.check_call.side_effect = self._sideEffect('check_call')
+		self.callOutput.side_effect = self._sideEffect('callOutput')
 
 	def _parseConfig(self, cfg):
 		d = {}
@@ -35,9 +37,11 @@ class MockCmdProc(object):
 		self._expect = {
 			'call': deque(),
 			'check_call': deque(),
+			'callOutput': deque(),
 		}
 		d['call'] = self._parseCmdOptions(cfg, 'call')
 		d['check_call'] = self._parseCmdOptions(cfg, 'check_call')
+		d['callOutput'] = self._parseCmdOptions(cfg, 'callOutput')
 		return d
 
 	def _parseCmdOptions(self, cfg, opt):
@@ -89,7 +93,7 @@ class MockCmdProc(object):
 			got.append(x)
 		expect = list(self._expect['call'])
 		assert got == expect, \
-			"mock cmd call got: %s - expect: %s" % (got, expect)
+			"mock cmd call\ngot:\n%s\nexpect:\n%s" % ('\n'.join(got), '\n'.join(expect))
 		# check_call
 		got = []
 		for x in [x[1][0] for x in self.check_call.mock_calls]:
@@ -98,4 +102,13 @@ class MockCmdProc(object):
 			got.append(x)
 		expect = list(self._expect['check_call'])
 		assert got == expect, \
-			"mock cmd check_call \ngot:\n%s\nexpect:\n%s" % ('\n'.join(got), '\n'.join(expect))
+			"mock cmd check_call\ngot:\n%s\nexpect:\n%s" % ('\n'.join(got), '\n'.join(expect))
+		# callOutput
+		got = []
+		for x in [x[1][0] for x in self.callOutput.mock_calls]:
+			if isinstance(x, list):
+				x = ' '.join(x)
+			got.append(x)
+		expect = list(self._expect['callOutput'])
+		assert got == expect, \
+			"mock cmd callOutput\ngot:\n%s\nexpect:\n%s" % ('\n'.join(got), '\n'.join(expect))
