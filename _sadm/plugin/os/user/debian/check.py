@@ -16,6 +16,8 @@ def check(env):
 	return diff
 
 def _checkGroups(diff, env):
+	if not env.settings.has_section('os.group'):
+		return
 	for group in env.settings['os.group']:
 		gid = env.settings.getint('os.group', group)
 		rc = call("getent group %s >%s" % (group, devnull))
