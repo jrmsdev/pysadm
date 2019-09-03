@@ -8,13 +8,17 @@ __all__ = ['Profile']
 
 class Profile(object):
 	_name = None
+	config = None
 
 	def __init__(self, name, config = None):
 		log.debug("profile init %s" % name)
 		if config is None:
 			config = cfg.new()
+		if name == 'default':
+			name = config.get('default', 'profile')
 		self._name = name
 		self._load(config)
+		self.config = config
 
 	def _load(self, config):
 		log.debug("load %s" % self._name)

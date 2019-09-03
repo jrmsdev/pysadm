@@ -115,7 +115,7 @@ def _newEnv(name = 'testing', profile = 'envsetup', configure = False,
 def _cleanEnv(env, mkdirs = False):
 	tmpdir = path.join('tdata', 'tmp')
 	bdir = path.normpath(env.build.rootdir())
-	pdir = path.realpath(path.join('tdata', env.profile(), env.name()))
+	pdir = path.realpath(path.join('tdata', env.profile.name(), env.name()))
 	deploydir = path.join(path.dirname(path.dirname(bdir)), 'deploy', env.name())
 	_dirs = (
 		tmpdir,

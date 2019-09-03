@@ -10,7 +10,7 @@ from _sadm.plugin import service
 def test_defaults(testing_env):
 	env = testing_env(name = 'service', profile = 'plugin')
 	assert env.name() == 'service'
-	assert env.profile() == 'plugin'
+	assert env.profile.name() == 'plugin'
 	assert env.cfgfile() == path.join('service', 'config.ini')
 	assert env.settings.sections() == []
 

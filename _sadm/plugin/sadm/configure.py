@@ -7,7 +7,7 @@ from _sadm.utils import path
 def configure(env, cfg):
 	s = env.settings
 	s.set('sadm', 'env', env.name())
-	s.set('sadm', 'profile', env.profile())
+	s.set('sadm', 'profile', env.profile.name())
 	sess = env.session
 	sess.set('sadm.version', version.get())
 	_configureDeploy(env, cfg)

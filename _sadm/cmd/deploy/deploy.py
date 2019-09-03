@@ -32,7 +32,7 @@ def main(args, sumode):
 def _sumode(env, step):
 	sumode = '-'.join(['--sumode', step])
 	log.debug("call sumode %s" % sumode)
-	sudo = env.config.get('deploy', 'sudo.command')
+	sudo = env.profile.config.get('deploy', 'sudo.command')
 	cmd = sudo.strip().split()
 	cmd.extend(flags.cmdline.split())
 	cmd.append(sumode)

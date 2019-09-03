@@ -13,7 +13,7 @@ class CheckBuilddir(object):
 	_zipfn = None
 
 	def __init__(self, env):
-		self._env = "%s/%s" % (env.profile(), env.name())
+		self._env = "%s/%s" % (env.profile.name(), env.name())
 		self._rootdir = env.build.rootdir()
 		self._deployfn = self._rootdir + '.deploy'
 		self._envfn = self._rootdir + '.env'

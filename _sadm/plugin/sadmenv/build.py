@@ -49,7 +49,7 @@ def _meta(env):
 def _getmeta(env):
 	return {
 		'sadm.env.name': env.name(),
-		'sadm.env.profile': env.profile(),
+		'sadm.env.profile': env.profile.name(),
 		'sadm.env.checksum': env.session.get('sadm.env.checksum'),
 		'sadm.configure.checksum': env.session.get('sadm.configure.checksum'),
 		'sadm.version': env.session.get('sadm.version'),

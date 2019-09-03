@@ -49,7 +49,7 @@ def _load(env, cfg, forcePlugins = None):
 	env.debug("registered plugins %s" % ','.join([p for p in pluginsList()]))
 	if forcePlugins is None:
 		forcePlugins = {}
-		for p in env.config.listPlugins(env.profile()):
+		for p in env.profile.config.listPlugins(env.profile.name()):
 			forcePlugins[p] = True
 	env.debug("plugins force enable: %s" % ','.join([p for p in forcePlugins.keys()]))
 	for p in pluginsList():

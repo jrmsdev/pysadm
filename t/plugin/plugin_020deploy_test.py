@@ -12,7 +12,7 @@ def test_deploy_testing(testing_plugin):
 def test_all_deploy(testing_plugin):
 	makedirs(path.join('tdata', 'deploy', 'plugin'), exist_ok = True)
 	t = testing_plugin(ns = '_sadmtest', deploy = True, buildDeploy = False)
-	for opt in t._env.config.options('deploy'):
+	for opt in t._env.profile.config.options('deploy'):
 		if opt.startswith('env.'):
 			pname = '.'.join(opt.split('.')[1:])
 			if pname == 'testing':

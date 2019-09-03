@@ -24,23 +24,18 @@ class Env(object):
 	_run = None
 	_lockfn = None
 	_err = None
-	config = None
+	profile = None
 	assets = None
 	settings = None
 	session = None
 	build = None
 
 	def __init__(self, profile, name, config = None):
-		if config is None:
-			config = cfg.new()
-		self.config = config
-		if profile == 'default':
-			profile = self.config.get('default', 'profile')
+		self.profile = Profile(profile, config)
 		if name == 'default':
-			name = self.config.get('default', 'env')
+			name = self.profile.config.get('default', 'env')
 		self._name = name
-		self._profile = Profile(profile, self.config)
-		self._profName = self._profile.name()
+		self._profName = self.profile.name()
 		self._logtag = ''
 		self._run = {}
 		self.settings = Settings()
@@ -56,7 +51,7 @@ class Env(object):
 		# env self.config.ini
 		opt = "env.%s" % self._name
 		if fn is None:
-			fn = self.config.get(self._profName, opt, fallback = None)
+			fn = self.profile.config.get(self._profName, opt, fallback = None)
 			if fn is None:
 				raise self.error("'%s/%s' env not found" % (self._profName, self._name))
 		fn = path.normpath(fn.strip())
@@ -65,7 +60,7 @@ class Env(object):
 		self._cfgfile = fn
 		# profile dir
 		if pdir is None:
-			pdir = self.config.get(self._profName, 'dir')
+			pdir = self.profile.config.get(self._profName, 'dir')
 		pdir = path.normpath(pdir.strip())
 		if not path.exists(pdir):
 			raise self.error("%s directory not found" % pdir)
@@ -93,9 +88,6 @@ class Env(object):
 
 	def name(self):
 		return self._name
-
-	def profile(self):
-		return self._profName
 
 	def cfgfile(self):
 		return self._cfgfile

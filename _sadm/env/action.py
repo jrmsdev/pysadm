@@ -15,7 +15,7 @@ _validAction = {
 def run(env, action, sumode = 'not'):
 	_start = time()
 	env.info("%s start %s" % (action, strftime('%c %z')))
-	env.log("%s %s" % (env.config.name(), env.config.filename()))
+	env.log("%s %s" % (env.profile.config.name(), env.profile.config.filename()))
 	try:
 		if not _validAction.get(action, False):
 			raise env.error("invalid action %s" % action)

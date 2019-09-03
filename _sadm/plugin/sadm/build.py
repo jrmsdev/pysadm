@@ -73,7 +73,7 @@ def _saveSession(env):
 		env.session.dump(fh)
 
 def _signBuild(env):
-	sid = env.config.get(env.profile(), 'build.sign', fallback = '')
+	sid = env.profile.config.get(env.profile.name(), 'build.sign', fallback = '')
 	sid = sid.strip()
 	if sid != '':
 		env.log("sign id %s" % sid)

@@ -18,10 +18,10 @@ def test_env(testing_env):
 	e = testing_env()
 	assert isinstance(e, Env)
 	assert e.name() == 'testing'
-	assert e.profile() == 'testing'
+	assert e.profile.name() == 'testing'
 	assert e.cfgfile() == path.join('testing', 'config.ini')
-	assert isinstance(e._profile, Profile)
-	assert e._profile.name() == 'testing'
+	assert isinstance(e.profile, Profile)
+	assert e.profile.name() == 'testing'
 	assert isinstance(e.assets, asset.Manager)
 	assert isinstance(e.settings, Settings)
 
@@ -147,7 +147,7 @@ def test_run_error():
 def test_envsetup(env_setup):
 	env = env_setup(configure = True)
 	assert env.name() == 'testing'
-	assert env.profile() == 'envsetup'
+	assert env.profile.name() == 'envsetup'
 	assert env.session._start is not None # env.configure() was run
 
 def test_envsetup_action(env_setup):
@@ -165,7 +165,7 @@ def test_envsetup_action(env_setup):
 def test_env_default(testing_env):
 	e = testing_env(name = 'default', profile = 'default')
 	assert e.name() == 'testing'
-	assert e.profile() == 'testing'
+	assert e.profile.name() == 'testing'
 
 def test_build_checksum(env_setup):
 	metafn = path.join('tdata', 'build', 'envsetup', 'testing.meta', 'meta.json')
