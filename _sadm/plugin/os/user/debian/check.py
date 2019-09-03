@@ -3,9 +3,11 @@
 
 from collections import deque
 from os import devnull
+
+# TODO: move pwd package funcs to utils so we can mock it for tests
 from pwd import getpwnam
 
-from _sadm.utils.cmd import call
+from _sadm.utils.cmd import call, callOutput
 
 __all__ = ['check']
 
@@ -37,8 +39,34 @@ def _checkUsers(diff, env):
 		except KeyError:
 			diff.append(('user', user, uid))
 			env.warn("%d %s not found" % (uid, user))
+			groups = env.settings.getlist("os.user.%s" % user, 'groups', fallback = [])
+			for g in groups:
+				diff.append(('user.group', user, g))
 		else:
 			if info.pw_uid != uid:
 				env.warn("%d %s uid %d does not match" % (uid, user, info.pw_uid))
 			else:
 				env.log("%d %s OK" % (uid, user))
+				groups = env.settings.getlist("os.user.%s" % user, 'groups', fallback = [])
+				_checkUserGroups(diff, env, user, groups)
+
+def _checkUserGroups(diff, env, user, groups):
+	env.debug("check %s user groups %s" % (user, groups))
+	okAll = True
+	for g in groups:
+		cmd = "getent group %s | cut -d ':' -f 4 | tr ',' ' '" % g
+		rc, output = callOutput(cmd)
+		if rc == 0:
+			ok = False
+			for n in output.split(' '):
+				n = n.strip()
+				if n == user:
+					ok = True
+					break
+			if not ok:
+				diff.append(('user.group', user, g))
+				okAll = False
+		elif rc == 2:
+			env.warn("os group %s not found" % g)
+	if okAll:
+		env.log("user %s groups OK" % user)
