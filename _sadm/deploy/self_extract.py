@@ -23,10 +23,10 @@ def main():
 	extract(dstdir)
 	envfn = path.join(dstdir, "%s.env" % env)
 	envcmd = path.join(rootdir, 'bin', 'sadm')
-	rc = call("%s --log info import %s" % (envcmd, envfn), shell = True)
+	rc = call("%s import %s" % (envcmd, envfn), shell = True)
 	if rc != 0:
 		return rc
-	rc = call("%s --log info --env %s deploy" % (envcmd, env), shell = True)
+	rc = call("%s --env %s deploy" % (envcmd, env), shell = True)
 	if rc != 0:
 		return rc
 	return 0
