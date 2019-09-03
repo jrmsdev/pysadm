@@ -15,8 +15,12 @@ def _configure():
 	global _configDone
 	if _configDone:
 		return
-	cmd = ['git', 'config', '--global', 'core.sshCommand',
-		'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no']
+	sshcmd = ('ssh',
+		'-o', 'UserKnownHostsFile=/dev/null',
+		'-o', 'StrictHostKeyChecking=no',
+		'-o', 'BatchMode=yes',
+	)
+	cmd = ['git', 'config', '--global', 'core.sshCommand', ' '.join(sshcmd)]
 	callCheck(cmd)
 	_configDone = True
 
