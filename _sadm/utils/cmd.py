@@ -25,7 +25,7 @@ class _ProcMan(object):
 			check = check, shell = shell, **kwargs)
 
 	def callOutput(self, cmd):
-		p = self._run(cmd, getoutput = True, enconding = 'utf-8')
+		p = self._run(cmd, getoutput = True, encoding = 'utf-8')
 		return (p.returncode, p.stdout)
 
 proc = _ProcMan()
