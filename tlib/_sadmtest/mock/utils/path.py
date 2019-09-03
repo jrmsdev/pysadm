@@ -95,4 +95,7 @@ class MockPath(object):
 			"mock path got: %s - expect: %s" % (got, self._expect)
 
 	def join(self, *parts):
-		return '/'.join(parts)
+		r = '/'.join(parts)
+		if r.startswith('//'):
+			return r[1:]
+		return r
