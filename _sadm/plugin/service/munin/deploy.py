@@ -20,9 +20,7 @@ def deploy(env):
 
 	env.log("dbdir %s (%s:%s)" % (dbdir, dbuser, dbgroup))
 
-	if systemd.status('cron') == 0:
-		systemd.reload('cron')
-	else:
-		systemd.start('cron')
+	if systemd.status('cron') != 0:
+		systemd.restart('cron')
 
 	systemd.start('munin')
