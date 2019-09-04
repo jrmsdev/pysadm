@@ -20,6 +20,7 @@ def test_all_deploy(testing_plugin):
 				continue
 			cfgdir = path.join('tdata', 'plugin', pname.replace('.', path.sep), 'config')
 			for fn in sorted(glob(path.join(cfgdir, '*.ini'))):
-				p = testing_plugin(pname, deploy = True)
-				print('-- deploy plugin:', pname)
-				p.deploy(mockCfg = path.basename(fn))
+				cfgfn = path.basename(fn)
+				print('-- deploy plugin:', pname, cfgfn)
+				p = testing_plugin(pname, deploy = True, buildCfg = cfgfn)
+				p.deploy(mockCfg = cfgfn)

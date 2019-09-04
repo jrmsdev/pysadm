@@ -157,7 +157,7 @@ def testing_plugin():
 	return _newPlugin
 
 def _newPlugin(name = 'testing', ns = '_sadm', cfgfn = None,
-	deploy = False, buildDeploy = True):
+	deploy = False, buildDeploy = True, buildCfg = 'build.ini'):
 	pdir = name.replace('.', path.sep)
 	profile = 'plugin'
 	config = None
@@ -169,17 +169,19 @@ def _newPlugin(name = 'testing', ns = '_sadm', cfgfn = None,
 		env._cfgfile = path.join(pdir, 'config', cfgfn)
 	p = Plugin(name, env, ns = ns)
 	if deploy and buildDeploy:
-		_buildDeploy(name, ns = ns)
+		_buildDeploy(name, ns = ns, cfgfn = buildCfg)
 	return p
 
-def _buildDeploy(pname, ns = '_sadm'):
+def _buildDeploy(pname, ns = '_sadm', cfgfn = None):
+	if cfgfn is None:
+		cfgfn = 'build.ini'
 	print('-- deploy plugin build:', pname)
 	depdir = path.join('tdata', 'deploy', 'plugin', pname)
 	targetdir = path.join('tdata', 'deploy.target', 'plugin', pname)
 	for dirrm in (depdir, targetdir):
 		if path.isdir(dirrm):
 			rmtree(dirrm)
-	p = _newPlugin(pname, ns = ns, cfgfn = 'build.ini')
+	p = _newPlugin(pname, ns = ns, cfgfn = cfgfn)
 	p.build()
 	makedirs(depdir, exist_ok = True)
 	metadir = path.join('tdata', 'build', 'plugin', pname + '.meta')
