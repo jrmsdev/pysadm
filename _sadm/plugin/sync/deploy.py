@@ -38,10 +38,9 @@ def _syncTarget(env, target, tar, tinfo):
 	env.debug("check target %s" % dst)
 	if tinfo.isfile():
 		return _checkFile(env, dst, tar, tinfo)
-	# sync dirs always
-	return True
+	return _checkAttrs(env, dst, tinfo)
 
-def _checkFile(env, dst, tar, tinfo):
+def _checkAttrs(env, dst, tinfo):
 	try:
 		st = stat(dst)
 	except FileNotFoundError:
@@ -49,13 +48,19 @@ def _checkFile(env, dst, tar, tinfo):
 		return True
 	stmode = oct(st.st_mode & 0o777)
 	tmode = oct(tinfo.mode)
-	if st.st_size != tinfo.size:
-		env.debug("  %s size got %d expect %d" % (dst, st.st_size, tinfo.size))
-		return True
-	elif stmode != tmode:
+	if tinfo.isfile():
+		if st.st_size != tinfo.size:
+			env.debug("  %s size got %d expect %d" % (dst, st.st_size, tinfo.size))
+			return True
+	if stmode != tmode:
 		env.debug("  %s mode got %s expect %s" % (dst, stmode, tmode))
 		return True
 	# TODO: check user/group
+	return False
+
+def _checkFile(env, dst, tar, tinfo):
+	if _checkAttrs(env, dst, tinfo):
+		return True
 	else:
 		h = md5()
 		with open(dst, 'rb') as fh:
