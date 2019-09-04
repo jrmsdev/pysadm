@@ -2,7 +2,7 @@
 # See LICENSE file.
 
 from _sadm import libdir
-from _sadm.env.service import Service
+from _sadm.service import Service
 from _sadm.utils import path
 
 __all__ = ['configure']
