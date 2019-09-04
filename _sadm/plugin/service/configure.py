@@ -15,11 +15,11 @@ def configure(env, cfg):
 	_loadEnabled(env)
 
 def _loadEnabled(env):
-	fn = 'service.conf'
+	fn = 'config.ini'
 	cfgdir = env.settings.get('service', 'config.dir', fallback = 'service')
 	for s in env.settings.getlist('service', 'enable'):
 		env.log("enable %s" % s)
-		libfn = libdir.fpath('services', s, fn)
+		libfn = libdir.fpath('service', s, fn)
 		libok = _loadConfig(env, libfn)
 		sfn = env.assets.rootdir(cfgdir, s, fn)
 		sok = _loadConfig(env, sfn)

@@ -28,7 +28,7 @@ def test_enable(testing_env):
 
 def test_enable_error(testing_env):
 	env = testing_env(name = 'service', profile = 'plugin')
-	with raises(EnvError, match = r'service\.conf file not found'):
+	with raises(EnvError, match = r'config\.ini file not found'):
 		env.configure(cfgfile = path.join('service', 'config-nosvc.ini'))
 
 def test_config_error(testing_env):
