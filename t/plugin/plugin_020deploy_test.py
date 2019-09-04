@@ -1,6 +1,7 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
+from glob import glob
 from os import path, makedirs
 
 def test_deploy_testing(testing_plugin):
@@ -17,6 +18,8 @@ def test_all_deploy(testing_plugin):
 			pname = '.'.join(opt.split('.')[1:])
 			if pname == 'testing':
 				continue
-			p = testing_plugin(pname, deploy = True)
-			print('-- deploy plugin:', pname)
-			p.deploy()
+			cfgdir = path.join('tdata', 'plugin', pname.replace('.', path.sep), 'config')
+			for fn in sorted(glob(path.join(cfgdir, '*.ini'))):
+				p = testing_plugin(pname, deploy = True)
+				print('-- deploy plugin:', pname)
+				p.deploy(mockCfg = path.basename(fn))
