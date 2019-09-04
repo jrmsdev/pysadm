@@ -50,7 +50,7 @@ def _syncTarget(env, target, tar, tinfo):
 		env.debug("  %s size got %d expect %d" % (dst, st.st_size, tinfo.size))
 		return True
 	elif stmode != tmode:
-		env.debug("  %s mode got %o expect %o" % (dst, stmode, tmode))
+		env.debug("  %s mode got %s expect %s" % (dst, stmode, tmode))
 		return True
 	# TODO: check user/group
 	else:
