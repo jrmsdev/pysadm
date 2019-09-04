@@ -1,6 +1,8 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
+import os.path
+
 from collections import deque
 from unittest.mock import Mock
 
@@ -19,7 +21,7 @@ class MockPath(object):
 		self.isfile = self._mock.isfile
 		self.isdir = self._mock.isdir
 		self.abspath = self._mock.abspath
-		self.normpath = self._mock.normpath
+		# ~ self.normpath = self._mock.normpath
 		self.unlink = self._mock.unlink
 		self._configure(cfg)
 
@@ -28,7 +30,7 @@ class MockPath(object):
 		self.isfile.side_effect = self._sideEffect('isfile')
 		self.isdir.side_effect = self._sideEffect('isdir')
 		self.abspath.side_effect = self._sideEffect('abspath')
-		self.normpath.side_effect = self._sideEffect('normpath')
+		# ~ self.normpath.side_effect = self._sideEffect('normpath')
 		self.unlink.side_effect = self._sideEffect('unlink')
 		if cfg is None:
 			return
@@ -99,3 +101,6 @@ class MockPath(object):
 		if r.startswith('//'):
 			return r[1:]
 		return r
+
+	def normpath(self, name):
+		return os.path.normpath(name)
