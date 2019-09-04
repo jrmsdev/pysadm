@@ -36,9 +36,12 @@ def deploy(env):
 def _syncTarget(env, target, tar, tinfo):
 	dst = path.join(target, tinfo.name)
 	env.debug("check target %s" % dst)
-	if not tinfo.isfile():
-		# sync dirs always
-		return True
+	if tinfo.isfile():
+		return _checkFile(env, dst, tar, tinfo)
+	# sync dirs always
+	return True
+
+def _checkFile(env, dst, tar, tinfo):
 	try:
 		st = stat(dst)
 	except FileNotFoundError:
