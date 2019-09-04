@@ -44,11 +44,13 @@ def _syncTarget(env, target, tar, tinfo):
 	except FileNotFoundError:
 		env.debug("  %s not found" % dst)
 		return True
+	stmode = oct(st.st_mode & 0o777)
+	tmode = oct(tinfo.mode)
 	if st.st_size != tinfo.size:
 		env.debug("  %s size got %d expect %d" % (dst, st.st_size, tinfo.size))
 		return True
-	elif int(st.st_mode) != int(tinfo.mode):
-		env.debug("  %s mode got %d expect %d" % (dst, int(st.st_mode), int(tinfo.mode)))
+	elif stmode != tmode:
+		env.debug("  %s mode got %o expect %o" % (dst, stmode, tmode))
 		return True
 	# TODO: check user/group
 	else:
