@@ -2,6 +2,8 @@
 # See LICENSE file.
 
 import tarfile
+
+from hashlib import md5
 from os import stat
 
 from _sadm.utils import path
@@ -23,8 +25,7 @@ def deploy(env):
 		try:
 			for tinfo in tar:
 				tinfo.mtime = mtime
-				dst = path.join(target, tinfo.name)
-				if _syncTarget(env, dst, tinfo):
+				if _syncTarget(env, target, tar, tinfo):
 					env.log("  %s" % tinfo.name)
 					tar.extract(tinfo, path = target, set_attrs = True)
 				else:
@@ -32,10 +33,35 @@ def deploy(env):
 		finally:
 			tar.close()
 
-def _syncTarget(env, dst, tinfo):
+def _syncTarget(env, target, tar, tinfo):
+	dst = path.join(target, tinfo.name)
 	env.debug("check target %s" % dst)
-	try:
-		mtime = stat(dst).st_mtime
-	except FileNotFoundError:
+	if not tinfo.isfile():
+		# sync dirs always
 		return True
-	return mtime < tinfo.mtime
+	try:
+		st = stat(dst)
+	except FileNotFoundError:
+		env.debug("  %s not found" % dst)
+		return True
+	if st.st_size != tinfo.size:
+		env.debug("  %s size got %d expect %d" % (dst, st.st_size, tinfo.size))
+		return True
+	elif int(st.st_mode) != int(tinfo.mode):
+		env.debug("  %s mode got %d expect %d" % (dst, int(st.st_mode), int(tinfo.mode)))
+		return True
+	# TODO: check user/group
+	else:
+		h = md5()
+		with open(dst, 'rb') as fh:
+			h.update(fh.read())
+		srcChecksum = h.hexdigest()
+		del h
+		h = md5()
+		with tar.extractfile(tinfo.name) as fh:
+			h.update(fh.read())
+		dstChecksum = h.hexdigest()
+		if dstChecksum != srcChecksum:
+			env.debug("  %s checksum got %s expect %s" % (dst, dstChecksum, srcChecksum))
+			return True
+	return False
