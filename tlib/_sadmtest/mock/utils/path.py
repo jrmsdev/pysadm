@@ -94,7 +94,7 @@ class MockPath(object):
 				cmdline = "%s, %s=%s" % (cmdline, k, v)
 			got.append(cmdline)
 		assert got == self._expect, \
-			"mock path got: %s - expect: %s" % (got, self._expect)
+			"mock path\n*** GOT:\n%s\n*** EXPECT:\n%s" % ('\n'.join(got), '\n'.join(self._expect))
 
 	def join(self, *parts):
 		r = '/'.join(parts)

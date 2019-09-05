@@ -131,4 +131,4 @@ class MockShUtil(object):
 				cmdline = "%s, %s=%s" % (cmdline, k, v)
 			got.append(cmdline)
 		assert got == self._expect, \
-			"mock shutil\ngot:\n%s\nexpect:\n%s" % ('\n'.join(got), '\n'.join(self._expect))
+			"mock shutil\n*** GOT:\n%s\n*** EXPECT:\n%s" % ('\n'.join(got), '\n'.join(self._expect))

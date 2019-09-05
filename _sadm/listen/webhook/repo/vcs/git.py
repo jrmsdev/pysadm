@@ -13,4 +13,5 @@ class GitRepo(object):
 		log.debug("hook action %s repo dir %s" % (action, repodir))
 		if action == 'push':
 			log.debug("git deploy %s" % repodir)
+			git.pull(repodir)
 			git.deploy(repodir)

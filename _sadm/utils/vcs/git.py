@@ -50,7 +50,6 @@ def pull(path):
 _deployScripts = ('install.sh', 'build.sh',  'check.sh', 'deploy.sh')
 
 def deploy(path):
-	pull(path)
 	with _repoDir(path):
 		if fpath.isdir('.sadm'):
 			for sn in _deployScripts:
