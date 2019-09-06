@@ -22,5 +22,7 @@ def _composeConfigure(env, name, cfg):
 		tpldat = {
 			'serviceName': name,
 			'servicePath': spath,
+			'serviceUser': cfg.get('user', fallback = 'sadm'),
+			'serviceGroup': cfg.get('group', fallback = 'sadm'),
 		}
 		systemd.configure(env, 'docker-compose', 'service', name, tpldat)
