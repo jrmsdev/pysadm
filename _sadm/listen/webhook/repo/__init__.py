@@ -66,6 +66,7 @@ class WebhookRepo(object):
 		except JSONDecodeError as err:
 			raise error(400, "webhook %s: %s" % (self._slug, err))
 		self._prov.auth(self._slug, req, self._cfg, obj)
+		self._prov.validate(self._slug, self._cfg, obj)
 		args = self._prov.repoArgs(self._slug, self._cfg, obj)
 		task = "webhook.repo.%s" % self._repoVCS
 		try:

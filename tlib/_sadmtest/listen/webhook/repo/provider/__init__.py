@@ -6,7 +6,10 @@ __all__ = ['TestingProvider']
 class TestingProvider(object):
 
 	def auth(self, slug, req, cfg, obj):
-		return True
+		pass
+
+	def validate(self, slug, cfg, obj):
+		pass
 
 	def repoArgs(self, slug, cfg, obj):
 		return {}

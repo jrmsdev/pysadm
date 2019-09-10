@@ -18,6 +18,9 @@ def _handler(code, error):
 	else:
 		log.error("%s %d - %s" % (request.remote_addr, code, request.path))
 	response.headers['Content-Type'] = 'text/plain; charset=UTF-8'
+	if code == 304:
+		# 304 response shuold not include body content
+		return ''
 	codeStatus = HTTP_CODES.get(code, None)
 	if codeStatus is not None:
 		return "%s\n" % codeStatus
@@ -47,6 +50,10 @@ def init(wapp):
 	@wapp.error(405)
 	def error_405(error):
 		return _handler(405, error)
+
+	@wapp.error(304)
+	def error_304(error):
+		return _handler(304, error)
 
 	_initDone = True
 

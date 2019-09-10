@@ -10,7 +10,7 @@
 		}
 	},
 	"response.error": {
-		"status": 403,
-		"match": "test_auth_user forbidden: user nickname wrong_nickname"
+		"status": 304,
+		"match": "test_auth_user no action: user nickname wrong_nickname"
 	}
 }

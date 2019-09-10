@@ -10,9 +10,6 @@ class BitbucketProvider(object):
 	def auth(self, slug, req, cfg, data):
 		for arg in ('name', 'uuid'):
 			self._authRepo(arg, slug, cfg, data)
-		for arg in ('nickname', 'uuid'):
-			self._authUser(arg, slug, cfg, data)
-		return True
 
 	def _authRepo(self, opt, slug, cfg, data):
 		val = cfg.get("auth.%s" % opt)
@@ -24,6 +21,10 @@ class BitbucketProvider(object):
 			except KeyError:
 				raise error(403, "%s forbidden: no %s" % (slug, opt))
 
+	def validate(self, slug, cfg, data):
+		for arg in ('nickname', 'uuid'):
+			self._validUser(arg, slug, cfg, data)
+
 	def _ls(self, val):
 		r = []
 		for l in val.splitlines():
@@ -31,13 +32,13 @@ class BitbucketProvider(object):
 				r.append(x)
 		return r
 
-	def _authUser(self, opt, slug, cfg, data):
+	def _validUser(self, opt, slug, cfg, data):
 		val = cfg.get("auth.user.%s" % opt)
 		if val:
 			try:
 				x = data['actor'][opt]
 				if not x in self._ls(val):
-					raise error(403, "%s forbidden: user %s %s" % (slug, opt, x))
+					raise error(304, "%s no action: user %s %s" % (slug, opt, x))
 			except KeyError:
 				raise error(403, "%s forbidden: no user %s" % (slug, opt))
 
