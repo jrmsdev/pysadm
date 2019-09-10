@@ -16,4 +16,5 @@ def deploy(env):
 		if path.isfile(fn):
 			env.log("remove %s" % fn)
 			path.unlink(fn)
+	env.log("restart")
 	systemd.restart('fail2ban')
