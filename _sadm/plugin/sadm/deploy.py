@@ -7,6 +7,9 @@ __all__ = ['deploy']
 
 _cfgfn = path.join(path.sep, 'etc', 'opt', 'sadm', 'listen.cfg')
 
+# run as root at first pass
+sumode = 'pre'
+
 def deploy(env):
 	if path.isfile(_cfgfn):
 		if systemd.status('sadm-listen', 'is-enabled') != 0:
