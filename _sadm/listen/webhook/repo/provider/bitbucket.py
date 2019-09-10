@@ -19,17 +19,24 @@ class BitbucketProvider(object):
 		if val:
 			try:
 				x = data['repository'][opt]
-				if val != x:
+				if x != val:
 					raise error(403, "%s forbidden: %s %s" % (slug, opt, x))
 			except KeyError:
 				raise error(403, "%s forbidden: no %s" % (slug, opt))
+
+	def _ls(self, val):
+		r = []
+		for l in val.splitlines():
+			for x in l.split(' '):
+				r.append(x)
+		return r
 
 	def _authUser(self, opt, slug, cfg, data):
 		val = cfg.get("auth.user.%s" % opt)
 		if val:
 			try:
 				x = data['actor'][opt]
-				if val != x:
+				if not x in self._ls(val):
 					raise error(403, "%s forbidden: user %s %s" % (slug, opt, x))
 			except KeyError:
 				raise error(403, "%s forbidden: no user %s" % (slug, opt))
