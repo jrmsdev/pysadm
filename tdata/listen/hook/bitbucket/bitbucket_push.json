@@ -4,5 +4,14 @@
 		"args": ["bitbucket", "testing", "push"]
 	},
 	"headers": {},
-	"data": {}
+	"data": {
+		"push": {
+			"changes": [{
+				"new": {
+					"type": "branch",
+					"name": "master"
+				}
+			}]
+		}
+	}
 }

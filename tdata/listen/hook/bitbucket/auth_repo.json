@@ -7,6 +7,14 @@
 	"data": {
 		"repository": {
 			"name": "test_auth"
+		},
+		"push": {
+			"changes": [{
+				"new": {
+					"type": "branch",
+					"name": "master"
+				}
+			}]
 		}
 	},
 	"response": "OK"

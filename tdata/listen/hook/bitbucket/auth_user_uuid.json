@@ -7,6 +7,14 @@
 	"data": {
 		"actor": {
 			"uuid": "12345678"
+		},
+		"push": {
+			"changes": [{
+				"new": {
+					"type": "branch",
+					"name": "master"
+				}
+			}]
 		}
 	},
 	"response": "OK"

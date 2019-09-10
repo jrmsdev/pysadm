@@ -21,17 +21,27 @@ _provider = {
 	'bitbucket': BitbucketProvider(),
 }
 
+#
+# listen.cfg example
+#
+#   [webhook.repo:repotag]
+#   provider = bitbucket
+#   vcs = git
+#   path = /usr/src/repotag
+#   branch = master
+#   auth.name = reponame
+#   auth.uuid = 12345678
+#   auth.user.name = user_nickname
+#   auth.user.uuid = 12345678
+#
+
 class WebhookRepo(object):
 	_cfg = None
 	_prov = None
-	_provName = None
-	_repoName = None
 	_repoVCS = None
 	_slug = None
 
 	def __init__(self, provider, name):
-		self._provName = provider
-		self._repoName = name
 		self._slug = "%s/%s" % (provider, name)
 		prov = _provider.get(provider, None)
 		if prov is None:
@@ -61,13 +71,18 @@ class WebhookRepo(object):
 		log.debug("%s exec %s" % (self._slug, action))
 		# TODO: check self._cfg.getboolean(action... if disabled raise error 400
 		#       or just 200 with an "action disabled" message?
+		# read body, it should be a valid json string
 		try:
 			obj = json.loads(req.body.read())
 		except JSONDecodeError as err:
 			raise error(400, "webhook %s: %s" % (self._slug, err))
+		# authorize request info and json data
 		self._prov.auth(self._slug, req, self._cfg, obj)
+		# validate request data
 		self._prov.validate(self._slug, self._cfg, obj)
-		args = self._prov.repoArgs(self._slug, self._cfg, obj)
+		# get repo info from request data
+		args = self._prov.repoArgs(self._slug, self._cfg, action, obj)
+		# dispatch task
 		task = "webhook.repo.%s" % self._repoVCS
 		try:
 			dispatch(req, task, action, args)
