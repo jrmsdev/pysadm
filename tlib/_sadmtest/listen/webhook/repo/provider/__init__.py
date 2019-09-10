@@ -6,7 +6,7 @@ __all__ = ['TestingProvider']
 class TestingProvider(object):
 
 	def auth(self, req, cfg, obj):
-		pass
+		return True
 
 	def repoArgs(self, cfg, obj):
 		return {}

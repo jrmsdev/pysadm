@@ -65,7 +65,8 @@ class WebhookRepo(object):
 			obj = json.loads(req.body.read())
 		except JSONDecodeError as err:
 			raise error(400, "webhook %s: %s" % (self._slug, err))
-		self._prov.auth(req, self._cfg, obj)
+		if not self._prov.auth(req, self._cfg, obj):
+			raise error(403, "webhook %s: forbidden action" % self._slug)
 		args = self._prov.repoArgs(self._cfg, obj)
 		task = "webhook.repo.%s" % self._repoVCS
 		try:
