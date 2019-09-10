@@ -20,10 +20,9 @@ import _sadm.plugin.os.user
 # so services/apps deploy can use built (already deployed) assets
 import _sadm.plugin.sync
 
-# network plugins
+# network (pre) plugins
 
 import _sadm.plugin.network.iptables
-import _sadm.plugin.network.fail2ban
 
 #
 # deploy user mode actions
@@ -50,3 +49,7 @@ import _sadm.plugin.service.munin_node
 # services that depend on apache should go before it
 # so apache is restarted after all deps were setup
 import _sadm.plugin.service.apache
+
+# network (post) plugins
+
+import _sadm.plugin.network.fail2ban

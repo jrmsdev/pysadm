@@ -15,7 +15,6 @@ _expectPlugins = dict(enumerate((
 	'os.user',
 	'sync',
 	'network.iptables',
-	'network.fail2ban',
 	'vcs.clone',
 	'docker',
 	'service',
@@ -24,6 +23,7 @@ _expectPlugins = dict(enumerate((
 	'service.munin',
 	'service.munin_node',
 	'service.apache',
+	'network.fail2ban',
 )))
 
 def test_plugins_list():

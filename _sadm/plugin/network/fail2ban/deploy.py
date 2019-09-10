@@ -5,8 +5,8 @@ from _sadm.utils import path, systemd
 
 __all__ = ['deploy']
 
-# run as root at first pass
-sumode = 'pre'
+# run as root at last pass
+sumode = 'post'
 
 def deploy(env):
 	destdir = env.settings.get('network.fail2ban', 'config.destdir')
