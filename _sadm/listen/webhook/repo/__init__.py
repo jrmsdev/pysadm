@@ -58,17 +58,15 @@ class WebhookRepo(object):
 		self._repoVCS = vcs
 		# TODO: check repo.path and other pre-fly checks
 
-	def auth(self, req):
-		self._prov.auth(req, self._cfg)
-
 	def exec(self, req, action):
+		log.debug("%s exec %s" % (self._slug, action))
 		# TODO: check self._cfg.getboolean(action... if disabled raise error 400
-		log.debug("req.body: %s" % req.body)
 		try:
 			obj = json.loads(req.body.read())
 		except JSONDecodeError as err:
 			raise error(400, "webhook %s: %s" % (self._slug, err))
-		args = self._prov.repoArgs(obj, self._cfg)
+		self._prov.auth(req, self._cfg, obj)
+		args = self._prov.repoArgs(self._cfg, obj)
 		task = "webhook.repo.%s" % self._repoVCS
 		try:
 			dispatch(req, task, action, args)

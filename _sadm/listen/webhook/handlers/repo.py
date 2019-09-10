@@ -9,6 +9,5 @@ __all__ = ['repo']
 
 def handle(provider, name, action):
 	repo = WebhookRepo(provider, name)
-	repo.auth(request)
 	repo.exec(request, action)
 	return 'OK\n'

@@ -34,7 +34,7 @@ def check(env):
 			chdir(rpath)
 			env.log("repo %s dir %s" % (name, rpath))
 			if typ == 'git':
-				_gitCheck(env, status, name, repo) # TODO
+				_gitCheck(env, status, name, repo)
 		except Exception as err:
 			raise env.error("%s" % err)
 		finally:
