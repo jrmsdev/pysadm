@@ -49,9 +49,12 @@ class BitbucketProvider(object):
 		}
 		try:
 			actionData = data[action]['changes'][0]['new']
+			chtype = actionData['type']
 			branch = actionData['name']
 		except KeyError as err:
 			raise error(403, "%s forbidden: args %s" % (slug, err))
+		if chtype != 'branch':
+			raise error(304, "%s no action: change type %s" % (slug, chtype))
 		if branch != args['repo.branch']:
 			raise error(304, "%s no action: branch %s" % (slug, branch))
 		return args
