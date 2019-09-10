@@ -21,7 +21,6 @@ _green = '\033[0;32m'
 _grey = '\033[1;30m'
 _reset = '\033[0m'
 
-# ~ _colored = False
 def _setColored():
 	global _colDebug
 	global _colWarn
@@ -52,15 +51,28 @@ class _sysLogger(object):
 		self._child = _dummyLogger()
 		self._outs = sys.stdout
 		self._errs = sys.stderr
+		self._flushOuts = self._outsFlush
+		self._flushErrs = self._errsFlush
 		if outs is not None:
 			self._outs = outs
 			self._errs = outs
+			self._flushOuts = self._noFlush
+			self._flushErrs = self._noFlush
 		self.debug = self._off
 		self.warn = self._off
 		self.error = self._off
 		self.info = self._off
 		self.msg = self._off
 		self._initLevel(level)
+
+	def _outsFlush(self):
+		self._outs.flush()
+
+	def _errsFlush(self):
+		self._errs.flush()
+
+	def _noFlush(self):
+		pass
 
 	def _initLevel(self, level):
 		# debug: all messages
@@ -122,22 +134,27 @@ class _sysLogger(object):
 		caller = _getCaller(depth)
 		print(_colDebug("%s%s: %s" % (tag, caller, msg)), file = self._errs)
 		# no debug info for child logger
+		self._flushErrs()
 
 	def _error(self, msg):
 		print(_colError(msg), file = self._errs)
 		self._child.error(msg)
+		self._flushErrs()
 
 	def _warn(self, msg):
 		print(_colWarn(msg), file = self._errs)
 		self._child.warn(msg)
+		self._flushErrs()
 
 	def _info(self, msg):
 		print(_colInfo(msg), file = self._outs)
 		self._child.info(msg)
+		self._flushOuts()
 
 	def _msg(self, msg):
 		print(_colMsg(msg), file = self._outs)
 		self._child.msg(msg)
+		self._flushOuts()
 
 class _dummyLogger(object):
 
