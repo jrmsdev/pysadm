@@ -9,7 +9,7 @@ _cfgfn = path.join(path.sep, 'etc', 'opt', 'sadm', 'listen.cfg')
 
 def deploy(env):
 	if path.isfile(_cfgfn):
-		rc = systemd.status('sadm-listen')
-		if rc != 0:
+		if systemd.status('sadm-listen', 'is-enabled') != 0:
 			systemd.enable('sadm-listen')
-			systemd.start('sadm-listen')
+		if systemd.status('sadm-listen') != 0:
+			systemd.restart('sadm-listen')

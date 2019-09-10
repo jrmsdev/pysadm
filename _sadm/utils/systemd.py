@@ -19,8 +19,8 @@ def _cmd(service, action, *args, check = True):
 		return callCheck(cmd)
 	return call(' '.join(cmd))
 
-def status(service, *args):
-	return _cmd(service, 'status', *args, check = False)
+def status(service, check = 'is-active'):
+	return _cmd(service, check, check = False)
 
 def start(service, *args):
 	return _cmd(service, 'start', *args)

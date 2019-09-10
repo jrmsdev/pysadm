@@ -12,9 +12,7 @@ sumode = 'post'
 
 def deploy(env):
 	_autoconf(env)
-	systemd.stop('munin-node')
-	systemd.start('munin-node')
-	systemd.status('munin-node')
+	systemd.restart('munin-node')
 
 def _autoconf(env):
 	env.log('autoconf')

@@ -23,4 +23,5 @@ def deploy(env):
 	if systemd.status('cron') != 0:
 		systemd.restart('cron')
 
-	systemd.start('munin')
+	if systemd.status('munin') != 0:
+		systemd.restart('munin')
