@@ -36,38 +36,37 @@ class WebhookRepo(object):
 		prov = _provider.get(provider, None)
 		if prov is None:
 			raise error(400, "webhook invalid provider: %s" % provider)
-		sect = "sadm.webhook:%s" % name
+		sect = "webhook.repo:%s" % name
 		if not wapp.config.has_section(sect):
-			sect = "webhook.repo:%s" % name
+			sect = "sadm.webhook:%s" % name
 			if not wapp.config.has_section(sect):
 				raise error(400, "webhook %s repo not found: %s" % (provider, name))
 		self._cfg = wapp.config[sect]
 		self._prov = prov
 		self._loadProvider(self._cfg, provider, name)
-		self._checkRepo(self._cfg)
+		self._loadRepo(self._cfg)
 
 	def _loadProvider(self, cfg, provider, name):
 		rProv = cfg.get('provider', fallback = 'none')
 		if rProv != provider:
 			raise error(400, "webhook %s: invalid provider: %s" % (self._slug, rProv))
 
-	def _checkRepo(self, cfg):
+	def _loadRepo(self, cfg):
 		vcs = cfg.get('vcs', fallback = 'git')
 		if not _validVCS.get(vcs, False):
 			raise error(400, "webhook %s: invalid vcs: %s" % (self._slug, vcs))
 		self._repoVCS = vcs
-		# TODO: check repo.path and other pre-fly checks
 
 	def exec(self, req, action):
 		log.debug("%s exec %s" % (self._slug, action))
 		# TODO: check self._cfg.getboolean(action... if disabled raise error 400
+		#       or just 200 with an "action disabled" message?
 		try:
 			obj = json.loads(req.body.read())
 		except JSONDecodeError as err:
 			raise error(400, "webhook %s: %s" % (self._slug, err))
-		if not self._prov.auth(req, self._cfg, obj):
-			raise error(403, "webhook %s: forbidden action" % self._slug)
-		args = self._prov.repoArgs(self._cfg, obj)
+		self._prov.auth(self._slug, req, self._cfg, obj)
+		args = self._prov.repoArgs(self._slug, self._cfg, obj)
 		task = "webhook.repo.%s" % self._repoVCS
 		try:
 			dispatch(req, task, action, args)
