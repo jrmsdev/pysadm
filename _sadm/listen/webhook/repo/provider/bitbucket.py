@@ -27,7 +27,7 @@ class BitbucketProvider(object):
 	def _ls(self, val):
 		r = []
 		for l in val.splitlines():
-			for x in l.split(' '):
+			for x in l.split():
 				r.append(x)
 		return r
 
