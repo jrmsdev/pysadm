@@ -1,0 +1,13 @@
+{
+	"handler": {
+		"name": "hook.repo",
+		"args": ["bitbucket", "test_auth_user_uuid", "push"]
+	},
+	"headers": {},
+	"data": {
+		"actor": {
+			"uuid": "12345678"
+		}
+	},
+	"response": "OK"
+}

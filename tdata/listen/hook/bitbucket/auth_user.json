@@ -1,0 +1,13 @@
+{
+	"handler": {
+		"name": "hook.repo",
+		"args": ["bitbucket", "test_auth_user", "push"]
+	},
+	"headers": {},
+	"data": {
+		"actor": {
+			"nickname": "test_user"
+		}
+	},
+	"response": "OK"
+}
