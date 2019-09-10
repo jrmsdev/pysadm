@@ -12,6 +12,7 @@ sumode = 'post'
 
 def deploy(env):
 	_autoconf(env)
+	# TODO: prune autoconf plugins we don't want there (like veth* and such)
 	systemd.restart('munin-node')
 
 def _autoconf(env):

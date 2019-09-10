@@ -35,11 +35,11 @@ def _configureListen(env, cfg):
 	if cfgfn is not None:
 		env.log("enable sadm.listen %s" % cfgfn)
 		env.session.set('sadm.listen.enable', True)
-		# sync
+		# sync listen.cfg
 		if not cfg.has_section('sync'):
 			cfg.add_section('sync')
 		cfg.set('sync', 'sadm.listen.config',
-			"%s %s filemode=644" % (cfgfn, path.join(path.sep,
+			"%s %s filemode:640 user:sadm" % (cfgfn, path.join(path.sep,
 				'etc', 'opt', 'sadm', 'listen.cfg')))
 		# os.pkg
 		if not env.settings.has_section('os.pkg'):

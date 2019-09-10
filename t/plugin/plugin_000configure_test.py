@@ -9,7 +9,7 @@ def test_configure_testing(testing_plugin):
 
 def test_all_configure(testing_plugin):
 	for n in pluginsList():
-		if n in ('testing', 'sadm', 'sadmenv'):
+		if n == 'testing':
 			continue
 		print('-- configure plugin:', n)
 		p = testing_plugin(n)

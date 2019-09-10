@@ -51,6 +51,8 @@ def _buildListen(env):
 			path.join(path.sep, 'etc', 'opt', 'sadm', 'listen', 'nginx.conf')),
 		(libdir.fpath('listen', 'wsgi', 'lighttpd.conf'),
 			path.join(path.sep, 'etc', 'opt', 'sadm', 'listen', 'lighttpd.conf')),
+		(libdir.fpath('listen', 'fail2ban', 'filter.d', 'sadm-listen.conf'),
+			path.join(path.sep, 'etc', 'fail2ban', 'filter.d', 'sadm-listen.conf')),
 	)
 	for srcfn, dstfn in cfgfiles:
 		env.log("create %s" % dstfn)
