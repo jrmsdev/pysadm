@@ -9,12 +9,11 @@ __all__ = ['deploy']
 sumode = 'pre'
 
 def deploy(env):
-	destdir = env.settings.get('network.fail2ban', 'jail.destdir')
+	destdir = env.settings.get('network.fail2ban', 'config.destdir')
 	jdisable = env.settings.getlist('network.fail2ban', 'jail.disable')
 	for jn in jdisable:
-		fn = path.join(destdir, jn + '.conf')
+		fn = path.join(destdir, 'jail.d', jn + '.conf')
 		if path.isfile(fn):
 			env.log("remove %s" % fn)
 			path.unlink(fn)
 	systemd.restart('fail2ban')
-	systemd.status('fail2ban')

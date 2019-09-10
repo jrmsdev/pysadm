@@ -5,8 +5,8 @@ __all__ = ['configure']
 
 def configure(env, cfg):
 	env.settings.merge(cfg, 'network.fail2ban', (
-		'jail.dir',
-		'jail.destdir',
+		'config.dir',
+		'config.destdir',
 		'jail.disable',
 		'jail.enable',
 	))
