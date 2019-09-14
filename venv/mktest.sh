@@ -1,6 +1,6 @@
 #!/bin/sh -eu
 
-ENVDIR=${1:-'/opt/venv/pysadmtest'}
+ENVDIR=${1:-'/opt/venv/sadmtest'}
 PIP=${ENVDIR}/bin/pip
 
 python3 -m venv --prompt sadmtest --clear ${ENVDIR}
