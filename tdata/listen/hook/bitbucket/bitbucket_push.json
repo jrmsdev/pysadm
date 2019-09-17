@@ -9,7 +9,11 @@
 			"changes": [{
 				"new": {
 					"type": "branch",
-					"name": "master"
+					"name": "master",
+					"target": {
+						"type": "commit",
+						"hash": "abc1234"
+					}
 				}
 			}]
 		}
