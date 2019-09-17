@@ -12,6 +12,8 @@ class GitRepo(object):
 		repodir = args.get('repo.path', 'NOREPOPATH')
 		log.debug("hook action %s repo dir %s" % (action, repodir))
 		if action == 'push':
-			log.debug("git deploy %s" % repodir)
+			commit = args.get('repo.checkout', 'NOCOMMIT')
+			log.debug("git deploy %s %s" % (repodir, commit))
 			git.pull(repodir)
+			git.checkout(repodir, commit)
 			git.deploy(repodir)
