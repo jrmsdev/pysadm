@@ -54,7 +54,8 @@ class TestingWebapp(object):
 
 	def checkException(self, exc, status, match):
 		err = exc.value
-		assert err.status_code == status
+		assert err.status_code == status, \
+			"error status got: %d - expect: %d" % (err.status_code, status)
 		try:
 			m = err.body.index(match) >= 0
 		except ValueError:
