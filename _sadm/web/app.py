@@ -11,7 +11,7 @@ _cfgfn = libdir.fpath('web', 'app.conf')
 _htmldir = libdir.fpath('web', 'html')
 _staticdir = libdir.fpath('web', 'static')
 
-bottle.TEMPLATE_PATH.insert(0, _htmldir)
+bottle.TEMPLATE_PATH = [_htmldir]
 view = bottle.view
 
 wapp = bottle.Bottle()

@@ -8,16 +8,15 @@ from _sadm import log, cfg
 from _sadm.web import tpl
 from _sadm.web.app import wapp, view
 
-@wapp.route('/')
-@view('index.html')
-@tpl.data('home')
+@wapp.route('/config')
+@view('config.html')
+@tpl.data('config')
 def index():
 	log.debug("index")
 	config = cfg.new()
 	return {
 		'cfgfile': config.filename(),
 		'cfg': _getCfg(config),
-		'user': getenv('USER', 'nouser?'),
 	}
 
 def _getCfg(config):
