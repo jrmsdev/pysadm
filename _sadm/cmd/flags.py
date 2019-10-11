@@ -25,10 +25,11 @@ def new(prog, desc = ''):
 		metavar = 'name', default = 'default')
 	return p
 
-def parse(p):
+def parse(p, argv = None):
 	global cmdline
 	cmdline = ' '.join(sys.argv).strip()
-	args = p.parse_args()
+	print('ARGV2:', argv)
+	args = p.parse_args(args = argv)
 	if args.debug:
 		log.init('debug')
 	else:
