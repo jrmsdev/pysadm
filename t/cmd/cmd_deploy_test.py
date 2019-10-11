@@ -14,10 +14,10 @@ def test_usage_error(testing_cmd):
 			assert err.code == 2
 
 def test_config_notfound(testing_cmd):
-	with testing_cmd() as ctx:
-		with raises(ProfileError, match = 'deploy.cfg file not found'):
+	with testing_cmd(cfgfile = 'no-deploy.cfg') as ctx:
+		with raises(ProfileError, match = 'no-deploy.cfg file not found'):
 			deploy.main(argv = ['deploy'])
 
 # ~ def test_main(testing_cmd):
 	# ~ with testing_cmd() as ctx:
-		# ~ deploy.main(argv = ['deploy'])
+		# ~ deploy.main(argv = ['--env', 'lalala', 'deploy'])

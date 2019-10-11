@@ -48,6 +48,9 @@ import _sadmtest.plugin.testing
 from _sadm import cfg
 cfg._cfgFile = path.join('tdata', 'sadm.cfg')
 
+import _sadm.deploy
+_sadm.deploy.cfgfile = path.join('tdata', 'deploy.cfg')
+
 #
 # testing profile
 #
@@ -207,10 +210,18 @@ def listen_wapp():
 # testing commands
 #
 
+import _sadm.cmd.deploy.deploy
+
 from _sadmtest.cmd import TestingCmd
 
 @pytest.fixture
 def testing_cmd():
-	def wrapper():
-		return TestingCmd()
+	def wrapper(cfgfile = 'deploy.cfg'):
+		try:
+			cfgfile = path.join('tdata', cfgfile)
+			_sadm.deploy.cfgfile = cfgfile
+			_sadm.cmd.deploy.deploy.cfgfile = cfgfile
+			return TestingCmd(cfgfile)
+		finally:
+			_sadm.deploy.cfgfile = path.join('tdata', 'deploy.cfg')
 	return wrapper
