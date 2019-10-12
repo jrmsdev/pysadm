@@ -52,7 +52,7 @@ def getPlugin(name, action):
 		raise PluginError("%s.%s: %s" % (name, action, err))
 	except Exception as err:
 		raise PluginError("%s %s: %s" % (name, action, err))
-	sumode = 'not'
+	sumode = 'user'
 	if action == 'deploy':
 		if hasattr(mod, 'sumode'):
 			sumode = getattr(mod, 'sumode')

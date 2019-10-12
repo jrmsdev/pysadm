@@ -40,4 +40,4 @@ def _sumode(env, step):
 	return call(cmd)
 
 def _usermode(env):
-	return cmd.run(env, 'not')
+	return cmd.run(env, 'user')

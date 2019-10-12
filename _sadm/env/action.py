@@ -12,7 +12,7 @@ _validAction = {
 	'deploy': True,
 }
 
-def run(env, action, sumode = 'not'):
+def run(env, action, sumode = 'user'):
 	_start = time()
 	env.info("%s start %s" % (action, strftime('%c %z')))
 	env.log("%s %s" % (env.profile.config.name(), env.profile.config.filename()))
@@ -28,7 +28,7 @@ def run(env, action, sumode = 'not'):
 	finally:
 		env.info("%s end %s" % (action, strftime('%c %z')))
 
-def _runAction(env, action, cmd = None, force = False, revert = False, sumode = 'not'):
+def _runAction(env, action, cmd = None, force = False, revert = False, sumode = 'user'):
 	if cmd is None:
 		cmd = action
 	for p in env.plugins(action, revert = revert):

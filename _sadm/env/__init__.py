@@ -190,7 +190,7 @@ def _unlock(env):
 		finally:
 			env._lockfn = None
 
-def run(profile, env, action, cfgfile = None, sumode = 'not'):
+def run(profile, env, action, cfgfile = None, sumode = 'user'):
 	err = None
 	e = None
 	try:
