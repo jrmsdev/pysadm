@@ -26,7 +26,7 @@ def uwsgi():
 	callCheck(cmd)
 	return 0
 
-if __name__ == '__main__':
+if __name__ == '__main__': # pragma: no cover
 	if '--bottle' in sys.argv:
 		sys.exit(bottle())
 	else:
