@@ -11,7 +11,7 @@ from .tmpdir import TmpDir
 from .tmpfile import TmpFile
 
 __all__ = ['makedirs', 'chmod', 'chown', 'mktmp', 'mktmpdir', 'getcwd', 'chdir',
-	'getuid', 'getgid', 'lockd']
+	'getuid', 'getgid', 'lockd', 'rmtree']
 
 class _ShUtil(object):
 	def __init__(self):
@@ -25,6 +25,8 @@ class _ShUtil(object):
 		self.getuid = os.getuid
 		self.getgid = os.getgid
 		self.lockd = self._lockd
+		self.rmtree = _sh.rmtree
+		self.unpack_archive = _sh.unpack_archive
 
 	def _mktmp(self, suffix = None, prefix = None, dir = None, remove = False):
 		return TmpFile(suffix = suffix, prefix = prefix, dir = dir, remove = remove)
@@ -77,3 +79,9 @@ def lockd(path):
 		yield shutil.lockd(path)
 	finally:
 		pass
+
+def rmtree(path):
+	return shutil.rmtree(path)
+
+def unpack_archive(filename, extract_dir = None, format = None):
+	shutil.unpack_archive(filename, extract_dir = extract_dir, format = format)

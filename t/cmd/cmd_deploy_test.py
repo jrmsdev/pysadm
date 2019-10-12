@@ -55,3 +55,9 @@ def test_main(testing_cmd):
 	with cmd.mock():
 		rc = deploy.main(argv = ['deploy'])
 		assert rc == 39
+
+def test_import(testing_cmd):
+	cmd = testing_cmd()
+	with cmd.mock('import'):
+		rc = deploy.main(argv = ['import', 'testing.env'])
+		assert rc == 0

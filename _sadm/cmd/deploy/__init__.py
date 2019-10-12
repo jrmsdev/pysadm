@@ -38,7 +38,7 @@ def main(argv = None):
 
 	try:
 		cmd = args.command
-	except AttributeError:
+	except AttributeError: # pragma: no cover
 		log.error('invalid usage')
 		_parser.print_usage()
 		return 1

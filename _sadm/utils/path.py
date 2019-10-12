@@ -4,7 +4,8 @@
 import os
 import os.path
 
-__all__ = ['sep', 'isfile', 'isdir', 'join', 'abspath', 'normpath', 'unlink']
+__all__ = ['sep', 'isfile', 'isdir', 'join', 'abspath', 'normpath', 'unlink',
+	'basename', 'dirname']
 
 class _Path(object):
 	def __init__(self):
@@ -15,6 +16,8 @@ class _Path(object):
 		self.abspath = os.path.abspath
 		self.normpath = os.path.normpath
 		self.unlink = os.unlink
+		self.basename = os.path.basename
+		self.dirname = os.path.dirname
 
 _path = _Path()
 
@@ -39,3 +42,9 @@ def normpath(name):
 
 def unlink(name):
 	_path.unlink(name)
+
+def basename(path):
+	return _path.basename(path)
+
+def dirname(path):
+	return _path.dirname(path)

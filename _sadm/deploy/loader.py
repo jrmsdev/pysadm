@@ -2,14 +2,13 @@
 # See LICENSE file.
 
 import sys
-from os import path, makedirs, unlink, chmod
-from shutil import rmtree, unpack_archive
-from subprocess import call
 
 from _sadm import log, cfg, deploy
+from _sadm.utils import path, sh
+from _sadm.utils.cmd import call
 
-def loadenv(filename): # pragma: no cover
-	envfn = path.realpath(filename)
+def loadenv(filename):
+	envfn = path.abspath(filename)
 	log.msg("%s: load" % envfn)
 	rc = _check(envfn)
 	if rc != 0:
@@ -18,7 +17,7 @@ def loadenv(filename): # pragma: no cover
 		rc = _verify(envfn)
 		if rc != 0:
 			return rc
-	rc = call("sha256sum -c %s" % envfn, shell = True)
+	rc = call("sha256sum -c %s" % envfn)
 	if rc != 0:
 		log.error('env checksum failed!')
 		return rc
@@ -47,9 +46,9 @@ def _importenv(envfn):
 	rootdir = path.dirname(path.dirname(envfn))
 	deploydir = path.join(rootdir, 'deploy')
 	envdir = path.join(deploydir, path.basename(srcfn))
-	if path.isdir(envdir): # pragma: no cover
-		rmtree(envdir)
-	makedirs(envdir)
-	chmod(envdir, 0o0700)
+	if path.isdir(envdir):
+		sh.rmtree(envdir)
+	sh.makedirs(envdir)
+	sh.chmod(envdir, 0o0700)
 	log.msg("%s.zip: unpack" % srcfn)
-	unpack_archive(srcfn + '.zip', extract_dir = envdir, format = 'zip')
+	sh.unpack_archive(srcfn + '.zip', extract_dir = envdir, format = 'zip')

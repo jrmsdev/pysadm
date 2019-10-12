@@ -54,6 +54,8 @@ class MockShUtil(object):
 		self.getuid = self._mock.mock_getuid
 		self.getgid = self._mock.mock_getgid
 		self.lockd = self._mock.mock_lockd
+		self.rmtree = self._mock.mock_rmtree
+		self.unpack_archive = self._mock.mock_unpack_archive
 		self._configure(cfg)
 
 	def _configure(self, cfg):
@@ -67,6 +69,8 @@ class MockShUtil(object):
 		self.makedirs.side_effect = self._sideEffect('makedirs')
 		self.getuid.side_effect = self._sideEffect('getuid')
 		self.getgid.side_effect = self._sideEffect('getgid')
+		self.rmtree.side_effect = self._sideEffect('rmtree')
+		self.rmtree.side_effect = self._sideEffect('unpack_archive')
 
 	def _utilsDefault(self):
 		self._default['getcwd'] = '/testing/workdir'
