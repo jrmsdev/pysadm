@@ -8,7 +8,7 @@ from _sadm.errors import ProfileError
 
 def test_usage_error(testing_cmd):
 	cmd = testing_cmd(env = None)
-	with cmd.mock():
+	with cmd.mock('usage_error'):
 		with raises(SystemExit) as err:
 			deploy.main(argv = ['invalid_command'])
 			assert isinstance(err, SystemExit)
@@ -16,7 +16,7 @@ def test_usage_error(testing_cmd):
 
 def test_config_notfound(testing_cmd):
 	cmd = testing_cmd(cfgfile = 'no-deploy.cfg', env = None)
-	with cmd.mock():
+	with cmd.mock('config_notfound'):
 		with raises(ProfileError, match = 'no-deploy.cfg file not found'):
 			deploy.main(argv = ['deploy'])
 
