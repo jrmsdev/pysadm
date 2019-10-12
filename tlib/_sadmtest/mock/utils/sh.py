@@ -65,6 +65,8 @@ class MockShUtil(object):
 		self.mktmpdir.side_effect = self._mktmpdir
 		self.getcwd.side_effect = self._sideEffect('getcwd')
 		self.makedirs.side_effect = self._sideEffect('makedirs')
+		self.getuid.side_effect = self._sideEffect('getuid')
+		self.getgid.side_effect = self._sideEffect('getgid')
 
 	def _utilsDefault(self):
 		self._default['getcwd'] = '/testing/workdir'
@@ -104,6 +106,8 @@ class MockShUtil(object):
 				return self._default.get(util, None)
 			if data == '':
 				return self._default.get(util, None)
+			if util in ('getuid', 'getgid'):
+				return int(data)
 			return data
 		return wrapper
 
