@@ -25,11 +25,14 @@ def loadenv(filename):
 	return 0
 
 def _check(envfn):
+	if not envfn.endswith('.env'):
+		log.error("invalid file name: %s" % envfn)
+		return 1
 	env = path.basename(envfn)[:-4]
 	config = cfg.new(deploy.cfgfile)
 	if not env in config.listEnvs('deploy'):
 		log.error("%s env not found" % env)
-		return 1
+		return 2
 	return 0
 
 def _verify(envfn):

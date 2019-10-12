@@ -61,3 +61,9 @@ def test_import(testing_cmd):
 	with cmd.mock('import'):
 		rc = deploy.main(argv = ['import', 'testing.env'])
 		assert rc == 0
+
+def test_import_noenv(testing_cmd):
+	cmd = testing_cmd()
+	with cmd.mock('import_noenv'):
+		rc = deploy.main(argv = ['import', 'noenv.env'])
+		assert rc == 2
