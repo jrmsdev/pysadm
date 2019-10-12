@@ -36,4 +36,4 @@ def test_main(testing_cmd):
 	cmd = testing_cmd(deploy = True)
 	with cmd.mock():
 		rc = deploy.main(argv = ['deploy'])
-		assert rc is None # FIXME
+		assert rc == 0

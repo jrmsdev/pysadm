@@ -33,6 +33,7 @@ def main(args, sumode):
 				return err.code
 	else:
 		return cmd.run(args.env, sumode)
+	return 0
 
 def _check(rc):
 	if rc != 0:
