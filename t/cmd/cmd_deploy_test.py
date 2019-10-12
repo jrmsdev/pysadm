@@ -62,6 +62,12 @@ def test_import(testing_cmd):
 		rc = deploy.main(argv = ['import', 'testing.env'])
 		assert rc == 0
 
+def test_import_invalid_file(testing_cmd):
+	cmd = testing_cmd()
+	with cmd.mock('import_invalid_file'):
+		rc = deploy.main(argv = ['import', 'env.file'])
+		assert rc == 1
+
 def test_import_noenv(testing_cmd):
 	cmd = testing_cmd()
 	with cmd.mock('import_noenv'):
