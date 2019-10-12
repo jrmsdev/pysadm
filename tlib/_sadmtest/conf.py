@@ -206,21 +206,34 @@ from _sadmtest.cmd import TestingCmd
 @pytest.fixture
 def testing_cmd():
 	def wrapper(cfgfile = 'deploy.cfg', env = 'testing', profile = 'cmd',
-		config = 'config.ini'):
+		config = 'config.ini', deploy = False):
 		try:
 			cfgfile = path.join('tdata', 'cmd', cfgfile)
 			_sadm.deploy.cfgfile = cfgfile
 			_sadm.cmd.deploy.deploy.cfgfile = cfgfile
 			config = path.join('tdata', 'cmd', env or 'testing', config)
 			if env is not None:
-				_env = _newEnv(env, profile, action = 'build')
-				_env._cfgfile = config
-				# ~ config = cfg.new(cfgfile = cfgfile)
-				# ~ _env = _newEnv(env, 'deploy', action = 'deploy', config = config)
+				_buildCmd(env, profile, config, deploy)
 			return TestingCmd(config)
 		finally:
 			_sadm.deploy.cfgfile = path.join('tdata', 'cmd', 'deploy.cfg')
 	return wrapper
+
+def _buildCmd(env, profile, config, deploy):
+	e = _newEnv(env, profile, action = 'build')
+	e._cfgfile = config
+	if deploy:
+		ddir = path.join('tdata', 'deploy', profile, env)
+		tdir = path.join('tdata', 'deploy.target', profile, env)
+		for dirrm in (ddir, tdir):
+			if path.isdir(dirrm):
+				rmtree(dirrm)
+		makedirs(ddir, exist_ok = True)
+		mdir = path.join('tdata', 'build', profile, env + '.meta')
+		for fn in ('configure.ini', 'meta.json', env + '.tar'):
+			src = path.join(mdir, fn)
+			dst = path.join(ddir, fn)
+			move(src, dst)
 
 #
 # testing webapps

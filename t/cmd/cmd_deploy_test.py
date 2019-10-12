@@ -26,8 +26,14 @@ def test_pre_error(testing_cmd):
 		rc = deploy.main(argv = ['deploy'])
 		assert rc == 128
 
+def test_sumode_pre(testing_cmd):
+	cmd = testing_cmd(deploy = True)
+	with cmd.mock('sumode_pre'):
+		rc = deploy.main(argv = ['deploy', '--sumode-pre'])
+		assert rc == 0
+
 def test_main(testing_cmd):
-	cmd = testing_cmd()
+	cmd = testing_cmd(deploy = True)
 	with cmd.mock():
 		rc = deploy.main(argv = ['deploy'])
 		assert rc is None # FIXME

@@ -17,7 +17,7 @@ class TestingCmd(object):
 	def mock(self, tag = 'cmd'):
 		mockcfg = cfg.new(self.cfgfile)
 		program = flags.program
-		with mock.utils(mockcfg, tag = tag) as ctx:
+		with mock.log(), mock.utils(mockcfg, tag = tag) as ctx:
 			try:
 				flags.program = 'sadm'
 				yield ctx
