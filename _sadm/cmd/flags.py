@@ -27,7 +27,12 @@ def new(prog, desc = ''):
 
 def parse(p, argv = None):
 	global cmdline
-	cmdline = ' '.join(sys.argv).strip()
+	if argv is None:
+		cmdline = ' '.join(sys.argv).strip()
+	else:
+		cmdline = [program]
+		cmdline.extend(argv)
+		cmdline = ' '.join(cmdline).strip()
 	args = p.parse_args(args = argv)
 	if args.debug:
 		log.init('debug')
