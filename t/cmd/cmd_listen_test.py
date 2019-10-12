@@ -29,7 +29,7 @@ def _check(wapp, w):
 	wapp.config.getboolean.assert_called_with('sadm.listen', 'debug', fallback = False)
 	wapp.config.get.assert_called_with('sadm.listen', 'host', fallback = '127.0.0.1')
 	wapp.config.getint.assert_called_with('sadm.listen', 'port', fallback = 3666)
-	w.run.assert_called()
+	w.run.assert_called_once()
 
 def test_uwsgi(testing_cmd):
 	cmd = testing_cmd(env = None)
