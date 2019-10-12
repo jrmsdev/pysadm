@@ -8,6 +8,10 @@ from _sadm.env import Env
 from _sadm.utils import sh, path
 from _sadm.utils.cmd import call
 
+class CmdError(Exception):
+	def __init__(self, code):
+		self.code = code
+
 def cmdArgs(parser):
 	p = parser.add_parser('deploy', help = 'deploy sadm.env')
 	p.set_defaults(command = 'deploy')
@@ -21,15 +25,18 @@ def main(args, sumode):
 		sh.makedirs(dn, mode = 0o750, exists_ok = True)
 		with sh.lockd(dn):
 			env = Env('deploy', args.env, config)
-			for rc in (
-				_sumode(env, 'pre'),
-				_usermode(env),
-				_sumode(env, 'post'),
-			):
-				if rc != 0:
-					return rc
+			try:
+				_check(_sumode(env, 'pre'))
+				_check(_usermode(env))
+				_check(_sumode(env, 'post'))
+			except CmdError as err:
+				return err.code
 	else:
 		return cmd.run(args.env, sumode)
+
+def _check(rc):
+	if rc != 0:
+		raise CmdError(rc)
 
 def _sumode(env, step):
 	sumode = '-'.join(['--sumode', step])
