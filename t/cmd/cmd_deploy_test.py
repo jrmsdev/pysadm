@@ -21,7 +21,7 @@ def test_config_notfound(testing_cmd):
 			deploy.main(argv = ['deploy'])
 
 def test_pre_error(testing_cmd):
-	cmd = testing_cmd()
+	cmd = testing_cmd(deploy = True)
 	with cmd.mock('pre_error'):
 		rc = deploy.main(argv = ['deploy'])
 		assert rc == 128
