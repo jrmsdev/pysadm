@@ -1,6 +1,10 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
+from contextlib import contextmanager
+
+from _sadm import cfg
+
 from _sadmtest import mock
 
 class TestingCmd(object):
@@ -8,13 +12,11 @@ class TestingCmd(object):
 	def __init__(self, cfgfile):
 		self.cfgfile = cfgfile
 
-	def __enter__(self):
-		with mock.utils(self.cfgfile, tag = 'cmd') as utils_ctx:
-			self.utils = utils_ctx
+	@contextmanager
+	def mock(self):
+		mockcfg = cfg.new(self.cfgfile)
+		with mock.utils(mockcfg, tag = 'cmd') as ctx:
 			try:
-				yield self
+				yield ctx
 			finally:
 				pass
-
-	def __exit__(self, *args, **kwargs):
-		pass

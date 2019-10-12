@@ -28,7 +28,6 @@ def new(prog, desc = ''):
 def parse(p, argv = None):
 	global cmdline
 	cmdline = ' '.join(sys.argv).strip()
-	print('ARGV2:', argv)
 	args = p.parse_args(args = argv)
 	if args.debug:
 		log.init('debug')

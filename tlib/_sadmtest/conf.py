@@ -2,6 +2,7 @@
 # See LICENSE file.
 
 import pytest
+
 from os import path, makedirs, unlink
 from shutil import rmtree, move
 from unittest.mock import Mock
