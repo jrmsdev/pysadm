@@ -1,11 +1,13 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
+from pytest import raises
 from unittest.mock import Mock
 
 import _sadm.listen
 
 from _sadm.cmd import listen
+from _sadm.errors import CommandError
 
 def test_bottle(testing_cmd):
 	cmd = testing_cmd(env = None)
@@ -46,3 +48,18 @@ def test_uwsgi(testing_cmd):
 def _libfpath(*parts):
 	fn = '/'.join(parts)
 	return '/opt/src/' + fn
+
+def test_uwsgi_error(testing_cmd):
+	cmd = testing_cmd(env = None)
+	with cmd.mock('listen_uwsgi_error'):
+		exec_prefix = listen.sys.exec_prefix
+		libfpath = listen.libdir.fpath
+		try:
+			listen.sys.exec_prefix = '/opt/sadm'
+			listen.libdir.fpath = _libfpath
+			with raises(CommandError, match = 'mock error code 9'):
+				listen.uwsgi()
+		finally:
+			del listen.sys.exec_prefix
+			listen.sys.exec_prefix = exec_prefix
+			listen.libdir.fpath = libfpath
