@@ -28,3 +28,21 @@ def _check(wapp, w):
 	wapp.config.get.assert_called_with('sadm.listen', 'host', fallback = '127.0.0.1')
 	wapp.config.getint.assert_called_with('sadm.listen', 'port', fallback = 3666)
 	w.run.assert_called()
+
+def test_uwsgi(testing_cmd):
+	cmd = testing_cmd(env = None)
+	with cmd.mock('listen_uwsgi'):
+		exec_prefix = listen.sys.exec_prefix
+		libfpath = listen.libdir.fpath
+		try:
+			listen.sys.exec_prefix = '/opt/sadm'
+			listen.libdir.fpath = _libfpath
+			listen.uwsgi()
+		finally:
+			del listen.sys.exec_prefix
+			listen.sys.exec_prefix = exec_prefix
+			listen.libdir.fpath = libfpath
+
+def _libfpath(*parts):
+	fn = '/'.join(parts)
+	return '/opt/src/' + fn
