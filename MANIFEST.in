@@ -43,6 +43,10 @@ include tdata/listen.cfg
 include tdata/sadm.cfg
 include tdata/profile-dir-isfile.test
 
+recursive-include tdata/cmd *.ini
+recursive-include tdata/cmd *.cfg
+recursive-include tdata/cmd/assets *.txt
+
 recursive-include tdata/envsetup *.ini
 recursive-include tdata/envsetup *.test
 

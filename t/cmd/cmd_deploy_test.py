@@ -7,17 +7,17 @@ from _sadm.cmd import deploy
 from _sadm.errors import ProfileError
 
 def test_usage_error(testing_cmd):
-	with testing_cmd() as ctx:
+	with testing_cmd(env = None) as ctx:
 		with raises(SystemExit) as err:
 			deploy.main(argv = ['invalid_command'])
 			assert isinstance(err, SystemExit)
 			assert err.code == 2
 
 def test_config_notfound(testing_cmd):
-	with testing_cmd(cfgfile = 'no-deploy.cfg') as ctx:
+	with testing_cmd(cfgfile = 'no-deploy.cfg', env = None) as ctx:
 		with raises(ProfileError, match = 'no-deploy.cfg file not found'):
 			deploy.main(argv = ['deploy'])
 
-# ~ def test_main(testing_cmd):
-	# ~ with testing_cmd() as ctx:
-		# ~ deploy.main(argv = ['--env', 'lalala', 'deploy'])
+def test_main(testing_cmd):
+	with testing_cmd() as ctx:
+		deploy.main(argv = ['deploy'])

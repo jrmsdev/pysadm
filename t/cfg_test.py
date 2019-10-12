@@ -21,8 +21,7 @@ def test_cfg():
 	assert c.get('default', 'env') == 'testing'
 	assert c.get('default', 'dir') == '.'
 	assert c.listPlugins('testing') == ['sadm', 'os', 'testing']
-	assert len(c.sections()) == 3
-	assert sorted(c.listProfiles()) == ['envsetup', 'plugin', 'testing']
+	assert sorted(c.listProfiles()) == ['cmd', 'envsetup', 'plugin', 'testing']
 	assert c.has_section('testing')
 	assert c.get('testing', 'dir') == './tdata'
 	assert c.get('testing', 'env.testing') == 'testing/config.ini'

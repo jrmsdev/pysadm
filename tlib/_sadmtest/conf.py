@@ -195,18 +195,6 @@ def _buildDeploy(pname, ns = '_sadm', cfgfn = None):
 		move(src, dst)
 
 #
-# testing webapps
-#
-
-from _sadmtest.listen.wapp import ListenWebapp
-
-@pytest.fixture
-def listen_wapp():
-	def wrapper(profile = ''):
-		return ListenWebapp(profile)
-	return wrapper
-
-#
 # testing commands
 #
 
@@ -216,12 +204,28 @@ from _sadmtest.cmd import TestingCmd
 
 @pytest.fixture
 def testing_cmd():
-	def wrapper(cfgfile = 'deploy.cfg'):
+	def wrapper(cfgfile = 'deploy.cfg', env = 'testing', profile = 'cmd'):
 		try:
-			cfgfile = path.join('tdata', cfgfile)
+			cfgfile = path.join('tdata', 'cmd', cfgfile)
 			_sadm.deploy.cfgfile = cfgfile
 			_sadm.cmd.deploy.deploy.cfgfile = cfgfile
+			if env is not None:
+				_env = _newEnv(env, profile, action = 'build')
+				config = cfg.new(cfgfile = cfgfile)
+				_env = _newEnv(env, 'deploy', action = 'deploy', config = config)
 			return TestingCmd(cfgfile)
 		finally:
-			_sadm.deploy.cfgfile = path.join('tdata', 'deploy.cfg')
+			_sadm.deploy.cfgfile = path.join('tdata', 'cmd', 'deploy.cfg')
+	return wrapper
+
+#
+# testing webapps
+#
+
+from _sadmtest.listen.wapp import ListenWebapp
+
+@pytest.fixture
+def listen_wapp():
+	def wrapper(profile = ''):
+		return ListenWebapp(profile)
 	return wrapper
