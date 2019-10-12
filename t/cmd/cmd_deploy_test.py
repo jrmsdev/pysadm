@@ -24,4 +24,4 @@ def test_main(testing_cmd):
 	cmd = testing_cmd()
 	with cmd.mock():
 		rc = deploy.main(argv = ['deploy'])
-		assert rc == 0
+		assert rc is None # FIXME
