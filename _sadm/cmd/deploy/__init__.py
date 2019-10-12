@@ -18,7 +18,7 @@ def _getArgs(p, argv):
 
 def main(argv = None):
 	if argv is None:
-		argv = sys.argv[1:]
+		argv = sys.argv[1:] # pragma: no cover
 
 	sumode = 'not'
 	if '--sumode-pre' in argv:
@@ -50,4 +50,4 @@ def main(argv = None):
 	return deploy.main(args, sumode)
 
 if __name__ == '__main__':
-	sys.exit(main())
+	sys.exit(main()) # pragma: no cover

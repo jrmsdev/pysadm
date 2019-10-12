@@ -32,6 +32,18 @@ def test_sumode_pre(testing_cmd):
 		rc = deploy.main(argv = ['deploy', '--sumode-pre'])
 		assert rc == 0
 
+def test_post_error(testing_cmd):
+	cmd = testing_cmd(deploy = True)
+	with cmd.mock('post_error'):
+		rc = deploy.main(argv = ['deploy'])
+		assert rc == 128
+
+def test_sumode_post(testing_cmd):
+	cmd = testing_cmd(deploy = True)
+	with cmd.mock('sumode_post'):
+		rc = deploy.main(argv = ['deploy', '--sumode-post'])
+		assert rc == 0
+
 def test_main(testing_cmd):
 	cmd = testing_cmd(deploy = True)
 	with cmd.mock():
