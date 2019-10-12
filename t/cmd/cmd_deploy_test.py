@@ -20,6 +20,12 @@ def test_config_notfound(testing_cmd):
 		with raises(ProfileError, match = 'no-deploy.cfg file not found'):
 			deploy.main(argv = ['deploy'])
 
+def test_pre_error(testing_cmd):
+	cmd = testing_cmd()
+	with cmd.mock('pre_error'):
+		rc = deploy.main(argv = ['deploy'])
+		assert rc == 128
+
 def test_main(testing_cmd):
 	cmd = testing_cmd()
 	with cmd.mock():
