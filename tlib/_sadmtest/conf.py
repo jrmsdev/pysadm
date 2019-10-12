@@ -204,16 +204,19 @@ from _sadmtest.cmd import TestingCmd
 
 @pytest.fixture
 def testing_cmd():
-	def wrapper(cfgfile = 'deploy.cfg', env = 'testing', profile = 'cmd'):
+	def wrapper(cfgfile = 'deploy.cfg', env = 'testing', profile = 'cmd',
+		config = 'config.ini'):
 		try:
 			cfgfile = path.join('tdata', 'cmd', cfgfile)
 			_sadm.deploy.cfgfile = cfgfile
 			_sadm.cmd.deploy.deploy.cfgfile = cfgfile
+			config = path.join('tdata', 'cmd', env or 'testing', config)
 			if env is not None:
 				_env = _newEnv(env, profile, action = 'build')
-				config = cfg.new(cfgfile = cfgfile)
-				_env = _newEnv(env, 'deploy', action = 'deploy', config = config)
-			return TestingCmd(cfgfile)
+				_env._cfgfile = config
+				# ~ config = cfg.new(cfgfile = cfgfile)
+				# ~ _env = _newEnv(env, 'deploy', action = 'deploy', config = config)
+			return TestingCmd(config)
 		finally:
 			_sadm.deploy.cfgfile = path.join('tdata', 'cmd', 'deploy.cfg')
 	return wrapper

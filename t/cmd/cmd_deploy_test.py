@@ -20,4 +20,5 @@ def test_config_notfound(testing_cmd):
 
 def test_main(testing_cmd):
 	with testing_cmd() as ctx:
-		deploy.main(argv = ['deploy'])
+		rc = deploy.main(argv = ['deploy'])
+		assert rc == 0
