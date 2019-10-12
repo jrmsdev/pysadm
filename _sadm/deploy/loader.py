@@ -36,8 +36,7 @@ def _check(envfn):
 	return 0
 
 def _verify(envfn):
-	rc = call("gpg --no-tty --no --verify %s.asc %s 2>/dev/null" % (envfn, envfn),
-		shell = True)
+	rc = call("gpg --no-tty --no --verify %s.asc %s 2>/dev/null" % (envfn, envfn))
 	if rc == 0:
 		log.msg("%s: OK" % envfn)
 	else:

@@ -79,3 +79,15 @@ def test_import_cksum_error(testing_cmd):
 	with cmd.mock('import_cksum_error'):
 		rc = deploy.main(argv = ['import', 'testing.env'])
 		assert rc == 9
+
+def test_import_verify(testing_cmd):
+	cmd = testing_cmd()
+	with cmd.mock('import_verify'):
+		rc = deploy.main(argv = ['import', 'testing.env'])
+		assert rc == 9
+
+def test_import_verify_error(testing_cmd):
+	cmd = testing_cmd()
+	with cmd.mock('import_verify_error'):
+		rc = deploy.main(argv = ['import', 'testing.env'])
+		assert rc == 8
