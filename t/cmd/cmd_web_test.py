@@ -11,26 +11,36 @@ def test_main(testing_cmd):
 	cmd = testing_cmd(env = None)
 	with cmd.mock('web_main'):
 		wapp = _sadm.web.wapp
+		syslog = web.syslog
 		try:
 			mock_wapp = Mock()
 			_sadm.web.wapp = mock_wapp
+			web.syslog = Mock()
 			web.main(argv = [])
 			mock_wapp.run.assert_called_with(debug = False, host = 'localhost',
 				port = 3478, quiet = True, reloader = False)
+			web.syslog.init.assert_called_once()
+			web.syslog.close.assert_called_once()
 		finally:
 			del _sadm.web.wapp
 			_sadm.web.wapp = wapp
+			del web.syslog
+			web.syslog = syslog
 
 def test_debug(testing_cmd):
 	cmd = testing_cmd(env = None)
 	with cmd.mock('web_debug'):
 		wapp = _sadm.web.wapp
+		syslog = web.syslog
 		try:
 			mock_wapp = Mock()
 			_sadm.web.wapp = mock_wapp
+			web.syslog = Mock()
 			web.main(argv = ['--debug'])
 			mock_wapp.run.assert_called_with(debug = True, host = 'localhost',
 				port = 3478, quiet = False, reloader = True)
 		finally:
 			del _sadm.web.wapp
 			_sadm.web.wapp = wapp
+			del web.syslog
+			web.syslog = syslog
