@@ -15,10 +15,12 @@ def cmdArgs(parser):
 def main(args, sumode):
 	log.debug("deploy %s sumode=%s" % (args.env, sumode))
 	if sumode == 'not':
-		dn = path.join('~', '.local', 'sadm', 'deploy')
+		config = cfg.new(cfgfile = cfgfile)
+		dn = config.get('deploy', 'rundir',
+			fallback = path.join('~', '.local', 'sadm', 'deploy'))
 		sh.makedirs(dn, mode = 0o750, exists_ok = True)
 		with sh.lockd(dn):
-			env = Env('deploy', args.env, cfg.new(cfgfile = cfgfile))
+			env = Env('deploy', args.env, config)
 			for rc in (
 				_sumode(env, 'pre'),
 				_usermode(env),
