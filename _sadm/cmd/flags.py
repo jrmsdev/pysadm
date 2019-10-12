@@ -28,14 +28,14 @@ def new(prog, desc = ''):
 def parse(p, argv = None):
 	global cmdline
 	if argv is None:
-		cmdline = ' '.join(sys.argv).strip()
+		cmdline = ' '.join(sys.argv).strip() # pragma: no cover
 	else:
 		cmdline = [program]
 		cmdline.extend(argv)
 		cmdline = ' '.join(cmdline).strip()
 	args = p.parse_args(args = argv)
 	if args.debug:
-		log.init('debug')
+		log.init('debug') # pragma: no cover
 	else:
 		log.init(args.log)
 	log.debug("sadm version %s" % version.get())
