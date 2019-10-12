@@ -73,3 +73,9 @@ def test_import_noenv(testing_cmd):
 	with cmd.mock('import_noenv'):
 		rc = deploy.main(argv = ['import', 'noenv.env'])
 		assert rc == 2
+
+def test_import_cksum_error(testing_cmd):
+	cmd = testing_cmd()
+	with cmd.mock('import_cksum_error'):
+		rc = deploy.main(argv = ['import', 'testing.env'])
+		assert rc == 9
