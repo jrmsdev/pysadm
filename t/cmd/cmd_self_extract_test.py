@@ -66,3 +66,25 @@ def test_main():
 			call('/opt/sadm/bin/sadm --env testing deploy', shell = True),
 		]
 		assert rc == 0
+
+def test_import_error():
+	with mock() as ctx:
+		ctx.call.return_value = 9
+		rc = self_extract.main()
+		ctx.call.assert_called_with('/opt/sadm/bin/sadm import /opt/sadm/env/testing.env',
+			shell = True)
+		assert rc == 9
+
+def test_deploy_error():
+	def mock_call(cmd, **kwargs):
+		if cmd.endswith('--env testing deploy'):
+			return 9
+		return 0
+	with mock() as ctx:
+		ctx.call.side_effect = mock_call
+		rc = self_extract.main()
+		assert ctx.call.mock_calls == [
+			call('/opt/sadm/bin/sadm import /opt/sadm/env/testing.env', shell = True),
+			call('/opt/sadm/bin/sadm --env testing deploy', shell = True),
+		]
+		assert rc == 9
