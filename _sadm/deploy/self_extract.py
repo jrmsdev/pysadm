@@ -10,7 +10,6 @@ import sys
 
 from base64 import b64decode
 from os import path, makedirs, chmod, unlink
-from shutil import rmtree
 from subprocess import call
 
 _cargo = {}
@@ -33,7 +32,7 @@ def main():
 
 def extract(dstdir):
 	makedirs(dstdir, exist_ok = True)
-	chmod(dstdir, 0o0700)
+	chmod(dstdir, 0o700)
 	for fn, data in _cargo.items():
 		fn = path.join(dstdir, fn)
 		if path.isfile(fn):
@@ -42,4 +41,4 @@ def extract(dstdir):
 			fh.write(b64decode(data.encode()))
 
 if __name__ == '__main__':
-	sys.exit(main())
+	sys.exit(main()) # pragma: no cover
