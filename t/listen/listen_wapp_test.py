@@ -117,13 +117,6 @@ def _testProfile(listen_wapp, profile, cfgfn):
 					with raises(bottle.HTTPError) as exc:
 						if h.method == 'POST':
 							_wappPOST(wapp, datname, hfunc, h.args)
-					# ~ err = exc.value
-					# ~ assert err.status_code == resp.status
-					# ~ try:
-						# ~ match = err.body.index(resp.content) >= 0
-					# ~ except ValueError:
-						# ~ match = False
-					# ~ assert match, "error did not match: %s - %s" % (resp.content, err.body)
 					wapp.checkException(exc, resp.status, resp.content)
 				else:
 					if h.method == 'POST':

@@ -10,6 +10,7 @@ from os import path
 class TestingWebapp(object):
 	profile = ''
 	name = None
+	cfgfn = None
 	response = None
 	_req = None
 
@@ -18,6 +19,10 @@ class TestingWebapp(object):
 			self.profile = '.'
 		else:
 			self.profile = path.join(*profile.split('/'))
+		fn = path.join('tdata', "%s.cfg" % self.name)
+		if self.profile != '.':
+			fn = path.join('tdata', self.name, self.profile, "%s.cfg" % self.name)
+		self.cfgfn = fn
 
 	def __postData(self, name):
 		fn = path.join('tdata', self.name, self.profile, "%s.json" % name)

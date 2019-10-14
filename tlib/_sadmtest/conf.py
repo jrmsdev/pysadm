@@ -13,8 +13,9 @@ __all__ = [
 	'testing_plugin',
 	'testing_profile',
 	'testing_settings',
-	'listen_wapp',
 	'testing_cmd',
+	'listen_wapp',
+	'testing_webapp',
 ]
 
 #
@@ -245,4 +246,12 @@ from _sadmtest.listen.wapp import ListenWebapp
 def listen_wapp():
 	def wrapper(profile = ''):
 		return ListenWebapp(profile)
+	return wrapper
+
+from _sadmtest.web.app import WebApp
+
+@pytest.fixture
+def testing_webapp():
+	def wrapper(profile = ''):
+		return WebApp(profile)
 	return wrapper
