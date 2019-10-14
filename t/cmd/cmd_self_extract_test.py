@@ -2,7 +2,7 @@
 # See LICENSE file.
 
 from contextlib import contextmanager
-from unittest.mock import Mock, call
+from unittest.mock import Mock, call, mock_open
 
 from _sadm.deploy import self_extract
 
@@ -87,4 +87,31 @@ def test_deploy_error():
 			call('/opt/sadm/bin/sadm import /opt/sadm/env/testing.env', shell = True),
 			call('/opt/sadm/bin/sadm --env testing deploy', shell = True),
 		]
+		assert rc == 9
+
+def test_extract():
+	with mock() as ctx:
+		ctx.call.return_value = 9
+		ctx.path.isfile.return_value = True
+		self_extract._cargo.update({
+			'testing.txt': 'data',
+		})
+		b64decode = self_extract.b64decode
+		try:
+			self_extract.open = mock_open()
+			self_extract.b64decode = Mock()
+			self_extract.b64decode.return_value = 'testing'
+			rc = self_extract.main()
+		finally:
+			self_extract.open.assert_called_with('/'.join((_rootdir, 'env', 'testing.txt')), 'wb')
+			self_extract.b64decode.assert_called_once_with(b'data')
+			fh = self_extract.open()
+			fh.write.assert_called_once_with('testing')
+			del self_extract.open
+			self_extract.b64decode = b64decode
+		ctx.call.assert_called_with('/opt/sadm/bin/sadm import /opt/sadm/env/testing.env',
+			shell = True)
+		ctx.path.join.assert_any_call('/opt/sadm/env', 'testing.txt')
+		ctx.path.isfile.assert_called_once_with('/opt/sadm/env/testing.txt')
+		ctx.unlink.assert_called_once_with('/opt/sadm/env/testing.txt')
 		assert rc == 9
