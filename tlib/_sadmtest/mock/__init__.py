@@ -59,6 +59,8 @@ def log(level = 'quiet'):
 	level = getenv('SADMTEST_LOG', level)
 	try:
 		print('mock.log', "level=%s" % level)
+		if level == 'quiet':
+			print('mock.log', 'set env var SADMTEST_LOG=debug to enable debug log')
 		_sadm.log._logger = _sadm.log._sysLogger(level)
 		_sadm.log._curlevel = level
 		yield

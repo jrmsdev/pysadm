@@ -1,6 +1,11 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
+from contextlib import contextmanager
+
+from _sadm import cfg
+
+from _sadmtest import mock
 from _sadmtest.wapp import TestingWebapp
 
 __all__ = ['WebApp']
@@ -8,9 +13,11 @@ __all__ = ['WebApp']
 class WebApp(TestingWebapp):
 	name = 'web'
 
-	def __enter__(self):
-		print("web app init %s" % self.cfgfn)
-		return self
-
-	def __exit__(self, exc_type, exc_val, exc_tb):
-		print("web app exit %s" % self.profile)
+	@contextmanager
+	def mock(self, tag = 'webapp'):
+		mockcfg = cfg.new(self.cfgfn)
+		with mock.log(), mock.utils(mockcfg, tag = tag) as ctx:
+			try:
+				yield ctx
+			finally:
+				pass
