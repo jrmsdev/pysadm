@@ -55,18 +55,15 @@ def utils(cfg, tag = 'utils'):
 		_mockUtilsRestore()
 
 @contextmanager
-def log():
-	level = getenv('SADMTEST_LOG', 'off')
-	ena = level != 'off'
+def log(level = 'quiet'):
+	level = getenv('SADMTEST_LOG', level)
 	try:
-		if ena:
-			print('mock.log', "level=%s" % level)
-			_sadm.log._logger = _sadm.log._sysLogger(level)
-			_sadm.log._curlevel = level
+		print('mock.log', "level=%s" % level)
+		_sadm.log._logger = _sadm.log._sysLogger(level)
+		_sadm.log._curlevel = level
 		yield
 	finally:
-		if ena:
-			print('mock.log.restore')
-			del _sadm.log._logger
-			_sadm.log._logger = _sadm.log._dummyLogger()
-			_sadm.log._curlevel = 'quiet'
+		print('mock.log.restore')
+		del _sadm.log._logger
+		_sadm.log._logger = _sadm.log._dummyLogger()
+		_sadm.log._curlevel = 'quiet'

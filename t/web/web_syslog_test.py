@@ -7,6 +7,8 @@ from sqlite3 import Connection, Row
 from _sadm import log
 from _sadm.web import syslog
 
+from _sadmtest import mock
+
 _dbfile = './tdata/tmp/web/syslog.db'
 syslog._dbfile = _dbfile
 
@@ -23,6 +25,8 @@ def _dbInit():
 _cleanup()
 
 def test_dbInit():
+	with mock.log():
+		pass
 	db = _dbInit()
 	assert isinstance(db, Connection), 'wrong instance'
 	assert db.row_factory == Row, 'wrong db row_factory'
@@ -31,6 +35,8 @@ def test_dbInit():
 	_cleanup()
 
 def test_initClose():
+	with mock.log():
+		pass
 	assert isinstance(syslog._logger, syslog._webLogger), \
 		'wrong instance'
 	assert syslog._logger.db is None, \
@@ -52,6 +58,8 @@ def test_initClose():
 	_cleanup()
 
 def test_initError():
+	with mock.log():
+		pass
 	assert not path.isfile(_dbfile), 'db exists'
 	syslog._dbfile = '/i/hope/this/is/invalid/enough/syslog.db'
 	syslog.init()
@@ -59,6 +67,8 @@ def test_initError():
 	assert not path.isfile(_dbfile), 'db was created, so no error happen'
 
 def test_logger():
+	with mock.log():
+		pass
 	l = syslog._logger
 	syslog.init()
 	assert isinstance(l, syslog._webLogger), 'wrong instance'
@@ -87,6 +97,8 @@ def test_logger():
 	_cleanup()
 
 def test_lastMsgs():
+	with mock.log():
+		pass
 	l = syslog._logger
 	syslog.init()
 	assert isinstance(l, syslog._webLogger), 'wrong instance'

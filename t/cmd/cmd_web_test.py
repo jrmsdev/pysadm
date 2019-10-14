@@ -44,3 +44,17 @@ def test_debug(testing_cmd):
 			_sadm.web.wapp = wapp
 			del web.syslog
 			web.syslog = syslog
+
+def test_start(testing_cmd):
+	cmd = testing_cmd(env = None)
+	with cmd.mock('web_start'):
+		wapp = _sadm.web.wapp
+		try:
+			mock_wapp = Mock()
+			_sadm.web.wapp = mock_wapp
+			_sadm.web.start('testing.host', 1234, False)
+			mock_wapp.run.assert_called_with(debug = False, host = 'testing.host',
+				port = 1234, quiet = True, reloader = False)
+		finally:
+			del _sadm.web.wapp
+			_sadm.web.wapp = wapp
