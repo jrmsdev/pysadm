@@ -9,6 +9,7 @@ def test_about(testing_webapp):
 		d = about.about()
 		ctx.wapp.route.assert_called_once_with('/about')
 		ctx.view.assert_any_call('about.html')
+		ctx.tpl.data.assert_any_call('about')
 		assert sorted(d.keys()) == [
 			'bottleVersion',
 			'curyear',
