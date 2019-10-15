@@ -3,9 +3,9 @@
 
 import sys
 
-from _sadm import log, version, web
+from _sadm import log, version
 from _sadm.cmd import flags
-from _sadm.web import syslog
+from _sadm.web import app, syslog
 
 def _getArgs(argv):
 	p = flags.new('sadm-web', desc = 'sadm web interface')
@@ -22,7 +22,7 @@ def main(argv = None):
 	log.info("sadm-web v%s" % version.get())
 	log.msg("http://%s:%d/" % ('localhost', args.port))
 	syslog.init()
-	web.start('localhost', args.port, args.debug)
+	app.run('localhost', args.port, args.debug)
 	syslog.close()
 	log.msg('done!')
 	return 0

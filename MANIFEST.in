@@ -40,8 +40,9 @@ recursive-include tlib/_sadmtest/scripts *.sh
 include tdata/.gitignore
 include tdata/deploy.cfg
 include tdata/listen.cfg
-include tdata/sadm.cfg
 include tdata/profile-dir-isfile.test
+include tdata/sadm.cfg
+include tdata/web.cfg
 
 recursive-include tdata/cmd *.ini
 recursive-include tdata/cmd *.cfg
@@ -66,6 +67,8 @@ include tdata/plugin/network/iptables/etc/iptables/rules.v4
 include tdata/plugin/service/postfix/etc/aliases
 include tdata/plugin/service/postfix/etc/mailname
 include tdata/plugin/users/sadmtest/.bashrc
+
+recursive-include tdata/web *.cfg
 
 recursive-include venv *.sh
 recursive-include venv *.txt
