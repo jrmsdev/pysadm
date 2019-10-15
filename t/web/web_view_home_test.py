@@ -3,7 +3,7 @@
 
 from _sadm.web.view import home
 
-def test_about(testing_webapp):
+def test_index(testing_webapp):
 	wapp = testing_webapp('view')
 	with wapp.mock() as ctx:
 		d = home.index()
