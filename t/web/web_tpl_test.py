@@ -1,11 +1,11 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
-from _sadm.web import tpl
-
-def test_data():
-	@tpl.data('testing')
-	def tdata():
-		return {'tdata': 'testing'}
-	d = tdata()
-	assert isinstance(d, dict)
+def test_data(testing_webapp):
+	wapp = testing_webapp('tpl')
+	with wapp.mock() as ctx:
+		@ctx.orig.tpl.data('testing')
+		def tdata():
+			return {'tdata': 'testing'}
+		d = tdata()
+		assert isinstance(d, dict)

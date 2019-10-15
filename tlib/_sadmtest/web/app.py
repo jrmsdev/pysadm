@@ -21,21 +21,25 @@ def _mock_decorator(*args, **kwargs):
 		return decorator
 	return wrapper
 
-# ~ _mock = Mock()
+_mock = Mock()
+_orig = Mock()
 
-# ~ import _sadm.web.app
+import _sadm.web.app
 
-# ~ _sadm.web.app.view = _mock.view
-# ~ _sadm.web.app.view.side_effect = _mock_decorator
+_orig.view = _sadm.web.app.view
+_sadm.web.app.view = _mock.view
+_sadm.web.app.view.side_effect = _mock_decorator
 
-# ~ _sadm.web.app.wapp = _mock.wapp
-# ~ _sadm.web.app.wapp.route.side_effect = _mock_decorator
-# ~ _sadm.web.app.wapp.error.side_effect = _mock_decorator
+_orig.wapp = _sadm.web.app.wapp
+_sadm.web.app.wapp = _mock.wapp
+_sadm.web.app.wapp.route.side_effect = _mock_decorator
+_sadm.web.app.wapp.error.side_effect = _mock_decorator
 
-# ~ import _sadm.web.tpl
+import _sadm.web.tpl
 
-# ~ _sadm.web.tpl = _mock.tpl
-# ~ _sadm.web.tpl.data.side_effect = _mock_decorator
+_orig.tpl = _sadm.web.tpl
+_sadm.web.tpl = _mock.tpl
+_sadm.web.tpl.data.side_effect = _mock_decorator
 
 class WebApp(TestingWebapp):
 	name = 'web'
@@ -47,6 +51,7 @@ class WebApp(TestingWebapp):
 			mockcfg = cfg.new(self.cfgfn)
 		with mock.log(), mock.utils(mockcfg, tag = tag):
 			ctx = Mock()
+			ctx.orig = _orig
 			ctx.view = _mock.view
 			ctx.wapp = _mock.wapp
 			ctx.tpl = _mock.tpl
