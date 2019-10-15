@@ -7,16 +7,12 @@ def test_about(testing_webapp):
 	wapp = testing_webapp('app')
 	with wapp.mock() as ctx:
 		d = about.about()
-		print('D:', d)
+		ctx.wapp.route.assert_called_once_with('/about')
+		ctx.view.assert_any_call('about.html')
 		assert sorted(d.keys()) == [
 			'bottleVersion',
 			'curyear',
-			'now',
 			'pythonVersion',
 			'sqliteLibVersion',
 			'sqliteVersion',
-			'took',
-			'version',
-			'view',
 		]
-		ctx.wapp.route.assert_called_once_with()
