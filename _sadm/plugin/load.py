@@ -50,6 +50,10 @@ import _sadm.plugin.service.munin_node
 # so apache is restarted after all deps were setup
 import _sadm.plugin.service.apache
 
+# services that depend on nginx should go before it
+# so it is restarted after all deps were setup
+import _sadm.plugin.service.nginx
+
 # network (post) plugins
 
 import _sadm.plugin.network.fail2ban

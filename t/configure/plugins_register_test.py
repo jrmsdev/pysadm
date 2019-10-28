@@ -23,6 +23,7 @@ _expectPlugins = dict(enumerate((
 	'service.munin',
 	'service.munin_node',
 	'service.apache',
+	'service.nginx',
 	'network.fail2ban',
 )))
 
