@@ -24,6 +24,7 @@ class MockPath(object):
 		self.unlink = self._mock.unlink
 		self.basename = self._mock.basename
 		self.dirname = self._mock.dirname
+		self.isabs = self._mock.isabs
 		self._configure(cfg)
 
 	def _configure(self, cfg):
@@ -34,12 +35,14 @@ class MockPath(object):
 		self.unlink.side_effect = self._sideEffect('unlink')
 		self.basename.side_effect = self._sideEffect('basename')
 		self.dirname.side_effect = self._sideEffect('dirname')
+		self.isabs.side_effect = self._sideEffect('isabs')
 		if cfg is not None:
 			self._parseConfig(cfg)
 
 	def _setDefaults(self):
 		self._default['isfile'] = True
 		self._default['isdir'] = True
+		self._default['isabs'] = True
 
 	def _parseConfig(self, cfg):
 		data = cfg.get('utils.path', fallback = None)
@@ -105,6 +108,3 @@ class MockPath(object):
 
 	def normpath(self, name):
 		return os.path.normpath(name)
-
-	# ~ def basename(self, p):
-		# ~ return os.path.basename(p)
