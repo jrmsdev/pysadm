@@ -19,10 +19,10 @@ def configure(env, cfgfile = None):
 	fn = cfgfile
 	env.log("%s" % fn)
 	env.start('configure')
-	_getcfg(env, fn)
+	_parse(env, fn)
 	env.end('configure')
 
-def _getcfg(env, fn):
+def _parse(env, fn):
 	runconfigure = True
 	cfg = Settings()
 	with env.assets.open(fn) as fh:
@@ -39,11 +39,24 @@ def _getcfg(env, fn):
 		raise env.error("%s invalid config name from %s file" % (n, env.assets.rootdir(fn)))
 	if runconfigure:
 		# env config
+		_include(env, cfg)
 		_load(env, cfg)
 	else:
 		# deploy mode
 		with env.assets.open(fn) as fh:
 			env.settings.read_file(fh)
+
+def _include(env, cfg):
+	inc = cfg.getlist('sadm', 'env.include', fallback = [])
+	for fn in inc:
+		src = Settings()
+		with env.assets.open(fn) as fh:
+			src.read_file(fh)
+		for p in pluginsList():
+			if p == 'sadm' or p == 'sadmenv':
+				continue
+			if src.has_section(p):
+				cfg.merge(src, p, tuple(src.options(p)))
 
 def _load(env, cfg, forcePlugins = None):
 	env.debug("registered plugins %s" % ','.join([p for p in pluginsList()]))

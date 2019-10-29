@@ -188,3 +188,19 @@ def test_build_checksum(env_setup):
 	cksum1 = data.get('sadm.env.checksum', None)
 
 	assert cksum1 == cksum0
+
+def test_env_include_error(testing_env):
+	e = testing_env('testing.include.error')
+	with raises(AssetNotFoundError, match = 'invalid-config.ini'):
+		e.configure()
+
+def test_env_include(testing_env):
+	e = testing_env('testing.include')
+	assert not e.settings.has_section('testing')
+	e.configure()
+	assert e.settings.has_section('testing')
+	assert e.settings.get('sadm', 'env') == 'testing.include'
+	assert e.settings.get('sadmenv', 'testing', fallback = None) is None
+	assert e.settings.get('testing', 'option.src') == 'value'
+	assert e.settings.get('testing', 'option.inc') == 'value.inc'
+	assert e.settings.get('testing', 'option') == 'value'

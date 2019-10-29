@@ -41,8 +41,8 @@ class Settings(ConfigParser):
 			if fallback is _unset:
 				s = super().get(section, option)
 			else:
-				s = super().get(section, option, fallback = '')
-				if s == '':
+				s = super().get(section, option, fallback = None)
+				if s is None:
 					return fallback
 		except ParserError as err:
 			raise SettingsError(str(err))
