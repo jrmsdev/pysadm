@@ -52,11 +52,10 @@ def _include(env, cfg):
 		src = Settings()
 		with env.assets.open(fn) as fh:
 			src.read_file(fh)
-		for p in pluginsList():
-			if p == 'sadm' or p == 'sadmenv':
+		for s in src.sections():
+			if s == 'sadm' or s == 'sadmenv':
 				continue
-			if src.has_section(p):
-				cfg.merge(src, p, tuple(src.options(p)))
+			cfg.merge(src, s, tuple(src.options(s)))
 
 def _load(env, cfg, forcePlugins = None):
 	env.debug("registered plugins %s" % ','.join([p for p in pluginsList()]))
