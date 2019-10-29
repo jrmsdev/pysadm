@@ -28,6 +28,8 @@ import _sadm.plugin.network.iptables
 # deploy user mode actions
 #
 
+import _sadm.plugin.templates
+
 # vcs clone should happen between network and service stuff
 import _sadm.plugin.vcs.clone
 

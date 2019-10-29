@@ -15,6 +15,7 @@ _expectPlugins = dict(enumerate((
 	'os.user',
 	'sync',
 	'network.iptables',
+	'templates',
 	'vcs.clone',
 	'docker',
 	'service',
