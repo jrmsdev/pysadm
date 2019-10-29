@@ -3,6 +3,7 @@
 
 from _sadm import log
 from _sadm.utils.vcs import git
+from _sadm.utils.vcs import vcs
 
 __all__ = ['GitRepo']
 
@@ -16,4 +17,4 @@ class GitRepo(object):
 			log.debug("git deploy %s %s" % (repodir, commit))
 			git.pull(repodir)
 			git.checkout(repodir, commit)
-			git.deploy(repodir)
+			vcs.deploy(repodir)

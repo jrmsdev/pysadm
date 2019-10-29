@@ -2,6 +2,7 @@
 # See LICENSE file.
 
 from _sadm.utils.vcs import git
+from _sadm.utils.vcs import vcs
 
 from .check import check
 
@@ -37,5 +38,4 @@ def _deployRepo(env, name, typ, repo):
 	if not repo['deploy']:
 		return
 	env.log("deploy %s repo %s" % (typ, name))
-	if typ == 'git':
-		git.deploy(repo['path'])
+	vcs.deploy(repo['path'])

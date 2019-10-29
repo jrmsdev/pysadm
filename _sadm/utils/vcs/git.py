@@ -6,8 +6,9 @@ from contextlib import contextmanager
 from _sadm.utils import sh
 from _sadm.utils.cmd import callCheck
 from _sadm.utils import path as fpath
+from _sadm.utils.vcs import vcs
 
-__all__ = ['clone', 'checkout', 'pull', 'deploy']
+__all__ = ['clone', 'checkout', 'pull']
 
 _configDone = False
 
@@ -24,35 +25,21 @@ def _configure():
 	callCheck(cmd)
 	_configDone = True
 
+@contextmanager
+def _repodir(path):
+	_configure()
+	with vcs.repodir(path):
+		yield
+
 def clone(path, remote, branch):
 	_configure()
 	cmd = ['git', 'clone', '-b', branch, remote, path]
 	callCheck(cmd)
 
-@contextmanager
-def _repoDir(path):
-	_configure()
-	oldwd = sh.getcwd()
-	try:
-		sh.chdir(path)
-		yield
-	finally:
-		sh.chdir(oldwd)
-
 def checkout(path, commit):
-	with _repoDir(path):
+	with _repodir(path):
 		callCheck(['git', 'checkout', commit])
 
 def pull(path):
-	with _repoDir(path):
+	with _repodir(path):
 		callCheck(['git', 'pull'])
-
-_deployScripts = ('install.sh', 'build.sh',  'check.sh', 'deploy.sh')
-
-def deploy(path):
-	with _repoDir(path):
-		if fpath.isdir('.sadm'):
-			for sn in _deployScripts:
-				script = fpath.join('.', '.sadm', sn)
-				if fpath.isfile(script):
-					callCheck(['/bin/sh', script])
