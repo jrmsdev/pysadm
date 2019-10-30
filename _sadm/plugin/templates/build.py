@@ -25,4 +25,4 @@ def _parse(env, name, src, dst, attr, args):
 			try:
 				dstfh.write(tpl.substitute(args))
 			except KeyError as err:
-				raise PluginError("template %s key error: %s" % (name, err))
+				raise PluginError("template %s key miss: %s" % (name, err))

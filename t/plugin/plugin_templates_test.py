@@ -31,3 +31,8 @@ def test_dst_file_notabs(testing_plugin):
 	p = _new(testing_plugin, 'error-dst-notabs.ini')
 	with raises(PluginError, match = 'template testing dst.path testing.txt: must be an absolute path'):
 		p.configure()
+
+def test_tpl_key_error(testing_plugin):
+	p = _new(testing_plugin, 'error-tpl-key.ini')
+	with raises(PluginError, match = "template testing key miss: 'tdata'"):
+		p.build()
