@@ -43,7 +43,7 @@ def _getattr(env, name, cfg):
 def _getargs(env, name, cfg):
 	args = {}
 	for opt in cfg.keys():
-		if opt == 'src.path' or opt == 'dst.path':
+		if opt == 'src.path' or opt.startswith('dst.'):
 			continue
 		args[opt] = cfg.get(opt)
 	return args
