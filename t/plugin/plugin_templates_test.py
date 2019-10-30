@@ -14,20 +14,20 @@ def test_name_empty_error(testing_plugin):
 
 def test_src_notset_error(testing_plugin):
 	p = _new(testing_plugin, 'error-src-notset.ini')
-	with raises(PluginError, match = 'template testing src filename not set'):
+	with raises(PluginError, match = 'template testing src.path not set'):
 		p.configure()
 
 def test_dst_notset_error(testing_plugin):
 	p = _new(testing_plugin, 'error-dst-notset.ini')
-	with raises(PluginError, match = 'template testing dst filename not set'):
+	with raises(PluginError, match = 'template testing dst.path not set'):
 		p.configure()
 
 def test_src_file_notfound(testing_plugin):
 	p = _new(testing_plugin, 'error-src-notfound.ini')
-	with raises(PluginError, match = 'template testing src testing.tpl: file not found'):
+	with raises(PluginError, match = 'template testing src.path testing.tpl: file not found'):
 		p.configure()
 
 def test_dst_file_notabs(testing_plugin):
 	p = _new(testing_plugin, 'error-dst-notabs.ini')
-	with raises(PluginError, match = 'template testing dst testing.txt: must be an absolute path'):
+	with raises(PluginError, match = 'template testing dst.path testing.txt: must be an absolute path'):
 		p.configure()

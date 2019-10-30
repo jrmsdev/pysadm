@@ -16,15 +16,24 @@ def configure(env, cfg):
 			name = name.strip()
 			if name == '':
 				raise PluginError('template name is empty')
-			src = cfg[s].get('src', fallback = '')
+			src = cfg[s].get('src.path', fallback = '')
 			if src == '':
-				raise PluginError("template %s src filename not set" % name)
-			dst = cfg[s].get('dst', fallback = '')
+				raise PluginError("template %s src.path not set" % name)
+			dst = cfg[s].get('dst.path', fallback = '')
 			if dst == '':
-				raise PluginError("template %s dst filename not set" % name)
+				raise PluginError("template %s dst.path not set" % name)
 			if not env.assets.isfile(src):
-				raise PluginError("template %s src %s: file not found" % (name, src))
+				raise PluginError("template %s src.path %s: file not found" % (name, src))
 			if not path.isabs(dst):
-				raise PluginError("template %s dst %s: must be an absolute path" % (name, dst))
-			tpl.append((name, src, dst))
+				raise PluginError("template %s dst.path %s: must be an absolute path" % (name, dst))
+			args = _getargs(env, name, cfg[s])
+			tpl.append((name, src, dst, args))
 	env.session.set('templates.build', tpl)
+
+def _getargs(env, name, cfg):
+	args = {}
+	for opt in cfg.keys():
+		if opt == 'src.path' or opt == 'dst.path':
+			continue
+		args[opt] = cfg.get(opt)
+	return args
