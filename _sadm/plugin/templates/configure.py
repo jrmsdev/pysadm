@@ -32,11 +32,9 @@ def configure(env, cfg):
 	env.session.set('templates.build', tpl)
 
 def _getattr(env, name, cfg):
-	user = env.profile.config.get('default', 'user')
-	group = env.profile.config.get('default', 'group')
 	attr = {
-		'user': cfg.get('dst.user', fallback = user),
-		'group': cfg.get('dst.group', fallback = group),
+		'user': cfg.get('dst.user', fallback = 'root'),
+		'group': cfg.get('dst.group', fallback = ''),
 		'dirmode': cfg.getint('dst.dirmode', fallback = 755),
 		'filemode': cfg.getint('dst.filemode', fallback = 644),
 	}
