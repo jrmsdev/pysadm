@@ -62,6 +62,7 @@ recursive-include tdata/plugin *.ini
 recursive-include tdata/plugin *.cfg
 recursive-include tdata/plugin *.conf
 recursive-include tdata/plugin *.txt
+recursive-include tdata/plugin/templates *.tpl
 
 include tdata/plugin/network/iptables/etc/iptables/rules.v4
 include tdata/plugin/service/nginx/etc/sites-enabled/default

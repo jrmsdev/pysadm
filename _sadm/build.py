@@ -32,8 +32,8 @@ class Manager(asset.Manager):
 					continue
 				self._addfile(tar, inf)
 
-	def _tarinfo(self, inf, user = 'root', group = '',
-		filemode = 644, dirmode = 755):
+	def _tarinfo(self, inf, user = 'root', group = '', filemode = 644,
+		dirmode = 755):
 		if group == '':
 			group = user
 		inf.mtime = 0 # reproducible builds

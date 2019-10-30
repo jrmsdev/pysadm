@@ -26,9 +26,21 @@ def configure(env, cfg):
 				raise PluginError("template %s src.path %s: file not found" % (name, src))
 			if not path.isabs(dst):
 				raise PluginError("template %s dst.path %s: must be an absolute path" % (name, dst))
+			attr = _getattr(env, name, cfg[s])
 			args = _getargs(env, name, cfg[s])
-			tpl.append((name, src, dst, args))
+			tpl.append((name, src, dst, attr, args))
 	env.session.set('templates.build', tpl)
+
+def _getattr(env, name, cfg):
+	user = env.profile.config.get('default', 'user')
+	group = env.profile.config.get('default', 'group')
+	attr = {
+		'user': cfg.get('dst.user', fallback = user),
+		'group': cfg.get('dst.group', fallback = group),
+		'dirmode': cfg.getint('dst.dirmode', fallback = 755),
+		'filemode': cfg.getint('dst.filemode', fallback = 644),
+	}
+	return attr
 
 def _getargs(env, name, cfg):
 	args = {}
