@@ -10,3 +10,6 @@ def configure(env, cfg):
 		'dbdir.user',
 		'dbdir.group',
 	))
+	for s in cfg.sections():
+		if s.startswith('munin.prune:'):
+			env.settings.merge(cfg, s, cfg.options(s))
