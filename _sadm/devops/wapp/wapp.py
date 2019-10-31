@@ -45,11 +45,11 @@ def init(cfgfn = _cfgfn):
 	log.debug("templates dir %s" % tpldir)
 	bottle.TEMPLATE_PATH = [tpldir]
 
-	# ~ rmplugins = [p.strip() for p in wapp.config.get('plugins.uninstall', '').split(' ')]
-	# ~ for p in rmplugins:
-		# ~ if p != '':
-			# ~ log.debug("plugin uninstall %s" % p)
-			# ~ wapp.uninstall(p)
+	rmplugins = [p.strip() for p in wapp.config.get('plugins.uninstall', '').split(' ')]
+	for p in rmplugins:
+		if p != '':
+			log.debug("plugin uninstall %s" % p)
+			wapp.uninstall(p)
 
 	# ~ errors.init(wapp)
 	# ~ handlers.init(wapp, config)
