@@ -41,7 +41,7 @@ def init(cfgfn = _cfgfn):
 	log.debug("bottle config %s" % _wappcfg)
 	wapp.config.load_config(_wappcfg)
 
-	tpldir = libdir.fpath('devops', 'tpl')
+	tpldir = libdir.fpath('devops', 'wapp', 'tpl')
 	log.debug("templates dir %s" % tpldir)
 	bottle.TEMPLATE_PATH = [tpldir]
 
