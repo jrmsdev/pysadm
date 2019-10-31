@@ -1,7 +1,7 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
-from bottle import response, HTTPError, request, HTTP_CODES
+from bottle import response, HTTPError, request, HTTP_CODES, template
 
 from _sadm import log
 
@@ -17,14 +17,14 @@ def _handler(code, error):
 			log.debug("%s" % error.args[3])
 	else:
 		log.error("%s %d - %s" % (request.remote_addr, code, request.path))
-	response.headers['Content-Type'] = 'text/plain; charset=UTF-8'
+	response.headers['Content-Type'] = 'text/html; charset=UTF-8'
 	# ~ if code == 304:
 		# ~ # 304 response should not include body content
 		# ~ return ''
 	codeStatus = HTTP_CODES.get(code, None)
-	if codeStatus is not None:
-		return "%s\n" % codeStatus
-	return "ERROR %d\n" % code
+	if codeStatus is None:
+		codeStatus = "ERROR %d" % code
+	return template('errors.html', error = error)
 
 _initDone = False
 
