@@ -43,6 +43,11 @@ class BuildError(Error):
 
 class CommandError(Error):
 	typ = 'CommandError'
+	rc = 128
+
+	def __init__(self, error):
+		super().__init__(str(error))
+		self.rc = error.returncode
 
 class PluginError(Error):
 	typ = 'PluginError'

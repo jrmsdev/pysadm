@@ -3,6 +3,7 @@
 
 from collections import deque
 from os import path
+from subprocess import CalledProcessError
 from unittest.mock import Mock, call
 
 from _sadm import libdir
@@ -76,7 +77,8 @@ class MockCmdProc(object):
 			try:
 				rc = int(self._cfg[method][cmdline])
 				if method == 'check_call' and rc != 0:
-					raise CommandError("mock error code %d" % rc)
+					err = CalledProcessError(rc, 'testing', output = "mock error code %d" % rc)
+					raise CommandError(err)
 				return rc
 			except KeyError as err:
 				raise KeyError("%s - %s method" % (str(err), method))

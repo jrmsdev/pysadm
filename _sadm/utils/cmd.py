@@ -49,7 +49,7 @@ def callCheck(cmd, env = None):
 	try:
 		proc.check_call(cmd, env = env, shell = shell)
 	except subprocess.CalledProcessError as err:
-		cmderr = str(err)
+		cmderr = err
 	except KeyboardInterrupt:
 		pass
 	if cmderr is not None:

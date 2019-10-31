@@ -57,7 +57,7 @@ def test_uwsgi_error(testing_cmd):
 		try:
 			listen.sys.exec_prefix = '/opt/sadm'
 			listen.libdir.fpath = _libfpath
-			with raises(CommandError, match = 'mock error code 9'):
+			with raises(CommandError, match = """CommandError: Command 'testing' returned non-zero exit status 9."""):
 				listen.uwsgi()
 		finally:
 			del listen.sys.exec_prefix

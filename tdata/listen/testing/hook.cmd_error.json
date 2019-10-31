@@ -7,6 +7,6 @@
 	"data": {},
 	"response.error": {
 		"status": 500,
-		"match": "mock error code 1"
+		"match": "webhook testing/testing: CommandError: Command 'testing' returned non-zero exit status 1."
 	}
 }
