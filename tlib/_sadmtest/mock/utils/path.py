@@ -108,3 +108,12 @@ class MockPath(object):
 
 	def normpath(self, name):
 		return os.path.normpath(name)
+
+	def glob(self, patt):
+		l = []
+		patt = patt.replace('*', 'S0')
+		patt = patt.replace('?', 'Q')
+		l.append(patt)
+		l.append(patt.replace('S0', 'S1'))
+		l.append(patt.replace('S0', 'S2'))
+		return l

@@ -3,9 +3,10 @@
 
 import os
 import os.path
+import glob as _glob
 
 __all__ = ['sep', 'isfile', 'isdir', 'join', 'abspath', 'normpath', 'unlink',
-	'basename', 'dirname', 'isabs']
+	'basename', 'dirname', 'isabs', 'glob']
 
 class _Path(object):
 	def __init__(self):
@@ -19,6 +20,7 @@ class _Path(object):
 		self.basename = os.path.basename
 		self.dirname = os.path.dirname
 		self.isabs = os.path.isabs
+		self.glob = _glob.glob
 
 _path = _Path()
 
@@ -52,3 +54,6 @@ def dirname(path):
 
 def isabs(path):
 	return _path.isabs(path)
+
+def glob(patt):
+	return _path.glob(patt)
