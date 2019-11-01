@@ -45,7 +45,7 @@ class TestingWebapp(object):
 	def request(self, body = None, headers = {}):
 		if self._req:
 			return self._req
-		# TODO: set headers from posdata
+		# TODO: set headers
 		blen = '0'
 		if body is not None:
 			blen = str(len(body))

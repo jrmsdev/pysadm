@@ -16,6 +16,7 @@ __all__ = [
 	'testing_cmd',
 	'listen_wapp',
 	'testing_webapp',
+	'devops_wapp',
 ]
 
 #
@@ -254,4 +255,12 @@ from _sadmtest.web.app import WebApp
 def testing_webapp():
 	def wrapper(profile = ''):
 		return WebApp(profile)
+	return wrapper
+
+from _sadmtest.devops.wapp import DevopsWebapp
+
+@pytest.fixture
+def devops_wapp():
+	def wrapper(profile = ''):
+		return DevopsWebapp(profile)
 	return wrapper
