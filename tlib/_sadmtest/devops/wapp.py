@@ -1,6 +1,8 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
+import bottle
+
 from contextlib import contextmanager
 from os import path
 from unittest.mock import Mock
@@ -18,10 +20,16 @@ class DevopsWebapp(TestingWebapp):
 		mockcfg = None
 		if path.isfile(self.cfgfn):
 			mockcfg = cfg.new(self.cfgfn)
+		bup = Mock()
+		bup.bottle = bup.mock.bottle
+		bup.bottle.template = bottle.template
 		with mock.log(), mock.utils(mockcfg, tag = tag):
 			ctx = Mock()
-			ctx.wapp = ctx.mock.wapp
+			ctx.bottle = ctx.mock.bottle
+			ctx.bottle.template = ctx.mock.bottle.template
+			bottle.template = ctx.bottle.template
 			try:
 				yield ctx
 			finally:
-				pass
+				bottle.template = None
+				bottle.template = bup.bottle.template

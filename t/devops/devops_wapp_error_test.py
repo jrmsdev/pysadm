@@ -13,6 +13,7 @@ def test_init(devops_wapp):
 	re_error_init = re.compile(r'^call\(\)\(<function init.<locals>.(error_\d+) at 0x')
 	wapp = devops_wapp()
 	with wapp.mock() as ctx:
+		ctx.wapp = ctx.mock.wapp
 		errors.init(ctx.wapp)
 		x = deque()
 		for c in ctx.wapp.error.mock_calls:
@@ -33,3 +34,23 @@ def test_error():
 	assert isinstance(err, bottle.HTTPError)
 	assert err.status_code == 999
 	assert err.status == '999 Unknown'
+
+def test_handler(devops_wapp):
+	wapp = devops_wapp()
+	with wapp.mock() as ctx:
+		err = ctx.mock.error
+		err.args = []
+		err.status_code = 999
+		err.status = '999 testing'
+		errors._handler(err)
+		ctx.bottle.template.assert_called_with('errors.html', error = err)
+
+def test_handler_debug(devops_wapp):
+	wapp = devops_wapp()
+	with wapp.mock() as ctx:
+		err = ctx.mock.error
+		err.args = ['arg0', 'arg1', 'arg2', 'arg3']
+		err.status_code = 999
+		err.status = '999 testing'
+		errors._handler(err)
+		ctx.bottle.template.assert_called_with('errors.html', error = err)
