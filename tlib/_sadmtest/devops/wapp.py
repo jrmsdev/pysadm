@@ -29,6 +29,7 @@ class DevopsWebapp(TestingWebapp):
 		bup.wapp = _sadm.devops.wapp.wapp.wapp
 		bup.tpl = bup.mock.tpl
 		bup.tpl.parse = _sadm.devops.wapp.tpl.tpl.parse
+		bup.tpl.version = _sadm.devops.wapp.tpl.tpl.version
 		with mock.log(), mock.utils(mockcfg, tag = tag):
 			ctx = Mock()
 			ctx.orig = bup
@@ -45,6 +46,10 @@ class DevopsWebapp(TestingWebapp):
 			ctx.tpl = ctx.mock.tpl
 			ctx.tpl.parse = ctx.mock.tpl.parse
 			_sadm.devops.wapp.tpl.tpl.parse = ctx.tpl.parse
+			ctx.tpl.version = ctx.mock.tpl.version
+			ctx.tpl.version.string = ctx.mock.tpl.version.string
+			ctx.tpl.version.string.return_value = 'testing'
+			_sadm.devops.wapp.tpl.tpl.version = ctx.tpl.version
 			try:
 				yield ctx
 			finally:
@@ -55,3 +60,5 @@ class DevopsWebapp(TestingWebapp):
 				_sadm.devops.wapp.wapp.config = None
 				_sadm.devops.wapp.tpl.tpl.parse = None
 				_sadm.devops.wapp.tpl.tpl.parse = bup.tpl.parse
+				_sadm.devops.wapp.tpl.tpl.version = None
+				_sadm.devops.wapp.tpl.tpl.version = bup.tpl.version
