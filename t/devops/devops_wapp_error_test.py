@@ -1,6 +1,7 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
+import bottle
 import re
 
 from collections import deque
@@ -26,3 +27,9 @@ def test_init(devops_wapp):
 			call(500),
 			call()('error_500'),
 		]
+
+def test_error():
+	err = errors.error(999, 'testing')
+	assert isinstance(err, bottle.HTTPError)
+	assert err.status_code == 999
+	assert err.status == '999 Unknown'
