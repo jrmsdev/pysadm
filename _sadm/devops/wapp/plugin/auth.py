@@ -1,7 +1,10 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
+import bottle
+
 from _sadm import log
+from _sadm.devops.wapp.user import WebappUser, UserAuthError
 
 __all__ = ['AuthPlugin']
 
@@ -24,8 +27,17 @@ class AuthPlugin(object):
 		log.debug("apply for rule: %s" % ctx.rule)
 		def wrapper(*args, **kwargs):
 			log.debug('apply.wrapper')
-			resp = callback(*args, **kwargs)
-			return resp
+			autherr = None
+			try:
+				log.debug('user auth check')
+				user = self.auth.check(bottle.request)
+			except UserAuthError as err:
+				autherr = err
+			if autherr is None:
+				resp = callback(*args, **kwargs)
+				return resp
+			else:
+				bottle.redirect('/user/login')
 		return wrapper
 
 class AuthConfig(object):
@@ -33,3 +45,8 @@ class AuthConfig(object):
 
 	def __init__(self, cfg):
 		pass
+
+	def check(self, req):
+		user = WebappUser()
+		user.auth(req)
+		return user
