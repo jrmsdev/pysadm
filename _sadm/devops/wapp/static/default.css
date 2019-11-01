@@ -4,6 +4,10 @@ html {
 	font-family: monospace;
 	font-size: 1em;
 }
+body {
+	margin: 0;
+	padding: 0;
+}
 footer {
 	padding-left: 3px;
 }
