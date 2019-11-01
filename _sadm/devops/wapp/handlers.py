@@ -8,5 +8,6 @@ from _sadm.devops.wapp.view import index
 __all__ = ['init']
 
 def init(wapp):
-	wapp.route(r'/static/<filename:re:.*\..*>', 'GET', static.serve, name = 'static')
+	wapp.route(r'/static/<filename:re:.*\..*>', 'GET', static.serve,
+		name = 'static', skip = ['sadm.devops.auth'])
 	wapp.route('/', 'GET', index.handle, name = 'index')

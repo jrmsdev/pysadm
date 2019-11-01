@@ -12,6 +12,7 @@ def test_init(devops_wapp):
 	with wapp.mock() as ctx:
 		handlers.init(ctx.wapp)
 		assert ctx.wapp.route.mock_calls == [
-			call(r'/static/<filename:re:.*\..*>', 'GET', static.serve, name = 'static'),
+			call(r'/static/<filename:re:.*\..*>', 'GET', static.serve,
+				name = 'static', skip = ['sadm.devops.auth']),
 			call('/', 'GET', index.handle, name = 'index'),
 		]
