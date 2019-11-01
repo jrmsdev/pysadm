@@ -28,7 +28,7 @@ class Template(object):
 
 	@property
 	def now(self):
-		return datetime.strftime(datetime.now(), '%Y-%m-%d %H:%M:%S')
+		return datetime.strftime(datetime.now().astimezone(), '%Y-%m-%d %H:%M:%S %z')
 
 	def __getitem__(self, name):
 		return self.get(name)
