@@ -3,6 +3,8 @@
 
 import bottle
 
+from datetime import datetime
+
 from _sadm import version
 
 __all__ = ['parse']
@@ -23,6 +25,10 @@ class Template(object):
 	@property
 	def error(self):
 		return self.data.get('error', None)
+
+	@property
+	def now(self):
+		return datetime.strftime(datetime.now(), '%Y-%m-%d %H:%M:%S')
 
 	def __getitem__(self, name):
 		return self.get(name)

@@ -20,3 +20,7 @@ footer {
 .w3-border-right {
 	border-right: 1px solid #757575 !important;
 }
+#header {
+	padding-left: 3px;
+	padding-right: 3px;
+}
