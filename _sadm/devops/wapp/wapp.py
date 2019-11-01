@@ -5,7 +5,7 @@ import bottle
 from configparser import ConfigParser, ExtendedInterpolation
 
 from _sadm import libdir, log, version
-from _sadm.devops.wapp import errors, handlers
+from _sadm.devops.wapp import errors, handlers, sess
 from _sadm.devops.wapp.plugin.auth import AuthPlugin
 from _sadm.utils import path
 
@@ -57,6 +57,8 @@ def init(cfgfn = _cfgfn):
 
 	errors.init(wapp)
 	handlers.init(wapp)
+
+	sess.init(config)
 
 	log.debug("loaded handlers %s" % [r.name for r in wapp.routes])
 	return wapp

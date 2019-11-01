@@ -15,11 +15,11 @@ class WebappUser(object):
 	def __init__(self):
 		self._sess = WebappSession()
 
-	def auth(self, req):
-		log.debug('auth')
+	def check(self, req):
+		log.debug('check')
 		sessid = self._sess.check(req)
 		if sessid:
 			pass
 		else:
-			log.info('user session not found')
+			log.debug('session not found')
 			raise UserAuthError('session not found')
