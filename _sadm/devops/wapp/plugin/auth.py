@@ -37,6 +37,7 @@ class AuthPlugin(object):
 				resp = callback(*args, **kwargs)
 				return resp
 			else:
+				log.info('login redirect')
 				bottle.redirect('/user/login')
 		return wrapper
 
