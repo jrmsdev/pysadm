@@ -9,6 +9,7 @@ __all__ = ['parse']
 
 class Template(object):
 	name = None
+	__unset = object()
 
 	def __init__(self, name, data):
 		self.name = name
@@ -24,9 +25,15 @@ class Template(object):
 		return self.data.get('error', None)
 
 	def __getitem__(self, name):
+		return self.get(name)
+
+	def get(self, name, default = __unset):
 		val = self.data.get(name, None)
 		if val is None:
-			raise KeyError("template %s: %s" % (self.name, name))
+			if default is __unset:
+				raise KeyError("template %s: %s" % (self.name, name))
+			else:
+				return default
 		return val
 
 def parse(name, **data):
