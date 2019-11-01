@@ -34,6 +34,7 @@ class DevopsWebapp(TestingWebapp):
 			_sadm.devops.wapp.wapp.init(cfgfn = self.cfgfn)
 			ctx.wapp = ctx.mock.wapp
 			_sadm.devops.wapp.wapp.wapp = ctx.wapp
+			ctx.config = _sadm.devops.wapp.wapp.config
 			try:
 				yield ctx
 			finally:
@@ -41,3 +42,4 @@ class DevopsWebapp(TestingWebapp):
 				bottle.template = bup.bottle.template
 				_sadm.devops.wapp.wapp.wapp = None
 				_sadm.devops.wapp.wapp.wapp = bup.wapp
+				_sadm.devops.wapp.wapp.config = None

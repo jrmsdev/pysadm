@@ -52,7 +52,7 @@ def init(cfgfn = _cfgfn):
 			wapp.uninstall(p)
 
 	errors.init(wapp)
-	handlers.init(wapp, config)
+	handlers.init(wapp)
 
 	log.debug("loaded handlers %s" % [r.name for r in wapp.routes])
 	return wapp

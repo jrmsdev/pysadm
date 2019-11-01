@@ -6,5 +6,5 @@ from _sadm.devops.wapp.view import index
 
 __all__ = ['init']
 
-def init(wapp, config):
+def init(wapp):
 	wapp.route('/', 'GET', index.handle, name = 'index')
