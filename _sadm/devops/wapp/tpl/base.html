@@ -1,38 +1,33 @@
 % setdefault('title', 'no title')
-% setdefault('sidebar', [])
-% sidebarWidth = '10%'
+% setdefault('navbar', [])
 <!DOCTYPE html>
-<html class="w3-black w3-text-grey">
-	<head>
-		<title>sadm-devops/{{title}}</title>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link rel="shortcut icon" href="/static/favicon.ico">
-		<link rel="stylesheet" href="/static/w3css/4/w3.css">
-		<link rel="stylesheet" href="/static/default.css">
-	</head>
-	<body class="w3-black w3-text-grey">
-		<!-- sidebar -->
-		<div class="w3-sidebar w3-bar-block w3-large w3-black w3-text-grey"
-			style="width:{{sidebarWidth}};min-width:55px">
-			% include('sidebar.html', sidebar = sidebar)
-		</div>
-		<!-- end of sidebar -->
-		<!-- main container -->
-		<div class="w3-container"
-			style="margin-left:{{sidebarWidth}}">
-			<!-- main content -->
-			{{!base}}
-			<!-- end of main content -->
-			<hr>
-			<footer>
-				<p class="w3-small">
-					sadm devops
-					<br>
-					view:{{tpl.name}}
-				</p>
-			</footer>
-		</div>
-		<!-- end of main container -->
-	</body>
+<html>
+<head>
+	<title>sadm-devops/{{title}}</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="shortcut icon" href="/static/favicon.ico">
+	<link rel="stylesheet" href="/static/w3css/4/w3.css">
+	<link rel="stylesheet" href="/static/default.css">
+</head>
+<body class="w3-black w3-text-grey">
+	<!-- navbar -->
+	<div class="w3-bar w3-large w3-black w3-text-grey">
+		% include('navbar.html', navbar = navbar)
+	</div>
+	<!-- end of navbar -->
+	<!-- main container -->
+	<div class="w3-container">
+		<!-- main content -->
+		{{!base}}
+		<!-- end of main content -->
+	</div>
+	<!-- end of main container -->
+	<footer>
+		<p class="w3-small">
+			sadm devops<br>
+			view:{{tpl.name}}
+		</p>
+	</footer>
+</body>
 </html>

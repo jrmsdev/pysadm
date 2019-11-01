@@ -1,0 +1,19 @@
+% setdefault('navbar', [])
+% setdefault('title', '')
+<%
+navbarPre = [
+	{'desc': 'index',    'href': '/'},
+]
+navbarPost = [
+	{'desc': 'about',   'href': '/about'},
+]
+%>
+<!-- navbar pre -->
+% include('navbar-items.html', title = title, navbar = navbarPre)
+<!-- end of navbar pre -->
+<!-- navbar items -->
+% include('navbar-items.html', title = title, navbar = navbar)
+<!-- end of navbar items -->
+<!-- navbar post -->
+% include('navbar-items.html', title = title, navbar = navbarPost)
+<!-- end of navbar post -->
