@@ -12,6 +12,7 @@ __all__ = ['serve']
 _rootdir = libdir.fpath('devops', 'wapp', 'static')
 _serveExtension = {
 	'.css': True,
+	'.ico': True,
 }
 
 def serve(filename):
