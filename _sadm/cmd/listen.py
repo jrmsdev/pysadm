@@ -7,6 +7,7 @@ import sys
 
 from _sadm import listen, libdir
 from _sadm.cmd import flags
+from _sadm.errors import CommandError
 from _sadm.utils import path, sh
 from _sadm.utils.cmd import callCheck
 
@@ -23,7 +24,10 @@ def uwsgi():
 		'--safe-pidfile', path.join(path.sep, 'tmp', 'sadm.listen.uwsgi.pid'),
 		'--ini', libdir.fpath('listen', 'wsgi', 'uwsgi.ini'),
 	]
-	callCheck(cmd)
+	try:
+		callCheck(cmd)
+	except CommandError as err:
+		return err.rc
 	return 0
 
 if __name__ == '__main__': # pragma: no cover

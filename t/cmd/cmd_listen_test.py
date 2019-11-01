@@ -39,7 +39,8 @@ def test_uwsgi(testing_cmd):
 		try:
 			listen.sys.exec_prefix = '/opt/sadm'
 			listen.libdir.fpath = _libfpath
-			listen.uwsgi()
+			rc = listen.uwsgi()
+			assert rc == 0
 		finally:
 			del listen.sys.exec_prefix
 			listen.sys.exec_prefix = exec_prefix
@@ -57,8 +58,8 @@ def test_uwsgi_error(testing_cmd):
 		try:
 			listen.sys.exec_prefix = '/opt/sadm'
 			listen.libdir.fpath = _libfpath
-			with raises(CommandError, match = """CommandError: Command 'testing' returned non-zero exit status 9."""):
-				listen.uwsgi()
+			rc = listen.uwsgi()
+			assert rc == 9
 		finally:
 			del listen.sys.exec_prefix
 			listen.sys.exec_prefix = exec_prefix
