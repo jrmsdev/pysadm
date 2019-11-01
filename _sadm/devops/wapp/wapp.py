@@ -53,7 +53,7 @@ def init(cfgfn = _cfgfn):
 			wapp.uninstall(p)
 
 	log.debug('install auth plugins')
-	wapp.install(AuthPlugin())
+	wapp.install(AuthPlugin(config))
 
 	errors.init(wapp)
 	handlers.init(wapp)
