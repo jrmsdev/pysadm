@@ -4,6 +4,7 @@
 from unittest.mock import call
 
 from _sadm.devops.wapp import handlers
+from _sadm.devops.wapp.static import static
 from _sadm.devops.wapp.view import index
 
 def test_init(devops_wapp):
@@ -11,5 +12,6 @@ def test_init(devops_wapp):
 	with wapp.mock() as ctx:
 		handlers.init(ctx.wapp)
 		assert ctx.wapp.route.mock_calls == [
+			call(r'/static/<filename:re:.*\..*>', 'GET', static.serve, name = 'static'),
 			call('/', 'GET', index.handle, name = 'index'),
 		]
