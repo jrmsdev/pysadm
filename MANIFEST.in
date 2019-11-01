@@ -13,6 +13,9 @@ include pytest.ini
 include _sadm/devops/wapp.conf
 recursive-include _sadm/devops/wapp *.conf
 recursive-include _sadm/devops/wapp/tpl *.html
+recursive-include _sadm/devops/wapp/static *.css
+recursive-include _sadm/devops/wapp/static *.ico
+recursive-include _sadm/devops/wapp/static *.png
 recursive-include _sadm/devops/wsgi *.conf
 recursive-include _sadm/devops/wsgi *.ini
 
