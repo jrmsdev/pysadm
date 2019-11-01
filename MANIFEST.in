@@ -45,6 +45,7 @@ recursive-include tlib/_sadmtest/scripts *.sh
 
 include tdata/.gitignore
 include tdata/deploy.cfg
+include tdata/devops.cfg
 include tdata/listen.cfg
 include tdata/profile-dir-isfile.test
 include tdata/sadm.cfg

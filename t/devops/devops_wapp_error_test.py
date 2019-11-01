@@ -13,7 +13,6 @@ def test_init(devops_wapp):
 	re_error_init = re.compile(r'^call\(\)\(<function init.<locals>.(error_\d+) at 0x')
 	wapp = devops_wapp()
 	with wapp.mock() as ctx:
-		ctx.wapp = ctx.mock.wapp
 		errors.init(ctx.wapp)
 		x = deque()
 		for c in ctx.wapp.error.mock_calls:

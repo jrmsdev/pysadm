@@ -23,11 +23,11 @@ def _handler(error):
 def init(wapp):
 	@wapp.error(404)
 	def error_404(error):
-		return _handler(404, error)
+		return _handler(error)
 
 	@wapp.error(500)
 	def error_500(error):
-		return _handler(500, error)
+		return _handler(error)
 
 def error(code, msg):
 	log.error("%s %d - %s" % (request.remote_addr, code, msg))

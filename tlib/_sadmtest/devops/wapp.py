@@ -9,6 +9,8 @@ from unittest.mock import Mock
 
 from _sadm import cfg
 
+import _sadm.devops.wapp.wapp
+
 from _sadmtest import mock
 from _sadmtest.wapp import TestingWebapp
 
@@ -23,13 +25,19 @@ class DevopsWebapp(TestingWebapp):
 		bup = Mock()
 		bup.bottle = bup.mock.bottle
 		bup.bottle.template = bottle.template
+		bup.wapp = _sadm.devops.wapp.wapp.wapp
 		with mock.log(), mock.utils(mockcfg, tag = tag):
 			ctx = Mock()
 			ctx.bottle = ctx.mock.bottle
 			ctx.bottle.template = ctx.mock.bottle.template
 			bottle.template = ctx.bottle.template
+			_sadm.devops.wapp.wapp.init(cfgfn = self.cfgfn)
+			ctx.wapp = ctx.mock.wapp
+			_sadm.devops.wapp.wapp.wapp = ctx.wapp
 			try:
 				yield ctx
 			finally:
 				bottle.template = None
 				bottle.template = bup.bottle.template
+				_sadm.devops.wapp.wapp.wapp = None
+				_sadm.devops.wapp.wapp.wapp = bup.wapp
