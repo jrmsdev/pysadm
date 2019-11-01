@@ -19,11 +19,7 @@ def _handler(code, error):
 	response.headers['Content-Type'] = 'text/html; charset=UTF-8'
 	return template('errors.html', error = error)
 
-_initDone = False
-
 def init(wapp):
-	global _initDone
-
 	@wapp.error(404)
 	def error_404(error):
 		return _handler(404, error)
@@ -31,8 +27,6 @@ def init(wapp):
 	@wapp.error(500)
 	def error_500(error):
 		return _handler(500, error)
-
-	_initDone = True
 
 def error(code, msg):
 	log.error("%s %d - %s" % (request.remote_addr, code, msg))

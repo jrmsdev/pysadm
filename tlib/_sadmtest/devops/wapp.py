@@ -2,6 +2,7 @@
 # See LICENSE file.
 
 from contextlib import contextmanager
+from os import path
 from unittest.mock import Mock
 
 from _sadm import cfg
@@ -19,6 +20,7 @@ class DevopsWebapp(TestingWebapp):
 			mockcfg = cfg.new(self.cfgfn)
 		with mock.log(), mock.utils(mockcfg, tag = tag):
 			ctx = Mock()
+			ctx.wapp = ctx.mock.wapp
 			try:
 				yield ctx
 			finally:
