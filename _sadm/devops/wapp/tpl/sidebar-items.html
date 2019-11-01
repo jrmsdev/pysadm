@@ -1,0 +1,15 @@
+% setdefault('sidebar', [])
+% setdefault('title', '')
+% itemClass = 'w3-bar-item w3-button'
+% itemColorClass = 'w3-hover-dark-grey'
+% curColorClass = 'w3-dark-grey w3-text-black w3-hover-dark-grey'
+% for item in sidebar:
+<%
+	colorClass = itemColorClass
+	if item['desc'] == title:
+		colorClass = curColorClass
+	end
+%>
+	<a href="{{item['href']}}"
+		class="{{itemClass}} {{colorClass}}">{{item['desc']}}</a>
+% end
