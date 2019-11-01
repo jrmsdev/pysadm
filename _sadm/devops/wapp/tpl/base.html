@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>sadm-devops/{{title}}</title>
+	<title>sadm-devops - {{title}}</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="shortcut icon" href="/static/favicon.ico">
@@ -12,7 +12,7 @@
 </head>
 <body class="w3-black w3-text-grey">
 	<!-- navbar -->
-	<div class="w3-bar w3-large w3-black w3-text-grey">
+	<div class="w3-bar w3-large w3-border w3-black w3-text-grey">
 		% include('navbar.html', navbar = navbar)
 	</div>
 	<!-- end of navbar -->
@@ -23,7 +23,7 @@
 		<!-- end of main content -->
 	</div>
 	<!-- end of main container -->
-	<footer>
+	<footer class="w3-border-top">
 		<p class="w3-small">
 			sadm devops<br>
 			view:{{tpl.name}}

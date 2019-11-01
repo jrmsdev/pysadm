@@ -1,10 +1,10 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
-import bottle
 from bottle import response, HTTPError, request
 
 from _sadm import log
+from _sadm.devops.wapp.tpl import tpl
 
 __all__ = ['init', 'error']
 
@@ -18,7 +18,7 @@ def _handler(error):
 	else:
 		log.error("%s %d - %s" % (request.remote_addr, error.status_code, request.path))
 	response.headers['Content-Type'] = 'text/html; charset=UTF-8'
-	return bottle.template('errors.html', error = error)
+	return tpl.parse('errors.html', error = error)
 
 def init(wapp):
 	@wapp.error(404)

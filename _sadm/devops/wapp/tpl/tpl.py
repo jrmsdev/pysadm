@@ -12,5 +12,9 @@ class Template(object):
 		self.name = name
 		self.data = data
 
+	@property
+	def error(self):
+		return self.data.get('error', None)
+
 def parse(name, **data):
 	return bottle.template(name, tpl = Template(name, data))
