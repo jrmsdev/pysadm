@@ -6,6 +6,7 @@ from configparser import ConfigParser, ExtendedInterpolation
 
 from _sadm import libdir, log, version
 from _sadm.devops.wapp import errors, handlers
+from _sadm.devops.wapp.plugin.auth import AuthPlugin
 from _sadm.utils import path
 
 __all__ = ['wapp', 'config', 'init']
@@ -50,6 +51,9 @@ def init(cfgfn = _cfgfn):
 		if p != '':
 			log.debug("plugin uninstall %s" % p)
 			wapp.uninstall(p)
+
+	log.debug('install auth plugins')
+	wapp.install(AuthPlugin())
 
 	errors.init(wapp)
 	handlers.init(wapp)
