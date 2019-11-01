@@ -7,3 +7,12 @@ html {
 footer {
 	padding-left: 3px;
 }
+.w3-border {
+	border: 1px solid #757575 !important;
+}
+.w3-border-top {
+	border-top: 1px solid #757575 !important;
+}
+.w3-border-right {
+	border-right: 1px solid #757575 !important;
+}
