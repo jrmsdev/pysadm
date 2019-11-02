@@ -34,7 +34,7 @@ class SessDB(object):
 		self._dir = dbdir
 
 	def _connect(self):
-		log.debug('db connect')
+		log.debug("connect %s" % self._uri)
 		return sqlite3.connect(self._uri)
 
 	def create(self):
@@ -43,13 +43,9 @@ class SessDB(object):
 		else:
 			sh.makedirs(self._dir, exists_ok = True)
 			with sh.lockd(self._dir):
-				# ~ if path.isfile(self._fn):
-					# ~ log.debug("unlink %s" % self._fn)
-					# ~ path.unlink(self._fn)
 				self._mkdb()
 
 	def _mkdb(self):
-		log.debug("create database %s" % self._uri)
 		with self._connect() as db:
 			db.execute(_sessTable)
 			db.commit()

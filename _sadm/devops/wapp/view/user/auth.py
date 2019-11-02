@@ -12,4 +12,4 @@ def login():
 	s = sess.check(bottle.request)
 	if not s:
 		s = sess.new(bottle.response)
-	return tpl.parse('user/login.html')
+	return tpl.parse('user/login')
