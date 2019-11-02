@@ -43,5 +43,5 @@ def check(req):
 def new(resp):
 	s = WebappSession()
 	sid = token_hex()
-	resp.set_cookie(s.name, sid, secret = _secret)
+	resp.set_cookie(s.name, sid, secret = _secret, path = '/', httponly = True)
 	return s
