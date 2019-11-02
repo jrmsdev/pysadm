@@ -8,10 +8,21 @@ from secrets import token_urlsafe
 from _sadm import log
 from _sadm.utils import path, sh
 
-__all__ = ['WebappSession', 'init']
+__all__ = ['init', 'WebappSession']
 
 _db = None
 _secret = None
+
+def init(config):
+	global _db
+	global _secret
+	log.debug('init')
+	_secret = token_urlsafe()
+	if _db is not None:
+		log.debug('close previous database connection')
+		_db.close()
+		_db = None
+	_db = _sessDB(config)
 
 class WebappSession(object):
 	_id = None
@@ -26,17 +37,6 @@ class WebappSession(object):
 			return None
 		return _db.check(self._id)
 
-def init(config):
-	global _db
-	global _secret
-	log.debug('init')
-	_secret = token_urlsafe()
-	if _db is not None:
-		log.debug('close previous database connection')
-		_db.close()
-		_db = None
-	_db = _SessDB(config)
-
 _sessTable = """CREATE TABLE sess (
 	pk INTEGER PRIMARY KEY AUTOINCREMENT,
 	id TEXT NOT NULL UNIQUE,
@@ -45,7 +45,7 @@ _sessTable = """CREATE TABLE sess (
 """
 _sessGet = 'SELECT pk, id, user FROM sess WHERE id = ?;'
 
-class _SessDB(object):
+class _sessDB(object):
 	_db = None
 
 	def __init__(self, config):

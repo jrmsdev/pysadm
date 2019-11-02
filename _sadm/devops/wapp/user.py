@@ -2,22 +2,12 @@
 # See LICENSE file.
 
 from _sadm import log
-from _sadm.devops.wapp.sess import WebappSession
 
-__all__ = ['WebappUser', 'UserAuthError']
-
-class UserAuthError(Exception):
-	pass
+__all__ = ['WebappUser']
 
 class WebappUser(object):
 	name = None
 
-	def __init__(self):
-		self._sess = WebappSession()
-
-	def check(self, req):
-		log.debug('check')
-		sess = self._sess.check(req)
-		if not sess:
-			log.debug('session not found')
-			raise UserAuthError('session not found')
+	def __init__(self, name, sess = None):
+		self.name = name
+		self.sess = sess
