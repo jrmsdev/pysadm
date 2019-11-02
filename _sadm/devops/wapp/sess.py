@@ -22,6 +22,8 @@ class WebappSession(object):
 		if _db is None or _secret is None:
 			raise RuntimeError('session not initialized')
 		self._id = req.get_cookie(self._name, secret = _secret)
+		if not self._id:
+			return None
 		return _db.check(self._id)
 
 def init(config):
@@ -41,6 +43,7 @@ _sessTable = """CREATE TABLE sess (
 	user TEXT NOT NULL
 );
 """
+_sessGet = 'SELECT pk, id, user FROM sess WHERE id = ?;'
 
 class _SessDB(object):
 	_db = None
@@ -56,6 +59,7 @@ class _SessDB(object):
 			fn = path.join(dbdir, 'session.db')
 			with sh.lockd(dbdir):
 				if path.isfile(fn):
+					log.debug("unlink %s" % fn)
 					path.unlink(fn)
 				self._uri = "file:%s?cache=shared" % fn
 				self._mkdb()
@@ -74,4 +78,8 @@ class _SessDB(object):
 		self._db.close()
 
 	def check(self, sessid):
-		return sessid
+		cur = self._db.execute(_sessGet, sessid)
+		row = cur.fetchone()
+		if row:
+			return dict(row)
+		return None

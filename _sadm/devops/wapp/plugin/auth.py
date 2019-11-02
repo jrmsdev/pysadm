@@ -38,8 +38,7 @@ class AuthPlugin(object):
 				return resp
 			else:
 				log.info("%s" % autherr)
-				log.info('login redirect')
-				bottle.redirect('/user/login')
+				return self.auth.error()
 		return wrapper
 
 class AuthConfig(object):
@@ -47,6 +46,10 @@ class AuthConfig(object):
 
 	def __init__(self, cfg):
 		pass
+
+	def error(self):
+		log.info('login redirect')
+		bottle.redirect('/user/login')
 
 	def check(self, req):
 		user = WebappUser()

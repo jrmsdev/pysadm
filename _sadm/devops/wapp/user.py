@@ -17,9 +17,7 @@ class WebappUser(object):
 
 	def check(self, req):
 		log.debug('check')
-		sessid = self._sess.check(req)
-		if sessid:
-			pass
-		else:
+		sess = self._sess.check(req)
+		if not sess:
 			log.debug('session not found')
 			raise UserAuthError('session not found')
