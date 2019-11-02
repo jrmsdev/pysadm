@@ -17,6 +17,6 @@ def test_init(devops_wapp):
 				name = 'static', skip = ['sadm.devops.auth']),
 			call('/', 'GET', index.handle, name = 'index'),
 
-			call('/user/login', 'GET', auth.login,
+			call('/user/login', ['GET', 'POST'], auth.login,
 				name = 'user.login', skip = ['sadm.devops.auth'])
 		]

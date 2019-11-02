@@ -18,14 +18,16 @@ def test_init(devops_wapp):
 		for c in ctx.wapp.error.mock_calls:
 			m = re_error_init.match(str(c))
 			if m:
-				x.append(call('locals')(m.group(1)))
+				x.append(call()(m.group(1)))
 			else:
 				x.append(c)
 		assert list(x) == [
+			call(400),
+			call()('error_400'),
 			call(404),
-			call('locals')('error_404'),
+			call()('error_404'),
 			call(500),
-			call('locals')('error_500'),
+			call()('error_500'),
 		]
 
 def test_error():
@@ -42,7 +44,7 @@ def test_handler(devops_wapp):
 		err.status_code = 999
 		err.status = '999 testing'
 		errors._handler(err)
-		ctx.tpl.parse.assert_called_with('errors.html', error = err)
+		ctx.tpl.parse.assert_called_with('errors', error = err)
 
 def test_handler_debug(devops_wapp):
 	wapp = devops_wapp()
@@ -52,4 +54,4 @@ def test_handler_debug(devops_wapp):
 		err.status_code = 999
 		err.status = '999 testing'
 		errors._handler(err)
-		ctx.tpl.parse.assert_called_with('errors.html', error = err)
+		ctx.tpl.parse.assert_called_with('errors', error = err)

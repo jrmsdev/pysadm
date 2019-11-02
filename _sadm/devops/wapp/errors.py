@@ -18,9 +18,13 @@ def _handler(error):
 	else:
 		log.error("%s %d - %s" % (request.remote_addr, error.status_code, request.path))
 	response.headers['Content-Type'] = 'text/html; charset=UTF-8'
-	return tpl.parse('errors.html', error = error)
+	return tpl.parse('errors', error = error)
 
 def init(wapp):
+	@wapp.error(400)
+	def error_400(error):
+		return _handler(error)
+
 	@wapp.error(404)
 	def error_404(error):
 		return _handler(error)
