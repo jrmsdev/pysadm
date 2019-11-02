@@ -4,12 +4,19 @@
 import bottle
 
 from _sadm.devops.wapp import sess
+from _sadm.devops.wapp.errors import error
 from _sadm.devops.wapp.tpl import tpl
 
 __all__ = ['login']
 
 def login():
-	s = sess.check(bottle.request)
-	if not s:
-		s = sess.new(bottle.response)
-	return tpl.parse('user/login')
+	req = bottle.request
+	resp = bottle.response
+	s = sess.check(req)
+	if req.method == 'POST':
+		if not s:
+			return error(400, 'session cookie not found')
+	else:
+		if not s:
+			s = sess.new(resp)
+		return tpl.parse('user/login')
