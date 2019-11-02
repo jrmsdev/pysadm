@@ -5,29 +5,36 @@ from pytest import raises
 from unittest.mock import Mock
 
 import _sadm.devops.devops
+import _sadm.devops.wapp.cfg
 
 from _sadm.cmd import devops
 from _sadm.errors import CommandError
 
-def test_bottle(testing_cmd):
+def test_bottle(testing_cmd, devops_wapp):
 	cmd = testing_cmd(env = None)
 	with cmd.mock('devops_bottle'):
-		wapp = _sadm.devops.devops.wapp
-		try:
-			mock_bottle = Mock()
-			mock_wapp = Mock()
-			mock_wapp.init = Mock(return_value = mock_bottle)
-			_sadm.devops.devops.wapp = mock_wapp
-			devops.bottle()
-			_check(mock_wapp, mock_bottle)
-		finally:
-			del _sadm.devops.devops.wapp
-			_sadm.devops.devops.wapp = wapp
+		w = devops_wapp()
+		with w.mock():
+			wapp = _sadm.devops.devops.wapp
+			try:
+				mock_bottle = Mock()
+				mock_wapp = Mock()
+				mock_wapp.init = Mock(return_value = mock_bottle)
+				_sadm.devops.devops.wapp = mock_wapp
+				mock_config = Mock()
+				_sadm.devops.wapp.cfg.config = mock_config
+				devops.bottle()
+				_check(mock_wapp, mock_bottle, mock_config)
+			finally:
+				del _sadm.devops.devops.wapp
+				_sadm.devops.devops.wapp = wapp
+				del _sadm.devops.wapp.cfg.config
+				_sadm.devops.wapp.cfg.config = None
 
-def _check(wapp, w):
+def _check(wapp, w, config):
 	wapp.init.assert_called_with()
-	wapp.config.getboolean.assert_called_with('devops', 'debug', fallback = False)
-	wapp.config.getint.assert_called_with('devops', 'port', fallback = 3110)
+	config.getboolean.assert_called_with('devops', 'debug', fallback = False)
+	config.getint.assert_called_with('devops', 'port', fallback = 3110)
 	w.run.assert_called_once()
 
 def _libfpath(*parts):
