@@ -49,7 +49,7 @@ class SessDB(object):
 		self._db.close()
 
 	def check(self, sessid):
-		cur = self._db.execute(_sessGet, sessid)
+		cur = self._db.execute(_sessGet, (sessid,))
 		row = cur.fetchone()
 		if row:
 			return dict(row)
