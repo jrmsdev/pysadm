@@ -2,38 +2,21 @@
 # See LICENSE file.
 
 import bottle
-from configparser import ConfigParser, ExtendedInterpolation
 
 from _sadm import libdir, log, version
-from _sadm.devops.wapp import errors, handlers, sess
+from _sadm.devops.wapp import cfg, errors, handlers, sess
 from _sadm.devops.wapp.plugin.auth import AuthPlugin
 from _sadm.utils import path
 
-__all__ = ['wapp', 'config', 'init']
+__all__ = ['init']
 
 _wappcfg = libdir.fpath('devops', 'wapp', 'wapp.conf')
 _cfgfn = path.join(path.sep, 'etc', 'opt', 'sadm', 'devops.cfg')
 
 wapp = bottle.Bottle()
-config = None
-
-def _newConfig(fn):
-	c = ConfigParser(
-		defaults = None,
-		allow_no_value = False,
-		delimiters = ('=',),
-		comment_prefixes = ('#',),
-		strict = True,
-		interpolation = ExtendedInterpolation(),
-		default_section = 'default',
-	)
-	with open(fn, 'r') as fh:
-		c.read_file(fh)
-	return c
 
 def init(cfgfn = _cfgfn):
-	global config
-	config = _newConfig(cfgfn)
+	config = cfg.new(cfgfn)
 
 	log.init(config.get('sadm', 'log', fallback = 'error'))
 	log.debug(version.string('sadm-devops'))

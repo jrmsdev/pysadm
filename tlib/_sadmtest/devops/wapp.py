@@ -9,6 +9,7 @@ from unittest.mock import Mock
 
 from _sadm import cfg
 
+import _sadm.devops.wapp.cfg
 import _sadm.devops.wapp.tpl.tpl
 import _sadm.devops.wapp.wapp
 
@@ -24,9 +25,12 @@ class DevopsWebapp(TestingWebapp):
 		if path.isfile(self.cfgfn):
 			mockcfg = cfg.new(self.cfgfn)
 		bup = Mock()
+		# bup bottle
 		bup.bottle = bup.mock.bottle
 		bup.bottle.template = bottle.template
+		# bup wapp
 		bup.wapp = _sadm.devops.wapp.wapp.wapp
+		# bup tpl
 		bup.tpl = bup.mock.tpl
 		bup.tpl.parse = _sadm.devops.wapp.tpl.tpl.parse
 		bup.tpl.version = _sadm.devops.wapp.tpl.tpl.version
@@ -41,7 +45,8 @@ class DevopsWebapp(TestingWebapp):
 			_sadm.devops.wapp.wapp.init(cfgfn = self.cfgfn)
 			ctx.wapp = ctx.mock.wapp
 			_sadm.devops.wapp.wapp.wapp = ctx.wapp
-			ctx.config = _sadm.devops.wapp.wapp.config
+			# mock config
+			ctx.config = _sadm.devops.wapp.cfg.config
 			# mock tpl
 			ctx.tpl = ctx.mock.tpl
 			ctx.tpl.parse = ctx.mock.tpl.parse
@@ -53,12 +58,13 @@ class DevopsWebapp(TestingWebapp):
 			try:
 				yield ctx
 			finally:
-				bottle.template = None
+				del bottle.template
 				bottle.template = bup.bottle.template
-				_sadm.devops.wapp.wapp.wapp = None
+				del _sadm.devops.wapp.cfg.config
+				_sadm.devops.wapp.cfg.config = None
+				del _sadm.devops.wapp.wapp.wapp
 				_sadm.devops.wapp.wapp.wapp = bup.wapp
-				_sadm.devops.wapp.wapp.config = None
-				_sadm.devops.wapp.tpl.tpl.parse = None
+				del _sadm.devops.wapp.tpl.tpl.parse
 				_sadm.devops.wapp.tpl.tpl.parse = bup.tpl.parse
-				_sadm.devops.wapp.tpl.tpl.version = None
+				del _sadm.devops.wapp.tpl.tpl.version
 				_sadm.devops.wapp.tpl.tpl.version = bup.tpl.version

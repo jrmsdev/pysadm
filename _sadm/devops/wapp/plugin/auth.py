@@ -14,11 +14,10 @@ class AuthPlugin(object):
 
 	def __init__(self, config):
 		self.config = config
-		self.auth = WebappAuth()
 
 	def setup(self, wapp):
 		log.debug('setup')
-		self.auth.setup(self.config)
+		self.auth = WebappAuth(self.config)
 
 	def apply(self, callback, ctx):
 		log.debug("apply for rule: %s" % ctx.rule)

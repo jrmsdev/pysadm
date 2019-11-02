@@ -15,12 +15,10 @@ class AuthError(Exception):
 class WebappAuth(object):
 	_auth = None
 
-	def __init__(self):
+	def __init__(self, config):
 		self.sess = WebappSession()
-
-	def setup(self, config):
 		typ = config.get('devops', 'auth', fallback = 'config')
-		log.debug("setup %s manager" % typ)
+		log.debug("init %s manager" % typ)
 		if typ == 'config':
 			self._auth = _authConfig(config)
 		else:
