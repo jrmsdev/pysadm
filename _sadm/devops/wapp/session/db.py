@@ -8,14 +8,19 @@ from _sadm.utils import path, sh
 
 __all__ = ['SessionDB']
 
-_sessTable = """CREATE TABLE IF NOT EXISTS sess (
-	pk INTEGER PRIMARY KEY AUTOINCREMENT,
+_sessTable = """
+CREATE TABLE IF NOT EXISTS sess (
+	pk INTEGER PRIMARY KEY,
 	id VARCHAR(128) NOT NULL UNIQUE,
 	user VARCHAR(1024) NOT NULL UNIQUE
 );
 """
-_sessGet = 'SELECT pk, id, user FROM sess WHERE id = ?;'
-_sessSave = 'INSERT OR REPLACE INTO sess (id, user) VALUES (?, ?);'
+_sessGet = 'SELECT id, user FROM sess WHERE id = ?;'
+_sessSave = """
+INSERT INTO sess (pk, id, user) VALUES ((SELECT MAX(pk)+1 FROM sess), ?, ?)
+	ON CONFLICT (user) DO
+		UPDATE SET id = ? WHERE user = ?;
+"""
 
 class SessionDB(object):
 	_uri = None
@@ -53,12 +58,12 @@ class SessionDB(object):
 			db.execute(_sessTable)
 			db.commit()
 
-	def check(self, sessid):
+	def get(self, sessid):
 		with self._connect() as db:
 			cur = db.execute(_sessGet, (sessid,))
 			return cur.fetchone()
 
 	def save(self, sessid, username):
 		with self._connect() as db:
-			db.execute(_sessSave, (sessid, username))
+			db.execute(_sessSave, (sessid, username, sessid, username))
 			db.commit()

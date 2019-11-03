@@ -30,13 +30,13 @@ class WebappSession(object):
 		log.debug('check')
 		self.cookie(req)
 		if self._id is not None:
-			row = self._db.check(self._id)
+			row = self._db.get(self._id)
 			if row:
 				return dict(row)
 		return None
 
-	def save(self, req, username):
-		self.cookie(req)
+	def save(self, sessid, username):
+		self._id = sessid
 		self._db.save(self._id, username)
 		return {'id': self._id, 'user': username}
 

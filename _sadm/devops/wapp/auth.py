@@ -34,10 +34,10 @@ class WebappAuth(object):
 	def error(self):
 		return self._auth.error()
 
-	def login(self, req, username, password):
+	def login(self, sessid, username, password):
 		log.info("user login: %s" % username)
 		self._auth.login(username, password)
-		sess = self.sess.save(req, username)
+		sess = self.sess.save(sessid, username)
 		user = WebappUser(username, sess = sess)
 		return user
 

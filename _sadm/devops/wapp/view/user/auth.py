@@ -27,7 +27,7 @@ def login():
 		if not password:
 			return error(400, 'user password not provided')
 		try:
-			auth.login(req, username, password)
+			auth.login(sessid, username, password)
 			log.debug('login done')
 		except AuthError as err:
 			return error(400, str(err))
