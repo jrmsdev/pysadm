@@ -10,6 +10,7 @@ from _sadm.devops.wapp.sessdb import SessDB
 __all__ = ['WebappSession', 'init', 'check', 'new']
 
 _secret = None
+_tokenSize = 64
 
 class WebappSession(object):
 	name = 'sadm_devops_session'
@@ -27,16 +28,21 @@ class WebappSession(object):
 
 	def check(self, req):
 		log.debug('check')
-		self.cookie()
+		self.cookie(req)
 		if self._id is not None:
 			row = self._db.check(self._id)
 			if row:
 				return dict(row)
 		return None
 
+	def save(self, req, username):
+		self.cookie(req)
+		self._db.save(self._id, username)
+		return {'id': self._id, 'user': username}
+
 def init(config):
 	global _secret
-	_secret = token_urlsafe()
+	_secret = token_urlsafe(_tokenSize)
 	log.debug('init')
 	db = SessDB(config)
 	db.create()
@@ -48,5 +54,5 @@ def new(resp):
 	if _secret is None:
 		raise RuntimeError('session module not initialized')
 	s = WebappSession()
-	sid = token_hex()
+	sid = token_hex(_tokenSize)
 	resp.set_cookie(s.name, sid, secret = _secret, path = '/', httponly = True)

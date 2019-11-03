@@ -25,11 +25,15 @@ class Template(object):
 
 	@property
 	def error(self):
-		return self.data.get('error', None)
+		return self.get('error')
 
 	@property
 	def now(self):
 		return datetime.strftime(datetime.now().astimezone(), '%Y-%m-%d %H:%M:%S %z')
+
+	@property
+	def user(self):
+		return self.get('user')
 
 	def __getitem__(self, name):
 		return self.get(name)

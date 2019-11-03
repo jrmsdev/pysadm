@@ -2,6 +2,7 @@
 # See LICENSE file.
 
 import bottle
+from hashlib import sha256
 
 from _sadm import log
 from _sadm.devops.wapp.sess import WebappSession
@@ -24,22 +25,37 @@ class WebappAuth(object):
 		else:
 			raise RuntimeError("invalid auth type: %s" % typ)
 
-	def error(self):
-		return self._auth.error()
-
 	def check(self, req):
 		sess = self.sess.check(req)
 		if not sess:
 			raise AuthError('user session not found')
-		user = WebappUser(sess.user, sess = sess)
-		user.check(req)
+		return WebappUser(sess['user'], sess = sess)
+
+	def error(self):
+		return self._auth.error()
+
+	def login(self, req, username, password):
+		log.info("user login: %s" % username)
+		self._auth.login(username, password)
+		sess = self.sess.save(req, username)
+		user = WebappUser(username, sess = sess)
 		return user
 
 class _authConfig(object):
 
 	def __init__(self, cfg):
-		pass
+		if not cfg.has_section('devops.auth'):
+			cfg.add_section('devops.auth')
+		self.cfg = cfg['devops.auth']
 
 	def error(self):
 		log.info('login redirect')
 		bottle.redirect('/user/login')
+
+	def login(self, username, password):
+		p = self.cfg.get(username, fallback = None)
+		if p is None:
+			raise AuthError("invalid username: %s" % username)
+		h = sha256(password.encode('utf-8'))
+		if h.hexdigest() != p:
+			raise AuthError("user %s: invalid password" % username)

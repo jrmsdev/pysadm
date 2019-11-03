@@ -6,6 +6,7 @@ title_desc = tpl.get('title', title_desc)
 if title_desc != '':
 	title_desc = ' - ' + title_desc
 end
+user = tpl.get('user', None)
 %>
 <!DOCTYPE html>
 <html>
@@ -22,6 +23,10 @@ end
 		<div class="w3-right w3-small">
 			<span>{{title}}</span>
 			<span>|</span>
+			% if user:
+			<a href="/user">{{user.name}}</a>
+			<span>|</span>
+			% end
 			<span>{{tpl.now}}</span>
 		</div>
 	</div>

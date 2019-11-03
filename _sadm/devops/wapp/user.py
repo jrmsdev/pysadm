@@ -10,4 +10,4 @@ class WebappUser(object):
 
 	def __init__(self, name, sess = None):
 		self.name = name
-		self.sess = sess
+		self._sess = sess

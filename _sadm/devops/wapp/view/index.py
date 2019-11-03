@@ -5,5 +5,5 @@ from _sadm.devops.wapp.tpl import tpl
 
 __all__ = ['handle']
 
-def handle():
-	return tpl.parse('index')
+def handle(user):
+	return tpl.parse('index', user = user)

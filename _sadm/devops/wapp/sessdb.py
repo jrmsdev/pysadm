@@ -10,11 +10,12 @@ __all__ = ['SessDB']
 
 _sessTable = """CREATE TABLE IF NOT EXISTS sess (
 	pk INTEGER PRIMARY KEY AUTOINCREMENT,
-	id TEXT NOT NULL UNIQUE,
-	user TEXT NOT NULL
+	id VARCHAR(128) NOT NULL UNIQUE,
+	user VARCHAR(1024) NOT NULL UNIQUE
 );
 """
 _sessGet = 'SELECT pk, id, user FROM sess WHERE id = ?;'
+_sessSave = 'INSERT INTO sess (id, user) VALUES (?, ?);'
 
 class SessDB(object):
 	_uri = None
@@ -35,7 +36,9 @@ class SessDB(object):
 
 	def _connect(self):
 		log.debug("connect %s" % self._uri)
-		return sqlite3.connect(self._uri)
+		conn = sqlite3.connect(self._uri)
+		conn.row_factory = sqlite3.Row
+		return conn
 
 	def create(self):
 		if self._mem:
@@ -54,3 +57,8 @@ class SessDB(object):
 		with self._connect() as db:
 			cur = db.execute(_sessGet, (sessid,))
 			return cur.fetchone()
+
+	def save(self, sessid, username):
+		with self._connect() as db:
+			db.execute(_sessSave, (sessid, username))
+			db.commit()
