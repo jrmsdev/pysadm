@@ -4,8 +4,9 @@
 import bottle
 
 from _sadm import libdir, log, version
-from _sadm.devops.wapp import cfg, errors, handlers, sess
+from _sadm.devops.wapp import cfg, errors, handlers
 from _sadm.devops.wapp.plugin.auth import AuthPlugin
+from _sadm.devops.wapp.session import session
 from _sadm.utils import path
 
 __all__ = ['init']
@@ -41,7 +42,7 @@ def init(cfgfn = _cfgfn):
 	errors.init(wapp)
 	handlers.init(wapp)
 
-	sess.init(config)
+	session.init(config)
 
 	log.debug("loaded handlers %s" % [r.name for r in wapp.routes])
 	return wapp

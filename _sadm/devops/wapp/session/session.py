@@ -5,7 +5,7 @@ from secrets import token_urlsafe, token_hex
 
 from _sadm import log
 from _sadm.devops.wapp import cfg
-from _sadm.devops.wapp.sessdb import SessDB
+from _sadm.devops.wapp.session.db import SessionDB
 
 __all__ = ['WebappSession', 'init', 'check', 'new']
 
@@ -17,7 +17,7 @@ class WebappSession(object):
 	_id = None
 
 	def __init__(self):
-		self._db = SessDB(cfg.config)
+		self._db = SessionDB(cfg.config)
 
 	def cookie(self, req):
 		log.debug('get cookie')
@@ -44,7 +44,7 @@ def init(config):
 	global _secret
 	_secret = token_urlsafe(_tokenSize)
 	log.debug('init')
-	db = SessDB(config)
+	db = SessionDB(config)
 	db.create()
 
 def cookie(req):

@@ -5,7 +5,7 @@ import bottle
 from hashlib import sha256
 
 from _sadm import log
-from _sadm.devops.wapp.sess import WebappSession
+from _sadm.devops.wapp.session.session import WebappSession
 from _sadm.devops.wapp.user import WebappUser
 
 __all__ = ['WebappAuth', 'AuthError']

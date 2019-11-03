@@ -4,9 +4,10 @@
 import bottle
 
 from _sadm import log
-from _sadm.devops.wapp import cfg, sess
+from _sadm.devops.wapp import cfg
 from _sadm.devops.wapp.auth import WebappAuth, AuthError
 from _sadm.devops.wapp.errors import error
+from _sadm.devops.wapp.session import session
 from _sadm.devops.wapp.tpl import tpl
 
 __all__ = ['login']
@@ -15,9 +16,9 @@ def login():
 	req = bottle.request
 	resp = bottle.response
 	auth = WebappAuth(cfg.config)
-	cookie = sess.cookie(req)
+	sessid = session.cookie(req)
 	if req.method == 'POST':
-		if not cookie:
+		if not sessid:
 			return error(400, 'session cookie not found')
 		username = req.forms.get('username')
 		password = req.forms.get('password')
@@ -33,8 +34,8 @@ def login():
 		log.debug('redirect')
 		bottle.redirect('/')
 	else:
-		if not cookie:
-			sess.new(resp)
+		if not sessid:
+			session.new(resp)
 		else:
 			try:
 				auth.check(req)

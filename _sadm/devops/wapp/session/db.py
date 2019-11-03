@@ -6,7 +6,7 @@ import sqlite3
 from _sadm import log
 from _sadm.utils import path, sh
 
-__all__ = ['SessDB']
+__all__ = ['SessionDB']
 
 _sessTable = """CREATE TABLE IF NOT EXISTS sess (
 	pk INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -17,7 +17,7 @@ _sessTable = """CREATE TABLE IF NOT EXISTS sess (
 _sessGet = 'SELECT pk, id, user FROM sess WHERE id = ?;'
 _sessSave = 'INSERT OR REPLACE INTO sess (id, user) VALUES (?, ?);'
 
-class SessDB(object):
+class SessionDB(object):
 	_uri = None
 	_mem = False
 	_dir = None
