@@ -39,8 +39,8 @@ class Template(object):
 		return self.get(name)
 
 	def get(self, name, default = __unset):
-		val = self.data.get(name, None)
-		if val is None:
+		val = self.data.get(name, self.__unset)
+		if val is self.__unset:
 			if default is self.__unset:
 				raise KeyError("template %s: %s" % (self.name, name))
 			else:

@@ -21,7 +21,7 @@ def test_template(devops_wapp):
 def test_tpl_error(devops_wapp):
 	wapp = devops_wapp()
 	with wapp.mock() as ctx:
-		t = tpl.Template('testing.html', {})
+		t = tpl.Template('testing.html', {'error': None})
 		assert t.error is None
 		x = object()
 		t.data['error'] = x

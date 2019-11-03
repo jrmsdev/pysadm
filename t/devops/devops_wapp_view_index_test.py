@@ -6,5 +6,5 @@ from _sadm.devops.wapp.view import index
 def test_handle(devops_wapp):
 	wapp = devops_wapp()
 	with wapp.mock() as ctx:
-		index.handle()
-		ctx.tpl.parse.assert_called_with('index')
+		index.handle(user = None)
+		ctx.tpl.parse.assert_called_with('index', user = None)
