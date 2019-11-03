@@ -15,7 +15,7 @@ _sessTable = """CREATE TABLE IF NOT EXISTS sess (
 );
 """
 _sessGet = 'SELECT pk, id, user FROM sess WHERE id = ?;'
-_sessSave = 'INSERT INTO sess (id, user) VALUES (?, ?);'
+_sessSave = 'INSERT OR REPLACE INTO sess (id, user) VALUES (?, ?);'
 
 class SessDB(object):
 	_uri = None
