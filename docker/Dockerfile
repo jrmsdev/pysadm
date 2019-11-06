@@ -7,20 +7,15 @@ USER root:root
 WORKDIR /root
 
 ENV DEBIAN_FRONTEND noninteractive
+ENV APT_INSTALL sudo python3 python3-pip at uwsgi-plugin-python3 ssl-cert
 
-RUN apt-get clean
-RUN apt-get update
-
-RUN apt-get dist-upgrade -y --purge
-RUN apt-get install -y --no-install-recommends sudo python3 python3-pip \
-	at uwsgi-plugin-python3 ssl-cert
-
-RUN apt-get clean
-RUN apt-get autoremove -y --purge
-
-RUN rm -rf /var/lib/apt/lists/*
-RUN rm -f /var/cache/apt/archives/*.deb
-RUN rm -f /var/cache/apt/*cache.bin
+RUN apt-get clean && \
+	apt-get update && \
+	apt-get dist-upgrade -y --purge && \
+	apt-get install -y --no-install-recommends ${APT_INSTALL} && \
+	apt-get clean && \
+	apt-get autoremove -y --purge && \
+	rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*.deb /var/cache/apt/*cache.bin
 
 RUN printf 'sadm\tALL=NOPASSWD: ALL\n' >/etc/sudoers.d/sadm
 RUN chmod 440 /etc/sudoers.d/sadm
