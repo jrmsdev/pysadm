@@ -6,7 +6,6 @@ title_desc = tpl.get('title', title_desc)
 if title_desc != '':
 	title_desc = ' - ' + title_desc
 end
-user = tpl.get('user', None)
 %>
 <!DOCTYPE html>
 <html>
@@ -19,20 +18,14 @@ user = tpl.get('user', None)
 	<link rel="stylesheet" href="/static/default.css">
 </head>
 <body class="w3-black w3-text-grey">
+	<!-- header -->
 	<div id="header" class="w3-bar w3-center w3-dark-grey w3-border-top">
-		<div class="w3-right w3-small">
-			<span>{{title}}</span>
-			<span>|</span>
-			% if user:
-			<a href="/user">{{user.name}}</a>
-			<span>|</span>
-			% end
-			<span>{{tpl.now}}</span>
-		</div>
+		% include('header.html')
 	</div>
+	<!-- end of header -->
 	<!-- navbar -->
 	<div class="w3-bar w3-border">
-		% include('navbar.html', navbar = navbar)
+		% include('navbar.html')
 	</div>
 	<!-- end of navbar -->
 	<!-- main container -->
@@ -42,11 +35,10 @@ user = tpl.get('user', None)
 		<!-- end of main content -->
 	</div>
 	<!-- end of main container -->
+	<!-- footer -->
 	<footer class="w3-small w3-border-top">
-		<p>
-			{{tpl['sadm']['version']}}<br>
-			{{tpl.name}}
-		</p>
+		% include('footer.html')
 	</footer>
+	<!-- end of footer -->
 </body>
 </html>
