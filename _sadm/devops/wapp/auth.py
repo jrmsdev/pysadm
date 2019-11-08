@@ -19,9 +19,13 @@ class WebappAuth(object):
 	def __init__(self, config):
 		self.sess = WebappSession()
 		typ = config.get('devops', 'auth', fallback = 'config')
+		if not config.has_section('devops.auth'):
+			config.add_section('devops.auth')
 		log.debug("init %s manager" % typ)
 		if typ == 'config':
 			self._auth = _authConfig(config)
+		elif typ == 'sslcert':
+			self._auth = _authSSLCert(config)
 		else:
 			raise RuntimeError("invalid auth type: %s" % typ)
 
@@ -59,3 +63,15 @@ class _authConfig(object):
 		h = sha256(password.encode('utf-8'))
 		if h.hexdigest() != p:
 			raise AuthError("user %s: invalid password" % username)
+
+class _authSSLCert(object):
+
+	def __init__(self, cfg):
+		self.cfg = cfg['devops.auth']
+
+	def error(self):
+		log.info('sslcert login redirect')
+		bottle.redirect('/user/cert/login')
+
+	def login(self, username, password):
+		raise RuntimeError('unimplemented')

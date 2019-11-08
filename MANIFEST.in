@@ -89,3 +89,7 @@ include docker/Dockerfile.*
 include docker/build.sh
 include docker/build-all.sh
 include docker/run.sh
+
+recursive-include docker/proxy *.sh
+recursive-include docker/proxy *.cfg
+include docker/proxy/nginx/sites-enabled/default

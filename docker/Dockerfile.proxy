@@ -19,6 +19,10 @@ RUN apt-get clean && \
 	apt-get autoremove -y --purge && \
 	rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*.deb /var/cache/apt/*cache.bin
 
+RUN rm -vf /var/log/nginx/*.log
+RUN ln -vs /dev/stdout /var/log/nginx/access.log
+RUN ln -vs /dev/stderr /var/log/nginx/error.log
+
 USER sadm:sadm
 WORKDIR /opt/src/sadm
 

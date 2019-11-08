@@ -16,5 +16,5 @@ if test "${TAG}" = 'dev' || test "${TAG}" = 'test'; then
 	ENVVARS="${ENVVARS} -e SADMTEST_LOG=debug"
 fi
 docker run -it --rm --name=${NAME} --hostname=${NAME} --user sadm \
-	-p 3666:80 -v ${PWD}:/opt/src/sadm ${ENVVARS} ${IMAGE} $@
+	-p 127.0.0.1:3666:80 -v ${PWD}:/opt/src/sadm ${ENVVARS} ${IMAGE} $@
 exit 0

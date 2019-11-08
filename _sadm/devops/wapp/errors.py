@@ -25,6 +25,10 @@ def init(wapp):
 	def error_400(error):
 		return _handler(error)
 
+	@wapp.error(401)
+	def error_401(error):
+		return _handler(error)
+
 	@wapp.error(404)
 	def error_404(error):
 		return _handler(error)

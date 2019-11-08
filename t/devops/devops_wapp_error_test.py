@@ -24,6 +24,8 @@ def test_init(devops_wapp):
 		assert list(x) == [
 			call(400),
 			call()('error_400'),
+			call(401),
+			call()('error_401'),
 			call(404),
 			call()('error_404'),
 			call(500),
