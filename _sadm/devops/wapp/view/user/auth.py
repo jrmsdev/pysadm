@@ -10,37 +10,43 @@ from _sadm.devops.wapp.errors import error
 from _sadm.devops.wapp.session import session
 from _sadm.devops.wapp.tpl import tpl
 
-__all__ = ['login']
+__all__ = ['login', 'loginPost']
 
 def login():
 	req = bottle.request
 	resp = bottle.response
 	auth = WebappAuth(cfg.config)
 	sessid = session.cookie(req)
-	if req.method == 'POST':
-		if not sessid:
-			return error(400, 'session cookie not found')
-		username = req.forms.get('username')
-		password = req.forms.get('password')
-		if not username:
-			return error(400, 'username not provided')
-		if not password:
-			return error(400, 'user password not provided')
-		try:
-			auth.login(sessid, username, password)
-			log.debug('login done')
-		except AuthError as err:
-			return error(400, str(err))
-		log.debug('redirect')
-		bottle.redirect('/')
+	if not sessid:
+		session.new(resp)
 	else:
-		if not sessid:
-			session.new(resp)
+		try:
+			auth.check(req)
+		except AuthError:
+			# if there was an auth error we show the login form
+			pass
 		else:
-			try:
-				auth.check(req)
-			except AuthError:
-				pass
-			else:
-				bottle.redirect('/user')
+			# else we redirect to user home page
+			bottle.redirect('/user')
 	return tpl.parse('user/login')
+
+def loginPost():
+	req = bottle.request
+	auth = WebappAuth(cfg.config)
+	sessid = session.cookie(req)
+	if not sessid:
+		log.error('session cookie not found')
+		bottle.redirect('/user/login')
+	username = req.forms.get('username')
+	password = req.forms.get('password')
+	if not username:
+		return error(401, 'username not provided')
+	if not password:
+		return error(401, 'user password not provided')
+	try:
+		auth.login(sessid, username, password)
+		log.debug('login done')
+	except AuthError as err:
+		return error(401, str(err))
+	log.debug('redirect')
+	bottle.redirect('/')

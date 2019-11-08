@@ -13,5 +13,7 @@ def init(wapp):
 		name = 'static', skip = ['sadm.devops.auth'])
 	wapp.route('/', 'GET', index.handle, name = 'index')
 
-	wapp.route('/user/login', ['GET', 'POST'], auth.login,
+	wapp.route('/user/login', 'GET', auth.login,
 		name = 'user.login', skip = ['sadm.devops.auth'])
+	wapp.route('/user/login', 'POST', auth.loginPost,
+		name = 'user.login_post', skip = ['sadm.devops.auth'])
