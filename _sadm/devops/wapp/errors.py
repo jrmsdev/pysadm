@@ -1,7 +1,7 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
-from bottle import response, HTTPError, request
+from bottle import response, request
 
 from _sadm import log
 from _sadm.devops.wapp.tpl import tpl

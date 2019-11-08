@@ -1,6 +1,6 @@
 % rebase('base.html', title = 'user/login', navbar = None)
 <div class="w3-container w3-center">
-	<form action="/user/login" method="post">
+	<form action="{{tpl.url('user.login')}}" method="post">
 		<br>
 		<label>Username</label>
 		<br>

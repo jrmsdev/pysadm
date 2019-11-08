@@ -48,7 +48,7 @@ class Template(object):
 				return default
 		return val
 
-	def url(name, **kw):
+	def url(self, name, **kw):
 		return view.url(name, **kw)
 
 def parse(name, **data):
