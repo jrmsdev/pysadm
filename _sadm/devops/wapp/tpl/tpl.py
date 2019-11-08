@@ -6,6 +6,7 @@ import bottle
 from datetime import datetime
 
 from _sadm import version
+from _sadm.devops.wapp.view import view
 from _sadm.utils import path
 
 __all__ = ['parse']
@@ -46,6 +47,9 @@ class Template(object):
 			else:
 				return default
 		return val
+
+	def url(name, **kw):
+		return view.url(name, **kw)
 
 def parse(name, **data):
 	fn = "%s.html" % path.join(*name.split('/'))

@@ -6,7 +6,7 @@ from bottle import response, HTTPError, request
 from _sadm import log
 from _sadm.devops.wapp.tpl import tpl
 
-__all__ = ['init', 'error']
+__all__ = ['init']
 
 def _handler(error):
 	log.debug("%d - %s" % (error.status_code, error.status))
@@ -36,10 +36,3 @@ def init(wapp):
 	@wapp.error(500)
 	def error_500(error):
 		return _handler(error)
-
-def error(code, msg):
-	log.error("%s %d - %s" % (request.remote_addr, code, msg))
-	return HTTPError(
-		status = code,
-		body = msg,
-	)
