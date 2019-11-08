@@ -71,7 +71,7 @@ class _authSSLCert(object):
 
 	def error(self):
 		log.info('sslcert login redirect')
-		bottle.redirect('/user/cert/login')
+		bottle.redirect('/user/login/sslcert')
 
 	def login(self, username, password):
 		raise RuntimeError('unimplemented')

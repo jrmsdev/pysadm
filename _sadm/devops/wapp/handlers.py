@@ -8,12 +8,32 @@ from _sadm.devops.wapp.view.user import auth
 
 __all__ = ['init']
 
-def init(wapp):
-	wapp.route(r'/static/<filename:re:.*\..*>', 'GET', static.serve,
-		name = 'static', skip = ['sadm.devops.auth'])
-	wapp.route('/', 'GET', index.handle, name = 'index')
+_reg = (
+	('static', {
+		'route': r'/static/<filename:re:.*\..*>',
+		'view': static.serve,
+		'skip': ['sadm.devops.auth'],
+	}),
+	('index', {
+		'route': '/',
+		'view': index.handle,
+	}),
+	('user.login', {
+		'route': '/user/login',
+		'view': auth.login,
+		'skip': ['sadm.devops.auth'],
+	}),
+	('user.login_post', {
+		'route': '/user/login',
+		'view': auth.loginPost,
+		'method': 'POST',
+		'skip': ['sadm.devops.auth'],
+	}),
+)
 
-	wapp.route('/user/login', 'GET', auth.login,
-		name = 'user.login', skip = ['sadm.devops.auth'])
-	wapp.route('/user/login', 'POST', auth.loginPost,
-		name = 'user.login_post', skip = ['sadm.devops.auth'])
+def init(wapp):
+	for h in _reg:
+		name = h[0]
+		cfg = h[1]
+		wapp.route(cfg['route'], cfg.get('method', 'GET'), cfg['view'],
+			name = name, skip = cfg.get('skip', []))
