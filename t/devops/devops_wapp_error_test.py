@@ -32,12 +32,6 @@ def test_init(devops_wapp):
 			call()('error_500'),
 		]
 
-def test_error():
-	err = errors.error(999, 'testing')
-	assert isinstance(err, bottle.HTTPError)
-	assert err.status_code == 999
-	assert err.status == '999 Unknown'
-
 def test_handler(devops_wapp):
 	wapp = devops_wapp()
 	with wapp.mock() as ctx:
