@@ -6,7 +6,6 @@ import bottle
 from _sadm import log
 from _sadm.devops.wapp import cfg
 from _sadm.devops.wapp.auth import WebappAuth, AuthError
-# ~ from _sadm.devops.wapp.errors import error
 from _sadm.devops.wapp.session import session
 from _sadm.devops.wapp.tpl import tpl
 from _sadm.devops.wapp.view import view
@@ -23,13 +22,11 @@ def login():
 	else:
 		try:
 			auth.check(req)
+			bottle.redirect(view.url('index'))
 		except AuthError:
 			# if there was an auth error we show the login form
 			pass
-		else:
-			# else we redirect
-			bottle.redirect(view.url('index'))
-	return tpl.parse('user/login')
+	return tpl.parse('user/login', auth = auth)
 
 def loginPost():
 	req = bottle.request
@@ -38,16 +35,11 @@ def loginPost():
 	if not sessid:
 		log.error('session cookie not found')
 		bottle.redirect(view.url('user.login'))
-	username = req.forms.get('username')
-	password = req.forms.get('password')
-	if not username:
-		return bottle.HTTPError(401, 'username not provided')
-	if not password:
-		return bottle.HTTPError(401, 'user password not provided')
 	try:
-		auth.login(sessid, username, password)
+		auth.login(req, sessid)
 		log.debug('login done')
 	except AuthError as err:
+		log.debug("login error: %s" % str(err))
 		return bottle.HTTPError(401, str(err))
 	log.debug('redirect')
 	bottle.redirect(view.url('index'))

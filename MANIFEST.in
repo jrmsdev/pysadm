@@ -16,6 +16,7 @@ recursive-include _sadm/devops/wapp/static *.css
 recursive-include _sadm/devops/wapp/static *.ico
 recursive-include _sadm/devops/wapp/static *.png
 recursive-include _sadm/devops/wsgi *.ini
+recursive-include _sadm/devops/wsgi *.conf
 
 include _sadm/listen/wapp.conf
 recursive-include _sadm/listen/fail2ban *.conf
