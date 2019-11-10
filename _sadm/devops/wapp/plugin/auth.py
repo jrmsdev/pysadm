@@ -35,6 +35,6 @@ class AuthPlugin(object):
 				resp = callback(*args, **kwargs)
 				return resp
 			else:
-				log.info("%s" % autherr)
+				log.error("auth error: %s" % autherr)
 				return self.auth.error()
 		return wrapper

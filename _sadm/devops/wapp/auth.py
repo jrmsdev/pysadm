@@ -35,7 +35,7 @@ class WebappAuth(object):
 		sess = self.sess.check(req)
 		if not sess:
 			raise AuthError('user session not found')
-		self._auth.check(req, sess)
+		self._auth.check(req)
 		return WebappUser(sess.user, sess = sess)
 
 	def error(self):
@@ -57,16 +57,17 @@ class _authConfig(object):
 	def __init__(self, cfg):
 		self.cfg = cfg['devops.auth']
 
-	def check(self, req, sess):
+	def check(self, req):
 		pass
 
 	def login(self, req):
+		log.debug('login')
 		username = req.forms.get('username')
 		password = req.forms.get('password')
 		if not username:
-			return bottle.HTTPError(401, 'username not provided')
+			raise bottle.HTTPError(401, 'username not provided')
 		if not password:
-			return bottle.HTTPError(401, 'user password not provided')
+			raise bottle.HTTPError(401, 'user password not provided')
 		p = self.cfg.get(username, fallback = None)
 		if p is None:
 			raise AuthError("invalid username: %s" % username)
@@ -78,11 +79,37 @@ class _authConfig(object):
 class _authSSLCert(object):
 
 	def __init__(self, cfg):
-		self.cfg = cfg['devops.auth']
+		self.cfg = cfg['devops']
+		self.auth = cfg['devops.auth']
+		self._header = self.cfg.get('auth.header', fallback = 'X-Client-Fingerprint')
+		self._tokenHeader = self.cfg.get('auth.token.header', fallback = 'X-Auth-Token')
 
-	def check(self, req, sess):
-		pass
+	def check(self, req):
+		log.debug('check sslcert')
+		scheme = req.headers.get('X-Forwarded-Proto', 'none')
+		if scheme != 'https':
+			raise AuthError('auth request not from an ssl proxy')
+		htok = req.headers.get(self._tokenHeader, None)
+		if htok is None:
+			raise AuthError('auth token not found')
+		tok = self.cfg.get('auth.token', fallback = None)
+		if tok is None:
+			raise AuthError('auth token not configured')
+		if htok.strip() != tok.strip():
+			log.debug("header token: %s" % htok)
+			raise AuthError('invalid auth token')
+		uid = req.headers.get(self._header, None)
+		if uid is None:
+			raise AuthError('auth user id not found')
+		return uid
 
 	def login(self, req):
+		log.debug('login sslcert')
 		username = req.forms.get('username')
+		if not username:
+			raise bottle.HTTPError(401, 'username not provided')
+		try:
+			uid = self.check(req)
+		except AuthError as err:
+			raise bottle.HTTPError(401, str(err))
 		return username

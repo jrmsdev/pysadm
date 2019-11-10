@@ -8,7 +8,7 @@ from _sadm import log
 from _sadm.devops.wapp import cfg
 from _sadm.devops.wapp.session.db import SessionDB
 
-__all__ = ['WebappSession', 'init', 'check', 'new']
+__all__ = ['Session', 'WebappSession', 'init', 'check', 'new']
 
 _secret = None
 _tokenSize = 64
@@ -42,14 +42,15 @@ class WebappSession(object):
 		return None
 
 	def save(self, sessid, username):
+		log.debug("save sid:%s user:%s" % (sessid, username))
 		self._id = sessid
 		pk = self._db.save(self._id, username)
 		return Session(pk, self._id, username)
 
 def init(config):
 	global _secret
-	_secret = token_urlsafe(_tokenSize)
 	log.debug('init')
+	_secret = token_urlsafe(_tokenSize)
 	db = SessionDB(config)
 	db.create()
 

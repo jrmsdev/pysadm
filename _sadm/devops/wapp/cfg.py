@@ -20,4 +20,6 @@ def new(fn):
 	)
 	with open(fn, 'r') as fh:
 		config.read_file(fh)
+	if not config.has_section('devops'):
+		config.add_section('devops')
 	return config
