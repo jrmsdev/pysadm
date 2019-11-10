@@ -2,6 +2,7 @@
 # See LICENSE file.
 
 from secrets import token_urlsafe, token_hex
+from typing import NamedTuple
 
 from _sadm import log
 from _sadm.devops.wapp import cfg
@@ -11,6 +12,11 @@ __all__ = ['WebappSession', 'init', 'check', 'new']
 
 _secret = None
 _tokenSize = 64
+
+class Session(NamedTuple):
+	pk: int
+	id: str
+	user: str
 
 class WebappSession(object):
 	name = 'sadm_devops_session'
@@ -32,13 +38,13 @@ class WebappSession(object):
 		if self._id is not None:
 			row = self._db.get(self._id)
 			if row:
-				return dict(row)
+				return Session(row['pk'], row['id'], row['user'])
 		return None
 
 	def save(self, sessid, username):
 		self._id = sessid
-		self._db.save(self._id, username)
-		return {'id': self._id, 'user': username}
+		pk = self._db.save(self._id, username)
+		return Session(pk, self._id, username)
 
 def init(config):
 	global _secret

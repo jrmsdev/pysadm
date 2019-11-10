@@ -35,7 +35,8 @@ class WebappAuth(object):
 		sess = self.sess.check(req)
 		if not sess:
 			raise AuthError('user session not found')
-		return WebappUser(sess['user'], sess = sess)
+		self._auth.check(req, sess)
+		return WebappUser(sess.user, sess = sess)
 
 	def error(self):
 		log.info('login error, redirect to user login page')
@@ -56,6 +57,9 @@ class _authConfig(object):
 	def __init__(self, cfg):
 		self.cfg = cfg['devops.auth']
 
+	def check(self, req, sess):
+		pass
+
 	def login(self, req):
 		username = req.forms.get('username')
 		password = req.forms.get('password')
@@ -75,6 +79,9 @@ class _authSSLCert(object):
 
 	def __init__(self, cfg):
 		self.cfg = cfg['devops.auth']
+
+	def check(self, req, sess):
+		pass
 
 	def login(self, req):
 		username = req.forms.get('username')

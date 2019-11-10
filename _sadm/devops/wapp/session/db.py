@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS sess (
 	user VARCHAR(1024) NOT NULL UNIQUE
 );
 """
-_sessGet = 'SELECT id, user FROM sess WHERE id = ?;'
+_sessGet = 'SELECT pk, id, user FROM sess WHERE id = ?;'
 _sessSave = """
 INSERT INTO sess (pk, id, user) VALUES ((SELECT MAX(pk)+1 FROM sess), ?, ?)
 	ON CONFLICT (user) DO
@@ -67,3 +67,4 @@ class SessionDB(object):
 		with self._connect() as db:
 			db.execute(_sessSave, (sessid, username, sessid, username))
 			db.commit()
+		return None # FIXME: return pk from saved session
