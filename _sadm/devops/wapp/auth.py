@@ -43,6 +43,10 @@ class WebappAuth(object):
 
 	def login(self, req, sessid):
 		username = self._auth.login(req)
+		if not username:
+			err = AuthError('could not get the username')
+			log.debug("%s" % err)
+			raise err
 		sess = self.sess.save(sessid, username)
 		log.info("user login: %s" % username)
 		return WebappUser(username, sess = sess)
@@ -73,4 +77,5 @@ class _authSSLCert(object):
 		self.cfg = cfg['devops.auth']
 
 	def login(self, req):
-		raise RuntimeError('unimplemented')
+		username = req.forms.get('username')
+		return username

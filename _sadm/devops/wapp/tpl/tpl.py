@@ -36,6 +36,10 @@ class Template(object):
 	def user(self):
 		return self.get('user')
 
+	@property
+	def auth(self):
+		return self.get('auth')
+
 	def __getitem__(self, name):
 		return self.get(name)
 
