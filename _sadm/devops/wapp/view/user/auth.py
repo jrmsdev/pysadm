@@ -13,6 +13,7 @@ from _sadm.devops.wapp.view import view
 __all__ = ['login', 'loginPost']
 
 def login():
+	log.debug('login')
 	req = bottle.request
 	resp = bottle.response
 	auth = WebappAuth(cfg.config)
@@ -29,6 +30,7 @@ def login():
 	return tpl.parse('user/login', auth = auth)
 
 def loginPost():
+	log.debug('login post')
 	req = bottle.request
 	auth = WebappAuth(cfg.config)
 	sessid = session.cookie(req)
@@ -39,7 +41,7 @@ def loginPost():
 		auth.login(req, sessid)
 		log.debug('login done')
 	except AuthError as err:
-		log.debug("login error: %s" % str(err))
+		log.error("login: %s" % str(err))
 		return bottle.HTTPError(401, str(err))
 	log.debug('redirect')
 	bottle.redirect(view.url('index'))
