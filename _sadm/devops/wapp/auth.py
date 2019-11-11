@@ -15,14 +15,17 @@ __all__ = ['WebappAuth', 'AuthError']
 class AuthError(Exception):
 	pass
 
+# auth manager
+
 class WebappAuth(object):
 	_auth = None
 
 	def __init__(self, config):
-		self.sess = WebappSession()
-		self.type = config.get('devops', 'auth', fallback = 'config')
 		if not config.has_section('devops.auth'):
 			config.add_section('devops.auth')
+		self._cfg = config
+		self.sess = WebappSession()
+		self.type = config.get('devops', 'auth', fallback = 'config')
 		log.debug("init %s manager" % self.type)
 		if self.type == 'config':
 			self._auth = _authConfig(config)
@@ -31,15 +34,23 @@ class WebappAuth(object):
 		else:
 			raise RuntimeError("invalid auth type: %s" % typ)
 
+	def error(self):
+		log.info('login error, redirect to user login page')
+		bottle.redirect(view.url('user.login'))
+
+	def _user(self, sess):
+		info = {}
+		sect = "devops.user:%s" % sess.user
+		if self._cfg.has_section(sect):
+			for opt in self._cfg.options(sect):
+				info[opt] = self._cfg.get(sect, opt)
+		return WebappUser(sess.user, sess = sess, info = info)
+
 	def check(self, req):
 		sess = self.sess.check(req)
 		if not sess:
 			raise AuthError('user session not found')
-		return WebappUser(sess.user, sess = sess)
-
-	def error(self):
-		log.info('login error, redirect to user login page')
-		bottle.redirect(view.url('user.login'))
+		return self._user(sess)
 
 	def login(self, req, sessid):
 		username = self._auth.login(req)
@@ -49,7 +60,7 @@ class WebappAuth(object):
 			raise err
 		sess = self.sess.save(sessid, username)
 		log.info("user login: %s" % username)
-		return WebappUser(username, sess = sess)
+		return self._user(sess)
 
 # auth users from config file
 

@@ -8,6 +8,11 @@ __all__ = ['WebappUser']
 class WebappUser(object):
 	name = None
 
-	def __init__(self, name, sess = None):
+	def __init__(self, name, sess = None, info = None):
 		self.name = name
 		self._sess = sess
+		self._info = info
+
+	@property
+	def email(self):
+		return self._info.get('email', None)
