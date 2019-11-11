@@ -64,7 +64,12 @@ class SessionDB(object):
 			return cur.fetchone()
 
 	def save(self, sessid, username):
+		pk = None
 		with self._connect() as db:
-			db.execute(_sessSave, (sessid, username, sessid, username))
+			cur = db.execute(_sessSave, (sessid, username, sessid, username))
 			db.commit()
-		return None # FIXME: return pk from saved session
+			pk = cur.lastrowid
+		if pk is None:
+			r = self.get(sessid)
+			pk = r['pk']
+		return pk
