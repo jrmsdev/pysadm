@@ -18,7 +18,7 @@ class Session(NamedTuple):
 	pk: int
 	id: str
 	user: str
-	last: str
+	last: datetime
 
 class WebappSession(object):
 	name = 'sadm_devops_session'
@@ -38,9 +38,8 @@ class WebappSession(object):
 		log.debug('check')
 		self.cookie(req)
 		if self._id is not None:
-			row = self._db.get(self._id)
+			row = self._db.get(self._id, update = True)
 			if row:
-				self._db.last(self._id)
 				return Session(row['pk'], row['id'], row['user'], row['last'])
 		return None
 

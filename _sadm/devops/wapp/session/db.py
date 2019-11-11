@@ -3,6 +3,8 @@
 
 import sqlite3
 
+from datetime import datetime
+
 from _sadm import log
 from _sadm.utils import path, sh
 
@@ -64,10 +66,18 @@ class SessionDB(object):
 			db.execute(_sessTable)
 			db.commit()
 
-	def get(self, sessid):
+	def get(self, sessid, update = False):
+		row = None
 		with self._connect() as db:
 			cur = db.execute(_sessGet, (sessid,))
-			return cur.fetchone()
+			row = cur.fetchone()
+			if row and update:
+				ts = datetime.now()
+				db.execute(_sessLast, (ts, sessid))
+				db.commit()
+				row = dict(row)
+				row['last'] = ts
+		return row
 
 	def save(self, sessid, username, ts):
 		pk = None
@@ -80,8 +90,3 @@ class SessionDB(object):
 			r = self.get(sessid)
 			pk = r['pk']
 		return pk
-
-	def last(self, sessid):
-		with self._connect() as db:
-			db.execute(_sessLast, (datetime.now(), sessid))
-			db.commit()
