@@ -42,6 +42,9 @@ class WebappAuth(object):
 		info = {}
 		sect = "devops.user:%s" % sess.user
 		if self._cfg.has_section(sect):
+			dis = self._cfg.getboolean(sect, 'disable', fallback = False)
+			if dis:
+				raise AuthError("user %s: disabled" % sess.user)
 			for opt in self._cfg.options(sect):
 				info[opt] = self._cfg.get(sect, opt)
 		return WebappUser(sess.user, sess = sess, info = info)
