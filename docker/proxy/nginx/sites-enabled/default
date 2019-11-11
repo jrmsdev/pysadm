@@ -19,6 +19,7 @@ server {
 	listen [::]:443 ssl;
 
 	server_name www.sadmdev.local;
+	root /var/www/html;
 
 	ssl_certificate /etc/ssl/private/www.sadmdev.local.pem;
 	ssl_certificate_key /etc/ssl/private/www.sadmdev.local.pem;
@@ -34,7 +35,10 @@ server {
 	error_log /var/log/nginx/error.log;
 
 	# devops
-	location / {
+	location = /devops {
+		return 301 /devops/;
+	}
+	location /devops/ {
 		proxy_pass http://127.0.0.1:3110/;
 		include /etc/nginx/proxy_params;
 		# include /opt/src/sadm/_sadm/devops/wsgi/nginx.conf;

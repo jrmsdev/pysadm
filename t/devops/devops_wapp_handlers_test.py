@@ -21,5 +21,6 @@ def test_init(devops_wapp):
 				name = 'user.login', skip = ['sadm.devops.auth']),
 			call('/user/login', 'POST', auth.loginPost,
 				name = 'user.login_post', skip = ['sadm.devops.auth']),
+
 			call('/user', 'GET', user.home, name = 'user', skip = []),
 		]

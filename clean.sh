@@ -1,5 +1,5 @@
 #!/bin/sh
-rm -rfv build dist
+rm -rfv build dist .pytest_cache
 rm -rfv tdata/build tdata/tmp tdata/deploy tdata/deploy.target
 rm -rfv htmlcov .coverage .coverage.* coverage.xml
 rm -rfv docs/_build docs/doctrees

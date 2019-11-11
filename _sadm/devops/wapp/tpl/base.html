@@ -8,11 +8,12 @@ if title_desc != '':
 end
 %>
 <!DOCTYPE html>
-<html>
+<html lang="{{tpl.lang}}">
 <head>
 	<title>sadm/{{title}}{{title_desc}}</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<base href="{{tpl.urlbase}}" target="_self">
 	<link rel="shortcut icon"
 		href="{{tpl.url('static', filename = 'favicon.ico')}}">
 	<link rel="stylesheet"
