@@ -36,8 +36,9 @@ server {
 	# devops
 	location / {
 		proxy_pass http://127.0.0.1:3110/;
-		proxy_set_header X-Auth-Token 12345678;
 		include /etc/nginx/proxy_params;
-		include /opt/src/sadm/_sadm/devops/wsgi/nginx.conf;
+		# include /opt/src/sadm/_sadm/devops/wsgi/nginx.conf;
+		proxy_set_header X-Auth-Token 12345678;
+		proxy_set_header X-Client-Fingerprint $ssl_client_fingerprint;
 	}
 }

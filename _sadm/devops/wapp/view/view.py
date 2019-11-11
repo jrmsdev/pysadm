@@ -3,7 +3,7 @@
 
 from _sadm.devops.wapp.static import static
 from _sadm.devops.wapp.view import index, view
-from _sadm.devops.wapp.view.user import auth
+from _sadm.devops.wapp.view.user import auth, user
 
 __all__ = ['url']
 
@@ -28,6 +28,10 @@ reg = (
 		'view': auth.loginPost,
 		'method': 'POST',
 		'skip': ['sadm.devops.auth'],
+	}),
+	('user', {
+		'route': '/user',
+		'view': user.home,
 	}),
 )
 

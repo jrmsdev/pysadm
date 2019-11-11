@@ -6,7 +6,7 @@ from unittest.mock import call
 from _sadm.devops.wapp import handlers
 from _sadm.devops.wapp.static import static
 from _sadm.devops.wapp.view import index
-from _sadm.devops.wapp.view.user import auth
+from _sadm.devops.wapp.view.user import auth, user
 
 def test_init(devops_wapp):
 	wapp = devops_wapp()
@@ -21,4 +21,5 @@ def test_init(devops_wapp):
 				name = 'user.login', skip = ['sadm.devops.auth']),
 			call('/user/login', 'POST', auth.loginPost,
 				name = 'user.login_post', skip = ['sadm.devops.auth']),
+			call('/user', 'GET', user.home, name = 'user', skip = []),
 		]

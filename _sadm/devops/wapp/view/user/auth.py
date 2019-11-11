@@ -24,9 +24,9 @@ def login():
 		try:
 			auth.check(req)
 			bottle.redirect(view.url('index'))
-		except AuthError:
+		except AuthError as err:
 			# if there was an auth error we show the login form
-			pass
+			log.debug("auth error: %s" % err)
 	return tpl.parse('user/login', auth = auth)
 
 def loginPost():
@@ -41,7 +41,7 @@ def loginPost():
 		auth.login(req, sessid)
 		log.debug('login done')
 	except AuthError as err:
-		log.error("login: %s" % str(err))
+		log.error("login: %s" % err)
 		return bottle.HTTPError(401, str(err))
 	log.debug('redirect')
 	bottle.redirect(view.url('index'))
