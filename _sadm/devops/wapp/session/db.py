@@ -8,18 +8,24 @@ from _sadm.utils import path, sh
 
 __all__ = ['SessionDB']
 
+_detectTypes = sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES
+
 _sessTable = """
 CREATE TABLE IF NOT EXISTS sess (
 	pk INTEGER PRIMARY KEY,
 	id VARCHAR(128) NOT NULL UNIQUE,
-	user VARCHAR(1024) NOT NULL UNIQUE
+	user VARCHAR(1024) NOT NULL UNIQUE,
+	last timestamp
 );
 """
-_sessGet = 'SELECT pk, id, user FROM sess WHERE id = ?;'
+_sessGet = 'SELECT pk, id, user, last FROM sess WHERE id = ?;'
+_sessLast = 'UPDATE sess SET last = ? WHERE id = ?;'
 _sessSave = """
-INSERT INTO sess (pk, id, user) VALUES ((SELECT MAX(pk)+1 FROM sess), ?, ?)
+INSERT INTO sess (pk, id, user, last)
+	VALUES ((SELECT MAX(pk)+1 FROM sess), ?, ?, ?)
 	ON CONFLICT (user) DO
-		UPDATE SET id = ? WHERE user = ?;
+		UPDATE SET id = ?, last = ?
+	WHERE user = ?;
 """
 
 class SessionDB(object):
@@ -41,7 +47,7 @@ class SessionDB(object):
 
 	def _connect(self):
 		log.debug("connect %s" % self._uri)
-		conn = sqlite3.connect(self._uri)
+		conn = sqlite3.connect(self._uri, detect_types = _detectTypes)
 		conn.row_factory = sqlite3.Row
 		return conn
 
@@ -63,13 +69,19 @@ class SessionDB(object):
 			cur = db.execute(_sessGet, (sessid,))
 			return cur.fetchone()
 
-	def save(self, sessid, username):
+	def save(self, sessid, username, ts):
 		pk = None
 		with self._connect() as db:
-			cur = db.execute(_sessSave, (sessid, username, sessid, username))
+			cur = db.execute(_sessSave,
+				(sessid, username, ts, sessid, ts, username))
 			db.commit()
 			pk = cur.lastrowid
 		if pk is None:
 			r = self.get(sessid)
 			pk = r['pk']
 		return pk
+
+	def last(self, sessid):
+		with self._connect() as db:
+			db.execute(_sessLast, (datetime.now(), sessid))
+			db.commit()

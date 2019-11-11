@@ -1,6 +1,7 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
+from datetime import datetime
 from secrets import token_urlsafe, token_hex
 from typing import NamedTuple
 
@@ -17,6 +18,7 @@ class Session(NamedTuple):
 	pk: int
 	id: str
 	user: str
+	last: str
 
 class WebappSession(object):
 	name = 'sadm_devops_session'
@@ -38,14 +40,16 @@ class WebappSession(object):
 		if self._id is not None:
 			row = self._db.get(self._id)
 			if row:
-				return Session(row['pk'], row['id'], row['user'])
+				self._db.last(self._id)
+				return Session(row['pk'], row['id'], row['user'], row['last'])
 		return None
 
 	def save(self, sessid, username):
 		log.debug("save sid:%s user:%s" % (sessid, username))
 		self._id = sessid
-		pk = self._db.save(self._id, username)
-		return Session(pk, self._id, username)
+		ts = datetime.now()
+		pk = self._db.save(self._id, username, ts)
+		return Session(pk, self._id, username, ts)
 
 def init(config):
 	global _secret
