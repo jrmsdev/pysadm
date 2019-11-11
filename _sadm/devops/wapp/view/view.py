@@ -1,6 +1,7 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
+from _sadm.devops.wapp import cfg
 from _sadm.devops.wapp.static import static
 from _sadm.devops.wapp.view import index, view
 from _sadm.devops.wapp.view.user import auth, user
@@ -40,14 +41,24 @@ if __idx is None:
 	__idx = {}
 	for h in reg:
 		name = h[0]
-		cfg = h[1]
-		__idx[name] = cfg
+		opt = h[1]
+		__idx[name] = opt
+
+_urlbase = None
 
 def url(view, **kw):
-	cfg = __idx.get(view, None)
-	if cfg is None:
+	global _urlbase
+	if _urlbase is None:
+		b = cfg.config.get('devops', 'url.base', fallback = '/')
+		if b.endswith('/'):
+			_urlbase = b[:-1]
+		else:
+			_urlbase = b
+	opt = __idx.get(view, None)
+	if opt is None:
 		raise RuntimeError("invalid view name: %s" % view)
-	u = cfg.get('url', None)
-	if u is None:
-		return cfg['route']
-	return u.format(**kw)
+	u = opt.get('url', opt['route'])
+	u = u.format(**kw)
+	u = u.replace('/', '', 1)
+	u = '/'.join([_urlbase, u])
+	return u

@@ -6,7 +6,6 @@ import bottle
 from datetime import datetime
 
 from _sadm import version
-from _sadm.devops.wapp import cfg
 from _sadm.devops.wapp.view import view
 from _sadm.utils import path
 
@@ -17,7 +16,6 @@ class Template(object):
 	__unset = object()
 
 	def __init__(self, name, data):
-		self.cfg = cfg.config
 		self.name = name
 		self.data = data
 		self.data.update({
@@ -58,13 +56,8 @@ class Template(object):
 				return default
 		return val
 
-	@property
-	def urlbase(self):
-		return self.cfg.get('devops', 'url.base', fallback = '/')
-
 	def url(self, name, **kw):
-		u = view.url(name, **kw)
-		return u.replace('/', '', 1)
+		return view.url(name, **kw)
 
 def parse(name, **data):
 	fn = "%s.html" % path.join(*name.split('/'))
