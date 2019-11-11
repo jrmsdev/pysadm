@@ -60,7 +60,7 @@ class Template(object):
 
 	@property
 	def urlbase(self):
-		return "/"
+		return self.cfg.get('devops', 'url.base', fallback = '/')
 
 	def url(self, name, **kw):
 		u = view.url(name, **kw)
