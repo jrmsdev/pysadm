@@ -95,6 +95,15 @@ def test_check_sess_error(devops_wapp):
 		with raises(AuthError, match = 'user session not found'):
 			wa.check(req)
 
+def test_login_user_error(devops_wapp):
+	wapp = devops_wapp('auth')
+	with wapp.mock() as ctx:
+		wa = auth.WebappAuth(ctx.config)
+		sess, req = _newsess(wa, '01234567', user = 'tuser')
+		wa._auth.login = Mock(return_value = None)
+		with raises(AuthError, match = 'could not get the username'):
+			wa.login(req, '01234567')
+
 def test_login_config(devops_wapp):
 	wapp = devops_wapp('auth')
 	with wapp.mock() as ctx:
