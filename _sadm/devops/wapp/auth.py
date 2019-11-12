@@ -3,19 +3,15 @@
 
 import bottle
 
-from hashlib import sha256
-
 from _sadm import log
+from _sadm.devops.wapp.auth_error import AuthError
+from _sadm.devops.wapp.auth_config import AuthConfig
+from _sadm.devops.wapp.auth_sslcert import AuthSSLCert
 from _sadm.devops.wapp.session.session import WebappSession
 from _sadm.devops.wapp.user import WebappUser
 from _sadm.devops.wapp.view import view
 
 __all__ = ['WebappAuth', 'AuthError']
-
-class AuthError(Exception):
-	pass
-
-# auth manager
 
 class WebappAuth(object):
 	_auth = None
@@ -28,9 +24,9 @@ class WebappAuth(object):
 		self.type = config.get('devops', 'auth', fallback = 'config')
 		log.debug("init %s manager" % self.type)
 		if self.type == 'config':
-			self._auth = _authConfig(config)
+			self._auth = AuthConfig(config)
 		elif self.type == 'sslcert':
-			self._auth = _authSSLCert(config)
+			self._auth = AuthSSLCert(config)
 		else:
 			raise RuntimeError("invalid auth type: %s" % typ)
 
@@ -64,79 +60,3 @@ class WebappAuth(object):
 		sess = self.sess.save(sessid, username)
 		log.info("user login: %s" % username)
 		return self._user(sess)
-
-# auth users from config file
-
-class _authConfig(object):
-
-	def __init__(self, cfg):
-		self.cfg = cfg['devops.auth']
-
-	def login(self, req):
-		log.debug('login')
-		username = req.forms.get('username')
-		password = req.forms.get('password')
-		if not username:
-			raise bottle.HTTPError(401, 'username not provided')
-		if not password:
-			raise bottle.HTTPError(401, 'user password not provided')
-		p = self.cfg.get(username, fallback = None)
-		if p is None:
-			raise AuthError("invalid username: %s" % username)
-		h = sha256(password.encode('utf-8'))
-		if h.hexdigest() != p:
-			raise AuthError("user %s: invalid password" % username)
-		return username
-
-# auth users using an ssl client certificate via an https proxy
-
-class _authSSLCert(object):
-
-	def __init__(self, cfg):
-		self.cfg = cfg['devops']
-		self.auth = cfg['devops.auth']
-		self._header = self.cfg.get('auth.header', fallback = 'X-Client-Fingerprint')
-		self._tokenHeader = self.cfg.get('auth.token.header', fallback = 'X-Auth-Token')
-
-	def _digest(self, s):
-		h = sha256(s.encode('utf-8'))
-		return h.hexdigest()
-
-	def check(self, req):
-		log.debug('check sslcert')
-		# https scheme
-		scheme = req.headers.get('X-Forwarded-Proto', 'none')
-		if scheme != 'https':
-			raise AuthError('auth request not from an ssl proxy')
-		# auth token from request headers
-		htok = req.headers.get(self._tokenHeader, None)
-		if htok is None:
-			raise AuthError('auth token not found')
-		htok = self._digest(htok.strip())
-		# check token from config
-		tok = self.cfg.get('auth.token', fallback = None)
-		if tok is None:
-			raise AuthError('auth token not configured')
-		tok = tok.strip()
-		if htok != tok:
-			log.debug("header token: %s" % htok)
-			raise AuthError('invalid auth token')
-		# get user identification from request headers
-		uid = req.headers.get(self._header, None)
-		if uid is None:
-			raise AuthError('auth user id not found')
-		return uid
-
-	def login(self, req):
-		log.debug('login sslcert')
-		username = req.forms.get('username')
-		if not username:
-			raise bottle.HTTPError(401, 'username not provided')
-		uid = self.check(req)
-		x = self.auth.get(username, fallback = None)
-		if x is None:
-			raise AuthError("invalid username: %s" % username)
-		uid = self._digest(uid.strip())
-		if x != uid:
-			raise AuthError("user %s: invalid id" % username)
-		return username
