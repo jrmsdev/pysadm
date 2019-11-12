@@ -8,6 +8,7 @@ from unittest.mock import Mock
 
 from _sadm.devops.wapp.auth import auth
 from _sadm.devops.wapp.auth.config import AuthConfig
+from _sadm.devops.wapp.auth.error import AuthError
 from _sadm.devops.wapp.user import WebappUser
 from _sadm.devops.wapp.view import view
 
@@ -62,3 +63,11 @@ def test_check(devops_wapp):
 		assert u.name == 'testing'
 		assert u.sess.id == '01234567'
 		assert u.sess.user == 'testing'
+
+def test_check_sess_error(devops_wapp):
+	wapp = devops_wapp('auth')
+	with wapp.mock() as ctx:
+		wa = auth.WebappAuth(ctx.config)
+		req = _newreq(None)
+		with raises(AuthError, match = 'user session not found'):
+			wa.check(req)
