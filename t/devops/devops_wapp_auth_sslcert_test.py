@@ -62,3 +62,30 @@ def test_user_error(devops_wapp):
 		req.headers['X-Client-Fingerprint'] = None
 		with raises(AuthError, match = 'auth user id not found'):
 			wa.login(req, '01234567')
+
+def test_login_user_error(devops_wapp):
+	wapp = devops_wapp('auth.sslcert')
+	with wapp.mock() as ctx:
+		wa = auth.WebappAuth(ctx.config)
+		sess, req = wapp.mock_sess(wa, '01234567', user = 'testing')
+		req.forms['username'] = None
+		with raises(bottle.HTTPError) as exc:
+			wa.login(req, '01234567')
+		wapp.checkException(exc, 401, 'username not provided')
+
+def test_login_user_invalid(devops_wapp):
+	wapp = devops_wapp('auth.sslcert')
+	with wapp.mock() as ctx:
+		wa = auth.WebappAuth(ctx.config)
+		sess, req = wapp.mock_sess(wa, '01234567', user = 'tuser')
+		with raises(AuthError, match = 'invalid username: tuser'):
+			wa.login(req, '01234567')
+
+def test_login_user_invalid_id(devops_wapp):
+	wapp = devops_wapp('auth.sslcert')
+	with wapp.mock() as ctx:
+		wa = auth.WebappAuth(ctx.config)
+		sess, req = wapp.mock_sess(wa, '01234567', user = 'testing')
+		req.headers['X-Client-Fingerprint'] = 'invalid.user.id'
+		with raises(AuthError, match = 'user testing: invalid id'):
+			wa.login(req, '01234567')
