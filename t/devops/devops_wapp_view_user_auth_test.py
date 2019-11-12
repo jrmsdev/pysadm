@@ -62,3 +62,11 @@ def test_auth_error(devops_wapp):
 		ctx.auth.check.assert_called_with(req)
 		ctx.session.cookie.assert_called_with(req)
 		ctx.tpl.parse.assert_called_with('user/login', auth = ctx.auth)
+
+def test_auth_exception(devops_wapp):
+	wapp = devops_wapp()
+	with mock_session(wapp) as ctx:
+		ctx.auth.check.side_effect = RuntimeError('testing')
+		with raises(RuntimeError, match = 'testing'):
+			auth.login(auth = ctx.auth)
+		assert ctx.tpl.parse.mock_calls == []
