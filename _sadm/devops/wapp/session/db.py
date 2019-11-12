@@ -4,9 +4,10 @@
 import sqlite3
 
 from datetime import datetime
+from os import makedirs, path
 
 from _sadm import log
-from _sadm.utils import path, sh
+from _sadm.utils import sh
 
 __all__ = ['SessionDB']
 
@@ -43,6 +44,7 @@ class SessionDB(object):
 			self._uri = 'file:session.db?mode=memory&cache=shared'
 			self._mem = True
 		else:
+			dbdir = path.abspath(dbdir)
 			self._fn = path.join(dbdir, 'session.db')
 			self._uri = "file:%s?cache=shared" % self._fn
 		self._dir = dbdir
@@ -54,11 +56,21 @@ class SessionDB(object):
 		return conn
 
 	def create(self):
-		log.debug("create dbdir %s" % self._dir)
+		log.debug("create db - mem:%s dir:%s" % (self._mem, self._dir))
 		if self._mem:
 			self._mkdb()
 		else:
-			sh.makedirs(self._dir, exists_ok = True)
+			if path.isdir(self._dir):
+				log.debug("%s: db dir exists" % self._dir)
+			else:
+				log.debug("create db dir: %s" % self._dir)
+				makedirs(self._dir)
+			if path.isfile(self._fn):
+				log.debug("%s: db file exists" % self._fn)
+			else:
+				log.debug("create db file: %s" % self._fn)
+				with open(self._fn, 'x') as fh:
+					fh.flush()
 			with sh.lockd(self._dir):
 				self._mkdb()
 

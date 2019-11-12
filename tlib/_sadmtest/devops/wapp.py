@@ -21,9 +21,6 @@ from _sadmtest.wapp import TestingWebapp
 class DevopsWebapp(TestingWebapp):
 	name = 'devops'
 
-	def _log(self, msg):
-		print('mock.devops.wapp', msg)
-
 	@contextmanager
 	def mock(self, tag = 'devops'):
 		mockcfg = None
@@ -45,35 +42,34 @@ class DevopsWebapp(TestingWebapp):
 		with mock.log(), mock.utils(mockcfg, tag = tag):
 			ctx = Mock()
 			ctx.orig = bup
-			# mock bottle
-			ctx.bottle = ctx.mock.bottle
-			ctx.bottle.template = ctx.mock.bottle.template
-			bottle.template = ctx.bottle.template
-			# testing session session dbdir
-			sessdbdir = path.join('tdata', 'tmp', 'devops', 'wapp', 'session')
-			if path.isdir(sessdbdir):
-				self._log("found dir %s: rmtree" % sessdbdir)
-				rmtree(sessdbdir)
-			self._log("makedirs %s" % sessdbdir)
-			makedirs(sessdbdir, exist_ok = False)
-			# mock wapp
-			self._log('wapp.init')
-			_sadm.devops.wapp.wapp.init(cfgfn = self.cfgfn)
-			ctx.wapp = ctx.mock.wapp
-			_sadm.devops.wapp.wapp.wapp = ctx.wapp
-			# mock config
-			ctx.config = _sadm.devops.wapp.cfg.config
-			# mock tpl
-			ctx.tpl = ctx.mock.tpl
-			ctx.tpl.parse = ctx.mock.tpl.parse
-			_sadm.devops.wapp.tpl.tpl.parse = ctx.tpl.parse
-			ctx.tpl.version = ctx.mock.tpl.version
-			ctx.tpl.version.string = ctx.mock.tpl.version.string
-			ctx.tpl.version.string.return_value = 'testing'
-			_sadm.devops.wapp.tpl.tpl.version = ctx.tpl.version
 			try:
+				# mock bottle
+				ctx.bottle = ctx.mock.bottle
+				ctx.bottle.template = ctx.mock.bottle.template
+				bottle.template = ctx.bottle.template
+				# test session db dir
+				sessdbdir = path.join('tdata', 'tmp', 'devops', 'wapp', 'session')
+				if path.isdir(sessdbdir):
+					print('mock.devops.wapp rmtree', sessdbdir)
+					rmtree(sessdbdir)
+				# mock wapp
+				print('mock.devops.wapp init')
+				_sadm.devops.wapp.wapp.init(cfgfn = self.cfgfn)
+				ctx.wapp = ctx.mock.wapp
+				_sadm.devops.wapp.wapp.wapp = ctx.wapp
+				# mock config
+				ctx.config = _sadm.devops.wapp.cfg.config
+				# mock tpl
+				ctx.tpl = ctx.mock.tpl
+				ctx.tpl.parse = ctx.mock.tpl.parse
+				_sadm.devops.wapp.tpl.tpl.parse = ctx.tpl.parse
+				ctx.tpl.version = ctx.mock.tpl.version
+				ctx.tpl.version.string = ctx.mock.tpl.version.string
+				ctx.tpl.version.string.return_value = 'testing'
+				_sadm.devops.wapp.tpl.tpl.version = ctx.tpl.version
 				yield ctx
 			finally:
+				print('mock.devops.wapp.restore')
 				# restore bottle
 				del bottle.template
 				bottle.template = bup.bottle.template
@@ -91,5 +87,3 @@ class DevopsWebapp(TestingWebapp):
 				# restore session
 				del _sadm.devops.wapp.session.session._secret
 				_sadm.devops.wapp.session.session._secret = bup.session._secret
-				self._log("restore: rmtree %s" % sessdbdir)
-				rmtree(sessdbdir)
