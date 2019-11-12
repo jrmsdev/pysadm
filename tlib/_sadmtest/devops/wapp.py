@@ -95,6 +95,11 @@ class DevopsWebapp(TestingWebapp):
 			'username': user,
 			'password': 'testing.password',
 		}
+		req.headers = {
+			'X-Forwarded-Proto': 'https',
+			'X-Auth-Token': '76543210',
+			'X-Client-Fingerprint': 'abc123def',
+		}
 		return req
 
 	def mock_sess(self, wa, sessid, user = 'testing'):
