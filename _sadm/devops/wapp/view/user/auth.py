@@ -30,10 +30,11 @@ def login(auth = None):
 			log.debug("auth error: %s" % err)
 	return tpl.parse('user/login', auth = auth)
 
-def loginPost():
+def loginPost(auth = None):
 	log.debug('login post')
 	req = bottle.request
-	auth = WebappAuth(cfg.config)
+	if auth is None: # pragma: no cover
+		auth = WebappAuth(cfg.config)
 	sessid = session.cookie(req)
 	if not sessid:
 		log.error('session cookie not found')

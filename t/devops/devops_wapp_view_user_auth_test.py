@@ -70,3 +70,13 @@ def test_auth_exception(devops_wapp):
 		with raises(RuntimeError, match = 'testing'):
 			auth.login(auth = ctx.auth)
 		assert ctx.tpl.parse.mock_calls == []
+
+def test_login_post(devops_wapp):
+	wapp = devops_wapp()
+	with mock_session(wapp) as ctx:
+		with raises(bottle.HTTPResponse) as resp:
+			auth.loginPost(auth = ctx.auth)
+		req = bottle.request
+		ctx.session.cookie.assert_called_with(req)
+		ctx.auth.login.assert_called_with(req, '01234567')
+		wapp.checkRedirect(resp, 302, view.url('index'))
