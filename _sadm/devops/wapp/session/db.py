@@ -51,7 +51,7 @@ class SessionDB(object):
 
 	def _connect(self):
 		log.debug("connect %s" % self._uri)
-		conn = sqlite3.connect(self._uri, detect_types = _detectTypes)
+		conn = sqlite3.connect(self._uri, uri = True, detect_types = _detectTypes)
 		conn.row_factory = sqlite3.Row
 		return conn
 
