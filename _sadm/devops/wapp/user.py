@@ -14,5 +14,9 @@ class WebappUser(object):
 		self._info = info
 
 	@property
+	def sess(self):
+		return self._sess
+
+	@property
 	def email(self):
 		return self._info.get('email', None)
