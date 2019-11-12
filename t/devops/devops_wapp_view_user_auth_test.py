@@ -80,3 +80,13 @@ def test_login_post(devops_wapp):
 		ctx.session.cookie.assert_called_with(req)
 		ctx.auth.login.assert_called_with(req, '01234567')
 		wapp.checkRedirect(resp, 302, view.url('index'))
+
+def test_login_post_no_session_cookie(devops_wapp):
+	wapp = devops_wapp()
+	with mock_session(wapp) as ctx:
+		ctx.session.cookie.return_value = None
+		with raises(bottle.HTTPResponse) as resp:
+			auth.loginPost(auth = ctx.auth)
+		req = bottle.request
+		ctx.session.cookie.assert_called_with(req)
+		wapp.checkRedirect(resp, 302, view.url('user.login'))
