@@ -7,6 +7,7 @@ from contextlib import contextmanager
 from pytest import raises
 from unittest.mock import Mock
 
+from _sadm.devops.wapp.auth import AuthError
 from _sadm.devops.wapp.view import view
 from _sadm.devops.wapp.view.user import auth
 
@@ -49,3 +50,15 @@ def test_auth_check(devops_wapp):
 		assert ctx.tpl.parse.mock_calls == []
 		ctx.session.cookie.assert_called_with(req)
 		assert ctx.session.new.mock_calls == []
+
+def test_auth_error(devops_wapp):
+	wapp = devops_wapp()
+	with mock_session(wapp) as ctx:
+		ctx.auth.check.side_effect = AuthError('testing')
+		auth.login(auth = ctx.auth)
+		req = bottle.request
+		req = bottle.request
+		resp = bottle.response
+		ctx.auth.check.assert_called_with(req)
+		ctx.session.cookie.assert_called_with(req)
+		ctx.tpl.parse.assert_called_with('user/login', auth = ctx.auth)
