@@ -28,7 +28,7 @@ class WebappAuth(object):
 		elif self.type == 'sslcert':
 			self._auth = AuthSSLCert(config)
 		else:
-			raise RuntimeError("invalid auth type: %s" % typ)
+			raise RuntimeError("invalid auth type: %s" % self.type)
 
 	def error(self):
 		log.info('login error, redirect to user login page')
