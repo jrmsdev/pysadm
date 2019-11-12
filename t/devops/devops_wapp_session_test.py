@@ -3,6 +3,7 @@
 
 import bottle
 
+from datetime import datetime
 from pytest import raises
 from secrets import token_urlsafe, token_hex
 
@@ -42,3 +43,25 @@ def test_cookie(devops_wapp):
 		assert c == 'testing'
 		req.get_cookie.assert_called_with('sadm_devops_session',
 			secret = session._secret)
+
+def test_save_check(devops_wapp):
+	wapp = devops_wapp('session')
+	with wapp.mock() as ctx:
+		req = ctx.mock.request
+		req.get_cookie.return_value = None
+		s = session.WebappSession()
+		retval = s.check(req)
+		assert retval is None
+		sess = s.save('tsid', 'testing')
+		assert isinstance(sess, session.Session)
+		assert sess.pk == 1
+		assert sess.id == 'tsid'
+		assert sess.user == 'testing'
+		assert isinstance(sess.last, datetime)
+		req.get_cookie.return_value = 'tsid'
+		x = s.check(req)
+		assert isinstance(x, session.Session)
+		assert x.pk == 1
+		assert x.id == 'tsid'
+		assert x.user == 'testing'
+		assert isinstance(x.last, datetime)

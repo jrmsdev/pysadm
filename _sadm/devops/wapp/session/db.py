@@ -54,6 +54,7 @@ class SessionDB(object):
 		return conn
 
 	def create(self):
+		log.debug("create dbdir %s" % self._dir)
 		if self._mem:
 			self._mkdb()
 		else:

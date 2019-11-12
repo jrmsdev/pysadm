@@ -57,6 +57,8 @@ recursive-include tdata/cmd *.ini
 recursive-include tdata/cmd *.cfg
 recursive-include tdata/cmd/assets *.txt
 
+recursive-include tdata/devops *.cfg
+
 recursive-include tdata/envsetup *.ini
 recursive-include tdata/envsetup *.test
 

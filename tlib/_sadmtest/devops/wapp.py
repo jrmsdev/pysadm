@@ -4,7 +4,8 @@
 import bottle
 
 from contextlib import contextmanager
-from os import path
+from os import path, makedirs
+from shutil import rmtree
 from unittest.mock import Mock
 
 from _sadm import cfg
@@ -45,6 +46,11 @@ class DevopsWebapp(TestingWebapp):
 			ctx.bottle = ctx.mock.bottle
 			ctx.bottle.template = ctx.mock.bottle.template
 			bottle.template = ctx.bottle.template
+			# testing session session dbdir
+			sessdbdir = path.join('tdata', 'tmp', 'devops', 'wapp', 'session')
+			if path.isdir(sessdbdir):
+				rmtree(sessdbdir)
+			makedirs(sessdbdir, exist_ok = False)
 			# mock wapp
 			_sadm.devops.wapp.wapp.init(cfgfn = self.cfgfn)
 			ctx.wapp = ctx.mock.wapp
@@ -79,3 +85,4 @@ class DevopsWebapp(TestingWebapp):
 				# restore session
 				del _sadm.devops.wapp.session.session._secret
 				_sadm.devops.wapp.session.session._secret = bup.session._secret
+				rmtree(sessdbdir)
