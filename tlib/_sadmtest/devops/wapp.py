@@ -21,6 +21,9 @@ from _sadmtest.wapp import TestingWebapp
 class DevopsWebapp(TestingWebapp):
 	name = 'devops'
 
+	def _log(self, msg):
+		print('mock.devops.wapp', msg)
+
 	@contextmanager
 	def mock(self, tag = 'devops'):
 		mockcfg = None
@@ -49,9 +52,12 @@ class DevopsWebapp(TestingWebapp):
 			# testing session session dbdir
 			sessdbdir = path.join('tdata', 'tmp', 'devops', 'wapp', 'session')
 			if path.isdir(sessdbdir):
+				self._log("found dir %s: rmtree" % sessdbdir)
 				rmtree(sessdbdir)
+			self._log("makedirs %s" % sessdbdir)
 			makedirs(sessdbdir, exist_ok = False)
 			# mock wapp
+			self._log('wapp.init')
 			_sadm.devops.wapp.wapp.init(cfgfn = self.cfgfn)
 			ctx.wapp = ctx.mock.wapp
 			_sadm.devops.wapp.wapp.wapp = ctx.wapp
@@ -85,4 +91,5 @@ class DevopsWebapp(TestingWebapp):
 				# restore session
 				del _sadm.devops.wapp.session.session._secret
 				_sadm.devops.wapp.session.session._secret = bup.session._secret
+				self._log("restore: rmtree %s" % sessdbdir)
 				rmtree(sessdbdir)
