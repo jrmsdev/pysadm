@@ -38,8 +38,8 @@ def _newreq(sessid):
 	req.get_cookie.return_value = sessid
 	return req
 
-def _newsess(wa, sessid):
-	sess = wa.sess.save(sessid, 'testing')
+def _newsess(wa, sessid, user = 'testing'):
+	sess = wa.sess.save(sessid, user)
 	return (sess, _newreq(sessid))
 
 def test_user(devops_wapp):
@@ -52,6 +52,20 @@ def test_user(devops_wapp):
 		assert u.name == 'testing'
 		assert u.sess.id == '01234567'
 		assert u.sess.user == 'testing'
+		assert u.email is None
+
+def test_user_options(devops_wapp):
+	wapp = devops_wapp('auth')
+	with wapp.mock() as ctx:
+		wa = auth.WebappAuth(ctx.config)
+		sess, _ = _newsess(wa, '01234567', user = 'tuser')
+		u = wa._user(sess)
+		assert isinstance(u, WebappUser)
+		assert u.name == 'tuser'
+		assert u.sess.id == '01234567'
+		assert u.sess.user == 'tuser'
+		assert u.email == 'tuser@testing.com'
+		assert u._info['testing'] == 'another option'
 
 def test_check(devops_wapp):
 	wapp = devops_wapp('auth')
@@ -60,9 +74,6 @@ def test_check(devops_wapp):
 		sess, req = _newsess(wa, '01234567')
 		u = wa.check(req)
 		assert isinstance(u, WebappUser)
-		assert u.name == 'testing'
-		assert u.sess.id == '01234567'
-		assert u.sess.user == 'testing'
 
 def test_check_sess_error(devops_wapp):
 	wapp = devops_wapp('auth')
