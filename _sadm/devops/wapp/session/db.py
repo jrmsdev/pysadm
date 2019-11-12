@@ -16,7 +16,7 @@ _detectTypes = sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES
 
 _sessTable = """
 CREATE TABLE IF NOT EXISTS sess (
-	pk INTEGER PRIMARY KEY,
+	pk INTEGER PRIMARY KEY AUTOINCREMENT,
 	id VARCHAR(128) NOT NULL UNIQUE,
 	user VARCHAR(1024) NOT NULL UNIQUE,
 	last timestamp
@@ -24,13 +24,9 @@ CREATE TABLE IF NOT EXISTS sess (
 """
 _sessGet = 'SELECT pk, id, user, last FROM sess WHERE id = ?;'
 _sessLast = 'UPDATE sess SET last = ? WHERE id = ?;'
-_sessSave = """
-INSERT INTO sess (pk, id, user, last)
-	VALUES ((SELECT MAX(pk)+1 FROM sess), ?, ?, ?)
-	ON CONFLICT (user) DO
-		UPDATE SET id = ?, last = ?
-	WHERE user = ?;
-"""
+_sessNew = 'INSERT INTO sess (id, user, last) VALUES (?, ?, ?);'
+_sessSave = 'UPDATE sess SET id = ?, last = ? WHERE user = ?;'
+_sessUser = 'SELECT pk, id, user, last FROM sess WHERE user = ?;'
 
 class SessionDB(object):
 	_uri = None
@@ -86,11 +82,22 @@ class SessionDB(object):
 				row['last'] = ts
 		return row
 
+	def user(self, name):
+		row = None
+		with self._connect() as db:
+			cur = db.execute(_sessUser, (name,))
+			row = cur.fetchone()
+		return row
+
 	def save(self, sessid, username, ts):
 		pk = None
+		s = self.user(username)
 		with self._connect() as db:
-			cur = db.execute(_sessSave,
-				(sessid, username, ts, sessid, ts, username))
+			cur = None
+			if s is None:
+				cur = db.execute(_sessNew, (sessid, username, ts))
+			else:
+				cur = db.execute(_sessSave, (sessid, ts, username))
 			db.commit()
 			pk = cur.lastrowid
 		if pk is None:
