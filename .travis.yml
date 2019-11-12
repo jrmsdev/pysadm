@@ -30,6 +30,7 @@ install:
   - pip install --upgrade .
   - sadm --version
   - python3 -c 'import sqlite3; print("sqlite3 version", sqlite3.version)'
+  - python3 -c 'import sqlite3; print("sqlite lib version", sqlite3.sqlite_version)'
 
 script:
   - SADMTEST_LOG=debug ./check.sh
