@@ -6,9 +6,14 @@ from _sadm.devops.wapp.view import view
 
 __all__ = ['init']
 
+_initdone = False
+
 def init(wapp):
-	for h in view.reg:
-		name = h[0]
-		cfg = h[1]
-		wapp.route(cfg['route'], cfg.get('method', 'GET'), cfg['view'],
-			name = name, skip = cfg.get('skip', []))
+	global _initdone
+	if not _initdone:
+		for h in view.reg:
+			name = h[0]
+			cfg = h[1]
+			wapp.route(cfg['route'], cfg.get('method', 'GET'), cfg['view'],
+				name = name, skip = cfg.get('skip', []))
+		_initdone = True

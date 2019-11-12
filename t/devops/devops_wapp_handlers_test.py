@@ -11,6 +11,7 @@ from _sadm.devops.wapp.view.user import auth, user
 def test_init(devops_wapp):
 	wapp = devops_wapp()
 	with wapp.mock() as ctx:
+		handlers._initdone = False
 		handlers.init(ctx.wapp)
 		assert ctx.wapp.route.mock_calls == [
 			call(r'/static/<filename:re:.*\..*>', 'GET', static.serve,
