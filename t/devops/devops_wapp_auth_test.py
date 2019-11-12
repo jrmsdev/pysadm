@@ -38,14 +38,25 @@ def _newreq(sessid):
 	return req
 
 def _newsess(wa, sessid):
-	wa.sess.save(sessid, 'testing')
-	return _newreq(sessid)
+	sess = wa.sess.save(sessid, 'testing')
+	return (sess, _newreq(sessid))
 
 def test_user(devops_wapp):
 	wapp = devops_wapp('auth')
 	with wapp.mock() as ctx:
 		wa = auth.WebappAuth(ctx.config)
-		req = _newsess(wa, '01234567')
+		sess, _ = _newsess(wa, '01234567')
+		u = wa._user(sess)
+		assert isinstance(u, WebappUser)
+		assert u.name == 'testing'
+		assert u.sess.id == '01234567'
+		assert u.sess.user == 'testing'
+
+def test_check(devops_wapp):
+	wapp = devops_wapp('auth')
+	with wapp.mock() as ctx:
+		wa = auth.WebappAuth(ctx.config)
+		sess, req = _newsess(wa, '01234567')
 		u = wa.check(req)
 		assert isinstance(u, WebappUser)
 		assert u.name == 'testing'
