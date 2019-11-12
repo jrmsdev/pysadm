@@ -87,3 +87,16 @@ class DevopsWebapp(TestingWebapp):
 				# restore session
 				del _sadm.devops.wapp.session.session._secret
 				_sadm.devops.wapp.session.session._secret = bup.session._secret
+
+	def mock_req(self, sessid, user = 'testing'):
+		req = Mock()
+		req.get_cookie.return_value = sessid
+		req.forms = {
+			'username': user,
+			'password': 'testing.password',
+		}
+		return req
+
+	def mock_sess(self, wa, sessid, user = 'testing'):
+		sess = wa.sess.save(sessid, user)
+		return (sess, self.mock_req(sessid, user = user))
