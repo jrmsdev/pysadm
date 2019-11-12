@@ -67,6 +67,14 @@ def test_user_options(devops_wapp):
 		assert u.email == 'tuser@testing.com'
 		assert u._info.get('testing', None) is None
 
+def test_user_disabled(devops_wapp):
+	wapp = devops_wapp('auth')
+	with wapp.mock() as ctx:
+		wa = auth.WebappAuth(ctx.config)
+		sess, _ = _newsess(wa, '01234567', user = 'tuser_disable')
+		with raises(AuthError, match = 'user tuser_disable: disabled'):
+			wa._user(sess)
+
 def test_check(devops_wapp):
 	wapp = devops_wapp('auth')
 	with wapp.mock() as ctx:
