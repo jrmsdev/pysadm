@@ -27,9 +27,13 @@ def mock_session(wapp):
 
 def test_login(devops_wapp):
 	wapp = devops_wapp()
-	with wapp.mock() as ctx:
-		ctx.auth = ctx.mock.auth
+	with mock_session(wapp) as ctx:
+		ctx.session.cookie.return_value = None
 		auth.login(auth = ctx.auth)
+		req = bottle.request
+		resp = bottle.response
+		ctx.session.cookie.assert_called_with(req)
+		ctx.session.new.assert_called_with(resp)
 		ctx.tpl.parse.assert_called_with('user/login', auth = ctx.auth)
 		assert ctx.auth.mock_calls == []
 
