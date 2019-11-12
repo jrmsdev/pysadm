@@ -60,9 +60,10 @@ def init(config):
 def cookie(req):
 	return WebappSession().cookie(req)
 
-def new(resp):
+def new(resp, sid = None):
 	if _secret is None:
 		raise RuntimeError('session module not initialized')
 	s = WebappSession()
-	sid = token_hex(_tokenSize)
+	if sid is None: # pragma: no cover
+		sid = token_hex(_tokenSize)
 	resp.set_cookie(s.name, sid, secret = _secret, path = '/', httponly = True)

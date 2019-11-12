@@ -11,6 +11,7 @@ from _sadm import cfg
 
 import _sadm.devops.wapp.cfg
 import _sadm.devops.wapp.tpl.tpl
+import _sadm.devops.wapp.session.session
 import _sadm.devops.wapp.wapp
 
 from _sadmtest import mock
@@ -34,6 +35,9 @@ class DevopsWebapp(TestingWebapp):
 		bup.tpl = bup.mock.tpl
 		bup.tpl.parse = _sadm.devops.wapp.tpl.tpl.parse
 		bup.tpl.version = _sadm.devops.wapp.tpl.tpl.version
+		# bup session
+		bup.session = bup.mock.session
+		bup.session._secret = _sadm.devops.wapp.session.session._secret
 		with mock.log(), mock.utils(mockcfg, tag = tag):
 			ctx = Mock()
 			ctx.orig = bup
@@ -72,3 +76,6 @@ class DevopsWebapp(TestingWebapp):
 				_sadm.devops.wapp.tpl.tpl.parse = bup.tpl.parse
 				del _sadm.devops.wapp.tpl.tpl.version
 				_sadm.devops.wapp.tpl.tpl.version = bup.tpl.version
+				# restore session
+				del _sadm.devops.wapp.session.session._secret
+				_sadm.devops.wapp.session.session._secret = bup.session._secret
