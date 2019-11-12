@@ -90,3 +90,14 @@ def test_login_post_no_session_cookie(devops_wapp):
 		req = bottle.request
 		ctx.session.cookie.assert_called_with(req)
 		wapp.checkRedirect(resp, 302, view.url('user.login'))
+
+def test_login_post_auth_error(devops_wapp):
+	wapp = devops_wapp()
+	with mock_session(wapp) as ctx:
+		ctx.auth.login.side_effect = AuthError('testing')
+		resp = auth.loginPost(auth = ctx.auth)
+		assert isinstance(resp, bottle.HTTPError)
+		assert resp.status_code == 401
+		req = bottle.request
+		ctx.session.cookie.assert_called_with(req)
+		ctx.auth.login.assert_called_with(req, '01234567')
