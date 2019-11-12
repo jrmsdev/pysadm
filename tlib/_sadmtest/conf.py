@@ -262,5 +262,7 @@ from _sadmtest.devops.wapp import DevopsWebapp
 @pytest.fixture
 def devops_wapp():
 	def wrapper(profile = ''):
+		if profile != '':
+			profile = '/'.join(['wapp', profile])
 		return DevopsWebapp(profile)
 	return wrapper
