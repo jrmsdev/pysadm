@@ -4,9 +4,9 @@
 import bottle
 
 from _sadm import log
-from _sadm.devops.wapp.auth_error import AuthError
-from _sadm.devops.wapp.auth_config import AuthConfig
-from _sadm.devops.wapp.auth_sslcert import AuthSSLCert
+from _sadm.devops.wapp.auth.config import AuthConfig
+from _sadm.devops.wapp.auth.error import AuthError
+from _sadm.devops.wapp.auth.sslcert import AuthSSLCert
 from _sadm.devops.wapp.session.session import WebappSession
 from _sadm.devops.wapp.user import WebappUser
 from _sadm.devops.wapp.view import view

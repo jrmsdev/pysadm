@@ -6,7 +6,7 @@ import bottle
 from hashlib import sha256
 
 from _sadm import log
-from _sadm.devops.wapp.auth_error import AuthError
+from _sadm.devops.wapp.auth.error import AuthError
 
 __all__ = ['AuthConfig']
 

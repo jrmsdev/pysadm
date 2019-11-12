@@ -5,7 +5,7 @@ import bottle
 
 from _sadm import log
 from _sadm.devops.wapp import cfg
-from _sadm.devops.wapp.auth import WebappAuth, AuthError
+from _sadm.devops.wapp.auth.auth import WebappAuth, AuthError
 from _sadm.devops.wapp.session import session
 from _sadm.devops.wapp.tpl import tpl
 from _sadm.devops.wapp.view import view

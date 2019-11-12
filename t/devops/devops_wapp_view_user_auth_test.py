@@ -7,7 +7,7 @@ from contextlib import contextmanager
 from pytest import raises
 from unittest.mock import Mock
 
-from _sadm.devops.wapp.auth import AuthError
+from _sadm.devops.wapp.auth.error import AuthError
 from _sadm.devops.wapp.view import view
 from _sadm.devops.wapp.view.user import auth
 

@@ -4,8 +4,8 @@
 import bottle
 
 from _sadm import log
-from _sadm.devops.wapp.auth_config import AuthConfig
-from _sadm.devops.wapp.auth_error import AuthError
+from _sadm.devops.wapp.auth.config import AuthConfig
+from _sadm.devops.wapp.auth.error import AuthError
 
 __all__ = ['AuthSSLCert']
 
