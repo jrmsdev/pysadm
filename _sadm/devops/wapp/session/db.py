@@ -1,13 +1,14 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
+import os
+import os.path
 import sqlite3
 
 from datetime import datetime
-from os import makedirs, path
 
 from _sadm import log
-from _sadm.utils import sh
+from _sadm.utils import sh, path
 
 __all__ = ['SessionDB']
 
@@ -44,8 +45,7 @@ class SessionDB(object):
 			self._uri = 'file:session.db?mode=memory&cache=shared'
 			self._mem = True
 		else:
-			dbdir = path.abspath(dbdir)
-			self._fn = path.join(dbdir, 'session.db')
+			self._fn = os.path.abspath(path.join(dbdir, 'session.db'))
 			self._uri = "file:%s?cache=shared" % self._fn
 		self._dir = dbdir
 
@@ -60,17 +60,11 @@ class SessionDB(object):
 		if self._mem:
 			self._mkdb()
 		else:
-			if path.isdir(self._dir):
+			if os.path.isdir(self._dir):
 				log.debug("%s: db dir exists" % self._dir)
 			else:
 				log.debug("create db dir: %s" % self._dir)
-				makedirs(self._dir)
-			if path.isfile(self._fn):
-				log.debug("%s: db file exists" % self._fn)
-			else:
-				log.debug("create db file: %s" % self._fn)
-				with open(self._fn, 'x') as fh:
-					fh.flush()
+				os.makedirs(self._dir)
 			with sh.lockd(self._dir):
 				self._mkdb()
 
