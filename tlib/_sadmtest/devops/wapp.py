@@ -58,12 +58,16 @@ class DevopsWebapp(TestingWebapp):
 			try:
 				yield ctx
 			finally:
+				# restore bottle
 				del bottle.template
 				bottle.template = bup.bottle.template
-				del _sadm.devops.wapp.cfg.config
-				_sadm.devops.wapp.cfg.config = None
+				# restore wapp
 				del _sadm.devops.wapp.wapp.wapp
 				_sadm.devops.wapp.wapp.wapp = bup.wapp
+				# restore config
+				del _sadm.devops.wapp.cfg.config
+				_sadm.devops.wapp.cfg.config = None
+				# restore tpl
 				del _sadm.devops.wapp.tpl.tpl.parse
 				_sadm.devops.wapp.tpl.tpl.parse = bup.tpl.parse
 				del _sadm.devops.wapp.tpl.tpl.version

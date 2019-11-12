@@ -66,3 +66,13 @@ class TestingWebapp(object):
 		except ValueError:
 			m = False
 		assert m, "error did not match - got: %s - expect: %s" % (err.body, match)
+
+	def checkRedirect(self, exc, status, location):
+		resp = exc.value
+		assert isinstance(resp, bottle.HTTPResponse)
+		assert resp.status_code == status, \
+			"redirect status got: %d - expect: %d" % (resp.status_code, status)
+		loc = resp.headers.get('location')
+		loc = loc.replace('http://127.0.0.1', '', 1)
+		assert loc == location, \
+			"redirect location got: '%s' - expect: '%s'" % (loc, location)

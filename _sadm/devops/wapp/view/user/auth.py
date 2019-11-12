@@ -12,11 +12,12 @@ from _sadm.devops.wapp.view import view
 
 __all__ = ['login', 'loginPost']
 
-def login():
+def login(auth = None):
 	log.debug('login')
 	req = bottle.request
 	resp = bottle.response
-	auth = WebappAuth(cfg.config)
+	if auth is None: # pragma: no cover
+		auth = WebappAuth(cfg.config)
 	sessid = session.cookie(req)
 	if not sessid:
 		session.new(resp)
