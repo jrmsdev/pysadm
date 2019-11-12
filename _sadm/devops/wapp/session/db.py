@@ -82,19 +82,15 @@ class SessionDB(object):
 				row['last'] = ts
 		return row
 
-	def user(self, name):
-		row = None
-		with self._connect() as db:
-			cur = db.execute(_sessUser, (name,))
-			row = cur.fetchone()
-		return row
+	def _user(self, db, name):
+		cur = db.execute(_sessUser, (name,))
+		return cur.fetchone()
 
 	def save(self, sessid, username, ts):
 		pk = None
-		s = self.user(username)
 		with self._connect() as db:
 			cur = None
-			if s is None:
+			if self._user(db, username) is None:
 				cur = db.execute(_sessNew, (sessid, username, ts))
 			else:
 				cur = db.execute(_sessSave, (sessid, ts, username))

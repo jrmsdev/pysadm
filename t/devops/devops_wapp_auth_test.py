@@ -33,14 +33,18 @@ def test_error(devops_wapp):
 			wa.error()
 		wapp.checkRedirect(exc, 302, view.url('user.login'))
 
-def _newreq(sessid):
+def _newreq(sessid, user = 'testing'):
 	req = Mock()
 	req.get_cookie.return_value = sessid
+	req.forms = {
+		'username': user,
+		'password': 'testing.password',
+	}
 	return req
 
 def _newsess(wa, sessid, user = 'testing'):
 	sess = wa.sess.save(sessid, user)
-	return (sess, _newreq(sessid))
+	return (sess, _newreq(sessid, user = user))
 
 def test_user(devops_wapp):
 	wapp = devops_wapp('auth')
@@ -90,3 +94,12 @@ def test_check_sess_error(devops_wapp):
 		req = _newreq(None)
 		with raises(AuthError, match = 'user session not found'):
 			wa.check(req)
+
+def test_login_config(devops_wapp):
+	wapp = devops_wapp('auth')
+	with wapp.mock() as ctx:
+		wa = auth.WebappAuth(ctx.config)
+		sess, req = _newsess(wa, '01234567', user = 'tuser')
+		u = wa.login(req, '01234567')
+		assert isinstance(u, WebappUser)
+		assert u.name == 'tuser'
