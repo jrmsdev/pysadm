@@ -65,7 +65,7 @@ def test_user_options(devops_wapp):
 		assert u.sess.id == '01234567'
 		assert u.sess.user == 'tuser'
 		assert u.email == 'tuser@testing.com'
-		assert u._info['testing'] == 'another option'
+		assert u._info.get('testing', None) is None
 
 def test_check(devops_wapp):
 	wapp = devops_wapp('auth')

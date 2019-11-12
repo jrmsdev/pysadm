@@ -3,7 +3,11 @@
 
 from _sadm import log
 
-__all__ = ['WebappUser']
+__all__ = ['WebappUser', 'userOptions']
+
+userOptions = {
+	'email': True,
+}
 
 class WebappUser(object):
 	name = None

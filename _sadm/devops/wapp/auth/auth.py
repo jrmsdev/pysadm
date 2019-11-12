@@ -8,7 +8,7 @@ from _sadm.devops.wapp.auth.config import AuthConfig
 from _sadm.devops.wapp.auth.error import AuthError
 from _sadm.devops.wapp.auth.sslcert import AuthSSLCert
 from _sadm.devops.wapp.session.session import WebappSession
-from _sadm.devops.wapp.user import WebappUser
+from _sadm.devops.wapp.user import WebappUser, userOptions
 from _sadm.devops.wapp.view import view
 
 __all__ = ['WebappAuth', 'AuthError']
@@ -42,7 +42,8 @@ class WebappAuth(object):
 			if dis:
 				raise AuthError("user %s: disabled" % sess.user)
 			for opt in self._cfg.options(sect):
-				info[opt] = self._cfg.get(sect, opt)
+				if userOptions.get(opt, False):
+					info[opt] = self._cfg.get(sect, opt)
 		return WebappUser(sess.user, sess = sess, info = info)
 
 	def check(self, req):
