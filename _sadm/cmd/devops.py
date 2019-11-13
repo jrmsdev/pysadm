@@ -24,6 +24,7 @@ def uwsgi():
 		'--touch-reload', libdir.fpath('devops', 'wsgi', 'uwsgi.ini'),
 		'--safe-pidfile', path.join(path.sep, 'tmp', 'sadm.devops.uwsgi.pid'),
 		'--ini', libdir.fpath('devops', 'wsgi', 'uwsgi.ini'),
+		'--module', '_sadm.devops.devel',
 	]
 	try:
 		callCheck(cmd)
