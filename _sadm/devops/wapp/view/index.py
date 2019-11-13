@@ -9,7 +9,7 @@ from _sadm.devops.wapp.tpl import tpl
 __all__ = ['handle']
 
 RepoList = namedtuple('RepoList', ('list',))
-Repo = namedtuple('Repo', ('name', 'config'))
+Repo = namedtuple('Repo', ('name', 'cfg'))
 
 def handle(user):
 	return tpl.parse('index', user = user, repos = _repos())
@@ -25,10 +25,7 @@ def _repos():
 	return l
 
 def _getRepo(config, name):
-	r = None
 	s = "devops.repo:%s" % name
 	if config.has_section(s):
-		cfg = config[s]
-		cfgfn = cfg.get('config.filename')
-		r = Repo(name, cfgfn)
-	return r
+		return Repo(name, config[s])
+	return None
