@@ -2,7 +2,7 @@
 # See LICENSE file.
 
 from _sadm.errors import BuildError
-from _sadm.deploy.artifact import deploy
+from _sadm.transfer.artifact import deploy
 
 __all__ = ['cargo']
 
