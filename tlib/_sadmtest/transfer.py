@@ -2,7 +2,7 @@
 # See LICENSE file.
 
 from contextlib import contextmanager
-from os import path
+from os import path, makedirs
 from shutil import rmtree
 from unittest.mock import Mock
 
@@ -21,8 +21,9 @@ class TransferCtx(object):
 			'transfer', "%s.env" % env.name())
 		self.zipenvfn = path.join('tdata', 'build',
 			'transfer', "%s.zip" % env.name())
-		self.rootdir = path.join('tdata', 'tmp',
-			'transfer', env.name(), 'rootdir')
+		self.tmpdir = path.join('tdata', 'tmp',
+			'transfer', env.name())
+		self.rootdir = path.join(self.tmpdir, 'rootdir')
 
 	@contextmanager
 	def mock(self):
@@ -33,6 +34,8 @@ class TransferCtx(object):
 				if path.isdir(self.rootdir):
 					print('mock.transfer rmtree', self.rootdir)
 					rmtree(self.rootdir)
+				makedirs(self.tmpdir)
 				yield self
 			finally:
 				print('mock.transfer.restore')
+				rmtree(self.tmpdir)

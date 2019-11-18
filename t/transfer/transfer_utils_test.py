@@ -3,18 +3,14 @@
 
 from os import path
 
-from _sadm.deploy import loader
+from _sadm.transfer import utils
 
-envfn = path.join('tdata', 'build', 'envsetup', 'build.test.env')
-tarfn = path.join('tdata', 'build', 'deploy', 'build.test', 'build.test.tar')
-inifn = path.join('tdata', 'build', 'deploy', 'build.test', 'configure.ini')
-metafn = path.join('tdata', 'build', 'deploy', 'build.test', 'meta.json')
-
-def test_importenv(env_setup):
-	env = env_setup(name = 'build.test', action = 'build')
-	assert path.isfile(envfn)
-	assert not path.isdir(path.dirname(tarfn))
-	loader._importenv(envfn)
-	assert path.isfile(tarfn)
-	assert path.isfile(inifn)
-	assert path.isfile(metafn)
+def test_load(transfer_env):
+	env = transfer_env(action = 'build')
+	with env.mock() as ctx:
+		tmpfn = path.join(ctx.tmpdir, 'testing.txt')
+		assert not path.isfile(tmpfn)
+		with open(tmpfn, 'x') as fh:
+			fh.write('testing')
+		enc = utils.load(ctx.env, tmpfn)
+		assert enc == 'dGVzdGluZw=='
