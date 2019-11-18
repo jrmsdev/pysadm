@@ -272,7 +272,7 @@ from _sadmtest.transfer import TransferCtx
 
 @pytest.fixture
 def transfer_env():
-	def wrapper(env = 'testing', action = None):
+	def wrapper(env = 'testing', action = None, artifact = 'deploy'):
 		e = _newEnv(name= env, profile = 'transfer', action = action)
-		return TransferCtx(e)
+		return TransferCtx(e, artifact)
 	return wrapper
