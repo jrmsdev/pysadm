@@ -66,9 +66,6 @@ recursive-include tdata/listen *.cfg
 recursive-include tdata/listen *.json
 recursive-include tdata/listen *.task
 
-recursive-include tdata/testing *.ini
-recursive-include tdata/testing *.test
-
 recursive-include tdata/plugin *.ini
 recursive-include tdata/plugin *.cfg
 recursive-include tdata/plugin *.conf
@@ -80,6 +77,11 @@ include tdata/plugin/service/nginx/etc/sites-enabled/default
 include tdata/plugin/service/postfix/etc/aliases
 include tdata/plugin/service/postfix/etc/mailname
 include tdata/plugin/users/sadmtest/.bashrc
+
+recursive-include tdata/testing *.ini
+recursive-include tdata/testing *.test
+
+recursive-include tdata/transfer *.ini
 
 recursive-include tdata/web *.cfg
 

@@ -25,6 +25,7 @@ _DEFAULT = {
 	'sudo.command': "%s -n" % path.join(path.sep, 'usr', 'bin', 'sudo'),
 	'user': 'sadm',
 	'group': 'sadm',
+	'install.prefix': path.join(path.sep, 'opt', 'sadm'),
 }
 
 class Config(ConfigParser):
@@ -57,11 +58,15 @@ class Config(ConfigParser):
 				self.read_file(fh)
 		except FileNotFoundError:
 			raise ProfileError("%s file not found" % self._fn)
+		if not self.has_section('sadm'):
+			self.add_section('sadm')
 
 	def listProfiles(self):
-		return sorted(self.sections())
+		return sorted([s for s in self.sections() if s != 'sadm'])
 
 	def listEnvs(self, profile):
+		if profile == 'sadm':
+			raise ProfileError("you can not use 'sadm' as a profile name, sorry")
 		if not self.has_section(profile):
 			raise ProfileError("config profile %s not found" % profile)
 		e = {}

@@ -17,6 +17,7 @@ __all__ = [
 	'listen_wapp',
 	'testing_webapp',
 	'devops_wapp',
+	'transfer_env',
 ]
 
 #
@@ -265,4 +266,13 @@ def devops_wapp():
 		if profile != '':
 			profile = '/'.join(['wapp', profile])
 		return DevopsWebapp(profile)
+	return wrapper
+
+from _sadmtest.transfer import TransferCtx
+
+@pytest.fixture
+def transfer_env():
+	def wrapper(env = 'testing', action = None):
+		e = _newEnv(name= env, profile = 'transfer', action = action)
+		return TransferCtx(e)
 	return wrapper
