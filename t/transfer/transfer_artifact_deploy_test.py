@@ -7,19 +7,22 @@ from pytest import raises
 from _sadm.errors import BuildError
 from _sadm.transfer import extractor
 
-def test_gen(transfer_env):
+def test_env_error(transfer_env):
 	env = transfer_env(action = 'build')
 	with env.mock() as ctx:
-		unlink(ctx.extractorfn)
-		extractor.gen(ctx.env, 'deploy')
 		assert path.isfile(ctx.extractorfn)
 		assert path.isfile(ctx.envfn)
-		assert path.isfile(ctx.zipenvfn)
+		unlink(ctx.extractorfn)
+		unlink(ctx.envfn)
+		with raises(BuildError, match = "%s file not found" % ctx.envfn):
+			extractor.gen(ctx.env, 'deploy')
 
-def test_gen_error(transfer_env):
+def test_zipenv_error(transfer_env):
 	env = transfer_env(action = 'build')
 	with env.mock() as ctx:
+		assert path.isfile(ctx.extractorfn)
+		assert path.isfile(ctx.zipenvfn)
 		unlink(ctx.extractorfn)
-		extractor.gen(ctx.env, 'deploy')
-		with raises(BuildError, match = "%s file exists" % ctx.extractorfn):
+		unlink(ctx.zipenvfn)
+		with raises(BuildError, match = "%s file not found" % ctx.zipenvfn):
 			extractor.gen(ctx.env, 'deploy')
