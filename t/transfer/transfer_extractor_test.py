@@ -4,8 +4,8 @@
 from os import path, unlink
 from pytest import raises
 
-from _sadm.transfer import extractor
 from _sadm.errors import BuildError
+from _sadm.transfer import extractor
 
 def test_gen(transfer_env):
 	env = transfer_env(action = 'build')
