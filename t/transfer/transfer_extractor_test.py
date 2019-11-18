@@ -16,10 +16,13 @@ def test_gen(transfer_env):
 		assert path.isfile(ctx.envfn)
 		assert path.isfile(ctx.zipenvfn)
 
-# ~ def test_gen_error(env_setup):
-	# ~ env = env_setup(action = 'build')
-	# ~ with raises(BuildError, match = "%s file exists" % extractorfn):
-		# ~ extractor.gen(env)
+def test_gen_error(transfer_env):
+	env = transfer_env(action = 'build')
+	with env.mock() as ctx:
+		unlink(ctx.extractorfn)
+		extractor.gen(ctx.env, 'deploy')
+		with raises(BuildError, match = "%s file exists" % ctx.extractorfn):
+			extractor.gen(ctx.env, 'deploy')
 
 # ~ def test_env_error(env_setup):
 	# ~ env = env_setup(action = 'build')

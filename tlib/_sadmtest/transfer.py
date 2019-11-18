@@ -13,9 +13,12 @@ class TransferCtx(object):
 
 	def __init__(self, env):
 		self.env = env
-		self.extractorfn = path.join('tdata', 'build', 'transfer', 'testing.deploy')
-		self.envfn = path.join('tdata', 'build', 'transfer', 'testing.env')
-		self.zipenvfn = path.join('tdata', 'build', 'transfer', 'testing.zip')
+		self.extractorfn = path.join('tdata', 'build',
+			'transfer', "%s.deploy" % env.name())
+		self.envfn = path.join('tdata', 'build',
+			'transfer', "%s.env" % env.name())
+		self.zipenvfn = path.join('tdata', 'build',
+			'transfer', "%s.zip" % env.name())
 
 	@contextmanager
 	def mock(self):
