@@ -20,21 +20,28 @@ def main():
 	env = _vars['env']
 	rootdir = _vars['rootdir']
 	dstdir = path.join(rootdir, 'env')
-	extract(dstdir)
-	# ~ rc = call("%s --env %s deploy" % (envcmd, env), shell = True)
-	# ~ if rc != 0:
-		# ~ return rc
-	return 0
+	artifact = extract(dstdir)
+	return call(artifact, shell = True)
 
 def extract(dstdir):
 	makedirs(dstdir, exist_ok = True)
 	chmod(dstdir, 0o700)
+	# cargo
 	for fn, data in _cargo.items():
 		fn = path.join(dstdir, fn)
 		if path.isfile(fn):
 			unlink(fn)
 		with open(fn, 'wb') as fh:
 			fh.write(b64decode(data.encode()))
+	# artifact
+	artn = _artifact[0]
+	artfn = path.join(dstdir, artn)
+	if path.isfile(artfn):
+		unlink(artfn)
+	with open(artfn, 'wb') as fh:
+		fh.write(b64decode(_artifact[1].encode()))
+	chmod(artfn, 0o700)
+	return artfn
 
 if __name__ == '__main__':
 	sys.exit(main()) # pragma: no cover

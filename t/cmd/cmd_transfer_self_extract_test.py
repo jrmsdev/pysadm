@@ -1,10 +1,11 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
+from base64 import b64encode
 from contextlib import contextmanager
 from unittest.mock import Mock, call, mock_open
 
-from _sadm.deploy import self_extract
+from _sadm.transfer import self_extract
 
 _rootdir = '/opt/sadm'
 
@@ -22,6 +23,13 @@ def mock():
 			'env': 'testing',
 			'rootdir': _rootdir,
 		}
+		# ~ ctx.env = Mock()
+		# ~ ctx.env.name.return_value = 'testing'
+		# ~ ctx.env.profile.config.get.return_value = '/opt/sadm'
+		# ~ ctx.env.build.rootdir.return_value = 'tdata/build/cmd/testing'
+		# ~ self_extract._artifact = ('testing.deploy',
+			# ~ transfer.artifact(ctx.env, 'deploy'))
+		self_extract._artifact = ('testing.deploy', b64encode(b'testing').decode())
 		ctx.path = Mock()
 		ctx.path.join.side_effect = lambda *p: '/'.join(p)
 		ctx.makedirs = Mock()
@@ -39,6 +47,8 @@ def mock():
 		self_extract._cargo = {}
 		del self_extract._vars
 		self_extract._vars = {}
+		del self_extract._artifact
+		self_extract._artifact = tuple()
 		del self_extract.path
 		self_extract.path = path
 		del self_extract.makedirs
@@ -53,41 +63,19 @@ def mock():
 def test_main():
 	with mock() as ctx:
 		ctx.call.return_value = 0
-		rc = self_extract.main()
+		try:
+			self_extract.open = mock_open()
+			rc = self_extract.main()
+		finally:
+			del self_extract.open
 		assert ctx.path.join.mock_calls == [
 			call(_rootdir, 'env'),
-			call(_rootdir+'/env', 'testing.env'),
-			call(_rootdir, 'bin', 'sadm'),
+			call(_rootdir+'/env', 'testing.deploy'),
 		]
 		ctx.makedirs.assert_called_with('/opt/sadm/env', exist_ok = True)
-		ctx.chmod.assert_called_with('/opt/sadm/env', 0o700)
-		assert ctx.call.mock_calls == [
-			call('/opt/sadm/bin/sadm import /opt/sadm/env/testing.env', shell = True),
-			call('/opt/sadm/bin/sadm --env testing deploy', shell = True),
-		]
+		ctx.chmod.assert_called_with('/opt/sadm/env/testing.deploy', 0o700)
+		ctx.call.assert_called_with('/opt/sadm/env/testing.deploy', shell = True)
 		assert rc == 0
-
-def test_import_error():
-	with mock() as ctx:
-		ctx.call.return_value = 9
-		rc = self_extract.main()
-		ctx.call.assert_called_with('/opt/sadm/bin/sadm import /opt/sadm/env/testing.env',
-			shell = True)
-		assert rc == 9
-
-def test_deploy_error():
-	def mock_call(cmd, **kwargs):
-		if cmd.endswith('--env testing deploy'):
-			return 9
-		return 0
-	with mock() as ctx:
-		ctx.call.side_effect = mock_call
-		rc = self_extract.main()
-		assert ctx.call.mock_calls == [
-			call('/opt/sadm/bin/sadm import /opt/sadm/env/testing.env', shell = True),
-			call('/opt/sadm/bin/sadm --env testing deploy', shell = True),
-		]
-		assert rc == 9
 
 def test_extract():
 	with mock() as ctx:
@@ -103,15 +91,24 @@ def test_extract():
 			self_extract.b64decode.return_value = 'testing'
 			rc = self_extract.main()
 		finally:
-			self_extract.open.assert_called_with('/'.join((_rootdir, 'env', 'testing.txt')), 'wb')
-			self_extract.b64decode.assert_called_once_with(b'data')
+			assert self_extract.open.mock_calls == [
+				call('/'.join((_rootdir, 'env', 'testing.txt')), 'wb'),
+				call().__enter__(),
+				call().write('testing'),
+				call().__exit__(None, None, None),
+				call('/'.join((_rootdir, 'env', 'testing.deploy')), 'wb'),
+				call().__enter__(),
+				call().write('testing'),
+				call().__exit__(None, None, None),
+			]
+			assert self_extract.b64decode.mock_calls == [
+				call(b'data'),
+				call(b'dGVzdGluZw=='),
+			]
 			fh = self_extract.open()
-			fh.write.assert_called_once_with('testing')
+			# ~ fh.write.assert_called_once_with('testing')
+			assert fh.write.mock_calls == [call('testing'), call('testing')]
 			del self_extract.open
 			self_extract.b64decode = b64decode
-		ctx.call.assert_called_with('/opt/sadm/bin/sadm import /opt/sadm/env/testing.env',
-			shell = True)
-		ctx.path.join.assert_any_call('/opt/sadm/env', 'testing.txt')
-		ctx.path.isfile.assert_called_once_with('/opt/sadm/env/testing.txt')
-		ctx.unlink.assert_called_once_with('/opt/sadm/env/testing.txt')
+		ctx.call.assert_called_with('/opt/sadm/env/testing.deploy', shell = True)
 		assert rc == 9

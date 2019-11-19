@@ -18,6 +18,7 @@ def env_ctx(env):
 				'rootdir': ctx.rootdir,
 			}
 			self_extract._cargo = transfer.cargo(ctx.env, 'deploy')
+			self_extract._artifact = ('testing.deploy', transfer.artifact(ctx.env, 'deploy'))
 			yield ctx
 		finally:
 			del self_extract._vars
