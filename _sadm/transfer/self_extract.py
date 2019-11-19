@@ -14,21 +14,16 @@ from subprocess import call
 
 _cargo = {}
 _vars = {}
-_artifact = None
+_artifact = tuple()
 
 def main():
 	env = _vars['env']
 	rootdir = _vars['rootdir']
 	dstdir = path.join(rootdir, 'env')
 	extract(dstdir)
-	envfn = path.join(dstdir, "%s.env" % env)
-	envcmd = path.join(rootdir, 'bin', 'sadm')
-	rc = call("%s import %s" % (envcmd, envfn), shell = True)
-	if rc != 0:
-		return rc
-	rc = call("%s --env %s deploy" % (envcmd, env), shell = True)
-	if rc != 0:
-		return rc
+	# ~ rc = call("%s --env %s deploy" % (envcmd, env), shell = True)
+	# ~ if rc != 0:
+		# ~ return rc
 	return 0
 
 def extract(dstdir):

@@ -23,6 +23,7 @@ def gen(env):
 		_write(fn, _getcargo(env, base), _vars)
 	except FileExistsError:
 		raise BuildError("%s file exists" % fn)
+	return fn
 
 def _getcargo(env, base):
 	cargo = {}

@@ -4,9 +4,10 @@
 from os import path
 
 from _sadm.errors import BuildError
+from _sadm.deploy import extractor
 from _sadm.transfer import utils
 
-__all__ = ['cargo']
+__all__ = ['cargo', 'artifact']
 
 def cargo(env):
 	env.debug('cargo')
@@ -21,3 +22,8 @@ def cargo(env):
 			if ext != '.env.asc':
 				raise BuildError("%s file not found" % name)
 	return x
+
+def artifact(env):
+	env.debug('artifact')
+	fn = extractor.gen(env)
+	return utils.load(env, fn)
