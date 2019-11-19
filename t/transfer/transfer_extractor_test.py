@@ -10,13 +10,16 @@ from _sadm.transfer import extractor
 def test_gen(transfer_env):
 	env = transfer_env(action = 'build')
 	with env.mock() as ctx:
+		unlink(ctx.artifactfn)
 		unlink(ctx.extractorfn)
+		fn = None
 		try:
 			fn = extractor.gen(ctx.env, 'deploy')
 			assert path.isfile(fn)
 		finally:
-			unlink(fn)
-		assert path.isfile(ctx.extractorfn)
+			if fn: unlink(fn)
+		assert not path.isfile(ctx.extractorfn)
+		assert path.isfile(ctx.artifactfn)
 		assert path.isfile(ctx.envfn)
 		assert path.isfile(ctx.zipenvfn)
 

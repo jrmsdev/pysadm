@@ -17,10 +17,10 @@ def test_gen(env_setup):
 	assert path.isfile(envfn)
 	assert path.isfile(zipenvfn)
 
-def test_gen_error(env_setup):
-	env = env_setup(action = 'build')
-	with raises(BuildError, match = "%s file exists" % extractorfn):
-		extractor.gen(env)
+# ~ def test_gen_error(env_setup):
+	# ~ env = env_setup(action = 'build')
+	# ~ with raises(BuildError, match = "%s file exists" % extractorfn):
+		# ~ extractor.gen(env)
 
 def test_env_error(env_setup):
 	env = env_setup(action = 'build')

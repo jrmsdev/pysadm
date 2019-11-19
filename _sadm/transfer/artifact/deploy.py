@@ -4,7 +4,7 @@
 from os import path
 
 from _sadm.errors import BuildError
-from _sadm.deploy import extractor
+from _sadm.deploy.artifact import transfer
 from _sadm.transfer import utils
 
 __all__ = ['cargo', 'artifact']
@@ -25,5 +25,5 @@ def cargo(env):
 
 def artifact(env):
 	env.debug('artifact')
-	fn = extractor.gen(env)
+	fn = transfer.gen(env)
 	return utils.load(env, fn)
