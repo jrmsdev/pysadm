@@ -17,18 +17,14 @@ def mock():
 	chmod = self_extract.chmod
 	unlink = self_extract.unlink
 	call = self_extract.call
+	environ = self_extract.environ
 	try:
 		self_extract._cargo = {}
 		self_extract._vars = {
 			'env': 'testing',
+			'profile': 'transfer',
 			'rootdir': _rootdir,
 		}
-		# ~ ctx.env = Mock()
-		# ~ ctx.env.name.return_value = 'testing'
-		# ~ ctx.env.profile.config.get.return_value = '/opt/sadm'
-		# ~ ctx.env.build.rootdir.return_value = 'tdata/build/cmd/testing'
-		# ~ self_extract._artifact = ('testing.deploy',
-			# ~ transfer.artifact(ctx.env, 'deploy'))
 		self_extract._artifact = ('testing.deploy', b64encode(b'testing').decode())
 		ctx.path = Mock()
 		ctx.path.join.side_effect = lambda *p: '/'.join(p)
@@ -36,11 +32,17 @@ def mock():
 		ctx.chmod = Mock()
 		ctx.unlink = Mock()
 		ctx.call = Mock()
+		ctx.environ = {
+			'SADM_ROOTDIR': '/opt/sadm',
+			'SADM_PROFILE': 'transfer',
+			'SADM_ENV': 'testing',
+		}
 		self_extract.path = ctx.path
 		self_extract.makedirs = ctx.makedirs
 		self_extract.chmod = ctx.chmod
 		self_extract.unlink = ctx.unlink
 		self_extract.call = ctx.call
+		self_extract.environ = ctx.environ
 		yield ctx
 	finally:
 		del self_extract._cargo
@@ -59,6 +61,8 @@ def mock():
 		self_extract.unlink = unlink
 		del self_extract.call
 		self_extract.call = call
+		del self_extract.environ
+		self_extract.environ = environ
 
 def test_main():
 	with mock() as ctx:
@@ -74,7 +78,8 @@ def test_main():
 		]
 		ctx.makedirs.assert_called_with('/opt/sadm/env', exist_ok = True)
 		ctx.chmod.assert_called_with('/opt/sadm/env/testing.deploy', 0o700)
-		ctx.call.assert_called_with('/opt/sadm/env/testing.deploy', shell = True)
+		ctx.call.assert_called_with('/opt/sadm/env/testing.deploy',
+			env = ctx.environ, shell = True)
 		assert rc == 0
 
 def test_extract():
@@ -110,5 +115,6 @@ def test_extract():
 			assert fh.write.mock_calls == [call('testing'), call('testing')]
 			del self_extract.open
 			self_extract.b64decode = b64decode
-		ctx.call.assert_called_with('/opt/sadm/env/testing.deploy', shell = True)
+		ctx.call.assert_called_with('/opt/sadm/env/testing.deploy',
+			env = ctx.environ, shell = True)
 		assert rc == 9

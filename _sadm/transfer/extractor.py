@@ -3,11 +3,11 @@
 
 import json
 
-from os import path
+from os import path, unlink
 
 from _sadm import version, libdir
 from _sadm.errors import BuildError
-from _sadm.transfer import transfer
+from _sadm.transfer import transfer, utils
 
 __all__ = ['gen']
 
@@ -39,8 +39,13 @@ def _write(env, artifact, fn, cargo, _vars):
 						indent = indent, sort_keys = sk))
 				elif line.startswith('_artifact'):
 					fh.write("_artifact = ('%s.%s', '%s')\n" % \
-						(env.name(), artifact, transfer.artifact(env, artifact)))
+						(env.name(), artifact, _artifact(env, artifact)))
 				else:
 					fh.write(line)
 			fh.write("\n# %s\n" % version.string('sadm'))
 			fh.flush()
+
+def _artifact(env, name):
+	fn = transfer.artifact(env, name)
+	env.debug("artifact %s" % fn)
+	return utils.load(env, fn)

@@ -3,8 +3,8 @@
 
 from os import path
 
+from _sadm import libdir
 from _sadm.errors import BuildError
-from _sadm.deploy.artifact import transfer
 from _sadm.transfer import utils
 
 __all__ = ['cargo', 'artifact']
@@ -25,5 +25,4 @@ def cargo(env):
 
 def artifact(env):
 	env.debug('artifact')
-	fn = transfer.gen(env)
-	return utils.load(env, fn)
+	return libdir.fpath('deploy', 'self_extract.py')

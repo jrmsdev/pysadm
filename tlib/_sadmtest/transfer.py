@@ -15,8 +15,6 @@ class TransferCtx(object):
 	def __init__(self, env, artifact):
 		self.env = env
 		self.artifact = artifact
-		self.artifactfn = path.join('tdata', 'build',
-			'transfer', "%s.%s.artifact" % (env.name(), artifact))
 		self.extractorfn = path.join('tdata', 'build',
 			'transfer', "%s.%s" % (env.name(), artifact))
 		self.envfn = path.join('tdata', 'build',

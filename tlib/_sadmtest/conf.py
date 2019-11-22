@@ -139,7 +139,7 @@ def _cleanEnv(env, mkdirs = False):
 		bdir + '.env',
 		bdir + '.env.asc',
 		bdir + '.deploy',
-		bdir + '.deploy.artifact',
+		bdir + '.setup',
 		bdir + '.lock',
 		path.join(pdir, '.lock'),
 	)

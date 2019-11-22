@@ -1,10 +1,11 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
+from base64 import b64encode
 from contextlib import contextmanager
 from os import path, makedirs
 
-from _sadm.transfer import transfer, self_extract
+from _sadm.transfer import self_extract, transfer
 
 @contextmanager
 def env_ctx(env):
@@ -18,7 +19,7 @@ def env_ctx(env):
 				'rootdir': ctx.rootdir,
 			}
 			self_extract._cargo = transfer.cargo(ctx.env, 'deploy')
-			self_extract._artifact = ('testing.deploy', transfer.artifact(ctx.env, 'deploy'))
+			self_extract._artifact = ('testing.deploy', b64encode(b'testing').decode())
 			yield ctx
 		finally:
 			del self_extract._vars

@@ -9,7 +9,7 @@
 import sys
 
 from base64 import b64decode
-from os import path, makedirs, chmod, unlink
+from os import environ, path, makedirs, chmod, unlink
 from subprocess import call
 
 _cargo = {}
@@ -17,11 +17,13 @@ _vars = {}
 _artifact = tuple()
 
 def main():
-	env = _vars['env']
 	rootdir = _vars['rootdir']
+	profile = _vars['profile']
+	env = _vars['env']
 	dstdir = path.join(rootdir, 'env')
 	artifact = extract(dstdir)
-	return call(artifact, shell = True)
+	cenv = _cmdenv(rootdir, profile, env)
+	return call(artifact, env = cenv, shell = True)
 
 def extract(dstdir):
 	makedirs(dstdir, exist_ok = True)
@@ -42,6 +44,15 @@ def extract(dstdir):
 		fh.write(b64decode(_artifact[1].encode()))
 	chmod(artfn, 0o700)
 	return artfn
+
+def _cmdenv(rootdir, profile, env):
+	e = environ.copy()
+	e.update({
+		'SADM_ROOTDIR': rootdir,
+		'SADM_PROFILE': profile,
+		'SADM_ENV': env,
+	})
+	return e
 
 if __name__ == '__main__':
 	sys.exit(main()) # pragma: no cover
