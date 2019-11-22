@@ -22,6 +22,7 @@ def run(env):
 	s = EnvSetup(env)
 	fn = _build(s)
 	env.debug("%s" % fn)
+	# TODO: host.exec(env, fn)
 	env.end('setup')
 	return 0
 
