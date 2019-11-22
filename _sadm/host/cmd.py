@@ -18,5 +18,5 @@ def main(env, args):
 		fn = path.abspath(args.exec)
 		host.exec(env, fn)
 	else:
-		raise CommandError('no action', rc = 1)
+		raise CommandError('no action', rc = 19)
 	return 0
