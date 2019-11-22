@@ -1,6 +1,10 @@
 # Copyright (c) Jeremías Casteglione <jrmsdev@gmail.com>
 # See LICENSE file.
 
+from os import makedirs
+
+from _sadm.transfer import extractor
+
 __all__ = ['EnvSetup', 'run']
 
 class EnvSetup(object):
@@ -12,11 +16,14 @@ class EnvSetup(object):
 	def env(self):
 		return self.__env
 
-	def transfer(self):
-		self.__env.debug('transfer')
-
 def run(env):
 	env.debug('run')
 	s = EnvSetup(env)
-	s.transfer()
+	fn = _build(s)
+	env.log("setup %s" % fn)
 	return 127
+
+def _build(s):
+	s.env.debug('build')
+	makedirs(s.env.build.rootdir(), exist_ok = True)
+	return extractor.gen(s.env, 'setup')

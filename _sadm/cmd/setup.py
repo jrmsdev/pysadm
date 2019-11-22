@@ -28,6 +28,7 @@ def main(argv = None):
 		log.error("%s" % err)
 		return err.rc
 	except Error as err:
+		log.error("%s" % err)
 		return 9
 	return rc
 
