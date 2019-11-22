@@ -3,6 +3,7 @@
 
 from os import makedirs
 
+from _sadm.host import host
 from _sadm.transfer import extractor
 
 __all__ = ['EnvSetup', 'run']
@@ -22,7 +23,7 @@ def run(env):
 	s = EnvSetup(env)
 	fn = _build(s)
 	env.debug("%s" % fn)
-	# TODO: host.exec(env, fn)
+	host.exec(env, fn)
 	env.end('setup')
 	return 0
 

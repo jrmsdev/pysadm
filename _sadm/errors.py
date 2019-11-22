@@ -45,9 +45,12 @@ class CommandError(Error):
 	typ = 'CommandError'
 	rc = 128
 
-	def __init__(self, error):
+	def __init__(self, error, rc = None):
 		super().__init__(str(error))
-		self.rc = error.returncode
+		if rc is None:
+			self.rc = int(error.returncode)
+		else:
+			self.rc = int(rc)
 
 class PluginError(Error):
 	typ = 'PluginError'
