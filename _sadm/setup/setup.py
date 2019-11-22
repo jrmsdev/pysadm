@@ -18,10 +18,12 @@ class EnvSetup(object):
 
 def run(env):
 	env.debug('run')
+	env.start('setup')
 	s = EnvSetup(env)
 	fn = _build(s)
-	env.log("setup %s" % fn)
-	return 127
+	env.debug("%s" % fn)
+	env.end('setup')
+	return 0
 
 def _build(s):
 	s.env.debug('build')
